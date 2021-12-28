@@ -1,0 +1,40 @@
+{
+    "name": "crazy_golf_cars",
+    "version": "1.0.0",
+    "description": "A car driving around",
+    "main": "index.js",
+    "scripts": {
+        "dev": "NODE_ENV=dev npm run build && npm run start -- 8085",
+        "prod": "NODE_ENV=prod npm run build && npm run start -- 8085",
+        "build": "webpack --config webpack.config.js",
+        "start": "http-server ./public -p"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@babel/core": "^7.9.6",
+        "@babel/plugin-proposal-class-properties": "^7.8.3",
+        "@babel/plugin-transform-runtime": "^7.9.6",
+        "@babel/preset-env": "^7.9.6",
+        "babel-loader": "^8.1.0",
+        "babel-plugin-inferno": "^6.1.1",
+        "copy-webpack-plugin": "6.0.2",
+        "css-loader": "5.1.1",
+        "glob": "^7.1.6",
+        "http-server": "^0.12.3",
+        "mini-css-extract-plugin": "1.3.9",
+        "node-sass": "6.0.1",
+        "postcss-loader": "^5.0.0",
+        "prettier": "2.1.2",
+        "rimraf": "^3.0.2",
+        "sass-loader": "11.0.1",
+        "webpack": "5.24.3",
+        "webpack-cli": "4.5.0"
+    },
+    "dependencies": {
+        "inferno": "^7.4.2",
+        "mage-engine": "3.15.4",
+        "socket.io-client": "4.0.1",
+        "xferno": "0.0.7"
+    }
+}
