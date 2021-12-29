@@ -1,5 +1,5 @@
 import { BaseScript } from "mage-engine";
-import TileMap, { TILES_TYPES } from "./TileMap";
+import TileMap, { TILES_TYPES } from "../TileMap";
 
 export default class WormBlock extends BaseScript {
     constructor() {

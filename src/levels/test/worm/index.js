@@ -33,18 +33,22 @@ export class Worm {
         this.index++;
 
         block.addScript('WormBlock', { position, isHead: true });
+
+        return block;
     }
 
     start() {
         this.position = { x: 0, y: 1, z: 0 };
         this.direction =  { x: 1, z: 0 };
 
-        this.createBody(this.position);
+        const head = this.createBody(this.position);
 
         Input.enable();
         Input.addEventListener(INPUT_EVENTS.KEY_DOWN, this.handleKeyDown.bind(this));
 
         this.movingInterval = setInterval(this.move.bind(this), 500);
+
+        return head;
     }
 
     move = () => {

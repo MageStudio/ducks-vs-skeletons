@@ -2613,8 +2613,8 @@ var cameraL=new PerspectiveCamera();cameraL.layers.enable(1);cameraL.viewport=ne
 this.enabled=false;this.isPresenting=false;this.getController=function(index){var controller=controllers[index];if(controller===undefined){controller=new WebXRController();controllers[index]=controller;}return controller.getTargetRaySpace();};this.getControllerGrip=function(index){var controller=controllers[index];if(controller===undefined){controller=new WebXRController();controllers[index]=controller;}return controller.getGripSpace();};this.getHand=function(index){var controller=controllers[index];if(controller===undefined){controller=new WebXRController();controllers[index]=controller;}return controller.getHandSpace();};//
 function onSessionEvent(event){var controller=inputSourcesMap.get(event.inputSource);if(controller){controller.dispatchEvent({type:event.type,data:event.inputSource});}}function onSessionEnd(){inputSourcesMap.forEach(function(controller,inputSource){controller.disconnect(inputSource);});inputSourcesMap.clear();_currentDepthNear=null;_currentDepthFar=null;//
 renderer.setFramebuffer(null);renderer.setRenderTarget(renderer.getRenderTarget());// Hack #15830
-animation.stop();scope.isPresenting=false;scope.dispatchEvent({type:'sessionend'});}this.setFramebufferScaleFactor=function(value){framebufferScaleFactor=value;if(scope.isPresenting===true){console.warn('THREE.WebXRManager: Cannot change framebuffer scale while presenting.');}};this.setReferenceSpaceType=function(value){referenceSpaceType=value;if(scope.isPresenting===true){console.warn('THREE.WebXRManager: Cannot change reference space type while presenting.');}};this.getReferenceSpace=function(){return referenceSpace;};this.getSession=function(){return session;};this.setSession=/*#__PURE__*/function(){var _ref9=_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(/*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(value){var attributes,layerInit,baseLayer;return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context2){while(1){switch(_context2.prev=_context2.next){case 0:session=value;if(!(session!==null)){_context2.next=24;break;}session.addEventListener('select',onSessionEvent);session.addEventListener('selectstart',onSessionEvent);session.addEventListener('selectend',onSessionEvent);session.addEventListener('squeeze',onSessionEvent);session.addEventListener('squeezestart',onSessionEvent);session.addEventListener('squeezeend',onSessionEvent);session.addEventListener('end',onSessionEnd);session.addEventListener('inputsourceschange',onInputSourcesChange);attributes=gl.getContextAttributes();if(!(attributes.xrCompatible!==true)){_context2.next=14;break;}_context2.next=14;return gl.makeXRCompatible();case 14:layerInit={antialias:attributes.antialias,alpha:attributes.alpha,depth:attributes.depth,stencil:attributes.stencil,framebufferScaleFactor:framebufferScaleFactor};// eslint-disable-next-line no-undef
-baseLayer=new XRWebGLLayer(session,gl,layerInit);session.updateRenderState({baseLayer:baseLayer});_context2.next=19;return session.requestReferenceSpace(referenceSpaceType);case 19:referenceSpace=_context2.sent;animation.setContext(session);animation.start();scope.isPresenting=true;scope.dispatchEvent({type:'sessionstart'});case 24:case"end":return _context2.stop();}}},_callee);}));return function(_x6){return _ref9.apply(this,arguments);};}();function onInputSourcesChange(event){var inputSources=session.inputSources;// Assign inputSources to available controllers
+animation.stop();scope.isPresenting=false;scope.dispatchEvent({type:'sessionend'});}this.setFramebufferScaleFactor=function(value){framebufferScaleFactor=value;if(scope.isPresenting===true){console.warn('THREE.WebXRManager: Cannot change framebuffer scale while presenting.');}};this.setReferenceSpaceType=function(value){referenceSpaceType=value;if(scope.isPresenting===true){console.warn('THREE.WebXRManager: Cannot change reference space type while presenting.');}};this.getReferenceSpace=function(){return referenceSpace;};this.getSession=function(){return session;};this.setSession=/*#__PURE__*/function(){var _ref10=_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()(/*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(value){var attributes,layerInit,baseLayer;return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context2){while(1){switch(_context2.prev=_context2.next){case 0:session=value;if(!(session!==null)){_context2.next=24;break;}session.addEventListener('select',onSessionEvent);session.addEventListener('selectstart',onSessionEvent);session.addEventListener('selectend',onSessionEvent);session.addEventListener('squeeze',onSessionEvent);session.addEventListener('squeezestart',onSessionEvent);session.addEventListener('squeezeend',onSessionEvent);session.addEventListener('end',onSessionEnd);session.addEventListener('inputsourceschange',onInputSourcesChange);attributes=gl.getContextAttributes();if(!(attributes.xrCompatible!==true)){_context2.next=14;break;}_context2.next=14;return gl.makeXRCompatible();case 14:layerInit={antialias:attributes.antialias,alpha:attributes.alpha,depth:attributes.depth,stencil:attributes.stencil,framebufferScaleFactor:framebufferScaleFactor};// eslint-disable-next-line no-undef
+baseLayer=new XRWebGLLayer(session,gl,layerInit);session.updateRenderState({baseLayer:baseLayer});_context2.next=19;return session.requestReferenceSpace(referenceSpaceType);case 19:referenceSpace=_context2.sent;animation.setContext(session);animation.start();scope.isPresenting=true;scope.dispatchEvent({type:'sessionstart'});case 24:case"end":return _context2.stop();}}},_callee);}));return function(_x6){return _ref10.apply(this,arguments);};}();function onInputSourcesChange(event){var inputSources=session.inputSources;// Assign inputSources to available controllers
 for(var _i118=0;_i118<controllers.length;_i118++){inputSourcesMap.set(inputSources[_i118],controllers[_i118]);}// Notify disconnected
 for(var _i119=0;_i119<event.removed.length;_i119++){var inputSource=event.removed[_i119];var controller=inputSourcesMap.get(inputSource);if(controller){controller.dispatchEvent({type:'disconnected',data:inputSource});inputSourcesMap.delete(inputSource);}}// Notify connected
 for(var _i120=0;_i120<event.added.length;_i120++){var _inputSource=event.added[_i120];var _controller=inputSourcesMap.get(_inputSource);if(_controller){_controller.dispatchEvent({type:'connected',data:_inputSource});}}}//
@@ -4698,10 +4698,9 @@ var camera=this.camera;var far=Math.max(camera.far,this.maxFar);var linearDepth=
 //     });
 //     return this.sound;
 // }
-},{key:"addLight",value:function addLight(light){var _this$getPosition=this.getPosition(),x=_this$getPosition.x,y=_this$getPosition.y,z=_this$getPosition.z;light.setPosition({x:x,y:y,z:z});this.light=light;}},{key:"playSound",value:function playSound(){if(this.sound&&!this.isPlayingSound){this.sound.play();this.isPlayingSound=true;}}},{key:"stopSound",value:function stopSound(){if(this.sound&&this.isPlayingSound){this.sound.stop();this.isPlayingSound=false;}}},{key:"getScale",value:function getScale(){return{x:this.body.scale.x,y:this.body.scale.y,z:this.body.scale.z};}},{key:"setScale",value:function setScale(howbig){if(this.hasBody()){var scale=_objectSpread2({},this.getScale(),{},howbig);this.body.scale.set(scale.x,scale.y,scale.z);}}},{key:"getWorldPosition",value:function getWorldPosition(){var vector=new Vector3$1();if(this.hasBody()){var _this$body$getWorldPo=this.body.getWorldPosition(vector),x=_this$body$getWorldPo.x,y=_this$body$getWorldPo.y,z=_this$body$getWorldPo.z;return{x:x,y:y,z:z};}return DEFAULT_POSITION$1;}},{key:"getQuaternion",value:function getQuaternion(){if(this.hasBody()){return this.getBody().quaternion.clone();}}},{key:"getPosition",value:function getPosition(){return this.getBody().position.clone();}},{key:"setPosition",value:function setPosition(where){if(this.hasBody()){var _this$getPosition2=this.getPosition(),x=_this$getPosition2.x,y=_this$getPosition2.y,z=_this$getPosition2.z;var position=_objectSpread2({x:x,y:y,z:z},where);this.body.position.set(position.x,position.y,position.z);}}},{key:"getRotation",value:function getRotation(){return this.getBody().rotation.clone();}},{key:"setRotation",value:function setRotation(how){if(this.hasBody()){var _this$getRotation=this.getRotation(),x=_this$getRotation.x,y=_this$getRotation.y,z=_this$getRotation.z;var rotation=_objectSpread2({x:x,y:y,z:z},how);this.body.rotation.set(rotation.x,rotation.y,rotation.z);}}},{key:"getAngularVelocity",value:function getAngularVelocity(){return this.angularVelocity||DEFAULT_ANGULAR_VELOCITY;}},{key:"setAngularVelocity",value:function setAngularVelocity(velocity){this.angularVelocity=velocity;Physics$1.updateAngularVelocity(this.uuid(),velocity);}},{key:"getLinearVelocity",value:function getLinearVelocity(){return this.linearVelocity||DEFAULT_LINEAR_VELOCITY$1;}},{key:"setLinearVelocity",value:function setLinearVelocity(velocity){this.linearVelocity=velocity;Physics$1.updateLinearVelocity(this.uuid(),velocity);}},{key:"translate",value:function translate(_ref7){var _ref7$x=_ref7.x,x=_ref7$x===void 0?0:_ref7$x,_ref7$y=_ref7.y,y=_ref7$y===void 0?0:_ref7$y,_ref7$z=_ref7.z,z=_ref7$z===void 0?0:_ref7$z;if(this.hasBody()){this.body.translateX(x);this.body.translateY(y);this.body.translateZ(z);}}},{key:"rotateTo",value:function rotateTo(){var _this5=this;var rotation=arguments.length>0&&arguments[0]!==undefined?arguments[0]:this.getRotation();var time=arguments.length>1&&arguments[1]!==undefined?arguments[1]:250;var _this$getRotation2=this.getRotation(),x=_this$getRotation2.x,y=_this$getRotation2.y,z=_this$getRotation2.z;return new Promise(function(resolve){return new between({x:x,y:y,z:z},rotation).time(time).on('update',function(value){return _this5.setRotation(value);}).on('complete',resolve);});}},{key:"goTo",value:function goTo(){var _this6=this;var position=arguments.length>0&&arguments[0]!==undefined?arguments[0]:this.getPosition();var time=arguments.length>1&&arguments[1]!==undefined?arguments[1]:250;var _this$getPosition3=this.getPosition(),x=_this$getPosition3.x,y=_this$getPosition3.y,z=_this$getPosition3.z;return new Promise(function(resolve){return new between({x:x,y:y,z:z},position).time(time).on('update',function(value){return _this6.setPosition(value);}).on('complete',resolve);});}},{key:"uuid",value:function uuid(){return this.body.uuid;}},{key:"equals",value:function equals(entity){try{return entity.uuid?this.uuid()===entity.uuid():false;}catch(e){return false;}}},{key:"setName",value:function setName(name){this.name=name;}},{key:"getName",value:function getName(){return this.name;}},{key:"mapScriptsToJSON",value:function mapScriptsToJSON(){this.scripts.reduce(function(acc,_ref8){var name=_ref8.name,_ref8$options=_ref8.options,options=_ref8$options===void 0?{}:_ref8$options;acc.names.push(name);acc.options.push(options);return acc;},{names:[],options:[]});}},{key:"toJSON",value:function toJSON(){return{position:this.getPosition(),rotation:this.getRotation(),scale:this.getScale(),entityType:this.getEntityType(),tags:this.getTags()};}}]);return Entity;}(EventDispatcher);var AnimationHandler=/*#__PURE__*/function(){function AnimationHandler(mesh){var animations=arguments.length>1&&arguments[1]!==undefined?arguments[1]:[];_classCallCheck(this,AnimationHandler);this.mixer=new AnimationMixer(mesh);this.animations=animations;}_createClass(AnimationHandler,[{key:"getAction",value:function getAction(id){var action;if(typeof id==='number'){action=this.animations[id];}else if(typeof id==='string'){action=AnimationClip.findByName(this.animations,id);}return action;}},{key:"getAvailableAnimations",value:function getAvailableAnimations(){return this.animations.map(function(_ref){var name=_ref.name;return name;});}},{key:"playAnimation",value:function playAnimation(id,options){var action=this.getAction(id);if(this.currentAction){this.fadeToAnimation(action,options);}else if(action){this.currentAction=this.mixer.clipAction(action).play();}else{console.warn(ANIMATION_NOT_FOUND);}}},{key:"fadeToAnimation",value:function fadeToAnimation(action){var _ref2=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{},_ref2$duration=_ref2.duration,duration=_ref2$duration===void 0?0.2:_ref2$duration;var previousAction=this.currentAction;this.currentAction=this.mixer.clipAction(action);if(previousAction!==this.currentAction){previousAction.fadeOut(duration);}this.currentAction.reset().setEffectiveTimeScale(1).setEffectiveWeight(1).fadeIn(duration).play();}},{key:"update",value:function update(dt){this.mixer.update(dt);}}]);return AnimationHandler;}();var HIT_BOX_COLOR=0xf368e0;var HIT_BOX_INCREASE=.03;var DEFAULT_HITBOX_OPTIONS={shadowsEnabled:false};var getBoxHitbox=function getBoxHitbox(element){var size=new Vector3$1();element.boundingBox.getSize(size);var quaternion=element.getQuaternion();var scaledSize={x:size.x+HIT_BOX_INCREASE,y:size.y+HIT_BOX_INCREASE,z:size.z+HIT_BOX_INCREASE};var box=new Box(scaledSize.x,scaledSize.y,scaledSize.z,HIT_BOX_COLOR,DEFAULT_HITBOX_OPTIONS);//box.setQuaternion(quaternion);
+},{key:"addLight",value:function addLight(light){var _this$getPosition=this.getPosition(),x=_this$getPosition.x,y=_this$getPosition.y,z=_this$getPosition.z;light.setPosition({x:x,y:y,z:z});this.light=light;}},{key:"playSound",value:function playSound(){if(this.sound&&!this.isPlayingSound){this.sound.play();this.isPlayingSound=true;}}},{key:"stopSound",value:function stopSound(){if(this.sound&&this.isPlayingSound){this.sound.stop();this.isPlayingSound=false;}}},{key:"getScale",value:function getScale(){return{x:this.body.scale.x,y:this.body.scale.y,z:this.body.scale.z};}},{key:"setScale",value:function setScale(howbig){if(this.hasBody()){var scale=_objectSpread2({},this.getScale(),{},howbig);this.body.scale.set(scale.x,scale.y,scale.z);}}},{key:"getWorldPosition",value:function getWorldPosition(){var vector=new Vector3$1();if(this.hasBody()){var _this$body$getWorldPo=this.body.getWorldPosition(vector),x=_this$body$getWorldPo.x,y=_this$body$getWorldPo.y,z=_this$body$getWorldPo.z;return{x:x,y:y,z:z};}return DEFAULT_POSITION$1;}},{key:"getQuaternion",value:function getQuaternion(){if(this.hasBody()){return this.getBody().quaternion.clone();}}},{key:"getPosition",value:function getPosition(){return this.getBody().position.clone();}},{key:"setPosition",value:function setPosition(where){if(this.hasBody()){var _this$getPosition2=this.getPosition(),x=_this$getPosition2.x,y=_this$getPosition2.y,z=_this$getPosition2.z;var position=_objectSpread2({x:x,y:y,z:z},where);this.body.position.set(position.x,position.y,position.z);}}},{key:"getRotation",value:function getRotation(){return this.getBody().rotation.clone();}},{key:"setRotation",value:function setRotation(how){if(this.hasBody()){var _this$getRotation=this.getRotation(),x=_this$getRotation.x,y=_this$getRotation.y,z=_this$getRotation.z;var rotation=_objectSpread2({x:x,y:y,z:z},how);this.body.rotation.set(rotation.x,rotation.y,rotation.z);}}},{key:"getAngularVelocity",value:function getAngularVelocity(){return this.angularVelocity||DEFAULT_ANGULAR_VELOCITY;}},{key:"setAngularVelocity",value:function setAngularVelocity(velocity){this.angularVelocity=velocity;Physics$1.updateAngularVelocity(this.uuid(),velocity);}},{key:"getLinearVelocity",value:function getLinearVelocity(){return this.linearVelocity||DEFAULT_LINEAR_VELOCITY$1;}},{key:"setLinearVelocity",value:function setLinearVelocity(velocity){this.linearVelocity=velocity;Physics$1.updateLinearVelocity(this.uuid(),velocity);}},{key:"translate",value:function translate(_ref7){var _ref7$x=_ref7.x,x=_ref7$x===void 0?0:_ref7$x,_ref7$y=_ref7.y,y=_ref7$y===void 0?0:_ref7$y,_ref7$z=_ref7.z,z=_ref7$z===void 0?0:_ref7$z;if(this.hasBody()){this.body.translateX(x);this.body.translateY(y);this.body.translateZ(z);}}},{key:"rotateTo",value:function rotateTo(){var _this5=this;var rotation=arguments.length>0&&arguments[0]!==undefined?arguments[0]:this.getRotation();var time=arguments.length>1&&arguments[1]!==undefined?arguments[1]:250;var _this$getRotation2=this.getRotation(),x=_this$getRotation2.x,y=_this$getRotation2.y,z=_this$getRotation2.z;return new Promise(function(resolve){return new between({x:x,y:y,z:z},rotation).time(time).on('update',function(value){return _this5.setRotation(value);}).on('complete',resolve);});}},{key:"goTo",value:function goTo(){var _this6=this;var position=arguments.length>0&&arguments[0]!==undefined?arguments[0]:this.getPosition();var time=arguments.length>1&&arguments[1]!==undefined?arguments[1]:250;var _this$getPosition3=this.getPosition(),x=_this$getPosition3.x,y=_this$getPosition3.y,z=_this$getPosition3.z;return new Promise(function(resolve){return new between({x:x,y:y,z:z},position).time(time).on('update',function(value){return _this6.setPosition(value);}).on('complete',resolve);});}},{key:"uuid",value:function uuid(){return this.body.uuid;}},{key:"equals",value:function equals(entity){try{return entity.uuid?this.uuid()===entity.uuid():false;}catch(e){return false;}}},{key:"setName",value:function setName(name){this.name=name;}},{key:"getName",value:function getName(){return this.name;}},{key:"mapScriptsToJSON",value:function mapScriptsToJSON(){this.scripts.reduce(function(acc,_ref8){var name=_ref8.name,_ref8$options=_ref8.options,options=_ref8$options===void 0?{}:_ref8$options;acc.names.push(name);acc.options.push(options);return acc;},{names:[],options:[]});}},{key:"toJSON",value:function toJSON(){return{position:this.getPosition(),rotation:this.getRotation(),scale:this.getScale(),entityType:this.getEntityType(),tags:this.getTags()};}}]);return Entity;}(EventDispatcher);var AnimationHandler=/*#__PURE__*/function(){function AnimationHandler(mesh){var animations=arguments.length>1&&arguments[1]!==undefined?arguments[1]:[];_classCallCheck(this,AnimationHandler);this.mixer=new AnimationMixer(mesh);this.animations=animations;}_createClass(AnimationHandler,[{key:"getAction",value:function getAction(id){var action;if(typeof id==='number'){action=this.animations[id];}else if(typeof id==='string'){action=AnimationClip.findByName(this.animations,id);}return action;}},{key:"getAvailableAnimations",value:function getAvailableAnimations(){return this.animations.map(function(_ref){var name=_ref.name;return name;});}},{key:"playAnimation",value:function playAnimation(id,options){var action=this.getAction(id);var _options$loop=options.loop,loop=_options$loop===void 0?LoopRepeat:_options$loop;if(this.currentAction){this.fadeToAnimation(action,options);}else if(action){this.currentAction=this.mixer.clipAction(action).setLoop(loop).play();}else{console.warn(ANIMATION_NOT_FOUND);}}},{key:"fadeToAnimation",value:function fadeToAnimation(action){var _ref2=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{},_ref2$duration=_ref2.duration,duration=_ref2$duration===void 0?0.2:_ref2$duration,_ref2$loop=_ref2.loop,loop=_ref2$loop===void 0?LoopRepeat:_ref2$loop;var previousAction=this.currentAction;this.currentAction=this.mixer.clipAction(action);if(previousAction!==this.currentAction){previousAction.fadeOut(duration);}this.currentAction.reset().setEffectiveTimeScale(1).setEffectiveWeight(1).fadeIn(duration).setLoop(loop).play();}},{key:"update",value:function update(dt){this.mixer.update(dt);}}]);return AnimationHandler;}();var HIT_BOX_COLOR=0xf368e0;var HIT_BOX_INCREASE=.03;var DEFAULT_HITBOX_OPTIONS={shadowsEnabled:false};var getBoxHitbox=function getBoxHitbox(element){var size=new Vector3$1();element.boundingBox.getSize(size);var quaternion=element.getQuaternion();var scaledSize={x:size.x+HIT_BOX_INCREASE,y:size.y+HIT_BOX_INCREASE,z:size.z+HIT_BOX_INCREASE};var box=new Box(scaledSize.x,scaledSize.y,scaledSize.z,HIT_BOX_COLOR,DEFAULT_HITBOX_OPTIONS);//box.setQuaternion(quaternion);
 box.setWireframe(true);box.setWireframeLineWidth(2);return box;};var getSphereHitbox=function getSphereHitbox(element){var radius=element.boundingSphere.radius;var quaternion=element.getQuaternion();var sphere=new Sphere$1(radius,HIT_BOX_COLOR,DEFAULT_HITBOX_OPTIONS);sphere.setWireframe(true);sphere.setWireframeLineWidth(2);return sphere;};var mapColliderTypeToHitbox=function mapColliderTypeToHitbox(){var _COLLIDER_TYPES$BOX$C;var colliderType=arguments.length>0&&arguments[0]!==undefined?arguments[0]:COLLIDER_TYPES.BOX;return(_COLLIDER_TYPES$BOX$C={},_defineProperty(_COLLIDER_TYPES$BOX$C,COLLIDER_TYPES.BOX,getBoxHitbox),_defineProperty(_COLLIDER_TYPES$BOX$C,COLLIDER_TYPES.SPHERE,getSphereHitbox),_COLLIDER_TYPES$BOX$C)[colliderType]||getBoxHitbox;};var COLLIDER_TAG='collider';var COLLIDER_COLOR=0xff0000;var DEFAULT_COLLIDER_OFFSET={x:0,y:0,z:0};var Element=/*#__PURE__*/function(_Entity){_inherits(Element,_Entity);var _super=_createSuper(Element);function Element(geometry,material){var _this;var _options=arguments.length>2&&arguments[2]!==undefined?arguments[2]:{};_classCallCheck(this,Element);_this=_super.call(this,_options);_defineProperty(_assertThisInitialized(_this),"getBodyByName",function(name){if(name){if(_this.hasBody()){return _this.body.getObjectByName(name);}else{var body;_this.body.traverse(function(element){if(element.name===name){body=element;}});if(body){return body;}console.warn(ELEMENT_NOT_SET);}}else{console.warn(ELEMENT_NAME_NOT_PROVIDED);}});_defineProperty(_assertThisInitialized(_this),"hasRayColliders",function(){return _this.colliders.length>0;});_defineProperty(_assertThisInitialized(_this),"areCollisionsEnabled",function(){return _this.collisionsEnabled;});_defineProperty(_assertThisInitialized(_this),"enableCollisions",function(){return _this.collisionsEnabled=true;});_defineProperty(_assertThisInitialized(_this),"disableCollisions",function(){return _this.collisionsEnabled=false;});_defineProperty(_assertThisInitialized(_this),"updateRayColliders",function(){_this.colliders.forEach(function(_ref){var ray=_ref.ray,helper=_ref.helper,_ref$offset=_ref.offset,offset=_ref$offset===void 0?DEFAULT_COLLIDER_OFFSET:_ref$offset;var position=_this.body.position.clone().add(new Vector3$1(offset.x,offset.y,offset.z));if(helper){helper.updatePoints(_this.getPointsFromRayCollider(ray,position));}ray.ray.origin.copy(position);});});_defineProperty(_assertThisInitialized(_this),"getPointsFromRayCollider",function(ray,position){var origin=position.clone();var end=origin.clone().add(ray.ray.direction.clone().multiplyScalar(ray.far));//ray.ray.direction.clone().multiplyScalar(ray.far);
-return[origin,end];});_defineProperty(_assertThisInitialized(_this),"createRayColliderFromVector",function(_ref2,near,far,offset,debug){var type=_ref2.type,vector=_ref2.vector;var parsedOffset=_objectSpread2({},DEFAULT_COLLIDER_OFFSET,{},offset);var position=_this.body.position.clone().add(new Vector3$1(parsedOffset.x,parsedOffset.y,parsedOffset.z));var ray=new Raycaster(position,vector,near,far);var helper;if(debug){var points=_this.getPointsFromRayCollider(ray,position);helper=new Line$1(points);helper.addTag(COLLIDER_TAG);helper.setColor(COLLIDER_COLOR);helper.setThickness(4);}if(_this.getEntityType()===ENTITY_TYPES.SPRITE){ray.setFromCamera(position,Scene$2.getCameraBody());}return{type:type,ray:ray,helper:helper,offset:parsedOffset};});_defineProperty(_assertThisInitialized(_this),"setColliders",function(){var vectors=arguments.length>0&&arguments[0]!==undefined?arguments[0]:[];var options=arguments.length>1&&arguments[1]!==undefined?arguments[1]:[];var colliders=vectors.map(function(vector,i){var _options$i=options[i],_options$i$near=_options$i.near,near=_options$i$near===void 0?0:_options$i$near,_options$i$far=_options$i.far,far=_options$i$far===void 0?10:_options$i$far,_options$i$debug=_options$i.debug,debug=_options$i$debug===void 0?false:_options$i$debug,_options$i$offset=_options$i.offset,offset=_options$i$offset===void 0?DEFAULT_COLLIDER_OFFSET:_options$i$offset;return _this.createRayColliderFromVector(vector,near,far,offset,debug);});_this.colliders=[].concat(_toConsumableArray(_this.colliders),_toConsumableArray(colliders));});_defineProperty(_assertThisInitialized(_this),"checkRayCollider",function(_ref3){var ray=_ref3.ray,type=_ref3.type;var mapCollision=function mapCollision(collision){var distance=collision.distance,object=collision.object;var uuid=object.uuid;return{distance:distance,body:Universe$1.getByUUID(uuid)};};var collisions=ray.intersectObjects(Scene$2.scene.children).filter(function(collision){return collision.object.uuid!==_this.uuid();}).map(mapCollision).filter(function(_ref4){var body=_ref4.body;return!body.hasTag(COLLIDER_TAG);});return{collisions:collisions,type:type};});_defineProperty(_assertThisInitialized(_this),"checkCollisions",function(){var collisions=[];_this.colliders.forEach(function(collider){var collision=_this.checkRayCollider(collider);if(collision){collisions.push(collision);}});if(collisions.length){_this.dispatchEvent({type:COLLISION_EVENT,collisions:collisions});}return collisions;});_defineProperty(_assertThisInitialized(_this),"setTextureMap",function(textureId){var options=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};if(textureId){var _options$repeat=options.repeat,repeat=_options$repeat===void 0?{x:1,y:1}:_options$repeat,_options$wrap=options.wrap,wrap=_options$wrap===void 0?RepeatWrapping$1:_options$wrap;var applyTextureTo=function applyTextureTo(element){var texture=Images$1.get(textureId);_this.texture=textureId;texture.wrapS=wrap;texture.wrapT=wrap;texture.repeat.set(repeat.x,repeat.y);element.material.map=texture;};if(hasMaterial(_this.getBody())){applyTextureTo(_this.getBody());}else{_this.getBody().traverse(function(child){if(hasMaterial(child)){applyTextureTo(child);}});}}});_defineProperty(_assertThisInitialized(_this),"handlePhysicsUpdate",function(position,quaternion){_this.setPosition(position);_this.setQuaternion(quaternion);});_defineProperty(_assertThisInitialized(_this),"equals",function(object){return _this.name===object.name&&_this.body.uuid===object.body.uuid;});_defineProperty(_assertThisInitialized(_this),"traverse",function(cb){_this.body.traverse(cb);});var _options$name=_options.name,_name=_options$name===void 0?"default_".concat(Math.random()):_options$name;_this.texture=undefined;_this.options=_objectSpread2({},_options,{name:_name});_this.physicsOptions={};_this.setBody({geometry:geometry,material:material});_this.colliders=[];_this.collisionsEnabled=true;_this.children=[];_this.animationHandler=undefined;_this.setEntityType(ENTITY_TYPES.MESH);return _this;}_createClass(Element,[{key:"addTag",value:function addTag(tag){_get(_getPrototypeOf(Element.prototype),"addTag",this).call(this,tag);var existingTags=this.getBody().userData.tags||[];this.getBody().userData.tags=[].concat(_toConsumableArray(existingTags),[tag]);}},{key:"setBody",value:function setBody(_ref5){var body=_ref5.body,geometry=_ref5.geometry,material=_ref5.material;if(body){this.body=body;}else if(geometry&&material){this.geometry=geometry;this.material=material;this.body=new Mesh(this.geometry,this.material);}if(this.hasBody()){this.postBodyCreation();this.addToScene();}}},{key:"evaluateBoundingBox",value:function evaluateBoundingBox(){if(hasGeometry(this.getBody())){this.boundingBox=extractBoundingBox(this.getBody());}else{this.boundingBox=extractBiggestBoundingBox(this.getBody());}}},{key:"evaluateBoundingSphere",value:function evaluateBoundingSphere(){if(hasGeometry(this.getBody())){this.boundingSphere=extractBoundingSphere(this.getBody());}else{this.boundingSphere=extractBiggestBoundingSphere(this.getBody());}}},{key:"postBodyCreation",value:function postBodyCreation(){var _this$options=this.options,name=_this$options.name,_this$options$shadows=_this$options.shadowsEnabled,shadowsEnabled=_this$options$shadows===void 0?true:_this$options$shadows;this.evaluateBoundingBox();this.evaluateBoundingSphere();this.setName(name);if(shadowsEnabled){setUpLightsAndShadows(this.getBody());}}},{key:"addToScene",value:function addToScene(){var _this$options$addUniv=this.options.addUniverse,addUniverse=_this$options$addUniv===void 0?true:_this$options$addUniv;if(this.hasBody()){Scene$2.add(this.getBody(),this,addUniverse);}else{console.warn(ELEMENT_NOT_SET);}}},{key:"setName",value:function setName(name){var _ref6=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{},_ref6$replace=_ref6.replace,replace=_ref6$replace===void 0?false:_ref6$replace;_get(_getPrototypeOf(Element.prototype),"setName",this).call(this,name);if(this.hasBody()){if(replace)this.dispose();this.body.name=name;if(replace)this.addToScene();}}},{key:"setArmature",value:function setArmature(armature){this.armature=armature;Scene$2.add(this.armature,null,false);}},{key:"addAnimationHandler",value:function addAnimationHandler(animations){this.animationHandler=new AnimationHandler(this.getBody(),animations);}},{key:"hasAnimationHandler",value:function hasAnimationHandler(){return!!this.animationHandler;}},{key:"playAnimation",value:function playAnimation(id,options){if(this.hasAnimationHandler()){this.animationHandler.playAnimation(id,options);}else{console.warn(ANIMATION_HANDLER_NOT_FOUND);}}},{key:"getAvailableAnimations",value:function getAvailableAnimations(){if(this.hasAnimationHandler()){return this.animationHandler.getAvailableAnimations();}else{console.warn(ANIMATION_HANDLER_NOT_FOUND);}return[];}},{key:"setPhysicsOptions",value:function setPhysicsOptions(_ref7){var _ref7$applyPhysicsUpd=_ref7.applyPhysicsUpdate,applyPhysicsUpdate=_ref7$applyPhysicsUpd===void 0?true:_ref7$applyPhysicsUpd,rest=_objectWithoutProperties(_ref7,["applyPhysicsUpdate"]);var parsedOptions=_objectSpread2({applyPhysicsUpdate:applyPhysicsUpdate},rest);this.physicsOptions=parsedOptions;}},{key:"getPhysicsOptions",value:function getPhysicsOptions(option){return option?this.physicsOptions[option]:this.physicsOptions;}},{key:"enablePhysics",value:function enablePhysics(){var options=arguments.length>0&&arguments[0]!==undefined?arguments[0]:{};var mass=options.mass,colliderType=options.colliderType;if(Config$1.physics().enabled){if(this.isModel()&&mass===0){Physics$1.addModel(this,options);}else{Physics$1.add(this,options);}if(options.debug){this.addHitBox(colliderType);}}}},{key:"addHitBox",value:function addHitBox(){var colliderType=arguments.length>0&&arguments[0]!==undefined?arguments[0]:COLLIDER_TYPES.BOX;var getHitbox=mapColliderTypeToHitbox(colliderType);this.add(getHitbox(this));//box.setPosition(ORIGIN);
-}},{key:"update",value:function update(dt){_get(_getPrototypeOf(Element.prototype),"update",this).call(this,dt);if(this.hasRayColliders()&&this.areCollisionsEnabled()){this.updateRayColliders();this.checkCollisions();}if(this.hasAnimationHandler()){this.animationHandler.update(dt);}}},{key:"add",value:function add(element){var _this2=this;if(this.hasBody()){var _add=function _add(body){_this2.children.push(body);_this2.body.add(body.body);};if(Array.isArray(element)){element.forEach(_add);}else{_add(element);}}}},{key:"remove",value:function remove(element){if(this.hasBody()){this.body.remove(element.body);var index=this.children.findIndex(function(m){return m.equals(element);});this.children.splice(index,1);}}},{key:"isCollidingOnDirection",value:function isCollidingOnDirection(direction){var collider=this.colliders.filter(function(_ref8){var type=_ref8.type;return type===direction;})[0];var emptyCollision={collisions:[],type:direction};return collider?this.checkRayCollider(collider):emptyCollision;}},{key:"setGeometryRotation",value:function setGeometryRotation(){var rotation=arguments.length>0&&arguments[0]!==undefined?arguments[0]:{};var _rotation$x=rotation.x,x=_rotation$x===void 0?0:_rotation$x,_rotation$y=rotation.y,y=_rotation$y===void 0?0:_rotation$y,_rotation$z=rotation.z,z=_rotation$z===void 0?0:_rotation$z;if(x!==0){this.getBody().geometry.rotateX(x);}if(y!==0){this.getBody().geometry.rotateY(y);}if(z!==0){this.getBody().geometry.rotateZ(z);}}},{key:"setColor",value:function setColor(color){if(color){if(hasMaterial(this.getBody())){this.body.material.color=new Color(color);}else{this.body.traverse(function(child){if(hasMaterial(child)){child.material.color=new Color(color);}});}}else{console.warn(ELEMENT_SET_COLOR_MISSING_COLOR);}}},{key:"setMaterialFromName",value:function setMaterialFromName(materialName){var options=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};if(hasMaterial(this.getBody())){changeMaterialByName(materialName,this.getBody(),options);}else{this.body.traverse(function(child){if(hasMaterial(child)){changeMaterialByName(materialName,child,options);}});}}},{key:"setOpacity",value:function setOpacity(){var value=arguments.length>0&&arguments[0]!==undefined?arguments[0]:1.0;var opacity=clamp(value,0,1);if(hasMaterial(this.getBody())){this.body.material.transparent=true;this.body.material.opacity=opacity;}else{this.body.traverse(function(child){if(hasMaterial(child)){child.material.transparent=true;child.material.opacity=opacity;}});}}},{key:"setWireframe",value:function setWireframe(){var flag=arguments.length>0&&arguments[0]!==undefined?arguments[0]:true;if(hasMaterial(this.getBody())){this.body.material.wireframe=flag;}else{this.body.traverse(function(child){if(hasMaterial(child)){child.material.wireframe=flag;}});}}},{key:"setWireframeLineWidth",value:function setWireframeLineWidth(){var width=arguments.length>0&&arguments[0]!==undefined?arguments[0]:1;if(hasMaterial(this.getBody())){this.body.material.wireframeLinewidth=width;}else{this.body.traverse(function(child){if(hasMaterial(child)){child.material.wireframeLinewidth=width;}});}}},{key:"disposeBody",value:function disposeBody(){if(hasMaterial(this.body)){disposeTextures(this.getBody());disposeMaterial(this.getBody());disposeGeometry(this.getBody());}else{this.body.traverse(function(child){if(hasMaterial(child)){disposeTextures(child);disposeMaterial(child);disposeGeometry(child);}});}}},{key:"dispose",value:function dispose(){_get(_getPrototypeOf(Element.prototype),"dispose",this).call(this);if(this.hasBody()){Scene$2.remove(this.getBody());this.disposeBody();}Physics$1.disposeElement(this);}},{key:"toJSON",value:function toJSON(){if(this.serializable){return _objectSpread2({},_get(_getPrototypeOf(Element.prototype),"toJSON",this).call(this),{body:this.body.toJSON(),scripts:this.mapScriptsToJSON(),texture:this.texture},this.options);}}}]);return Element;}(Entity);var Camera$1=/*#__PURE__*/function(_Entity){_inherits(Camera,_Entity);var _super=_createSuper(Camera);function Camera(options){var _this;_classCallCheck(this,Camera);var name=options.name||'camera';_this=_super.call(this,{name:name});_this.options=options;_this.body=new PerspectiveCamera(options.fov,options.ratio,options.near,options.far);return _this;}_createClass(Camera,[{key:"getPosition",value:function getPosition(){return this.body.position;}},{key:"getDirection",value:function getDirection(){var vector=new Vector3$1();var _this$getBody$getWorl=this.getBody().getWorldDirection(vector),x=_this$getBody$getWorl.x,y=_this$getBody$getWorl.y,z=_this$getBody$getWorl.z;return{x:x,y:y,z:z};}},{key:"lookAt",value:function lookAt(){var position=arguments.length>0&&arguments[0]!==undefined?arguments[0]:{};var _position$x=position.x,x=_position$x===void 0?0:_position$x,_position$y=position.y,y=_position$y===void 0?0:_position$y,_position$z=position.z,z=_position$z===void 0?0:_position$z;this.body.lookAt(x,y,z);}}]);return Camera;}(Entity);var Grid=/*#__PURE__*/function(){function Grid(size,division,color1,color2){_classCallCheck(this,Grid);this.body=new GridHelper(size,division,color1,color2);Scene$2.add(this.body,this,false);}_createClass(Grid,[{key:"update",value:function update(){}},{key:"render",value:function render(){}}]);return Grid;}();var Cube=/*#__PURE__*/function(_Element){_inherits(Cube,_Element);var _super=_createSuper(Cube);function Cube(){var _this;var side=arguments.length>0&&arguments[0]!==undefined?arguments[0]:10;var color=arguments.length>1?arguments[1]:undefined;var options=arguments.length>2&&arguments[2]!==undefined?arguments[2]:{};_classCallCheck(this,Cube);_this=_super.call(this,null,null,options);var geometry=new BoxGeometry(side,side,side);var material=new MeshBasicMaterial(_objectSpread2({color:color,wireframe:false},options));_this.setBody({geometry:geometry,material:material});_this.setEntityType(ENTITY_TYPES.MESH);return _this;}return Cube;}(Element);var Sphere$1=/*#__PURE__*/function(_Element){_inherits(Sphere,_Element);var _super=_createSuper(Sphere);function Sphere(){var _this;var radius=arguments.length>0&&arguments[0]!==undefined?arguments[0]:10;var color=arguments.length>1?arguments[1]:undefined;var options=arguments.length>2&&arguments[2]!==undefined?arguments[2]:{};_classCallCheck(this,Sphere);_this=_super.call(this,null,null,options);var segments=32;var geometry=new SphereGeometry(radius,segments,segments);var material=new MeshBasicMaterial(_objectSpread2({color:color,wireframe:false},options));_this.setBody({geometry:geometry,material:material});_this.setEntityType(ENTITY_TYPES.MESH);return _this;}return Sphere;}(Element);var Cylinder=/*#__PURE__*/function(_Element){_inherits(Cylinder,_Element);var _super=_createSuper(Cylinder);function Cylinder(){var _this;var radiusTop=arguments.length>0&&arguments[0]!==undefined?arguments[0]:10;var radiusBottom=arguments.length>1&&arguments[1]!==undefined?arguments[1]:10;var height=arguments.length>2?arguments[2]:undefined;var color=arguments.length>3?arguments[3]:undefined;var options=arguments.length>4&&arguments[4]!==undefined?arguments[4]:{};_classCallCheck(this,Cylinder);_this=_super.call(this,null,null,options);var segments=32;var geometry=new CylinderGeometry(radiusTop,radiusBottom,height,segments);var material=new MeshBasicMaterial(_objectSpread2({color:color,wireframe:false},options));_this.setBody({geometry:geometry,material:material});_this.setEntityType(ENTITY_TYPES.MESH);return _this;}return Cylinder;}(Element);var DEFAULT_LINE_COLOR=0xffffff;var DEFAULT_LINE_THICKNESS=2;var Line$1=/*#__PURE__*/function(_Element){_inherits(Line$1,_Element);var _super=_createSuper(Line$1);function Line$1(){var _this;var _points=arguments.length>0&&arguments[0]!==undefined?arguments[0]:[];var options=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};_classCallCheck(this,Line$1);_this=_super.call(this,null,null,options);_defineProperty(_assertThisInitialized(_this),"updatePoints",function(points){var vectors=points.map(function(_ref){var x=_ref.x,y=_ref.y,z=_ref.z;return new Vector3$1(x,y,z);});_this.body.geometry.vertices=vectors;_this.body.geometry.verticesNeedUpdate=true;});_this.points=_points;var material=_this.getMaterial();var geometry=_this.getGeometryFromPoints();var body=new Line(geometry,material);_this.setBody({body:body});_this.setEntityType(ENTITY_TYPES.MESH);return _this;}_createClass(Line$1,[{key:"postBodyCreation",value:function postBodyCreation(){_get(_getPrototypeOf(Line$1.prototype),"postBodyCreation",this).call(this);var _this$options$dashed=this.options.dashed,dashed=_this$options$dashed===void 0?false:_this$options$dashed;if(dashed){this.body.computeLineDistances();}}},{key:"getMaterial",value:function getMaterial(){var _this$options=this.options,_this$options$color=_this$options.color,color=_this$options$color===void 0?DEFAULT_LINE_COLOR:_this$options$color,_this$options$dashed2=_this$options.dashed,dashed=_this$options$dashed2===void 0?false:_this$options$dashed2,_this$options$thickne=_this$options.thickness,thickness=_this$options$thickne===void 0?DEFAULT_LINE_THICKNESS:_this$options$thickne;return dashed?new LineDashedMaterial({color:color,linewidth:thickness}):new LineBasicMaterial({color:color,linewidth:thickness});}},{key:"getGeometryFromPoints",value:function getGeometryFromPoints(){var vectors=this.points.map(function(_ref2){var _ref2$x=_ref2.x,x=_ref2$x===void 0?0:_ref2$x,_ref2$y=_ref2.y,y=_ref2$y===void 0?0:_ref2$y,_ref2$z=_ref2.z,z=_ref2$z===void 0?0:_ref2$z;return new Vector3$1(x,y,z);});return new BufferGeometry().setFromPoints(vectors);}},{key:"setThickness",value:function setThickness(){var thickness=arguments.length>0&&arguments[0]!==undefined?arguments[0]:DEFAULT_LINE_THICKNESS;this.body.material.linewidth=thickness;}}]);return Line$1;}(Element);var DEFAULT_CURVE_LINE_DIVISIONS=20;var CurveLine=/*#__PURE__*/function(_Line){_inherits(CurveLine,_Line);var _super=_createSuper(CurveLine);function CurveLine(){var _this;var points=arguments.length>0&&arguments[0]!==undefined?arguments[0]:[];var options=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};_classCallCheck(this,CurveLine);var _options$divisions=options.divisions,divisions=_options$divisions===void 0?DEFAULT_CURVE_LINE_DIVISIONS:_options$divisions;var curve=CurveLine.genereateCurve(points,divisions);_this=_super.call(this,curve,options);_this.curve=curve;return _this;}_createClass(CurveLine,null,[{key:"genereateCurve",value:function genereateCurve(points,divisions){return new CatmullRomCurve3(points.map(function(_ref){var x=_ref.x,y=_ref.y,z=_ref.z;return new Vector3$1(x,y,z);})).getPoints(divisions);}}]);return CurveLine;}(Line$1);var UP$1=new Vector3$1(0,1,0);var DOWN$1=new Vector3$1(0,-1,0);var Plane$1=/*#__PURE__*/function(_Element){_inherits(Plane,_Element);var _super=_createSuper(Plane);function Plane(height,width){var _this;var options=arguments.length>2&&arguments[2]!==undefined?arguments[2]:{};_classCallCheck(this,Plane);_this=_super.call(this,null,null,options);var _options$color=options.color,color=_options$color===void 0?0xfffffff:_options$color,_options$transparent=options.transparent,transparent=_options$transparent===void 0?false:_options$transparent,_options$opacity=options.opacity,opacity=_options$opacity===void 0?1:_options$opacity;material=new MeshBasicMaterial({color:color,side:DoubleSide,transparent:transparent,opacity:opacity});geometry=new PlaneGeometry(width,height);_this.setBody({geometry:geometry,material:material});_this.setEntityType(ENTITY_TYPES.MESH);return _this;}_createClass(Plane,[{key:"face",value:function face(direction){var vector=new Vector3$1(direction.x,direction.y,direction.z);this.body.lookAt(vector);}}],[{key:"UP",get:function get(){return UP$1;}},{key:"DOWN",get:function get(){return DOWN$1;}}]);return Plane;}(Element);var Box=/*#__PURE__*/function(_Element){_inherits(Box,_Element);var _super=_createSuper(Box);function Box(){var _this;var width=arguments.length>0&&arguments[0]!==undefined?arguments[0]:10;var height=arguments.length>1&&arguments[1]!==undefined?arguments[1]:10;var depth=arguments.length>2&&arguments[2]!==undefined?arguments[2]:10;var color=arguments.length>3?arguments[3]:undefined;var options=arguments.length>4&&arguments[4]!==undefined?arguments[4]:{};_classCallCheck(this,Box);_this=_super.call(this,null,null,options);var geometry=new BoxGeometry(width,height,depth);var material=new MeshBasicMaterial(_objectSpread2({color:color,wireframe:false},options));_this.setBody({geometry:geometry,material:material});_this.setEntityType(ENTITY_TYPES.MESH);return _this;}return Box;}(Element);var validateAnisotropy=function validateAnisotropy(anisotropy){var max=Scene$2.getRenderer().capabilities.getMaxAnisotropy();return anisotropy>max?max:anisotropy;};var Sprite$1=/*#__PURE__*/function(_Element){_inherits(Sprite$1,_Element);var _super=_createSuper(Sprite$1);function Sprite$1(){var _this;var width=arguments.length>0&&arguments[0]!==undefined?arguments[0]:20;var height=arguments.length>1&&arguments[1]!==undefined?arguments[1]:20;var spriteTexture=arguments.length>2?arguments[2]:undefined;var options=arguments.length>3&&arguments[3]!==undefined?arguments[3]:{};_classCallCheck(this,Sprite$1);_this=_super.call(this,null,null,options);var _options$anisotropy=options.anisotropy,anisotropy=_options$anisotropy===void 0?1:_options$anisotropy,rest=_objectWithoutProperties(options,["anisotropy"]);var texture=Images$1.get(spriteTexture);texture.anisotropy=validateAnisotropy(anisotropy);var material=new SpriteMaterial(_objectSpread2({map:texture},rest));var body=new Sprite(material);body.scale.x=width;body.scale.y=height;_this.setBody({body:body});_this.setEntityType(ENTITY_TYPES.SPRITE);return _this;}_createClass(Sprite$1,[{key:"getRotation",value:function getRotation(){return this.body.material.rotation;}},{key:"setRotation",value:function setRotation(){var rotation=arguments.length>0&&arguments[0]!==undefined?arguments[0]:this.getRotation();this.body.material.rotation=rotation;}}]);return Sprite$1;}(Element);var BackgroundSound=/*#__PURE__*/function(_Sound){_inherits(BackgroundSound,_Sound);var _super=_createSuper(BackgroundSound);function BackgroundSound(){_classCallCheck(this,BackgroundSound);return _super.apply(this,arguments);}_createClass(BackgroundSound,[{key:"update",value:function update(dt){}},{key:"createPannerNode",value:function createPannerNode(){console.log(METHOD_NOT_SUPPORTED);}},{key:"hasPannerNode",value:function hasPannerNode(){console.log(METHOD_NOT_SUPPORTED);}},{key:"hasTarget",value:function hasTarget(){console.log(METHOD_NOT_SUPPORTED);}},{key:"getTarget",value:function getTarget(){console.log(METHOD_NOT_SUPPORTED);}},{key:"setTarget",value:function setTarget(){console.log(METHOD_NOT_SUPPORTED);}}]);return BackgroundSound;}(Sound$1);var Video=/*#__PURE__*/function(){function Video(){_classCallCheck(this,Video);}_createClass(Video,[{key:"load",value:function load(){return Promise.resolve();}}]);return Video;}();var engine=new Video();var GLTFLoader=function(){function GLTFLoader(manager){Loader.call(this,manager);this.dracoLoader=null;this.ddsLoader=null;}GLTFLoader.prototype=Object.assign(Object.create(Loader.prototype),{constructor:GLTFLoader,load:function load(url,onLoad,onProgress,onError){var scope=this;var resourcePath;if(this.resourcePath!==''){resourcePath=this.resourcePath;}else if(this.path!==''){resourcePath=this.path;}else{resourcePath=LoaderUtils.extractUrlBase(url);}// Tells the LoadingManager to track an extra item, which resolves after
+return[origin,end];});_defineProperty(_assertThisInitialized(_this),"createRayColliderFromVector",function(_ref2,near,far,offset,debug){var type=_ref2.type,vector=_ref2.vector;var parsedOffset=_objectSpread2({},DEFAULT_COLLIDER_OFFSET,{},offset);var position=_this.body.position.clone().add(new Vector3$1(parsedOffset.x,parsedOffset.y,parsedOffset.z));var ray=new Raycaster(position,vector,near,far);var helper;if(debug){var points=_this.getPointsFromRayCollider(ray,position);helper=new Line$1(points);helper.addTag(COLLIDER_TAG);helper.setColor(COLLIDER_COLOR);helper.setThickness(4);}if(_this.getEntityType()===ENTITY_TYPES.SPRITE){ray.setFromCamera(position,Scene$2.getCameraBody());}return{type:type,ray:ray,helper:helper,offset:parsedOffset};});_defineProperty(_assertThisInitialized(_this),"setColliders",function(){var vectors=arguments.length>0&&arguments[0]!==undefined?arguments[0]:[];var options=arguments.length>1&&arguments[1]!==undefined?arguments[1]:[];var colliders=vectors.map(function(vector,i){var _options$i=options[i],_options$i$near=_options$i.near,near=_options$i$near===void 0?0:_options$i$near,_options$i$far=_options$i.far,far=_options$i$far===void 0?10:_options$i$far,_options$i$debug=_options$i.debug,debug=_options$i$debug===void 0?false:_options$i$debug,_options$i$offset=_options$i.offset,offset=_options$i$offset===void 0?DEFAULT_COLLIDER_OFFSET:_options$i$offset;return _this.createRayColliderFromVector(vector,near,far,offset,debug);});_this.colliders=[].concat(_toConsumableArray(_this.colliders),_toConsumableArray(colliders));});_defineProperty(_assertThisInitialized(_this),"checkRayCollider",function(_ref3){var ray=_ref3.ray,type=_ref3.type;var mapCollision=function mapCollision(collision){var distance=collision.distance,object=collision.object;var uuid=object.uuid;return{distance:distance,body:Universe$1.getByUUID(uuid)};};var collisions=ray.intersectObjects(Scene$2.scene.children).filter(function(collision){return collision.object.uuid!==_this.uuid();}).map(mapCollision).filter(function(_ref4){var body=_ref4.body;return!body.hasTag(COLLIDER_TAG);});return{collisions:collisions,type:type};});_defineProperty(_assertThisInitialized(_this),"checkCollisions",function(){var collisions=[];_this.colliders.forEach(function(collider){var collision=_this.checkRayCollider(collider);if(collision){collisions.push(collision);}});if(collisions.length){_this.dispatchEvent({type:COLLISION_EVENT,collisions:collisions});}return collisions;});_defineProperty(_assertThisInitialized(_this),"setTextureMap",function(textureId){var options=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};if(textureId){var _options$repeat=options.repeat,repeat=_options$repeat===void 0?{x:1,y:1}:_options$repeat,_options$wrap=options.wrap,wrap=_options$wrap===void 0?RepeatWrapping$1:_options$wrap;var applyTextureTo=function applyTextureTo(element){var texture=Images$1.get(textureId);_this.texture=textureId;texture.wrapS=wrap;texture.wrapT=wrap;texture.repeat.set(repeat.x,repeat.y);element.material.map=texture;};if(hasMaterial(_this.getBody())){applyTextureTo(_this.getBody());}else{_this.getBody().traverse(function(child){if(hasMaterial(child)){applyTextureTo(child);}});}}});_defineProperty(_assertThisInitialized(_this),"lookAt",function(){var _ref5=arguments.length>0&&arguments[0]!==undefined?arguments[0]:{},_ref5$x=_ref5.x,x=_ref5$x===void 0?0:_ref5$x,_ref5$y=_ref5.y,y=_ref5$y===void 0?0:_ref5$y,_ref5$z=_ref5.z,z=_ref5$z===void 0?0:_ref5$z;var body=_this.getBody();if(body.lookAt){body.lookAt(x,y,z);}});_defineProperty(_assertThisInitialized(_this),"handlePhysicsUpdate",function(position,quaternion){_this.setPosition(position);_this.setQuaternion(quaternion);});_defineProperty(_assertThisInitialized(_this),"equals",function(object){return _this.name===object.name&&_this.body.uuid===object.body.uuid;});_defineProperty(_assertThisInitialized(_this),"traverse",function(cb){_this.body.traverse(cb);});var _options$name=_options.name,_name=_options$name===void 0?"default_".concat(Math.random()):_options$name;_this.texture=undefined;_this.opacity=1;_this.options=_objectSpread2({},_options,{name:_name});_this.physicsOptions={};_this.setBody({geometry:geometry,material:material});_this.colliders=[];_this.collisionsEnabled=true;_this.children=[];_this.animationHandler=undefined;_this.setEntityType(ENTITY_TYPES.MESH);return _this;}_createClass(Element,[{key:"addTag",value:function addTag(tag){_get(_getPrototypeOf(Element.prototype),"addTag",this).call(this,tag);var existingTags=this.getBody().userData.tags||[];this.getBody().userData.tags=[].concat(_toConsumableArray(existingTags),[tag]);}},{key:"setBody",value:function setBody(_ref6){var body=_ref6.body,geometry=_ref6.geometry,material=_ref6.material;if(body){this.body=body;}else if(geometry&&material){this.geometry=geometry;this.material=material;this.body=new Mesh(this.geometry,this.material);}if(this.hasBody()){this.postBodyCreation();this.addToScene();}}},{key:"evaluateBoundingBox",value:function evaluateBoundingBox(){if(hasGeometry(this.getBody())){this.boundingBox=extractBoundingBox(this.getBody());}else{this.boundingBox=extractBiggestBoundingBox(this.getBody());}}},{key:"evaluateBoundingSphere",value:function evaluateBoundingSphere(){if(hasGeometry(this.getBody())){this.boundingSphere=extractBoundingSphere(this.getBody());}else{this.boundingSphere=extractBiggestBoundingSphere(this.getBody());}}},{key:"postBodyCreation",value:function postBodyCreation(){var _this$options=this.options,name=_this$options.name,_this$options$shadows=_this$options.shadowsEnabled,shadowsEnabled=_this$options$shadows===void 0?true:_this$options$shadows;this.evaluateBoundingBox();this.evaluateBoundingSphere();this.setName(name);if(shadowsEnabled){setUpLightsAndShadows(this.getBody());}}},{key:"addToScene",value:function addToScene(){var _this$options$addUniv=this.options.addUniverse,addUniverse=_this$options$addUniv===void 0?true:_this$options$addUniv;if(this.hasBody()){Scene$2.add(this.getBody(),this,addUniverse);}else{console.warn(ELEMENT_NOT_SET);}}},{key:"setName",value:function setName(name){var _ref7=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{},_ref7$replace=_ref7.replace,replace=_ref7$replace===void 0?false:_ref7$replace;_get(_getPrototypeOf(Element.prototype),"setName",this).call(this,name);if(this.hasBody()){if(replace)this.dispose();this.body.name=name;if(replace)this.addToScene();}}},{key:"setArmature",value:function setArmature(armature){this.armature=armature;Scene$2.add(this.armature,null,false);}},{key:"addAnimationHandler",value:function addAnimationHandler(animations){this.animationHandler=new AnimationHandler(this.getBody(),animations);}},{key:"hasAnimationHandler",value:function hasAnimationHandler(){return!!this.animationHandler;}},{key:"playAnimation",value:function playAnimation(id){var options=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};if(this.hasAnimationHandler()){this.animationHandler.playAnimation(id,options);}else{console.warn(ANIMATION_HANDLER_NOT_FOUND);}}},{key:"getAvailableAnimations",value:function getAvailableAnimations(){if(this.hasAnimationHandler()){return this.animationHandler.getAvailableAnimations();}else{console.warn(ANIMATION_HANDLER_NOT_FOUND);}return[];}},{key:"setPhysicsOptions",value:function setPhysicsOptions(_ref8){var _ref8$applyPhysicsUpd=_ref8.applyPhysicsUpdate,applyPhysicsUpdate=_ref8$applyPhysicsUpd===void 0?true:_ref8$applyPhysicsUpd,rest=_objectWithoutProperties(_ref8,["applyPhysicsUpdate"]);var parsedOptions=_objectSpread2({applyPhysicsUpdate:applyPhysicsUpdate},rest);this.physicsOptions=parsedOptions;}},{key:"getPhysicsOptions",value:function getPhysicsOptions(option){return option?this.physicsOptions[option]:this.physicsOptions;}},{key:"enablePhysics",value:function enablePhysics(){var options=arguments.length>0&&arguments[0]!==undefined?arguments[0]:{};var mass=options.mass,colliderType=options.colliderType;if(Config$1.physics().enabled){if(this.isModel()&&mass===0){Physics$1.addModel(this,options);}else{Physics$1.add(this,options);}if(options.debug){this.addHitBox(colliderType);}}}},{key:"addHitBox",value:function addHitBox(){var colliderType=arguments.length>0&&arguments[0]!==undefined?arguments[0]:COLLIDER_TYPES.BOX;var getHitbox=mapColliderTypeToHitbox(colliderType);this.add(getHitbox(this));}},{key:"add",value:function add(element){var _this2=this;if(this.hasBody()){var _add=function _add(body){_this2.children.push(body);_this2.body.add(body.body);};if(Array.isArray(element)){element.forEach(_add);}else{_add(element);}}}},{key:"remove",value:function remove(element){if(this.hasBody()){this.body.remove(element.body);var index=this.children.findIndex(function(m){return m.equals(element);});this.children.splice(index,1);}}},{key:"isCollidingOnDirection",value:function isCollidingOnDirection(direction){var collider=this.colliders.filter(function(_ref9){var type=_ref9.type;return type===direction;})[0];var emptyCollision={collisions:[],type:direction};return collider?this.checkRayCollider(collider):emptyCollision;}},{key:"setGeometryRotation",value:function setGeometryRotation(){var rotation=arguments.length>0&&arguments[0]!==undefined?arguments[0]:{};var _rotation$x=rotation.x,x=_rotation$x===void 0?0:_rotation$x,_rotation$y=rotation.y,y=_rotation$y===void 0?0:_rotation$y,_rotation$z=rotation.z,z=_rotation$z===void 0?0:_rotation$z;if(x!==0){this.getBody().geometry.rotateX(x);}if(y!==0){this.getBody().geometry.rotateY(y);}if(z!==0){this.getBody().geometry.rotateZ(z);}}},{key:"setColor",value:function setColor(color){if(color){if(hasMaterial(this.getBody())){this.body.material.color=new Color(color);}else{this.body.traverse(function(child){if(hasMaterial(child)){child.material.color=new Color(color);}});}}else{console.warn(ELEMENT_SET_COLOR_MISSING_COLOR);}}},{key:"setMaterialFromName",value:function setMaterialFromName(materialName){var options=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};if(hasMaterial(this.getBody())){changeMaterialByName(materialName,this.getBody(),options);}else{this.body.traverse(function(child){if(hasMaterial(child)){changeMaterialByName(materialName,child,options);}});}}},{key:"setOpacity",value:function setOpacity(){var value=arguments.length>0&&arguments[0]!==undefined?arguments[0]:1.0;var opacity=clamp(value,0,1);this.opacity=opacity;if(hasMaterial(this.getBody())){this.body.material.transparent=true;this.body.material.opacity=opacity;}else{this.body.traverse(function(child){if(hasMaterial(child)){child.material.transparent=true;child.material.opacity=opacity;}});}}},{key:"fadeTo",value:function fadeTo(opacity,time){var _this3=this;return new Promise(function(resolve){return new between(_this3.opacity,opacity).time(time).on('update',function(value){return _this3.setOpacity(value);}).on('complete',resolve);});}},{key:"setWireframe",value:function setWireframe(){var flag=arguments.length>0&&arguments[0]!==undefined?arguments[0]:true;if(hasMaterial(this.getBody())){this.body.material.wireframe=flag;}else{this.body.traverse(function(child){if(hasMaterial(child)){child.material.wireframe=flag;}});}}},{key:"setWireframeLineWidth",value:function setWireframeLineWidth(){var width=arguments.length>0&&arguments[0]!==undefined?arguments[0]:1;if(hasMaterial(this.getBody())){this.body.material.wireframeLinewidth=width;}else{this.body.traverse(function(child){if(hasMaterial(child)){child.material.wireframeLinewidth=width;}});}}},{key:"disposeBody",value:function disposeBody(){if(hasMaterial(this.body)){disposeTextures(this.getBody());disposeMaterial(this.getBody());disposeGeometry(this.getBody());}else{this.body.traverse(function(child){if(hasMaterial(child)){disposeTextures(child);disposeMaterial(child);disposeGeometry(child);}});}}},{key:"update",value:function update(dt){_get(_getPrototypeOf(Element.prototype),"update",this).call(this,dt);if(this.hasRayColliders()&&this.areCollisionsEnabled()){this.updateRayColliders();this.checkCollisions();}if(this.hasAnimationHandler()){this.animationHandler.update(dt);}}},{key:"dispose",value:function dispose(){_get(_getPrototypeOf(Element.prototype),"dispose",this).call(this);if(this.hasBody()){Scene$2.remove(this.getBody());this.disposeBody();}Physics$1.disposeElement(this);}},{key:"toJSON",value:function toJSON(){if(this.serializable){return _objectSpread2({},_get(_getPrototypeOf(Element.prototype),"toJSON",this).call(this),{body:this.body.toJSON(),scripts:this.mapScriptsToJSON(),texture:this.texture},this.options);}}}]);return Element;}(Entity);var Camera$1=/*#__PURE__*/function(_Entity){_inherits(Camera,_Entity);var _super=_createSuper(Camera);function Camera(options){var _this;_classCallCheck(this,Camera);var name=options.name||'camera';_this=_super.call(this,{name:name});_this.options=options;_this.body=new PerspectiveCamera(options.fov,options.ratio,options.near,options.far);return _this;}_createClass(Camera,[{key:"getPosition",value:function getPosition(){return this.body.position;}},{key:"getDirection",value:function getDirection(){var vector=new Vector3$1();var _this$getBody$getWorl=this.getBody().getWorldDirection(vector),x=_this$getBody$getWorl.x,y=_this$getBody$getWorl.y,z=_this$getBody$getWorl.z;return{x:x,y:y,z:z};}},{key:"lookAt",value:function lookAt(){var position=arguments.length>0&&arguments[0]!==undefined?arguments[0]:{};var _position$x=position.x,x=_position$x===void 0?0:_position$x,_position$y=position.y,y=_position$y===void 0?0:_position$y,_position$z=position.z,z=_position$z===void 0?0:_position$z;this.body.lookAt(x,y,z);}}]);return Camera;}(Entity);var Grid=/*#__PURE__*/function(){function Grid(size,division,color1,color2){_classCallCheck(this,Grid);this.body=new GridHelper(size,division,color1,color2);Scene$2.add(this.body,this,false);}_createClass(Grid,[{key:"update",value:function update(){}},{key:"render",value:function render(){}}]);return Grid;}();var Cube=/*#__PURE__*/function(_Element){_inherits(Cube,_Element);var _super=_createSuper(Cube);function Cube(){var _this;var side=arguments.length>0&&arguments[0]!==undefined?arguments[0]:10;var color=arguments.length>1?arguments[1]:undefined;var options=arguments.length>2&&arguments[2]!==undefined?arguments[2]:{};_classCallCheck(this,Cube);_this=_super.call(this,null,null,options);var geometry=new BoxGeometry(side,side,side);var material=new MeshBasicMaterial(_objectSpread2({color:color,wireframe:false},options));_this.setBody({geometry:geometry,material:material});_this.setEntityType(ENTITY_TYPES.MESH);return _this;}return Cube;}(Element);var Sphere$1=/*#__PURE__*/function(_Element){_inherits(Sphere,_Element);var _super=_createSuper(Sphere);function Sphere(){var _this;var radius=arguments.length>0&&arguments[0]!==undefined?arguments[0]:10;var color=arguments.length>1?arguments[1]:undefined;var options=arguments.length>2&&arguments[2]!==undefined?arguments[2]:{};_classCallCheck(this,Sphere);_this=_super.call(this,null,null,options);var segments=32;var geometry=new SphereGeometry(radius,segments,segments);var material=new MeshBasicMaterial(_objectSpread2({color:color,wireframe:false},options));_this.setBody({geometry:geometry,material:material});_this.setEntityType(ENTITY_TYPES.MESH);return _this;}return Sphere;}(Element);var Cylinder=/*#__PURE__*/function(_Element){_inherits(Cylinder,_Element);var _super=_createSuper(Cylinder);function Cylinder(){var _this;var radiusTop=arguments.length>0&&arguments[0]!==undefined?arguments[0]:10;var radiusBottom=arguments.length>1&&arguments[1]!==undefined?arguments[1]:10;var height=arguments.length>2?arguments[2]:undefined;var color=arguments.length>3?arguments[3]:undefined;var options=arguments.length>4&&arguments[4]!==undefined?arguments[4]:{};_classCallCheck(this,Cylinder);_this=_super.call(this,null,null,options);var segments=32;var geometry=new CylinderGeometry(radiusTop,radiusBottom,height,segments);var material=new MeshBasicMaterial(_objectSpread2({color:color,wireframe:false},options));_this.setBody({geometry:geometry,material:material});_this.setEntityType(ENTITY_TYPES.MESH);return _this;}return Cylinder;}(Element);var DEFAULT_LINE_COLOR=0xffffff;var DEFAULT_LINE_THICKNESS=2;var Line$1=/*#__PURE__*/function(_Element){_inherits(Line$1,_Element);var _super=_createSuper(Line$1);function Line$1(){var _this;var _points=arguments.length>0&&arguments[0]!==undefined?arguments[0]:[];var options=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};_classCallCheck(this,Line$1);_this=_super.call(this,null,null,options);_defineProperty(_assertThisInitialized(_this),"updatePoints",function(points){var vectors=points.map(function(_ref){var x=_ref.x,y=_ref.y,z=_ref.z;return new Vector3$1(x,y,z);});_this.body.geometry.vertices=vectors;_this.body.geometry.verticesNeedUpdate=true;});_this.points=_points;var material=_this.getMaterial();var geometry=_this.getGeometryFromPoints();var body=new Line(geometry,material);_this.setBody({body:body});_this.setEntityType(ENTITY_TYPES.MESH);return _this;}_createClass(Line$1,[{key:"postBodyCreation",value:function postBodyCreation(){_get(_getPrototypeOf(Line$1.prototype),"postBodyCreation",this).call(this);var _this$options$dashed=this.options.dashed,dashed=_this$options$dashed===void 0?false:_this$options$dashed;if(dashed){this.body.computeLineDistances();}}},{key:"getMaterial",value:function getMaterial(){var _this$options=this.options,_this$options$color=_this$options.color,color=_this$options$color===void 0?DEFAULT_LINE_COLOR:_this$options$color,_this$options$dashed2=_this$options.dashed,dashed=_this$options$dashed2===void 0?false:_this$options$dashed2,_this$options$thickne=_this$options.thickness,thickness=_this$options$thickne===void 0?DEFAULT_LINE_THICKNESS:_this$options$thickne;return dashed?new LineDashedMaterial({color:color,linewidth:thickness}):new LineBasicMaterial({color:color,linewidth:thickness});}},{key:"getGeometryFromPoints",value:function getGeometryFromPoints(){var vectors=this.points.map(function(_ref2){var _ref2$x=_ref2.x,x=_ref2$x===void 0?0:_ref2$x,_ref2$y=_ref2.y,y=_ref2$y===void 0?0:_ref2$y,_ref2$z=_ref2.z,z=_ref2$z===void 0?0:_ref2$z;return new Vector3$1(x,y,z);});return new BufferGeometry().setFromPoints(vectors);}},{key:"setThickness",value:function setThickness(){var thickness=arguments.length>0&&arguments[0]!==undefined?arguments[0]:DEFAULT_LINE_THICKNESS;this.body.material.linewidth=thickness;}}]);return Line$1;}(Element);var DEFAULT_CURVE_LINE_DIVISIONS=20;var CurveLine=/*#__PURE__*/function(_Line){_inherits(CurveLine,_Line);var _super=_createSuper(CurveLine);function CurveLine(){var _this;var points=arguments.length>0&&arguments[0]!==undefined?arguments[0]:[];var options=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};_classCallCheck(this,CurveLine);var _options$divisions=options.divisions,divisions=_options$divisions===void 0?DEFAULT_CURVE_LINE_DIVISIONS:_options$divisions;var curve=CurveLine.genereateCurve(points,divisions);_this=_super.call(this,curve,options);_this.curve=curve;return _this;}_createClass(CurveLine,null,[{key:"genereateCurve",value:function genereateCurve(points,divisions){return new CatmullRomCurve3(points.map(function(_ref){var x=_ref.x,y=_ref.y,z=_ref.z;return new Vector3$1(x,y,z);})).getPoints(divisions);}}]);return CurveLine;}(Line$1);var UP$1=new Vector3$1(0,1,0);var DOWN$1=new Vector3$1(0,-1,0);var Plane$1=/*#__PURE__*/function(_Element){_inherits(Plane,_Element);var _super=_createSuper(Plane);function Plane(height,width){var _this;var options=arguments.length>2&&arguments[2]!==undefined?arguments[2]:{};_classCallCheck(this,Plane);_this=_super.call(this,null,null,options);var _options$color=options.color,color=_options$color===void 0?0xfffffff:_options$color,_options$transparent=options.transparent,transparent=_options$transparent===void 0?false:_options$transparent,_options$opacity=options.opacity,opacity=_options$opacity===void 0?1:_options$opacity;material=new MeshBasicMaterial({color:color,side:DoubleSide,transparent:transparent,opacity:opacity});geometry=new PlaneGeometry(width,height);_this.setBody({geometry:geometry,material:material});_this.setEntityType(ENTITY_TYPES.MESH);return _this;}_createClass(Plane,[{key:"face",value:function face(direction){var vector=new Vector3$1(direction.x,direction.y,direction.z);this.body.lookAt(vector);}}],[{key:"UP",get:function get(){return UP$1;}},{key:"DOWN",get:function get(){return DOWN$1;}}]);return Plane;}(Element);var Box=/*#__PURE__*/function(_Element){_inherits(Box,_Element);var _super=_createSuper(Box);function Box(){var _this;var width=arguments.length>0&&arguments[0]!==undefined?arguments[0]:10;var height=arguments.length>1&&arguments[1]!==undefined?arguments[1]:10;var depth=arguments.length>2&&arguments[2]!==undefined?arguments[2]:10;var color=arguments.length>3?arguments[3]:undefined;var options=arguments.length>4&&arguments[4]!==undefined?arguments[4]:{};_classCallCheck(this,Box);_this=_super.call(this,null,null,options);var geometry=new BoxGeometry(width,height,depth);var material=new MeshBasicMaterial(_objectSpread2({color:color,wireframe:false},options));_this.setBody({geometry:geometry,material:material});_this.setEntityType(ENTITY_TYPES.MESH);return _this;}return Box;}(Element);var validateAnisotropy=function validateAnisotropy(anisotropy){var max=Scene$2.getRenderer().capabilities.getMaxAnisotropy();return anisotropy>max?max:anisotropy;};var Sprite$1=/*#__PURE__*/function(_Element){_inherits(Sprite$1,_Element);var _super=_createSuper(Sprite$1);function Sprite$1(){var _this;var width=arguments.length>0&&arguments[0]!==undefined?arguments[0]:20;var height=arguments.length>1&&arguments[1]!==undefined?arguments[1]:20;var spriteTexture=arguments.length>2?arguments[2]:undefined;var options=arguments.length>3&&arguments[3]!==undefined?arguments[3]:{};_classCallCheck(this,Sprite$1);_this=_super.call(this,null,null,options);var _options$anisotropy=options.anisotropy,anisotropy=_options$anisotropy===void 0?1:_options$anisotropy,rest=_objectWithoutProperties(options,["anisotropy"]);var texture=Images$1.get(spriteTexture);texture.anisotropy=validateAnisotropy(anisotropy);var material=new SpriteMaterial(_objectSpread2({map:texture},rest));var body=new Sprite(material);body.scale.x=width;body.scale.y=height;_this.setBody({body:body});_this.setEntityType(ENTITY_TYPES.SPRITE);return _this;}_createClass(Sprite$1,[{key:"getRotation",value:function getRotation(){return this.body.material.rotation;}},{key:"setRotation",value:function setRotation(){var rotation=arguments.length>0&&arguments[0]!==undefined?arguments[0]:this.getRotation();this.body.material.rotation=rotation;}}]);return Sprite$1;}(Element);var BackgroundSound=/*#__PURE__*/function(_Sound){_inherits(BackgroundSound,_Sound);var _super=_createSuper(BackgroundSound);function BackgroundSound(){_classCallCheck(this,BackgroundSound);return _super.apply(this,arguments);}_createClass(BackgroundSound,[{key:"update",value:function update(dt){}},{key:"createPannerNode",value:function createPannerNode(){console.log(METHOD_NOT_SUPPORTED);}},{key:"hasPannerNode",value:function hasPannerNode(){console.log(METHOD_NOT_SUPPORTED);}},{key:"hasTarget",value:function hasTarget(){console.log(METHOD_NOT_SUPPORTED);}},{key:"getTarget",value:function getTarget(){console.log(METHOD_NOT_SUPPORTED);}},{key:"setTarget",value:function setTarget(){console.log(METHOD_NOT_SUPPORTED);}}]);return BackgroundSound;}(Sound$1);var Video=/*#__PURE__*/function(){function Video(){_classCallCheck(this,Video);}_createClass(Video,[{key:"load",value:function load(){return Promise.resolve();}}]);return Video;}();var engine=new Video();var GLTFLoader=function(){function GLTFLoader(manager){Loader.call(this,manager);this.dracoLoader=null;this.ddsLoader=null;}GLTFLoader.prototype=Object.assign(Object.create(Loader.prototype),{constructor:GLTFLoader,load:function load(url,onLoad,onProgress,onError){var scope=this;var resourcePath;if(this.resourcePath!==''){resourcePath=this.resourcePath;}else if(this.path!==''){resourcePath=this.path;}else{resourcePath=LoaderUtils.extractUrlBase(url);}// Tells the LoadingManager to track an extra item, which resolves after
 // the model is fully loaded. This means the count of items loaded will
 // be incorrect, but ensures manager.onLoad() does not fire early.
 scope.manager.itemStart(url);var _onError=function _onError(e){if(onError){onError(e);}else{console.error(e);}scope.manager.itemError(url);scope.manager.itemEnd(url);};var loader=new FileLoader(scope.manager);loader.setPath(this.path);loader.setResponseType('arraybuffer');if(scope.crossOrigin==='use-credentials'){loader.setWithCredentials(true);}loader.load(url,function(data){try{scope.parse(data,resourcePath,function(gltf){onLoad(gltf);scope.manager.itemEnd(url);},_onError);}catch(e){_onError(e);}},onProgress,_onError);},setDRACOLoader:function setDRACOLoader(dracoLoader){this.dracoLoader=dracoLoader;return this;},setDDSLoader:function setDDSLoader(ddsLoader){this.ddsLoader=ddsLoader;return this;},parse:function parse(data,path,onLoad,onError){var content;var extensions={};if(typeof data==='string'){content=data;}else{var magic=LoaderUtils.decodeText(new Uint8Array(data,0,4));if(magic===BINARY_EXTENSION_HEADER_MAGIC){try{extensions[EXTENSIONS.KHR_BINARY_GLTF]=new GLTFBinaryExtension(data);}catch(error){if(onError)onError(error);return;}content=extensions[EXTENSIONS.KHR_BINARY_GLTF].content;}else{content=LoaderUtils.decodeText(new Uint8Array(data));}}var json=JSON.parse(content);if(json.asset===undefined||json.asset.version[0]<2){if(onError)onError(new Error('THREE.GLTFLoader: Unsupported asset. glTF versions >=2.0 are supported.'));return;}if(json.extensionsUsed){for(var i=0;i<json.extensionsUsed.length;++i){var extensionName=json.extensionsUsed[i];var extensionsRequired=json.extensionsRequired||[];switch(extensionName){case EXTENSIONS.KHR_LIGHTS_PUNCTUAL:extensions[extensionName]=new GLTFLightsExtension(json);break;case EXTENSIONS.KHR_MATERIALS_UNLIT:extensions[extensionName]=new GLTFMaterialsUnlitExtension();break;case EXTENSIONS.KHR_MATERIALS_PBR_SPECULAR_GLOSSINESS:extensions[extensionName]=new GLTFMaterialsPbrSpecularGlossinessExtension();break;case EXTENSIONS.KHR_DRACO_MESH_COMPRESSION:extensions[extensionName]=new GLTFDracoMeshCompressionExtension(json,this.dracoLoader);break;case EXTENSIONS.MSFT_TEXTURE_DDS:extensions[extensionName]=new GLTFTextureDDSExtension(this.ddsLoader);break;case EXTENSIONS.KHR_TEXTURE_TRANSFORM:extensions[extensionName]=new GLTFTextureTransformExtension();break;case EXTENSIONS.KHR_MESH_QUANTIZATION:extensions[extensionName]=new GLTFMeshQuantizationExtension();break;default:if(extensionsRequired.indexOf(extensionName)>=0){console.warn('THREE.GLTFLoader: Unknown extension "'+extensionName+'".');}}}}var parser=new GLTFParser(json,extensions,{path:path||this.resourcePath||'',crossOrigin:this.crossOrigin,manager:this.manager});parser.parse(onLoad,onError);}});/* GLTFREGISTRY */function GLTFRegistry(){var objects={};return{get:function get(key){return objects[key];},add:function add(key,object){objects[key]=object;},remove:function remove(key){delete objects[key];},removeAll:function removeAll(){objects={};}};}/*********************************/ /********** EXTENSIONS ***********/ /*********************************/var EXTENSIONS={KHR_BINARY_GLTF:'KHR_binary_glTF',KHR_DRACO_MESH_COMPRESSION:'KHR_draco_mesh_compression',KHR_LIGHTS_PUNCTUAL:'KHR_lights_punctual',KHR_MATERIALS_PBR_SPECULAR_GLOSSINESS:'KHR_materials_pbrSpecularGlossiness',KHR_MATERIALS_UNLIT:'KHR_materials_unlit',KHR_TEXTURE_TRANSFORM:'KHR_texture_transform',KHR_MESH_QUANTIZATION:'KHR_mesh_quantization',MSFT_TEXTURE_DDS:'MSFT_texture_dds'};/**
@@ -6568,10 +6567,434 @@ var TileMap = /*#__PURE__*/function () {
 
 /***/ }),
 
-/***/ "./src/levels/test/Worm.js":
-/*!*********************************!*\
-  !*** ./src/levels/test/Worm.js ***!
-  \*********************************/
+/***/ "./src/levels/test/collectibles/slowRotation.js":
+/*!******************************************************!*\
+  !*** ./src/levels/test/collectibles/slowRotation.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ SlowRotation)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/classCallCheck.js");
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js");
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/inherits */ "./node_modules/@babel/runtime/helpers/inherits.js");
+/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js");
+/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/getPrototypeOf.js");
+/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var mage_engine__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! mage-engine */ "../Mage/dist/mage.js");
+
+
+
+
+
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default()(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default()(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3___default()(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+
+
+var SlowRotation = /*#__PURE__*/function (_BaseScript) {
+  _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2___default()(SlowRotation, _BaseScript);
+
+  var _super = _createSuper(SlowRotation);
+
+  function SlowRotation() {
+    _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, SlowRotation);
+
+    return _super.call(this, 'SlowRotation');
+  }
+
+  _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(SlowRotation, [{
+    key: "start",
+    value: function start(element, _ref) {
+      var position = _ref.position,
+          offset = _ref.offset;
+      this.element = element;
+      this.element.setPosition(position);
+      this.offset = offset;
+      this.angle = 0;
+    }
+  }, {
+    key: "update",
+    value: function update(dt) {
+      this.angle += 1 * dt;
+      this.element.setRotation({
+        y: this.angle
+      });
+      this.element.setPosition({
+        y: Math.sin(this.angle * 2) / 10 + this.offset
+      });
+    }
+  }]);
+
+  return SlowRotation;
+}(mage_engine__WEBPACK_IMPORTED_MODULE_5__.BaseScript);
+
+
+
+/***/ }),
+
+/***/ "./src/levels/test/humans/HumanBehaviour.js":
+/*!**************************************************!*\
+  !*** ./src/levels/test/humans/HumanBehaviour.js ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ HumanBehaviour)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/classCallCheck.js");
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js");
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/inherits */ "./node_modules/@babel/runtime/helpers/inherits.js");
+/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js");
+/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/getPrototypeOf.js");
+/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var mage_engine__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! mage-engine */ "../Mage/dist/mage.js");
+
+
+
+
+
+
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5___default()(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5___default()(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4___default()(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+
+var MATERIALS = mage_engine__WEBPACK_IMPORTED_MODULE_6__.constants.MATERIALS;
+var LoopOnce = mage_engine__WEBPACK_IMPORTED_MODULE_6__.THREE.LoopOnce;
+var HUMAN_MATERIAL_PROPERTIES = {
+  metalness: 0.2,
+  roughness: 1.0
+};
+var HUMAN_SCALE = {
+  x: 0.001,
+  y: 0.001,
+  z: 0.001
+};
+var HUMAN_ANIMATIONS = {
+  IDLE: 'Root|Idle',
+  RUN: 'Root|Run',
+  SHOOT: 'Root|Shoot',
+  DEATH: 'Root|Death'
+};
+var MINIMUM_HEIGHT = .5;
+
+var HumanBehaviour = /*#__PURE__*/function (_BaseScript) {
+  _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3___default()(HumanBehaviour, _BaseScript);
+
+  var _super = _createSuper(HumanBehaviour);
+
+  function HumanBehaviour() {
+    _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1___default()(this, HumanBehaviour);
+
+    return _super.call(this, 'HumanBehaviour');
+  }
+
+  _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2___default()(HumanBehaviour, [{
+    key: "start",
+    value: function start(human, _ref) {
+      var _ref$position = _ref.position,
+          position = _ref$position === void 0 ? {} : _ref$position;
+      this.human = human;
+      this.position = _objectSpread(_objectSpread({}, position), {}, {
+        y: MINIMUM_HEIGHT
+      });
+      this.human.setMaterialFromName(MATERIALS.STANDARD, HUMAN_MATERIAL_PROPERTIES);
+      this.human.setScale(HUMAN_SCALE);
+      this.human.playAnimation(HUMAN_ANIMATIONS.IDLE);
+      this.human.setPosition(this.position);
+    } // 5375 9000 4799 6431  10/24 067
+
+  }, {
+    key: "die",
+    value: function die() {
+      var _this = this;
+
+      this.human.playAnimation(HUMAN_ANIMATIONS.DEATH, {
+        loop: LoopOnce
+      });
+      this.human.fadeTo(0, 1000).then(function () {
+        return _this.human.dispose();
+      });
+    }
+  }, {
+    key: "lookAtTarget",
+    value: function lookAtTarget() {
+      var targetPosition = this.target.getPosition();
+      this.human.lookAt({
+        x: targetPosition.x,
+        y: MINIMUM_HEIGHT,
+        z: targetPosition.z
+      });
+    }
+  }, {
+    key: "shootAt",
+    value: function shootAt(target) {
+      this.target = target;
+      this.human.playAnimation(HUMAN_ANIMATIONS.SHOOT);
+      this.lookAtTarget();
+    }
+  }, {
+    key: "goTo",
+    value: function goTo(_ref2) {
+      var _this2 = this;
+
+      var x = _ref2.x,
+          _ref2$y = _ref2.y,
+          y = _ref2$y === void 0 ? MINIMUM_HEIGHT : _ref2$y,
+          z = _ref2.z;
+      this.human.lookAt({
+        x: x,
+        y: y,
+        z: z
+      });
+      this.human.playAnimation(HUMAN_ANIMATIONS.RUN);
+      this.human.goTo({
+        x: x,
+        y: y,
+        z: z
+      }, 7000).then(function () {
+        _this2.human.playAnimation(HUMAN_ANIMATIONS.IDLE);
+      });
+    }
+  }, {
+    key: "update",
+    value: function update() {
+      if (this.target) {
+        this.lookAtTarget();
+      }
+    }
+  }]);
+
+  return HumanBehaviour;
+}(mage_engine__WEBPACK_IMPORTED_MODULE_6__.BaseScript);
+
+
+
+/***/ }),
+
+/***/ "./src/levels/test/humans/index.js":
+/*!*****************************************!*\
+  !*** ./src/levels/test/humans/index.js ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/classCallCheck.js");
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js");
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var mage_engine__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! mage-engine */ "../Mage/dist/mage.js");
+
+
+
+
+var Humans = /*#__PURE__*/function () {
+  function Humans() {
+    _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, Humans);
+
+    this.humans = [];
+  }
+
+  _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(Humans, [{
+    key: "spawnHuman",
+    value: function spawnHuman() {
+      var human = mage_engine__WEBPACK_IMPORTED_MODULE_2__.Models.getModel('human');
+      human.addScript('HumanBehaviour');
+      this.humans.push(human);
+      return human;
+    }
+  }]);
+
+  return Humans;
+}();
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new Humans());
+
+/***/ }),
+
+/***/ "./src/levels/test/index.js":
+/*!**********************************!*\
+  !*** ./src/levels/test/index.js ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "WHITE": () => (/* binding */ WHITE),
+/* harmony export */   "SUNLIGHT": () => (/* binding */ SUNLIGHT),
+/* harmony export */   "DARKER_GROUND": () => (/* binding */ DARKER_GROUND),
+/* harmony export */   "GROUND": () => (/* binding */ GROUND),
+/* harmony export */   "BACKGROUND": () => (/* binding */ BACKGROUND),
+/* harmony export */   "default": () => (/* binding */ Test)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/classCallCheck.js");
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js");
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/inherits */ "./node_modules/@babel/runtime/helpers/inherits.js");
+/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js");
+/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/getPrototypeOf.js");
+/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var mage_engine__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! mage-engine */ "../Mage/dist/mage.js");
+/* harmony import */ var _TileMap__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./TileMap */ "./src/levels/test/TileMap.js");
+/* harmony import */ var _collectibles_slowRotation__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./collectibles/slowRotation */ "./src/levels/test/collectibles/slowRotation.js");
+/* harmony import */ var _worm__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./worm */ "./src/levels/test/worm/index.js");
+/* harmony import */ var _worm_wormBlock__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./worm/wormBlock */ "./src/levels/test/worm/wormBlock.js");
+/* harmony import */ var _humans_HumanBehaviour__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./humans/HumanBehaviour */ "./src/levels/test/humans/HumanBehaviour.js");
+/* harmony import */ var _humans__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./humans */ "./src/levels/test/humans/index.js");
+
+
+
+
+
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default()(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default()(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3___default()(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+
+
+
+
+
+
+
+var WHITE = 0xffffff;
+var SUNLIGHT = 0xffeaa7;
+var DARKER_GROUND = 0X78e08f;
+var GROUND = 0xb8e994;
+var BACKGROUND = 0xdff9fb; //0xddf3f5;
+
+var DOF_OPTIONS = {
+  focus: 1.0,
+  aperture: 0.0001,
+  maxblur: 0.01
+}; // const SATURATION_OPTIONS = {
+//     saturation: 0.2
+// };
+
+var MATERIALS = mage_engine__WEBPACK_IMPORTED_MODULE_5__.constants.MATERIALS,
+    EFFECTS = mage_engine__WEBPACK_IMPORTED_MODULE_5__.constants.EFFECTS;
+
+var Test = /*#__PURE__*/function (_Level) {
+  _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2___default()(Test, _Level);
+
+  var _super = _createSuper(Test);
+
+  function Test() {
+    _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, Test);
+
+    return _super.apply(this, arguments);
+  }
+
+  _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(Test, [{
+    key: "addSunLight",
+    value: function addSunLight() {
+      this.hemisphereLight = new mage_engine__WEBPACK_IMPORTED_MODULE_5__.HemisphereLight({
+        color: {
+          sky: SUNLIGHT,
+          ground: GROUND
+        },
+        intensity: 1
+      });
+      this.sunLight = new mage_engine__WEBPACK_IMPORTED_MODULE_5__.SunLight({
+        color: SUNLIGHT,
+        intensity: 1,
+        far: 20
+      });
+      this.sunLight.setPosition({
+        y: 4,
+        z: -3,
+        x: -3
+      }); // this.sunLight.addHelper();
+
+      window.sun = this.sunLight;
+    }
+  }, {
+    key: "prepareCamera",
+    value: function prepareCamera() {
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Controls.setOrbitControl();
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.getCamera().setPosition({
+        x: 7.8,
+        y: 5.48,
+        z: 12.8
+      });
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.getCamera().lookAt({
+        x: 5,
+        y: 0,
+        z: 5
+      });
+      window.camera = mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.getCamera();
+    }
+  }, {
+    key: "prepareSceneEffects",
+    value: function prepareSceneEffects() {
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.setClearColor(SUNLIGHT);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.setBackground(SUNLIGHT);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.setRendererOutputEncoding(mage_engine__WEBPACK_IMPORTED_MODULE_5__.THREE.sRGBEncoding);
+    }
+  }, {
+    key: "createWorld",
+    value: function createWorld() {
+      this.addSunLight();
+      this.prepareSceneEffects();
+      _TileMap__WEBPACK_IMPORTED_MODULE_6__.default.generate();
+      var human = _humans__WEBPACK_IMPORTED_MODULE_11__.default.spawnHuman();
+      var head = _worm__WEBPACK_IMPORTED_MODULE_8__.default.start();
+      human.getScript('HumanBehaviour').script.shootAt(head);
+    }
+  }, {
+    key: "onCreate",
+    value: function onCreate() {
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('WormBlock', _worm_wormBlock__WEBPACK_IMPORTED_MODULE_9__.default);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('slowRotation', _collectibles_slowRotation__WEBPACK_IMPORTED_MODULE_7__.default);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('HumanBehaviour', _humans_HumanBehaviour__WEBPACK_IMPORTED_MODULE_10__.default);
+      this.createWorld();
+      this.prepareCamera();
+    }
+  }]);
+
+  return Test;
+}(mage_engine__WEBPACK_IMPORTED_MODULE_5__.Level);
+
+
+
+/***/ }),
+
+/***/ "./src/levels/test/worm/index.js":
+/*!***************************************!*\
+  !*** ./src/levels/test/worm/index.js ***!
+  \***************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -6672,6 +7095,7 @@ var Worm = /*#__PURE__*/function () {
         position: position,
         isHead: true
       });
+      return block;
     }
   }, {
     key: "start",
@@ -6685,10 +7109,11 @@ var Worm = /*#__PURE__*/function () {
         x: 1,
         z: 0
       };
-      this.createBody(this.position);
+      var head = this.createBody(this.position);
       mage_engine__WEBPACK_IMPORTED_MODULE_3__.Input.enable();
       mage_engine__WEBPACK_IMPORTED_MODULE_3__.Input.addEventListener(mage_engine__WEBPACK_IMPORTED_MODULE_3__.INPUT_EVENTS.KEY_DOWN, this.handleKeyDown.bind(this));
       this.movingInterval = setInterval(this.move.bind(this), 500);
+      return head;
     }
   }]);
 
@@ -6698,245 +7123,10 @@ var Worm = /*#__PURE__*/function () {
 
 /***/ }),
 
-/***/ "./src/levels/test/index.js":
-/*!**********************************!*\
-  !*** ./src/levels/test/index.js ***!
-  \**********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "WHITE": () => (/* binding */ WHITE),
-/* harmony export */   "SUNLIGHT": () => (/* binding */ SUNLIGHT),
-/* harmony export */   "DARKER_GROUND": () => (/* binding */ DARKER_GROUND),
-/* harmony export */   "GROUND": () => (/* binding */ GROUND),
-/* harmony export */   "BACKGROUND": () => (/* binding */ BACKGROUND),
-/* harmony export */   "default": () => (/* binding */ Test)
-/* harmony export */ });
-/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/classCallCheck.js");
-/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js");
-/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/inherits */ "./node_modules/@babel/runtime/helpers/inherits.js");
-/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js");
-/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/getPrototypeOf.js");
-/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var mage_engine__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! mage-engine */ "../Mage/dist/mage.js");
-/* harmony import */ var _TileMap__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./TileMap */ "./src/levels/test/TileMap.js");
-/* harmony import */ var _slowRotation__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./slowRotation */ "./src/levels/test/slowRotation.js");
-/* harmony import */ var _Worm__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Worm */ "./src/levels/test/Worm.js");
-/* harmony import */ var _wormBlock__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./wormBlock */ "./src/levels/test/wormBlock.js");
-
-
-
-
-
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default()(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default()(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3___default()(this, result); }; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
-
-
-
-
-
-
-var WHITE = 0xffffff;
-var SUNLIGHT = 0xffeaa7;
-var DARKER_GROUND = 0X78e08f;
-var GROUND = 0xb8e994;
-var BACKGROUND = 0xdff9fb; //0xddf3f5;
-
-var DOF_OPTIONS = {
-  focus: 1.0,
-  aperture: 0.0001,
-  maxblur: 0.01
-}; // const SATURATION_OPTIONS = {
-//     saturation: 0.2
-// };
-
-var MATERIALS = mage_engine__WEBPACK_IMPORTED_MODULE_5__.constants.MATERIALS,
-    EFFECTS = mage_engine__WEBPACK_IMPORTED_MODULE_5__.constants.EFFECTS;
-
-var Test = /*#__PURE__*/function (_Level) {
-  _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2___default()(Test, _Level);
-
-  var _super = _createSuper(Test);
-
-  function Test() {
-    _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, Test);
-
-    return _super.apply(this, arguments);
-  }
-
-  _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(Test, [{
-    key: "addSunLight",
-    value: function addSunLight() {
-      this.hemisphereLight = new mage_engine__WEBPACK_IMPORTED_MODULE_5__.HemisphereLight({
-        color: {
-          sky: SUNLIGHT,
-          ground: GROUND
-        },
-        intensity: 1
-      });
-      this.sunLight = new mage_engine__WEBPACK_IMPORTED_MODULE_5__.SunLight({
-        color: SUNLIGHT,
-        intensity: 1,
-        far: 20
-      });
-      this.sunLight.setPosition({
-        y: 4,
-        z: -3,
-        x: -3
-      }); // this.sunLight.addHelper();
-
-      window.sun = this.sunLight;
-    }
-  }, {
-    key: "prepareCamera",
-    value: function prepareCamera() {
-      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Controls.setOrbitControl();
-      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.getCamera().setPosition({
-        x: 7.8,
-        y: 5.48,
-        z: 12.8
-      });
-      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.getCamera().lookAt({
-        x: 5,
-        y: 0,
-        z: 5
-      });
-      window.camera = mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.getCamera();
-    }
-  }, {
-    key: "prepareSceneEffects",
-    value: function prepareSceneEffects() {
-      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.setClearColor(SUNLIGHT);
-      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.setBackground(SUNLIGHT);
-      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.setRendererOutputEncoding(mage_engine__WEBPACK_IMPORTED_MODULE_5__.THREE.sRGBEncoding);
-    }
-  }, {
-    key: "createWorld",
-    value: function createWorld() {
-      this.addSunLight();
-      this.prepareSceneEffects();
-      _TileMap__WEBPACK_IMPORTED_MODULE_6__.default.generate(); //Worm.start();
-    }
-  }, {
-    key: "onCreate",
-    value: function onCreate() {
-      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('WormBlock', _wormBlock__WEBPACK_IMPORTED_MODULE_9__.default);
-      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('slowRotation', _slowRotation__WEBPACK_IMPORTED_MODULE_7__.default);
-      this.createWorld();
-      this.prepareCamera();
-      var human = mage_engine__WEBPACK_IMPORTED_MODULE_5__.Models.getModel('human');
-      human.setMaterialFromName(MATERIALS.STANDARD, {
-        metalness: 0.2,
-        roughness: 1.0
-      });
-      human.setScale({
-        x: 0.001,
-        y: 0.001,
-        z: 0.001
-      });
-      human.playAnimation('Root|Idle');
-      human.setPosition({
-        y: 0.5
-      });
-      window.human = human;
-    }
-  }]);
-
-  return Test;
-}(mage_engine__WEBPACK_IMPORTED_MODULE_5__.Level);
-
-
-
-/***/ }),
-
-/***/ "./src/levels/test/slowRotation.js":
-/*!*****************************************!*\
-  !*** ./src/levels/test/slowRotation.js ***!
-  \*****************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ SlowRotation)
-/* harmony export */ });
-/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/classCallCheck.js");
-/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js");
-/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/inherits */ "./node_modules/@babel/runtime/helpers/inherits.js");
-/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js");
-/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/getPrototypeOf.js");
-/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var mage_engine__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! mage-engine */ "../Mage/dist/mage.js");
-
-
-
-
-
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default()(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default()(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3___default()(this, result); }; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
-
-
-var SlowRotation = /*#__PURE__*/function (_BaseScript) {
-  _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2___default()(SlowRotation, _BaseScript);
-
-  var _super = _createSuper(SlowRotation);
-
-  function SlowRotation() {
-    _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, SlowRotation);
-
-    return _super.call(this, 'SlowRotation');
-  }
-
-  _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(SlowRotation, [{
-    key: "start",
-    value: function start(element, _ref) {
-      var position = _ref.position,
-          offset = _ref.offset;
-      this.element = element;
-      this.element.setPosition(position);
-      this.offset = offset;
-      this.angle = 0;
-    }
-  }, {
-    key: "update",
-    value: function update(dt) {
-      this.angle += 1 * dt;
-      this.element.setRotation({
-        y: this.angle
-      });
-      this.element.setPosition({
-        y: Math.sin(this.angle * 2) / 10 + this.offset
-      });
-    }
-  }]);
-
-  return SlowRotation;
-}(mage_engine__WEBPACK_IMPORTED_MODULE_5__.BaseScript);
-
-
-
-/***/ }),
-
-/***/ "./src/levels/test/wormBlock.js":
-/*!**************************************!*\
-  !*** ./src/levels/test/wormBlock.js ***!
-  \**************************************/
+/***/ "./src/levels/test/worm/wormBlock.js":
+/*!*******************************************!*\
+  !*** ./src/levels/test/worm/wormBlock.js ***!
+  \*******************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -6955,7 +7145,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/getPrototypeOf.js");
 /* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var mage_engine__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! mage-engine */ "../Mage/dist/mage.js");
-/* harmony import */ var _TileMap__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./TileMap */ "./src/levels/test/TileMap.js");
+/* harmony import */ var _TileMap__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../TileMap */ "./src/levels/test/TileMap.js");
 
 
 

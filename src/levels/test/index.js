@@ -16,6 +16,8 @@ import TileMap from './TileMap';
 import SlowRotation from './collectibles/slowRotation';
 import Worm from './worm';
 import WormBlock from './worm/wormBlock';
+import HumanBehaviour from './humans/HumanBehaviour';
+import Humans from './humans';
 
 export const WHITE = 0xffffff;
 export const SUNLIGHT = 0xffeaa7;
@@ -72,24 +74,16 @@ export default class Test extends Level {
         this.prepareSceneEffects();
 
         TileMap.generate();
-        //Worm.start();
+        const human = Humans.spawnHuman();
+        const head = Worm.start();
     }
 
     onCreate() {
         Scripts.create('WormBlock', WormBlock);
         Scripts.create('slowRotation', SlowRotation);
+        Scripts.create('HumanBehaviour', HumanBehaviour);
 
         this.createWorld();
         this.prepareCamera();
-
-        const human = Models.getModel('human');
-        human.setMaterialFromName(MATERIALS.STANDARD, {
-            metalness: 0.2,
-            roughness: 1.0
-        });
-        human.setScale({ x: 0.001, y: 0.001, z: 0.001 });
-        human.playAnimation('Root|Idle');
-        human.setPosition({ y: 0.5 });
-        window.human = human;
     }
 }
