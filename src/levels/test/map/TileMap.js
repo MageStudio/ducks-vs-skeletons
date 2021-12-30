@@ -1,0 +1,55 @@
+import { Models, constants, math } from "mage-engine";
+import Tile from './Tile';
+import {
+    TILE_COLLECTIBLE_SCALE,
+    TILES_TYPES,
+    TILE_MATERIAL_PROPERTIES
+} from './constants';
+
+const { MATERIALS } = constants;
+
+class TileMap {
+
+    constructor() {
+        this.size = 10;
+        this.tiles = [];
+    }
+
+    createCollectible() {
+        const position = {
+            x: Math.floor(Math.random() * this.size),
+            z: Math.floor(Math.random() * this.size),
+            y: 1.5
+        }
+        const collectible = Models.getModel('star');
+
+        collectible.setScale(TILE_COLLECTIBLE_SCALE);
+        collectible.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
+        collectible.setColor(0xffffff);
+        collectible.addScript('slowRotation', { position, offset: 1 });
+    }
+
+    generate() {
+        for (let x=0; x<this.size; x++) {
+            this.tiles.push([]);
+            for (let z=0; z<this.size; z++) {
+                const tile = new Tile(TILES_TYPES.DESERT, { x, z });
+                tile.setOpacity(0.9);
+
+                this.tiles[x].push(tile);
+            }
+        }
+
+        this.createCollectible();
+    }
+
+    changeTile(_x, _z, tileType) {
+        const x = math.clamp(_x, 0, this.size - 1 );
+        const z = math.clamp(_z, 0, this.size - 1);
+
+        this.tiles[x][z].dispose();
+        this.tiles[x][z] = new Tile(tileType, { x, z });
+    }
+}
+
+export default new TileMap();

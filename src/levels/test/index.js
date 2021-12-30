@@ -12,7 +12,7 @@ import {
     SunLight,
 } from 'mage-engine';
 
-import TileMap from './TileMap';
+import TileMap, { HUMAN_DETAILS } from './map/TileMap';
 import SlowRotation from './collectibles/slowRotation';
 import Worm from './worm';
 import WormBlock from './worm/wormBlock';
@@ -51,16 +51,11 @@ export default class Test extends Level {
 
         this.sunLight = new SunLight({ color: SUNLIGHT, intensity: 1, far: 20 });
         this.sunLight.setPosition({ y: 4, z: -3, x: -3 });
-        // this.sunLight.addHelper();
-
-        window.sun = this.sunLight;
     }
 
     prepareCamera() {
-        Controls.setOrbitControl();
         Scene.getCamera().setPosition({ x: 7.8, y: 5.48, z: 12.8 });
-        Scene.getCamera().lookAt({ x: 5, y: 0, z: 5 });
-        window.camera = Scene.getCamera();
+        Controls.setOrbitControl({ target: { x: 5, y: 0, z: 5 } });
     }
 
     prepareSceneEffects() {
@@ -74,8 +69,9 @@ export default class Test extends Level {
         this.prepareSceneEffects();
 
         TileMap.generate();
-        const human = Humans.spawnHuman();
-        const head = Worm.start();
+        Humans.start();
+        // const human = Humans.spawnHuman();
+        // const head = Worm.start();
     }
 
     onCreate() {
