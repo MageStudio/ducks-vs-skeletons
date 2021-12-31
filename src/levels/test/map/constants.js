@@ -32,6 +32,10 @@ export const TILES_TYPES = {
     HUMAN: 'humanTile'
 };
 
+export const TILES_STATES = {
+    BUILDING: 'BUILDING'
+};
+
 export const TILES_DETAILS_MAP = {
     [TILES_TYPES.DESERT]: DESERT_DETAILS,
     [TILES_TYPES.FOREST]: FOREST_DETAILS,

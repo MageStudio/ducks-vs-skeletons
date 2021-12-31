@@ -69,7 +69,9 @@ export default class Test extends Level {
         this.prepareSceneEffects();
 
         TileMap.generate();
-        Humans.start();
+        Humans.startExpanding();
+
+        window.humans = Humans;
         // const human = Humans.spawnHuman();
         // const head = Worm.start();
     }

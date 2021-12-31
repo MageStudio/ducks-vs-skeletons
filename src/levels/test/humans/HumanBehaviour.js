@@ -1,4 +1,6 @@
 import { BaseScript, constants, THREE } from "mage-engine";
+import { TILES_TYPES } from "../map/constants";
+import TileMap from "../map/TileMap";
 
 const { MATERIALS } = constants;
 const { LoopOnce, Vector3 } = THREE;
@@ -19,9 +21,12 @@ const HUMAN_ANIMATIONS = {
     RUN: 'Root|Run',
     SHOOT: 'Root|Shoot',
     DEATH: 'Root|Death',
+    BUILD: 'Root|CrouchIdle'
 };
 
 const MINIMUM_HEIGHT = .5;
+const SPEED = 0.5;
+const MAXIMUM_SHOOTING_DISTANCE = 4;
 
 export default class HumanBehaviour extends BaseScript {
 
@@ -36,16 +41,11 @@ export default class HumanBehaviour extends BaseScript {
             y: MINIMUM_HEIGHT
         }
 
-        this.speed = 0.5;
-        this.maximumShootingDistance = 4;
-
         this.human.setMaterialFromName(MATERIALS.STANDARD, HUMAN_MATERIAL_PROPERTIES);
         this.human.setScale(HUMAN_SCALE);
         this.human.playAnimation(HUMAN_ANIMATIONS.IDLE);
         this.human.setPosition(this.position);
     }
-
-    // 5375 9000 4799 6431  10/24 067
 
     die() {
         this.human.playAnimation(HUMAN_ANIMATIONS.DEATH, { loop: LoopOnce });
@@ -68,20 +68,33 @@ export default class HumanBehaviour extends BaseScript {
         this.target = target;
         const position = this.lookAtTarget();
         
-        if (this.human.getPosition().distanceTo(position) <= this.maximumShootingDistance) {
+        if (this.human.getPosition().distanceTo(position) <= MAXIMUM_SHOOTING_DISTANCE) {
             this.human.playAnimation(HUMAN_ANIMATIONS.SHOOT);
             // shoot bullet
         }
     }
 
-    goTo({ x, y = MINIMUM_HEIGHT, z }) {
-        const targetPosition = new Vector3({ x, y, z });
-        const time = this.human.getPosition().distanceTo(targetPosition) / this.speed * 1000;
+    buildAtPosition(tile) {
+        const { x, z } = tile.getPosition();
+        this.human.playAnimation(HUMAN_ANIMATIONS.BUILD);
+        setTimeout(() => {
+            this.human.playAnimation(HUMAN_ANIMATIONS.IDLE);
+            if (!tile.isHuman()) {
+                TileMap.changeTile(x, z, TILES_TYPES.HUMAN);
+                this.die();
+            }
+        }, 3000)
+    }
+
+    goTo(tile) {
+        const { x, z } = tile.getPosition();
+        const targetPosition = new Vector3(x, MINIMUM_HEIGHT, z);
+        const time = this.human.getPosition().distanceTo(targetPosition) / SPEED * 1000;
 
         this.human.lookAt(targetPosition);
         this.human.playAnimation(HUMAN_ANIMATIONS.RUN);
         this.human.goTo(targetPosition, time).then(() => {
-            this.human.playAnimation(HUMAN_ANIMATIONS.IDLE);
+            this.buildAtPosition(tile);
         });
     }
 

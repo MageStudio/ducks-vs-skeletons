@@ -6,7 +6,8 @@ import {
     TILE_MATERIAL_PROPERTIES,
     TILES_RANDOMNESS_MAP,
     DESERT_DETAILS,
-    TILE_SCALE
+    TILE_SCALE,
+    TILES_STATES
 } from './constants';
 
 const { MATERIALS } = constants;
@@ -29,6 +30,12 @@ export default class Tile {
     isDesert = () => this.tileType === TILES_TYPES.DESERT;
     isForest = () => this.tileType === TILES_TYPES.FOREST;
     isHuman = () => this.tileType === TILES_TYPES.HUMAN;
+    isType = tileType => this.tileType === tileType;
+
+    setState = state => this.state = state;
+    getState = () => this.state;
+
+    isBuilding = () => this.state === TILES_STATES.BUILDING;
 
     create() {
         this.tile = Models.getModel(this.tileType);
@@ -62,6 +69,8 @@ export default class Tile {
     setOpacity(value) {
         this.tile.setOpacity(value);
     }
+
+    getPosition() { return this.tile.getPosition(); }
 
     dispose() {
         this.tile.dispose();
