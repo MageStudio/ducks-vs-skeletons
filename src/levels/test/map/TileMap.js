@@ -88,12 +88,16 @@ class TileMap {
         this.tiles[x][z].setState(state);
     }
 
-    changeTile(_x, _z, tileType) {
+    changeTile(_x, _z, tileType, startingTile = false) {
         const x = math.clamp(_x, 0, this.size - 1 );
         const z = math.clamp(_z, 0, this.size - 1);
 
         this.tiles[x][z].dispose();
-        this.tiles[x][z] = new Tile(tileType, { x, z });
+        this.tiles[x][z] = new Tile(tileType, { x, z }, startingTile);
+    }
+
+    isTileType(x, z, tileType) {
+        return this.tiles[x][z].isType(tileType);
     }
 }
 

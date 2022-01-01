@@ -42,6 +42,10 @@ export const TILES_DETAILS_MAP = {
     [TILES_TYPES.HUMAN]: HUMAN_DETAILS
 };
 
+export const STARTING_TILE_DETAILS_MAP = {
+    [TILES_TYPES.HUMAN]: 'humanStart'
+};
+
 export const TILES_RANDOMNESS_MAP = {
     [TILES_TYPES.DESERT]: .7,
     [TILES_TYPES.FOREST]: .3,

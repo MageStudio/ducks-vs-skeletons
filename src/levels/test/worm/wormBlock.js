@@ -1,5 +1,6 @@
 import { BaseScript } from "mage-engine";
-import TileMap, { TILES_TYPES } from "../map/TileMap";
+import TileMap from "../map/TileMap";
+import { TILES_TYPES } from "../map/constants";
 
 export default class WormBlock extends BaseScript {
     constructor() {
@@ -21,10 +22,10 @@ export default class WormBlock extends BaseScript {
 
     move(newPosition) {
         const position = this.block.getPosition();
-        this.block.goTo(newPosition, 150);
+        this.block.goTo(newPosition, 300);
 
-        if (this.isHead) {
-            TileMap.changeTile(position.x, position.z, TILES_TYPES.HUMAN);
+        if (this.isHead && !TileMap.isTileType(position.x, position.z, TILES_TYPES.FOREST)) {
+            TileMap.changeTile(position.x, position.z, TILES_TYPES.FOREST);
         }
 
         if (this.tail) {

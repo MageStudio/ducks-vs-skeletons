@@ -12,6 +12,8 @@ const assets = {
             'desertTile': 'assets/models/tileLow_desert.gltf.glb',
             'humanTile': 'assets/models/tileLow_teamBlue.gltf.glb',
 
+            'humanStart': 'assets/models/skyscraperD.glb',
+
             'star': 'assets/models/star.gltf.glb',
             
             'desertDetail': 'assets/models/detail_desert.gltf.glb',

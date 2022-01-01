@@ -6737,7 +6737,7 @@ var Humans = /*#__PURE__*/function () {
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(Humans, [{
     key: "startExpanding",
     value: function startExpanding() {
-      _map_TileMap__WEBPACK_IMPORTED_MODULE_4__.default.changeTile(9, 9, _map_constants__WEBPACK_IMPORTED_MODULE_5__.TILES_TYPES.HUMAN);
+      _map_TileMap__WEBPACK_IMPORTED_MODULE_4__.default.changeTile(9, 9, _map_constants__WEBPACK_IMPORTED_MODULE_5__.TILES_TYPES.HUMAN, true);
       setInterval(this.expand, 1000);
     }
   }]);
@@ -6879,7 +6879,8 @@ var Test = /*#__PURE__*/function (_Level) {
       _map_TileMap__WEBPACK_IMPORTED_MODULE_6__.default.generate();
       _humans__WEBPACK_IMPORTED_MODULE_11__.default.startExpanding();
       window.humans = _humans__WEBPACK_IMPORTED_MODULE_11__.default; // const human = Humans.spawnHuman();
-      // const head = Worm.start();
+
+      _worm__WEBPACK_IMPORTED_MODULE_8__.default.start();
     }
   }, {
     key: "onCreate",
@@ -6939,7 +6940,7 @@ var shouldRenderDetailsForTiletype = function shouldRenderDetailsForTiletype(til
 };
 
 var Tile = /*#__PURE__*/function () {
-  function Tile(_tileType, position) {
+  function Tile(_tileType, position, startingTile) {
     var _this = this;
 
     _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, Tile);
@@ -6974,6 +6975,7 @@ var Tile = /*#__PURE__*/function () {
 
     this.tileType = _tileType;
     this.position = position;
+    this.startingTile = startingTile;
     this.create();
   }
 
@@ -6984,12 +6986,27 @@ var Tile = /*#__PURE__*/function () {
       this.tile.setPosition(this.position);
       this.tile.setScale(_constants__WEBPACK_IMPORTED_MODULE_4__.TILE_SCALE);
       this.tile.setMaterialFromName(MATERIALS.STANDARD, _constants__WEBPACK_IMPORTED_MODULE_4__.TILE_MATERIAL_PROPERTIES);
-      this.addRandomDetail();
+
+      if (this.startingTile) {
+        this.addStartingDetail();
+      } else {
+        this.addRandomDetail();
+      }
     }
   }, {
     key: "isDetailATreeOrLargeBuilding",
     value: function isDetailATreeOrLargeBuilding(detailName) {
       return detailName.includes('Tree'); //|| detailName.includes('largeBuilding');
+    }
+  }, {
+    key: "addStartingDetail",
+    value: function addStartingDetail() {
+      var startingDetail = mage_engine__WEBPACK_IMPORTED_MODULE_3__.Models.getModel(_constants__WEBPACK_IMPORTED_MODULE_4__.STARTING_TILE_DETAILS_MAP[this.tileType]);
+      startingDetail.setMaterialFromName(MATERIALS.STANDARD, _constants__WEBPACK_IMPORTED_MODULE_4__.TILE_MATERIAL_PROPERTIES);
+      this.tile.add(startingDetail);
+      startingDetail.setPosition({
+        y: 1
+      });
     }
   }, {
     key: "addRandomDetail",
@@ -7185,13 +7202,19 @@ var TileMap = /*#__PURE__*/function () {
   }, {
     key: "changeTile",
     value: function changeTile(_x, _z, tileType) {
+      var startingTile = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
       var x = mage_engine__WEBPACK_IMPORTED_MODULE_3__.math.clamp(_x, 0, this.size - 1);
       var z = mage_engine__WEBPACK_IMPORTED_MODULE_3__.math.clamp(_z, 0, this.size - 1);
       this.tiles[x][z].dispose();
       this.tiles[x][z] = new _Tile__WEBPACK_IMPORTED_MODULE_4__.default(tileType, {
         x: x,
         z: z
-      });
+      }, startingTile);
+    }
+  }, {
+    key: "isTileType",
+    value: function isTileType(x, z, tileType) {
+      return this.tiles[x][z].isType(tileType);
     }
   }]);
 
@@ -7217,6 +7240,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "TILES_TYPES": () => (/* binding */ TILES_TYPES),
 /* harmony export */   "TILES_STATES": () => (/* binding */ TILES_STATES),
 /* harmony export */   "TILES_DETAILS_MAP": () => (/* binding */ TILES_DETAILS_MAP),
+/* harmony export */   "STARTING_TILE_DETAILS_MAP": () => (/* binding */ STARTING_TILE_DETAILS_MAP),
 /* harmony export */   "TILES_RANDOMNESS_MAP": () => (/* binding */ TILES_RANDOMNESS_MAP),
 /* harmony export */   "TILE_SCALE": () => (/* binding */ TILE_SCALE),
 /* harmony export */   "TILE_DETAILS_SCALE": () => (/* binding */ TILE_DETAILS_SCALE),
@@ -7241,6 +7265,7 @@ var TILES_STATES = {
   BUILDING: 'BUILDING'
 };
 var TILES_DETAILS_MAP = (_TILES_DETAILS_MAP = {}, _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILES_DETAILS_MAP, TILES_TYPES.DESERT, DESERT_DETAILS), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILES_DETAILS_MAP, TILES_TYPES.FOREST, FOREST_DETAILS), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILES_DETAILS_MAP, TILES_TYPES.HUMAN, HUMAN_DETAILS), _TILES_DETAILS_MAP);
+var STARTING_TILE_DETAILS_MAP = _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()({}, TILES_TYPES.HUMAN, 'humanStart');
 var TILES_RANDOMNESS_MAP = (_TILES_RANDOMNESS_MAP = {}, _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILES_RANDOMNESS_MAP, TILES_TYPES.DESERT, .7), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILES_RANDOMNESS_MAP, TILES_TYPES.FOREST, .3), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILES_RANDOMNESS_MAP, TILES_TYPES.HUMAN, 0), _TILES_RANDOMNESS_MAP);
 var TILE_SCALE = {
   x: .5,
@@ -7336,40 +7361,49 @@ var Worm = /*#__PURE__*/function () {
 
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(Worm, [{
     key: "createBlock",
-    value: function createBlock() {
-      return new mage_engine__WEBPACK_IMPORTED_MODULE_3__.Cube(1, 0xff0000);
+    value: function createBlock(position) {
+      var isHead = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      var block = new mage_engine__WEBPACK_IMPORTED_MODULE_3__.Cube(1, 0xff0000);
+      block.setName("".concat(this.body.length));
+      block.addScript('WormBlock', {
+        position: position,
+        isHead: isHead
+      });
+      this.body.push(block);
+      var previous = this.getPreviousBlock();
+
+      if (previous) {
+        previous.getScript('WormBlock').script.addTail(block);
+      }
+
+      return block;
+    }
+  }, {
+    key: "getPreviousBlock",
+    value: function getPreviousBlock() {
+      return this.body[this.body.length - 2];
     }
   }, {
     key: "addBlock",
     value: function addBlock(position) {
       if (this.index > 5) return;
-      var block = this.createBlock();
-      this.body.push(block);
-      block.setName("".concat(this.index));
-      block.addScript('WormBlock', {
-        position: position
-      });
-      var head = this.body[this.index - 1];
+      this.createBlock(position); // this.body.push(block);
+      // block.setName(`${this.index}`);
+      // block.addScript('WormBlock', { position });
+      // const head = this.body[this.index - 1];
+      // if (head) {
+      //     head.getScript('WormBlock').script.addTail(block);
+      // }
+      // this.index++;
+    } // createBody(position) {
+    //     const block = this.createBlock();
+    //     block.setName('0');
+    //     this.body.push(block);
+    //     this.index++;
+    //     block.addScript('WormBlock', { position, isHead: true });
+    //     return block;
+    // }
 
-      if (head) {
-        head.getScript('WormBlock').script.addTail(block);
-      }
-
-      this.index++;
-    }
-  }, {
-    key: "createBody",
-    value: function createBody(position) {
-      var block = this.createBlock();
-      block.setName('0');
-      this.body.push(block);
-      this.index++;
-      block.addScript('WormBlock', {
-        position: position,
-        isHead: true
-      });
-      return block;
-    }
   }, {
     key: "start",
     value: function start() {
@@ -7382,10 +7416,10 @@ var Worm = /*#__PURE__*/function () {
         x: 1,
         z: 0
       };
-      var head = this.createBody(this.position);
+      var head = this.createBlock(this.position, true);
       mage_engine__WEBPACK_IMPORTED_MODULE_3__.Input.enable();
       mage_engine__WEBPACK_IMPORTED_MODULE_3__.Input.addEventListener(mage_engine__WEBPACK_IMPORTED_MODULE_3__.INPUT_EVENTS.KEY_DOWN, this.handleKeyDown.bind(this));
-      this.movingInterval = setInterval(this.move.bind(this), 500);
+      this.movingInterval = setInterval(this.move.bind(this), 1000);
       return head;
     }
   }]);
@@ -7419,6 +7453,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var mage_engine__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! mage-engine */ "../Mage/dist/mage.js");
 /* harmony import */ var _map_TileMap__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../map/TileMap */ "./src/levels/test/map/TileMap.js");
+/* harmony import */ var _map_constants__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../map/constants */ "./src/levels/test/map/constants.js");
 
 
 
@@ -7428,6 +7463,7 @@ __webpack_require__.r(__webpack_exports__);
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default()(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default()(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3___default()(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 
 
 
@@ -7468,10 +7504,10 @@ var WormBlock = /*#__PURE__*/function (_BaseScript) {
     key: "move",
     value: function move(newPosition) {
       var position = this.block.getPosition();
-      this.block.goTo(newPosition, 150);
+      this.block.goTo(newPosition, 300);
 
-      if (this.isHead) {
-        _map_TileMap__WEBPACK_IMPORTED_MODULE_6__.default.changeTile(position.x, position.z, _map_TileMap__WEBPACK_IMPORTED_MODULE_6__.TILES_TYPES.HUMAN);
+      if (this.isHead && !_map_TileMap__WEBPACK_IMPORTED_MODULE_6__.default.isTileType(position.x, position.z, _map_constants__WEBPACK_IMPORTED_MODULE_7__.TILES_TYPES.FOREST)) {
+        _map_TileMap__WEBPACK_IMPORTED_MODULE_6__.default.changeTile(position.x, position.z, _map_constants__WEBPACK_IMPORTED_MODULE_7__.TILES_TYPES.FOREST);
       }
 
       if (this.tail) {
@@ -9896,6 +9932,7 @@ var assets = {
       'forestTile': 'assets/models/tileLow_forest.gltf.glb',
       'desertTile': 'assets/models/tileLow_desert.gltf.glb',
       'humanTile': 'assets/models/tileLow_teamBlue.gltf.glb',
+      'humanStart': 'assets/models/skyscraperD.glb',
       'star': 'assets/models/star.gltf.glb',
       'desertDetail': 'assets/models/detail_desert.gltf.glb',
       'desertRockA': 'assets/models/rocksA_desert.gltf.glb',

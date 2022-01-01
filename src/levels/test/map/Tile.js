@@ -7,7 +7,8 @@ import {
     TILES_RANDOMNESS_MAP,
     DESERT_DETAILS,
     TILE_SCALE,
-    TILES_STATES
+    TILES_STATES,
+    STARTING_TILE_DETAILS_MAP
 } from './constants';
 
 const { MATERIALS } = constants;
@@ -20,9 +21,10 @@ const getRandomDetailForTile = (tileType) => {
 const shouldRenderDetailsForTiletype = (tileType) => Math.random() > TILES_RANDOMNESS_MAP[tileType];
 
 export default class Tile {
-    constructor(tileType, position) {
+    constructor(tileType, position, startingTile) {
         this.tileType = tileType;
         this.position = position;
+        this.startingTile = startingTile;
 
         this.create();
     }
@@ -43,11 +45,24 @@ export default class Tile {
         this.tile.setScale(TILE_SCALE);
         this.tile.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
 
-        this.addRandomDetail();
+        if (this.startingTile) {
+            this.addStartingDetail();
+        } else {
+            this.addRandomDetail();
+        }
     }
 
     isDetailATreeOrLargeBuilding(detailName) {
         return detailName.includes('Tree') //|| detailName.includes('largeBuilding');
+    }
+
+    addStartingDetail() {
+        const startingDetail = Models.getModel(STARTING_TILE_DETAILS_MAP[this.tileType]);
+        startingDetail.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
+        
+        this.tile.add(startingDetail);
+
+        startingDetail.setPosition({ y: 1 });
     }
 
     addRandomDetail() {

@@ -7,46 +7,61 @@ export class Worm {
         this.index = 0;
     }
 
-    createBlock() {
-        return new Cube(1, 0xff0000);
+    createBlock(position, isHead = false) {
+        const block = new Cube(1, 0xff0000);
+
+        block.setName(`${this.body.length}`);
+        block.addScript('WormBlock', { position, isHead });
+        this.body.push(block);
+
+        const previous = this.getPreviousBlock();
+        if (previous) {
+            previous.getScript('WormBlock').script.addTail(block);
+        }
+
+        return block;
+    }
+
+    getPreviousBlock() {
+        return this.body[this.body.length - 2];
     }
 
     addBlock(position) {
         if (this.index > 5 ) return;
-        const block = this.createBlock();
-        this.body.push(block);
-        block.setName(`${this.index}`);
+        this.createBlock(position);
+        // this.body.push(block);
+        // block.setName(`${this.index}`);
         
-        block.addScript('WormBlock', { position });
+        // block.addScript('WormBlock', { position });
         
-        const head = this.body[this.index - 1];
-        if (head) {
-            head.getScript('WormBlock').script.addTail(block);
-        }
-        this.index++;
+        // const head = this.body[this.index - 1];
+        // if (head) {
+        //     head.getScript('WormBlock').script.addTail(block);
+        // }
+        // this.index++;
     }
 
-    createBody(position) {
-        const block = this.createBlock();
-        block.setName('0');
-        this.body.push(block);
-        this.index++;
+    // createBody(position) {
+    //     const block = this.createBlock();
+    //     block.setName('0');
+    //     this.body.push(block);
+    //     this.index++;
 
-        block.addScript('WormBlock', { position, isHead: true });
+    //     block.addScript('WormBlock', { position, isHead: true });
 
-        return block;
-    }
+    //     return block;
+    // }
 
     start() {
         this.position = { x: 0, y: 1, z: 0 };
         this.direction =  { x: 1, z: 0 };
 
-        const head = this.createBody(this.position);
+        const head = this.createBlock(this.position, true);
 
         Input.enable();
         Input.addEventListener(INPUT_EVENTS.KEY_DOWN, this.handleKeyDown.bind(this));
 
-        this.movingInterval = setInterval(this.move.bind(this), 500);
+        this.movingInterval = setInterval(this.move.bind(this), 1000);
 
         return head;
     }

@@ -73,7 +73,7 @@ export default class Test extends Level {
 
         window.humans = Humans;
         // const human = Humans.spawnHuman();
-        // const head = Worm.start();
+        Worm.start();
     }
 
     onCreate() {

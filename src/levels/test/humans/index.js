@@ -17,7 +17,7 @@ class Humans {
     }
 
     startExpanding() {
-        TileMap.changeTile(9, 9, TILES_TYPES.HUMAN);
+        TileMap.changeTile(9, 9, TILES_TYPES.HUMAN, true);
 
         setInterval(this.expand, 1000);
     }
