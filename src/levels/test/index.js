@@ -20,6 +20,7 @@ import WormBlock from './worm/wormBlock';
 import HumanBehaviour from './humans/HumanBehaviour';
 import Humans from './humans';
 import Nature from './nature';
+import Selector from './nature/Selector';
 
 export const WHITE = 0xffffff;
 export const SUNLIGHT = 0xffeaa7;
@@ -61,8 +62,8 @@ export default class Test extends Level {
     }
 
     prepareSceneEffects() {
-        Scene.setClearColor(SUNLIGHT);
-        Scene.setBackground(SUNLIGHT);
+        Scene.setClearColor(0xff9f43);
+        Scene.setBackground(0xff9f43);
         Scene.setRendererOutputEncoding(THREE.sRGBEncoding);
     }
 
@@ -85,6 +86,7 @@ export default class Test extends Level {
         Scripts.create('WormBlock', WormBlock);
         Scripts.create('slowRotation', SlowRotation);
         Scripts.create('HumanBehaviour', HumanBehaviour);
+        Scripts.create('Selector', Selector);
 
         this.createWorld();
         this.prepareCamera();

@@ -6723,10 +6723,7 @@ var Humans = /*#__PURE__*/function () {
         name: "human_".concat(Math.random())
       });
       human.addScript('HumanBehaviour', {
-        position: {
-          x: 0,
-          z: 0
-        }
+        position: _map_constants__WEBPACK_IMPORTED_MODULE_5__.HUMAN_STARTING_POSITION
       });
       human.getScript('HumanBehaviour').script.goTo(tile);
       _map_TileMap__WEBPACK_IMPORTED_MODULE_4__.default.setTileState(tile, _map_constants__WEBPACK_IMPORTED_MODULE_5__.TILES_STATES.BUILDING);
@@ -6741,7 +6738,7 @@ var Humans = /*#__PURE__*/function () {
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(Humans, [{
     key: "startExpanding",
     value: function startExpanding() {
-      _map_TileMap__WEBPACK_IMPORTED_MODULE_4__.default.changeTile(0, 0, _map_constants__WEBPACK_IMPORTED_MODULE_5__.TILES_TYPES.HUMAN, true);
+      _map_TileMap__WEBPACK_IMPORTED_MODULE_4__.default.changeTile(_map_constants__WEBPACK_IMPORTED_MODULE_5__.HUMAN_STARTING_POSITION.x, _map_constants__WEBPACK_IMPORTED_MODULE_5__.HUMAN_STARTING_POSITION.z, _map_constants__WEBPACK_IMPORTED_MODULE_5__.TILES_TYPES.HUMAN, true);
       setInterval(this.expand, 1000);
     }
   }]);
@@ -6787,6 +6784,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _humans_HumanBehaviour__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./humans/HumanBehaviour */ "./src/levels/test/humans/HumanBehaviour.js");
 /* harmony import */ var _humans__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./humans */ "./src/levels/test/humans/index.js");
 /* harmony import */ var _nature__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./nature */ "./src/levels/test/nature/index.js");
+/* harmony import */ var _nature_Selector__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./nature/Selector */ "./src/levels/test/nature/Selector.js");
 
 
 
@@ -6796,6 +6794,7 @@ __webpack_require__.r(__webpack_exports__);
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default()(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default()(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3___default()(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 
 
 
@@ -6873,8 +6872,8 @@ var Test = /*#__PURE__*/function (_Level) {
   }, {
     key: "prepareSceneEffects",
     value: function prepareSceneEffects() {
-      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.setClearColor(SUNLIGHT);
-      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.setBackground(SUNLIGHT);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.setClearColor(0xff9f43);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.setBackground(0xff9f43);
       mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.setRendererOutputEncoding(mage_engine__WEBPACK_IMPORTED_MODULE_5__.THREE.sRGBEncoding);
     }
   }, {
@@ -6897,6 +6896,7 @@ var Test = /*#__PURE__*/function (_Level) {
       mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('WormBlock', _worm_wormBlock__WEBPACK_IMPORTED_MODULE_9__.default);
       mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('slowRotation', _collectibles_slowRotation__WEBPACK_IMPORTED_MODULE_7__.default);
       mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('HumanBehaviour', _humans_HumanBehaviour__WEBPACK_IMPORTED_MODULE_10__.default);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('Selector', _nature_Selector__WEBPACK_IMPORTED_MODULE_13__.default);
       this.createWorld();
       this.prepareCamera();
     }
@@ -7252,6 +7252,8 @@ var TileMap = /*#__PURE__*/function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "HUMAN_STARTING_POSITION": () => (/* binding */ HUMAN_STARTING_POSITION),
+/* harmony export */   "NATURE_STARTING_POSITION": () => (/* binding */ NATURE_STARTING_POSITION),
 /* harmony export */   "DESERT_DETAILS": () => (/* binding */ DESERT_DETAILS),
 /* harmony export */   "FOREST_DETAILS": () => (/* binding */ FOREST_DETAILS),
 /* harmony export */   "HUMAN_DETAILS": () => (/* binding */ HUMAN_DETAILS),
@@ -7271,6 +7273,14 @@ __webpack_require__.r(__webpack_exports__);
 
 var _TILES_DETAILS_MAP, _STARTING_TILE_DETAIL, _TILES_RANDOMNESS_MAP;
 
+var HUMAN_STARTING_POSITION = {
+  x: 0,
+  z: 0
+};
+var NATURE_STARTING_POSITION = {
+  x: 9,
+  z: 9
+};
 var DESERT_DETAILS = ['desertDetail', 'desertRockA', 'desertRockB', 'desertPlantA', 'desertPlantB', 'desertTree'];
 var FOREST_DETAILS = ['forestDetail', 'forestRockA', 'forestRockB', 'forestPlantA', 'forestPlantB', 'forestTree'];
 var HUMAN_DETAILS = ['largeBuildingA', 'largeBuildingB', 'largeBuildingC', 'largeBuildingD', 'largeBuildingE', 'largeBuildingG'];
@@ -7307,6 +7317,101 @@ var TILE_COLLECTIBLE_SCALE = {
 
 /***/ }),
 
+/***/ "./src/levels/test/nature/Selector.js":
+/*!********************************************!*\
+  !*** ./src/levels/test/nature/Selector.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Selector)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/classCallCheck.js");
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js");
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/inherits */ "./node_modules/@babel/runtime/helpers/inherits.js");
+/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js");
+/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/getPrototypeOf.js");
+/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var mage_engine__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! mage-engine */ "../Mage/dist/mage.js");
+
+
+
+
+
+
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5___default()(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5___default()(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4___default()(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+
+var CURSOR_HEIGHT = .5;
+var CURSOR_SCALE = {
+  x: .5,
+  y: .5,
+  z: .5
+};
+
+var Selector = /*#__PURE__*/function (_BaseScript) {
+  _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3___default()(Selector, _BaseScript);
+
+  var _super = _createSuper(Selector);
+
+  function Selector() {
+    _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1___default()(this, Selector);
+
+    return _super.call(this, 'Selector');
+  }
+
+  _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2___default()(Selector, [{
+    key: "start",
+    value: function start(selector, _ref) {
+      var position = _ref.position;
+      this.selector = selector;
+      this.selector.setPosition(_objectSpread(_objectSpread({}, position), {}, {
+        y: CURSOR_HEIGHT
+      }));
+      this.selector.setScale(CURSOR_SCALE);
+      this.selector.setOpacity(0);
+    }
+  }, {
+    key: "appearAt",
+    value: function appearAt(_ref2) {
+      var x = _ref2.x,
+          z = _ref2.z;
+      this.selector.goTo({
+        x: x,
+        y: CURSOR_HEIGHT,
+        z: z
+      }, 250);
+      this.selector.fadeTo(1, 250);
+    }
+  }, {
+    key: "disappear",
+    value: function disappear() {
+      this.selector.fadeTo(0, 250);
+    }
+  }]);
+
+  return Selector;
+}(mage_engine__WEBPACK_IMPORTED_MODULE_6__.BaseScript);
+
+
+
+/***/ }),
+
 /***/ "./src/levels/test/nature/index.js":
 /*!*****************************************!*\
   !*** ./src/levels/test/nature/index.js ***!
@@ -7336,25 +7441,35 @@ __webpack_require__.r(__webpack_exports__);
 
 var Nature = /*#__PURE__*/function () {
   function Nature() {
+    var _this = this;
+
     _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, Nature);
 
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "handleMouseIntersection", function () {
       var intersections = mage_engine__WEBPACK_IMPORTED_MODULE_3__.Input.mouse.getIntersections(true, 'tile');
 
       if (intersections.length) {
-        console.log(intersections[0].element.getName());
-      } else {}
+        _this.selector.getScript('Selector').script.appearAt(intersections[0].element.getPosition());
+      } else {
+        _this.selector.getScript('Selector').script.disappear();
+      }
     });
 
     this.builders = [];
     this.currentTile = null;
+    this.selector = null;
   }
 
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(Nature, [{
     key: "start",
     value: function start() {
       mage_engine__WEBPACK_IMPORTED_MODULE_3__.Input.enable();
-      _map_TileMap__WEBPACK_IMPORTED_MODULE_5__.default.changeTile(9, 9, _map_constants__WEBPACK_IMPORTED_MODULE_4__.TILES_TYPES.FOREST, true); // setInterval(this.handleMouseIntersection, 1000)
+      _map_TileMap__WEBPACK_IMPORTED_MODULE_5__.default.changeTile(_map_constants__WEBPACK_IMPORTED_MODULE_4__.NATURE_STARTING_POSITION.x, _map_constants__WEBPACK_IMPORTED_MODULE_4__.NATURE_STARTING_POSITION.z, _map_constants__WEBPACK_IMPORTED_MODULE_4__.TILES_TYPES.FOREST, true);
+      setInterval(this.handleMouseIntersection, 250);
+      this.selector = mage_engine__WEBPACK_IMPORTED_MODULE_3__.Models.getModel('selector');
+      this.selector.addScript('Selector', {
+        position: _map_constants__WEBPACK_IMPORTED_MODULE_4__.NATURE_STARTING_POSITION
+      });
     }
   }]);
 
@@ -10004,6 +10119,7 @@ var SHADOW_TYPES = mage_engine__WEBPACK_IMPORTED_MODULE_0__.constants.SHADOW_TYP
 var assets = {
   '/test': {
     models: {
+      'selector': 'assets/models/selector.glb',
       'human': 'assets/models/human.fbx',
       'forestTile': 'assets/models/tileLow_forest.gltf.glb',
       'desertTile': 'assets/models/tileLow_desert.gltf.glb',

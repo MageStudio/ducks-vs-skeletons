@@ -1,7 +1,7 @@
 
 import { Models, math, ENTITY_EVENTS } from 'mage-engine';
 import TileMap from '../map/TileMap';
-import { TILES_STATES, TILES_TYPES } from '../map/constants';
+import { HUMAN_STARTING_POSITION, TILES_STATES, TILES_TYPES } from '../map/constants';
 
 const DEATH_REASONS = {
     KILLED: 'KILLED',
@@ -17,7 +17,7 @@ class Humans {
     }
 
     startExpanding() {
-        TileMap.changeTile(0, 0, TILES_TYPES.HUMAN, true);
+        TileMap.changeTile(HUMAN_STARTING_POSITION.x, HUMAN_STARTING_POSITION.z, TILES_TYPES.HUMAN, true);
 
         setInterval(this.expand, 1000);
     }
@@ -51,7 +51,7 @@ class Humans {
 
     sendBuilderToTile = (tile) => {
         const human = Models.getModel('human', { name: `human_${Math.random()}`});
-        human.addScript('HumanBehaviour', { position: { x: 0, z: 0 }});
+        human.addScript('HumanBehaviour', { position: HUMAN_STARTING_POSITION});
         human.getScript('HumanBehaviour').script.goTo(tile);
 
         TileMap.setTileState(tile, TILES_STATES.BUILDING);

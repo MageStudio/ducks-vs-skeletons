@@ -1,3 +1,12 @@
+export const HUMAN_STARTING_POSITION = {
+    x: 0,
+    z: 0
+};
+
+export const NATURE_STARTING_POSITION = {
+    x: 9,
+    z: 9
+};
 
 export const DESERT_DETAILS = [
     'desertDetail',

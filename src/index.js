@@ -7,6 +7,8 @@ const { SHADOW_TYPES } = constants;
 const assets = {
     '/test': {
         models: {
+            'selector': 'assets/models/selector.glb',
+
             'human': 'assets/models/human.fbx',
             'forestTile': 'assets/models/tileLow_forest.gltf.glb',
             'desertTile': 'assets/models/tileLow_desert.gltf.glb',
