@@ -7221,8 +7221,8 @@ var TileMap = /*#__PURE__*/function () {
     key: "changeTile",
     value: function changeTile(_x, _z, tileType) {
       var startingTile = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-      var x = mage_engine__WEBPACK_IMPORTED_MODULE_3__.math.clamp(_x, 0, this.size - 1);
-      var z = mage_engine__WEBPACK_IMPORTED_MODULE_3__.math.clamp(_z, 0, this.size - 1);
+      var x = Math.floor(mage_engine__WEBPACK_IMPORTED_MODULE_3__.math.clamp(_x, 0, this.size - 1));
+      var z = Math.floor(mage_engine__WEBPACK_IMPORTED_MODULE_3__.math.clamp(_z, 0, this.size - 1));
       this.tiles[x][z].dispose();
       this.tiles[x][z] = new _Tile__WEBPACK_IMPORTED_MODULE_4__.default(tileType, {
         x: x,
@@ -7380,6 +7380,7 @@ var Selector = /*#__PURE__*/function (_BaseScript) {
     value: function start(selector, _ref) {
       var position = _ref.position;
       this.selector = selector;
+      this.visible = false;
       this.selector.setPosition(_objectSpread(_objectSpread({}, position), {}, {
         y: CURSOR_HEIGHT
       }));
@@ -7391,17 +7392,23 @@ var Selector = /*#__PURE__*/function (_BaseScript) {
     value: function appearAt(_ref2) {
       var x = _ref2.x,
           z = _ref2.z;
+      this.destination = {
+        x: x,
+        z: z
+      };
       this.selector.goTo({
         x: x,
         y: CURSOR_HEIGHT,
         z: z
       }, 250);
       this.selector.fadeTo(1, 250);
+      this.visible = true;
     }
   }, {
     key: "disappear",
     value: function disappear() {
       this.selector.fadeTo(0, 250);
+      this.visible = false;
     }
   }]);
 
@@ -7439,11 +7446,24 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 var Nature = /*#__PURE__*/function () {
   function Nature() {
     var _this = this;
 
     _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, Nature);
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "handleMouseClick", function () {
+      var isIntersecting = _this.selector.getScript('Selector').script.visible;
+
+      if (isIntersecting) {
+        var _this$selector$getScr = _this.selector.getScript('Selector').script.destination,
+            x = _this$selector$getScr.x,
+            z = _this$selector$getScr.z;
+
+        _map_TileMap__WEBPACK_IMPORTED_MODULE_5__.default.changeTile(x, z, _map_constants__WEBPACK_IMPORTED_MODULE_4__.TILES_TYPES.FOREST);
+      }
+    });
 
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "handleMouseIntersection", function () {
       var intersections = mage_engine__WEBPACK_IMPORTED_MODULE_3__.Input.mouse.getIntersections(true, 'tile');
@@ -7464,6 +7484,7 @@ var Nature = /*#__PURE__*/function () {
     key: "start",
     value: function start() {
       mage_engine__WEBPACK_IMPORTED_MODULE_3__.Input.enable();
+      mage_engine__WEBPACK_IMPORTED_MODULE_3__.Input.addEventListener(mage_engine__WEBPACK_IMPORTED_MODULE_3__.INPUT_EVENTS.MOUSE_DOWN, this.handleMouseClick);
       _map_TileMap__WEBPACK_IMPORTED_MODULE_5__.default.changeTile(_map_constants__WEBPACK_IMPORTED_MODULE_4__.NATURE_STARTING_POSITION.x, _map_constants__WEBPACK_IMPORTED_MODULE_4__.NATURE_STARTING_POSITION.z, _map_constants__WEBPACK_IMPORTED_MODULE_4__.TILES_TYPES.FOREST, true);
       setInterval(this.handleMouseIntersection, 250);
       this.selector = mage_engine__WEBPACK_IMPORTED_MODULE_3__.Models.getModel('selector');

@@ -15,6 +15,7 @@ export default class Selector extends BaseScript {
 
     start(selector, { position }) {
         this.selector = selector;
+        this.visible = false;
 
         this.selector.setPosition({
             ...position,
@@ -25,11 +26,14 @@ export default class Selector extends BaseScript {
     }
 
     appearAt({ x, z }) {
+        this.destination = { x, z };
         this.selector.goTo({ x, y: CURSOR_HEIGHT, z }, 250);
         this.selector.fadeTo(1, 250);
+        this.visible = true;
     }
 
     disappear() {
         this.selector.fadeTo(0, 250);
+        this.visible = false;
     }
 }

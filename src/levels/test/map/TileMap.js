@@ -89,8 +89,8 @@ class TileMap {
     }
 
     changeTile(_x, _z, tileType, startingTile = false) {
-        const x = math.clamp(_x, 0, this.size - 1 );
-        const z = math.clamp(_z, 0, this.size - 1);
+        const x = Math.floor(math.clamp(_x, 0, this.size - 1 ));
+        const z = Math.floor(math.clamp(_z, 0, this.size - 1 ));
 
         this.tiles[x][z].dispose();
         this.tiles[x][z] = new Tile(tileType, { x, z }, startingTile);
