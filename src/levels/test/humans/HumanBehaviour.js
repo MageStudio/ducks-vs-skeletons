@@ -44,6 +44,7 @@ export default class HumanBehaviour extends BaseScript {
         this.human.setMaterialFromName(MATERIALS.STANDARD, HUMAN_MATERIAL_PROPERTIES);
         this.human.setScale(HUMAN_SCALE);
         this.human.playAnimation(HUMAN_ANIMATIONS.IDLE);
+        this.human.setName(`human_${Math.random()}`)
         this.human.setPosition(this.position);
     }
 

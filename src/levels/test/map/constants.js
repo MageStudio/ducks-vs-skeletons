@@ -43,7 +43,8 @@ export const TILES_DETAILS_MAP = {
 };
 
 export const STARTING_TILE_DETAILS_MAP = {
-    [TILES_TYPES.HUMAN]: 'humanStart'
+    [TILES_TYPES.HUMAN]: 'humanStart',
+    [TILES_TYPES.FOREST]: 'forestStart'
 };
 
 export const TILES_RANDOMNESS_MAP = {

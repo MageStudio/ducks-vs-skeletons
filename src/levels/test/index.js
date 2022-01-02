@@ -10,6 +10,7 @@ import {
     Cube,
     Scripts,
     SunLight,
+    Universe
 } from 'mage-engine';
 
 import TileMap, { HUMAN_DETAILS } from './map/TileMap';
@@ -18,6 +19,7 @@ import Worm from './worm';
 import WormBlock from './worm/wormBlock';
 import HumanBehaviour from './humans/HumanBehaviour';
 import Humans from './humans';
+import Nature from './nature';
 
 export const WHITE = 0xffffff;
 export const SUNLIGHT = 0xffeaa7;
@@ -69,11 +71,14 @@ export default class Test extends Level {
         this.prepareSceneEffects();
 
         TileMap.generate();
-        Humans.startExpanding();
+        // Humans.startExpanding();
 
-        window.humans = Humans;
+        // window.humans = Humans;
         // const human = Humans.spawnHuman();
-        Worm.start();
+        // Worm.start();
+        window.uni = Universe;
+        window.n = Nature;
+        Nature.start();
     }
 
     onCreate() {

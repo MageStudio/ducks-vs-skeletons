@@ -21,7 +21,7 @@ class TileMap {
             z: Math.floor(Math.random() * this.size),
             y: 1.5
         }
-        const collectible = Models.getModel('star');
+        const collectible = Models.getModel('star', { name: `star_${Math.random()}`});
 
         collectible.setScale(TILE_COLLECTIBLE_SCALE);
         collectible.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);

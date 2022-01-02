@@ -40,10 +40,11 @@ export default class Tile {
     isBuilding = () => this.state === TILES_STATES.BUILDING;
 
     create() {
-        this.tile = Models.getModel(this.tileType);
+        this.tile = Models.getModel(this.tileType, { name: `tile_${this.position.x}_${this.position.z}`});
         this.tile.setPosition(this.position);
         this.tile.setScale(TILE_SCALE);
         this.tile.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
+        this.tile.addTag('tile');
 
         if (this.startingTile) {
             this.addStartingDetail();
@@ -57,7 +58,7 @@ export default class Tile {
     }
 
     addStartingDetail() {
-        const startingDetail = Models.getModel(STARTING_TILE_DETAILS_MAP[this.tileType]);
+        const startingDetail = Models.getModel(STARTING_TILE_DETAILS_MAP[this.tileType], { name: `tile_detail_${Math.random()}` });
         startingDetail.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
         
         this.tile.add(startingDetail);
@@ -68,7 +69,7 @@ export default class Tile {
     addRandomDetail() {
         if (shouldRenderDetailsForTiletype(this.tileType)) {
             const detailName = getRandomDetailForTile(this.tileType);
-            const details = Models.getModel(detailName);
+            const details = Models.getModel(detailName, { name: `tile_detail_${Math.random()}` });
 
             details.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
             this.tile.add(details);

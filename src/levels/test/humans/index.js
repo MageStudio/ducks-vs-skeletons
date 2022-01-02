@@ -17,7 +17,7 @@ class Humans {
     }
 
     startExpanding() {
-        TileMap.changeTile(9, 9, TILES_TYPES.HUMAN, true);
+        TileMap.changeTile(0, 0, TILES_TYPES.HUMAN, true);
 
         setInterval(this.expand, 1000);
     }
@@ -50,8 +50,8 @@ class Humans {
     }
 
     sendBuilderToTile = (tile) => {
-        const human = Models.getModel('human');
-        human.addScript('HumanBehaviour', { position: { x: 9, z: 9 }});
+        const human = Models.getModel('human', { name: `human_${Math.random()}`});
+        human.addScript('HumanBehaviour', { position: { x: 0, z: 0 }});
         human.getScript('HumanBehaviour').script.goTo(tile);
 
         TileMap.setTileState(tile, TILES_STATES.BUILDING);

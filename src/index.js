@@ -13,6 +13,7 @@ const assets = {
             'humanTile': 'assets/models/tileLow_teamBlue.gltf.glb',
 
             'humanStart': 'assets/models/skyscraperD.glb',
+            'forestStart': 'assets/models/tree.glb',
 
             'star': 'assets/models/star.gltf.glb',
             
@@ -28,7 +29,7 @@ const assets = {
             'forestRockB': 'assets/models/rocksB_forest.gltf.glb',
             'forestPlantA': 'assets/models/plantA_forest.gltf.glb',
             'forestPlantB': 'assets/models/plantB_forest.gltf.glb',
-            'forestTree': 'assets/models/tree_forest.gltf.glb',
+            'forestTree': 'assets/models/tree.glb',
 
             'largeBuildingA': 'assets/models/large_buildingA.glb',
             'largeBuildingB': 'assets/models/large_buildingB.glb',
