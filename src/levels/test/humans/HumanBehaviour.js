@@ -76,12 +76,11 @@ export default class HumanBehaviour extends BaseScript {
     }
 
     buildAtPosition(tile) {
-        const { x, z } = tile.getPosition();
         this.human.playAnimation(HUMAN_ANIMATIONS.BUILD);
         setTimeout(() => {
             this.human.playAnimation(HUMAN_ANIMATIONS.IDLE);
             if (!tile.isHuman()) {
-                TileMap.changeTile(x, z, TILES_TYPES.HUMAN);
+                TileMap.changeTile(tile.getPosition(), TILES_TYPES.HUMAN);
                 this.die();
             }
         }, 3000)

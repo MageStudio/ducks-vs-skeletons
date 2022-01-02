@@ -13,7 +13,7 @@ class Nature {
     start() {
         Input.enable();
         Input.addEventListener(INPUT_EVENTS.MOUSE_DOWN, this.handleMouseClick);
-        TileMap.changeTile(NATURE_STARTING_POSITION.x, NATURE_STARTING_POSITION.z, TILES_TYPES.FOREST, true);
+        TileMap.changeTile(NATURE_STARTING_POSITION, TILES_TYPES.FOREST, true);
         setInterval(this.handleMouseIntersection, 250)
 
         this.selector = Models.getModel('selector');
@@ -21,19 +21,26 @@ class Nature {
     }
 
     handleMouseClick = () => {
-        const isIntersecting = this.selector.getScript('Selector').script.visible;
+        const { visible, destination } = this.selector.getScript('Selector').script;
+        console.log(visible, destination);
 
-        if (isIntersecting) {
-            const { x, z } = this.selector.getScript('Selector').script.destination;
-            TileMap.changeTile(x, z, TILES_TYPES.FOREST);
+        if (visible && this.canMouseInteract(destination)) {
+            TileMap.changeTile(destination, TILES_TYPES.FOREST);
         }
+    }
+
+    canMouseInteract(destination) {
+        return TileMap.isTileAdjacentToType(destination, TILES_TYPES.FOREST) && !TileMap.isTileType(destination, TILES_TYPES.FOREST)
     }
 
     handleMouseIntersection = () => {
         const intersections = Input.mouse.getIntersections(true, 'tile');
 
         if (intersections.length) {
-            this.selector.getScript('Selector').script.appearAt(intersections[0].element.getPosition());
+            const destination = intersections[0].element.getPosition();
+
+            this.selector.getScript('Selector').script.appearAt(destination);
+            this.selector.getScript('Selector').script.markEnabled(this.canMouseInteract(destination))
         } else {
             this.selector.getScript('Selector').script.disappear();
         }

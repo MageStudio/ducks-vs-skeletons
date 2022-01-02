@@ -17,12 +17,14 @@ class Humans {
     }
 
     startExpanding() {
-        TileMap.changeTile(HUMAN_STARTING_POSITION.x, HUMAN_STARTING_POSITION.z, TILES_TYPES.HUMAN, true);
+        TileMap.changeTile(HUMAN_STARTING_POSITION, TILES_TYPES.HUMAN, true);
 
         setInterval(this.expand, 1000);
     }
 
     hasTooManyBuildersOnMap = () => Object.keys(this.builders).length > MAX_BUILDERS;
+
+    isValidTile = tile => !tile.isBuilding() && !tile.isType(TILES_TYPES.HUMAN);
 
     expand = () => {
         if (this.hasTooManyBuildersOnMap()) return;
@@ -32,8 +34,8 @@ class Humans {
                 .getTilesByType(TILES_TYPES.HUMAN)
                 .map(tile => (
                     TileMap
-                        .getAdjacentTiles(tile.getPosition(), TILES_TYPES.HUMAN)
-                        .filter(tile => !tile.isBuilding())
+                        .getAdjacentTiles(tile.getPosition())
+                        .filter(this.isValidTile)
                 ))
                 .filter(adjacents => adjacents.length)
                 .sort()

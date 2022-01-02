@@ -65,7 +65,7 @@ class TileMap {
         return list;
     }
 
-    getAdjacentTiles({ x, z }, tileType) {
+    getAdjacentTiles({ x, z }) {
         return [
             { x: x-1, z: z-1 },
             { x: x, z: z-1 },
@@ -80,7 +80,12 @@ class TileMap {
         ]
         .filter(this.isValidTile)
         .map(({ x, z }) => this.tiles[x][z])
-        .filter(tile => !tile.isType(tileType));
+    }
+
+    isTileAdjacentToType = (position, tileType) => {
+        return this.getAdjacentTiles(position)
+            .filter(tile => tile.isType(tileType))
+            .length > 0
     }
 
     setTileState(tile, state) {
@@ -88,16 +93,16 @@ class TileMap {
         this.tiles[x][z].setState(state);
     }
 
-    changeTile(_x, _z, tileType, startingTile = false) {
-        const x = Math.floor(math.clamp(_x, 0, this.size - 1 ));
-        const z = Math.floor(math.clamp(_z, 0, this.size - 1 ));
+    changeTile({ x, z }, tileType, startingTile = false) {
+        const _x = Math.floor(math.clamp(x, 0, this.size - 1 ));
+        const _z = Math.floor(math.clamp(z, 0, this.size - 1 ));
 
-        this.tiles[x][z].dispose();
-        this.tiles[x][z] = new Tile(tileType, { x, z }, startingTile);
+        this.tiles[_x][_z].dispose();
+        this.tiles[_x][_z] = new Tile(tileType, { x: _x, z: _z }, startingTile);
     }
 
-    isTileType(x, z, tileType) {
-        return this.tiles[x][z].isType(tileType);
+    isTileType({ x, z }, tileType) {
+        return this.tiles[x][z] && this.tiles[x][z].isType(tileType);
     }
 }
 

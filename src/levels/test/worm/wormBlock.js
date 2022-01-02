@@ -24,8 +24,8 @@ export default class WormBlock extends BaseScript {
         const position = this.block.getPosition();
         this.block.goTo(newPosition, 300);
 
-        if (this.isHead && !TileMap.isTileType(position.x, position.z, TILES_TYPES.FOREST)) {
-            TileMap.changeTile(position.x, position.z, TILES_TYPES.FOREST);
+        if (this.isHead && !TileMap.isTileType(position, TILES_TYPES.FOREST)) {
+            TileMap.changeTile(position, TILES_TYPES.FOREST);
         }
 
         if (this.tail) {
