@@ -1,4 +1,4 @@
-import { Models, constants } from 'mage-engine';
+import { Models, constants, math, Particles, PARTICLES } from 'mage-engine';
 import {
     TILES_DETAILS_MAP,
     TILES_TYPES,
@@ -21,12 +21,32 @@ const getRandomDetailForTile = (tileType) => {
 const shouldRenderDetailsForTiletype = (tileType) => Math.random() > TILES_RANDOMNESS_MAP[tileType];
 
 export default class Tile {
+
     constructor(tileType, position, startingTile) {
         this.tileType = tileType;
         this.position = position;
         this.startingTile = startingTile;
 
+        this.burning = false;
+
+        this.setLife();
         this.create();
+    }
+
+    setLife() {
+        let factor = this.startingTile ? 4 : 1;
+        const life = 20 * factor;
+
+        this.life = life;
+        this.maxLife = life;
+    }
+
+    repair(amount) {
+        this.life = math.clamp(this.life + amount, 0, this.maxLife);
+    }
+
+    damage(amount) {
+        this.life = math.clamp(this.life - amount, 0, this.maxLife);
     }
 
     isDesert = () => this.tileType === TILES_TYPES.DESERT;
@@ -80,6 +100,21 @@ export default class Tile {
 
             details.setPosition({ y: 1 });
         }
+    }
+
+    startBurning() {
+        if (!this.burning) {
+            this.burning = true;
+            this.fire = Particles.addParticleEmitter(PARTICLES.FIRE, { fire: { size: 1 }, sparks: { size: 0.1 }});
+            this.fire.start();
+            this.fire.setPosition(this.getPosition());
+            console.log(this.fire);
+        }
+    }
+
+    processHit(damage) {
+        this.damage(damage);
+        this.startBurning();
     }
 
     setOpacity(value) {

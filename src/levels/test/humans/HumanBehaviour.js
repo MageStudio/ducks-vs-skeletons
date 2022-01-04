@@ -1,4 +1,13 @@
-import { BaseScript, constants, THREE, math, Sphere, ENTITY_EVENTS, PALETTES } from "mage-engine";
+import {
+    BaseScript,
+    constants,
+    THREE,
+    math,
+    Sphere,
+    ENTITY_EVENTS,
+    PALETTES,
+    Models
+} from "mage-engine";
 import { TILES_TYPES } from "../map/constants";
 import TileMap from "../map/TileMap";
 
@@ -49,13 +58,24 @@ export default class HumanBehaviour extends BaseScript {
         this.builder = builder;
         this.warrior = warrior;
 
+        window.human = human;
+
         
         this.human.setMaterialFromName(MATERIALS.STANDARD, HUMAN_MATERIAL_PROPERTIES);
         this.human.setScale(HUMAN_SCALE);
         this.human.playAnimation(HUMAN_ANIMATIONS.IDLE);
         this.human.setPosition(this.position);
-        console.log(this.position);
-        console.log(this.human);
+    }
+    
+    addWeapon() {
+        if (this.isWarrior()) {
+            const weapon = Models.getModel('shotgun')
+            weapon.setMaterialFromName(MATERIALS.STANDARD, HUMAN_MATERIAL_PROPERTIES);
+            weapon.setPosition({ x: 5, y: 2, z: 5 });
+            // weapon.setScale({ x: 50, y: 50, z: 50 });
+            // window.weapon = weapon;
+            // this.human.add(weapon);
+        }
     }
 
     isBuilder() { return this.builder; }

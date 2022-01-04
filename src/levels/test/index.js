@@ -80,6 +80,7 @@ export default class Test extends Level {
         // Worm.start();
         window.uni = Universe;
         window.n = Nature;
+        window.tm = TileMap;
         Nature.start();
     }
 

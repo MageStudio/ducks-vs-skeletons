@@ -18,6 +18,8 @@ const assets = {
             'forestStart': 'assets/models/tree.glb',
 
             'star': 'assets/models/star.gltf.glb',
+
+            'shotgun': 'assets/models/shotgun.glb',
             
             'desertDetail': 'assets/models/detail_desert.gltf.glb',
             'desertRockA': 'assets/models/rocksA_desert.gltf.glb',
