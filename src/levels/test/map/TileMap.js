@@ -51,6 +51,8 @@ class TileMap {
         return math.pickRandom(this.getAdjacentTiles(position, tileType));
     }
 
+    getTileAt = ({ x, z }) => this.tiles[x][z];
+
     getTilesByType(tileType) {
         const list = [];
         for (let x=0; x<this.size; x++) {

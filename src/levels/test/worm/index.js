@@ -16,7 +16,7 @@ export class Worm {
 
         const previous = this.getPreviousBlock();
         if (previous) {
-            previous.getScript('WormBlock').script.addTail(block);
+            previous.getScript('WormBlock').addTail(block);
         }
 
         return block;
@@ -36,7 +36,7 @@ export class Worm {
         
         // const head = this.body[this.index - 1];
         // if (head) {
-        //     head.getScript('WormBlock').script.addTail(block);
+        //     head.getScript('WormBlock').addTail(block);
         // }
         // this.index++;
     }
@@ -74,7 +74,7 @@ export class Worm {
         };
 
         this.body[0]
-            .getScript('WormBlock').script
+            .getScript('WormBlock')
             .move(this.position);
 
         // this.addBlock(this.position);

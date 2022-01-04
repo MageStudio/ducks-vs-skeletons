@@ -29,7 +29,7 @@ export default class WormBlock extends BaseScript {
         }
 
         if (this.tail) {
-            this.tail.getScript('WormBlock').script.move(position);
+            this.tail.getScript('WormBlock').move(position);
         }
     }
 }

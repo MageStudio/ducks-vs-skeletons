@@ -1,4 +1,4 @@
-import { BaseScript, constants, THREE } from "mage-engine";
+import { BaseScript, constants, THREE, math, Sphere, ENTITY_EVENTS, PALETTES } from "mage-engine";
 import { TILES_TYPES } from "../map/constants";
 import TileMap from "../map/TileMap";
 
@@ -25,8 +25,13 @@ const HUMAN_ANIMATIONS = {
 };
 
 const MINIMUM_HEIGHT = .5;
-const SPEED = 0.5;
+const SPEEDS = {
+    BUILDER: 0.5,
+    WARRIOR: 0.8
+}
 const MAXIMUM_SHOOTING_DISTANCE = 4;
+const BULLET_INTERVAL = 250;
+const BULLET_SIZE = 0.01;
 
 export default class HumanBehaviour extends BaseScript {
 
@@ -34,18 +39,29 @@ export default class HumanBehaviour extends BaseScript {
         super('HumanBehaviour');
     }
 
-    start(human, { position = {} }) {
+    start(human, { position = {}, builder = false, warrior = false }) {
         this.human = human;
         this.position = {
             ...position,
             y: MINIMUM_HEIGHT
-        }
+        };
 
+        this.builder = builder;
+        this.warrior = warrior;
+
+        
         this.human.setMaterialFromName(MATERIALS.STANDARD, HUMAN_MATERIAL_PROPERTIES);
         this.human.setScale(HUMAN_SCALE);
         this.human.playAnimation(HUMAN_ANIMATIONS.IDLE);
-        this.human.setName(`human_${Math.random()}`)
         this.human.setPosition(this.position);
+        console.log(this.position);
+        console.log(this.human);
+    }
+
+    isBuilder() { return this.builder; }
+    isWarrior() { return this.warrior; }
+    getSpeed() {
+        return this.isBuilder() ? SPEEDS.BUILDER : SPEEDS.WARRIOR;
     }
 
     die() {
@@ -54,28 +70,53 @@ export default class HumanBehaviour extends BaseScript {
             .then(() => this.human.dispose());
     }
 
-    lookAtTarget() {
-        const targetPosition = this.target.getPosition();
+    lookAtTarget(target) {
+        const { x, z } = target.getPosition();
         this.human.lookAt({
-            x: targetPosition.x,
+            x,
             y: MINIMUM_HEIGHT,
-            z: targetPosition.z
+            z
         });
+    }
 
-        return targetPosition;
+    scanForTargets = () => {
+        this.human.playAnimation(HUMAN_ANIMATIONS.IDLE);
+        // get all enemy tiles
+        const { tile } = math.pickRandom(
+                TileMap.getTilesByType(TILES_TYPES.FOREST)
+                    .map(tile => ({ tile, distance: this.human.getPosition().distanceTo(tile.getPosition()) }))
+                    .filter(({ distance }) => distance <= MAXIMUM_SHOOTING_DISTANCE)
+        )
+
+        if (tile) {
+            this.shootAt(tile);
+        }
+    }
+
+    spawnBullet = () => {
+        setTimeout(() => {
+            new Sphere(BULLET_SIZE, PALETTES.BASE.BLACK)
+                .addScript('BulletBehaviour', { position: this.human.getPosition(), target: this.target })
+                .shoot()
+        }, BULLET_INTERVAL);
     }
 
     shootAt(target) {
+        if (!this.isWarrior()) return;
+
         this.target = target;
-        const position = this.lookAtTarget();
+        this.lookAtTarget(target);
         
-        if (this.human.getPosition().distanceTo(position) <= MAXIMUM_SHOOTING_DISTANCE) {
+        if (this.human.getPosition().distanceTo(target.getPosition()) <= MAXIMUM_SHOOTING_DISTANCE) {
             this.human.playAnimation(HUMAN_ANIMATIONS.SHOOT);
-            // shoot bullet
+            this.human.addEventListener(ENTITY_EVENTS.ANIMATION.LOOP, this.spawnBullet)
+            this.spawnBullet();
         }
     }
 
     buildAtPosition(tile) {
+        if (!this.isBuilder()) return;
+
         this.human.playAnimation(HUMAN_ANIMATIONS.BUILD);
         setTimeout(() => {
             this.human.playAnimation(HUMAN_ANIMATIONS.IDLE);
@@ -89,18 +130,16 @@ export default class HumanBehaviour extends BaseScript {
     goTo(tile) {
         const { x, z } = tile.getPosition();
         const targetPosition = new Vector3(x, MINIMUM_HEIGHT, z);
-        const time = this.human.getPosition().distanceTo(targetPosition) / SPEED * 1000;
+        const time = this.human.getPosition().distanceTo(targetPosition) / this.getSpeed() * 1000;
 
         this.human.lookAt(targetPosition);
         this.human.playAnimation(HUMAN_ANIMATIONS.RUN);
-        this.human.goTo(targetPosition, time).then(() => {
-            this.buildAtPosition(tile);
-        });
+        return this.human.goTo(targetPosition, time);
     }
 
     update() {
-        if (this.target) {
-            this.lookAtTarget();
+        if (this.target && this.isWarrior()) {
+            this.lookAtTarget(this.target);
         }
     }
 }

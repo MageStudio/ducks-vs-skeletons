@@ -42,7 +42,8 @@ export const TILES_TYPES = {
 };
 
 export const TILES_STATES = {
-    BUILDING: 'BUILDING'
+    BUILDING: 'BUILDING',
+    FIGHTING: 'FIGHTING'
 };
 
 export const TILES_DETAILS_MAP = {

@@ -21,7 +21,7 @@ class Nature {
     }
 
     handleMouseClick = () => {
-        const { visible, destination } = this.selector.getScript('Selector').script;
+        const { visible, destination } = this.selector.getScript('Selector');
         console.log(visible, destination);
 
         if (visible && this.canMouseInteract(destination)) {
@@ -39,10 +39,10 @@ class Nature {
         if (intersections.length) {
             const destination = intersections[0].element.getPosition();
 
-            this.selector.getScript('Selector').script.appearAt(destination);
-            this.selector.getScript('Selector').script.markEnabled(this.canMouseInteract(destination))
+            this.selector.getScript('Selector').appearAt(destination);
+            this.selector.getScript('Selector').markEnabled(this.canMouseInteract(destination))
         } else {
-            this.selector.getScript('Selector').script.disappear();
+            this.selector.getScript('Selector').disappear();
         }
     }
 }
