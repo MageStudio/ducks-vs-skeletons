@@ -43,7 +43,8 @@ const assets = {
             'largeBuildingG': 'assets/models/large_buildingG.glb',
         },
         textures: {
-            'zombie': 'assets/textures/zombieA.png'
+            'zombie': 'assets/textures/zombieA.png',
+            'fire': 'assets/textures/fire.png'
         }
     }
 }

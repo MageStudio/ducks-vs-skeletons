@@ -13,6 +13,18 @@ import {
 
 const { MATERIALS } = constants;
 
+const FIRE_OPTIONS = {
+    texture: 'fire',
+    size: .15,
+    strength: 2 ,
+    direction: { x: 0, y: 1, z: 0 }
+};
+
+const TILE_LIFE = 20;
+const STARTING_TILE_LIFE_FACTOR = 4;
+const TILE_LIFE_FACTOR = 1;
+const TILE_CRITICAL_DAMAGE_PERCENTAGE = .4;
+
 const getDetailsListFromTileType = (tileType) =>  (TILES_DETAILS_MAP[tileType]) || DESERT_DETAILS;
 const getRandomDetailForTile = (tileType) => {
     const detailsList = getDetailsListFromTileType(tileType);
@@ -34,8 +46,8 @@ export default class Tile {
     }
 
     setLife() {
-        let factor = this.startingTile ? 4 : 1;
-        const life = 20 * factor;
+        let factor = this.startingTile ? STARTING_TILE_LIFE_FACTOR : TILE_LIFE_FACTOR;
+        const life = TILE_LIFE * factor;
 
         this.life = life;
         this.maxLife = life;
@@ -105,16 +117,18 @@ export default class Tile {
     startBurning() {
         if (!this.burning) {
             this.burning = true;
-            this.fire = Particles.addParticleEmitter(PARTICLES.FIRE, { fire: { size: 1 }, sparks: { size: 0.1 }});
-            this.fire.start();
-            this.fire.setPosition(this.getPosition());
-            console.log(this.fire);
+            this.fire = Particles.addParticleEmitter(PARTICLES.FIRE, FIRE_OPTIONS);
+            this.fire.start(Infinity);
+            this.fire.setPosition({ ...this.getPosition(), y: .5 });
         }
     }
 
     processHit(damage) {
         this.damage(damage);
-        this.startBurning();
+
+        if (this.life/this.maxLife >= TILE_CRITICAL_DAMAGE_PERCENTAGE) {
+            this.startBurning();
+        }
     }
 
     setOpacity(value) {

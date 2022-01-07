@@ -21,6 +21,7 @@ class Humans {
         TileMap.changeTile(HUMAN_STARTING_POSITION, TILES_TYPES.HUMAN, true);
 
         // setInterval(this.expand, 1000);
+        this.sendWarriorToTile(TileMap.getTileAt({ x: 7, z: 7 }));
     }
 
     hasTooManyBuildersOnMap = () => Object.keys(this.builders).length >= MAX_BUILDERS;
