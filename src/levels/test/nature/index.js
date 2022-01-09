@@ -1,11 +1,12 @@
-import { INPUT_EVENTS } from "mage-engine";
-import { Input, Models } from "mage-engine";
-import { NATURE_STARTING_POSITION, TILES_TYPES } from "../map/constants";
+import { Input, Models, INPUT_EVENTS, ENTITY_EVENTS } from "mage-engine";
+import { NATURE_STARTING_POSITION, TILES_STATES, TILES_TYPES } from "../map/constants";
 import TileMap from "../map/TileMap";
+import { DEATH_REASONS } from '../constants';
 class Nature {
 
     constructor() {
         this.builders = [];
+        this.warriors = [];
         this.currentTile = null;
         this.selector = null;
     }
@@ -18,14 +19,41 @@ class Nature {
 
         this.selector = Models.getModel('selector');
         this.selector.addScript('Selector', { position: NATURE_STARTING_POSITION });
+
+        // this.sendBuilderToTile(TileMap.getTileAt({ x: 8, z: 8 }));
+    }
+
+    handleDuckDeath = (reason) => ({ target }) => {
+        if (reason === DEATH_REASONS.BUILDING) {
+            delete this.builders[target.uuid()];
+        }
+
+        if (reason === DEATH_REASONS.KILLED) {
+            delete this.warriors[target.uuid()]
+        }
+    }
+
+    sendBuilderToTile(tile) {
+        const duck = Models.getModel('duck', { name: `duck_builder_${Math.random()}`});
+        const behaviour = duck.addScript('DuckBehaviour', { position: NATURE_STARTING_POSITION, builder: true });
+
+        behaviour
+            .goTo(tile)
+            .then(() => behaviour.buildAtPosition(tile));
+
+        TileMap.setTileState(tile, TILES_STATES.BUILDING);
+        duck.addEventListener(ENTITY_EVENTS.DISPOSE, this.handleDuckDeath(DEATH_REASONS.BUILDING));
+
+        this.builders[duck.uuid()] = duck;
+
+        return duck;
     }
 
     handleMouseClick = () => {
         const { visible, destination } = this.selector.getScript('Selector');
-        console.log(visible, destination);
 
         if (visible && this.canMouseInteract(destination)) {
-            TileMap.changeTile(destination, TILES_TYPES.FOREST);
+            this.sendBuilderToTile(TileMap.getTileAt(destination));
         }
     }
 

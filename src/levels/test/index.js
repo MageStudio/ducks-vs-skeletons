@@ -22,6 +22,7 @@ import Humans from './humans';
 import Nature from './nature';
 import Selector from './nature/Selector';
 import BulletBehaviour from './humans/BulletBehaviour';
+import DuckBehaviour from './nature/DuckBehaviour';
 
 export const WHITE = 0xffffff;
 export const SUNLIGHT = 0xffeaa7;
@@ -73,7 +74,7 @@ export default class Test extends Level {
         this.prepareSceneEffects();
 
         TileMap.generate();
-        Humans.startExpanding();
+        Humans.start();
 
         // window.humans = Humans;
         // const human = Humans.spawnHuman();
@@ -89,6 +90,7 @@ export default class Test extends Level {
         Scripts.create('slowRotation', SlowRotation);
         Scripts.create('HumanBehaviour', HumanBehaviour);
         Scripts.create('BulletBehaviour', BulletBehaviour);
+        Scripts.create('DuckBehaviour', DuckBehaviour);
         Scripts.create('Selector', Selector);
 
         this.createWorld();

@@ -2,11 +2,7 @@
 import { Models, math, ENTITY_EVENTS } from 'mage-engine';
 import TileMap from '../map/TileMap';
 import { HUMAN_STARTING_POSITION, TILES_STATES, TILES_TYPES } from '../map/constants';
-
-const DEATH_REASONS = {
-    KILLED: 'KILLED',
-    BUILDING: 'BUILDING'
-};
+import { DEATH_REASONS } from '../constants';
 
 const MAX_BUILDERS = 2;
 
@@ -17,11 +13,11 @@ class Humans {
         this.warriors = {};
     }
 
-    startExpanding() {
+    start() {
         TileMap.changeTile(HUMAN_STARTING_POSITION, TILES_TYPES.HUMAN, true);
 
         // setInterval(this.expand, 1000);
-        this.sendWarriorToTile(TileMap.getTileAt({ x: 7, z: 7 }));
+        // this.sendWarriorToTile(TileMap.getTileAt({ x: 7, z: 7 }));
     }
 
     hasTooManyBuildersOnMap = () => Object.keys(this.builders).length >= MAX_BUILDERS;
