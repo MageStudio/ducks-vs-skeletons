@@ -6,7 +6,11 @@ import {
     TILE_MATERIAL_PROPERTIES
 } from './constants';
 
+import MAP_DESCRIPTIONS from './descriptions';
+
 const { MATERIALS } = constants;
+
+const convertIntegerToTileType = integer => Object.values(TILES_TYPES)[integer] || TILES_TYPES.DESERT
 
 class TileMap {
 
@@ -29,11 +33,15 @@ class TileMap {
         collectible.addScript('slowRotation', { position, offset: 1 });
     }
 
-    generate() {
-        for (let x=0; x<this.size; x++) {
+    generate(level) {
+        const mapDescription = MAP_DESCRIPTIONS[level];
+        for (let x=0; x<mapDescription.length; x++) {
+            const row = mapDescription[x];
             this.tiles.push([]);
-            for (let z=0; z<this.size; z++) {
-                const tile = new Tile(TILES_TYPES.DESERT, { x, z });
+
+            for (let z=0; z<row.length; z++) {
+                const tileType = convertIntegerToTileType(mapDescription[x][z]);
+                const tile = new Tile(tileType, { x, z });
                 // tile.setOpacity(0.9);
 
                 this.tiles[x].push(tile);

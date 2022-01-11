@@ -8,13 +8,17 @@ const assets = {
     '/test': {
         models: {
             'selector': 'assets/models/selector.glb',
-
+            
             'human': 'assets/models/human.fbx',
             'duck': 'assets/models/duck.fbx',
-
-            'forestTile': 'assets/models/tileLow_forest.gltf.glb',
-            'desertTile': 'assets/models/tileLow_desert.gltf.glb',
-            'humanTile': 'assets/models/tileLow_teamBlue.gltf.glb',
+            
+            'desertTile': 'assets/models/desertTile.glb',
+            'forestTile': 'assets/models/grass_forest.glb',
+            // 'forestTile': 'assets/models/tileLow_forest.gltf.glb',
+            // 'desertTile': 'assets/models/tileLow_desert.gltf.glb',
+            // 'humanTile': 'assets/models/tileLow_teamBlue.gltf.glb',
+            'humanTile': 'assets/models/building_village.glb',
+            'waterTile': 'assets/models/waterTile.glb',
 
             'humanStart': 'assets/models/skyscraperD.glb',
             'forestStart': 'assets/models/tree.glb',

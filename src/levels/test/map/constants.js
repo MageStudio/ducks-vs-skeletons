@@ -36,8 +36,10 @@ export const HUMAN_DETAILS = [
 ];
 
 export const TILES_TYPES = {
-    FOREST: 'forestTile',
+    EMPTY: 'empty',
+    WATER: 'waterTile',
     DESERT: 'desertTile',
+    FOREST: 'forestTile',
     HUMAN: 'humanTile'
 };
 
@@ -64,15 +66,25 @@ export const TILES_RANDOMNESS_MAP = {
 };
 
 export const TILE_SCALE = {
-    x: .5,
-    z: .5,
-    y: .5
+    x: .97,
+    z: 1.12,
+    y: 1
+};
+
+export const TILE_LARGE_DETAILS_SCALE = {
+    x: .2,
+    y: .2,
+    z: .2
 };
 
 export const TILE_DETAILS_SCALE = {
-    x: .4,
-    y: .4,
-    z: .4
+    x: .3,
+    y: .3,
+    z: .3
+};
+
+export const TILE_DETAILS_RELATIVE_POSITION = {
+    y: .2
 };
 
 export const TILE_MATERIAL_PROPERTIES = {

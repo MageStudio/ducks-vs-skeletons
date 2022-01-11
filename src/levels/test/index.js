@@ -48,13 +48,13 @@ export default class Test extends Level {
 
         this.hemisphereLight = new HemisphereLight({
             color: {
-                sky: SUNLIGHT,
+                sky: 0xff9f43,
                 ground: GROUND
             },
             intensity: 1
         });
 
-        this.sunLight = new SunLight({ color: SUNLIGHT, intensity: 1, far: 20 });
+        this.sunLight = new SunLight({ color: 0xff9f43, intensity: 1, far: 20 });
         this.sunLight.setPosition({ y: 4, z: -3, x: -3 });
     }
 
@@ -73,8 +73,8 @@ export default class Test extends Level {
         this.addSunLight();
         this.prepareSceneEffects();
 
-        TileMap.generate();
-        Humans.start();
+        TileMap.generate(0);
+        // Humans.start();
 
         // window.humans = Humans;
         // const human = Humans.spawnHuman();
@@ -82,7 +82,7 @@ export default class Test extends Level {
         window.uni = Universe;
         window.n = Nature;
         window.tm = TileMap;
-        Nature.start();
+        // Nature.start();
     }
 
     onCreate() {

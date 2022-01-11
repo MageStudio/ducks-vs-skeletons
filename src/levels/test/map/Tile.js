@@ -3,12 +3,14 @@ import {
     TILES_DETAILS_MAP,
     TILES_TYPES,
     TILE_DETAILS_SCALE,
+    TILE_LARGE_DETAILS_SCALE,
     TILE_MATERIAL_PROPERTIES,
     TILES_RANDOMNESS_MAP,
     DESERT_DETAILS,
     TILE_SCALE,
     TILES_STATES,
-    STARTING_TILE_DETAILS_MAP
+    STARTING_TILE_DETAILS_MAP,
+    TILE_DETAILS_RELATIVE_POSITION
 } from './constants';
 
 const { MATERIALS } = constants;
@@ -32,13 +34,28 @@ const getRandomDetailForTile = (tileType) => {
 };
 const shouldRenderDetailsForTiletype = (tileType) => Math.random() > TILES_RANDOMNESS_MAP[tileType];
 
+const convertTileTypeToHeight = (tileType) => ({
+    [TILES_TYPES.WATER]: -.05, 
+    [TILES_TYPES.DESERT]: 0,
+    [TILES_TYPES.HUMAN]: 0,
+    [TILES_TYPES.FOREST]: 0
+})[tileType] || 0;
+
+const calculatePosition = ({ x, z }) => ({
+    x: z % 2 === 0 ? x + .5 : x,
+    z
+})
+
 export default class Tile {
 
     constructor(tileType, position, startingTile) {
         this.tileType = tileType;
-        this.position = position;
-        this.startingTile = startingTile;
+        this.position = {
+            ...calculatePosition(position),
+            y: convertTileTypeToHeight(this.tileType)
+        };
 
+        this.startingTile = startingTile;
         this.burning = false;
 
         this.setLife();
@@ -64,6 +81,9 @@ export default class Tile {
     isDesert = () => this.tileType === TILES_TYPES.DESERT;
     isForest = () => this.tileType === TILES_TYPES.FOREST;
     isHuman = () => this.tileType === TILES_TYPES.HUMAN;
+    isWater = () => this.tileType === TILES_TYPES.WATER;
+    isEmpty = () => this.tileType === TILES_TYPES.EMPTY;
+
     isType = tileType => this.tileType === tileType;
 
     setState = state => this.state = state;
@@ -72,6 +92,8 @@ export default class Tile {
     isBuilding = () => this.state === TILES_STATES.BUILDING;
 
     create() {
+        if (this.isEmpty()) return;
+
         this.tile = Models.getModel(this.tileType, { name: `tile_${this.position.x}_${this.position.z}`});
         this.tile.setPosition(this.position);
         this.tile.setScale(TILE_SCALE);
@@ -81,7 +103,7 @@ export default class Tile {
         if (this.startingTile) {
             this.addStartingDetail();
         } else {
-            this.addRandomDetail();
+            // this.addRandomDetail();
         }
     }
 
@@ -106,11 +128,8 @@ export default class Tile {
             details.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
             this.tile.add(details);
 
-            if (this.isDetailATreeOrLargeBuilding(detailName)) {
-                details.setScale(TILE_DETAILS_SCALE);
-            }
-
-            details.setPosition({ y: 1 });
+            details.setScale(this.isDetailATreeOrLargeBuilding(detailName) ? TILE_LARGE_DETAILS_SCALE : TILE_DETAILS_SCALE);
+            details.setPosition(TILE_DETAILS_RELATIVE_POSITION);
         }
     }
 
@@ -135,7 +154,7 @@ export default class Tile {
         this.tile.setOpacity(value);
     }
 
-    getPosition() { return this.tile.getPosition(); }
+    getPosition() { return this.position; }
 
     dispose() {
         this.tile.dispose();
