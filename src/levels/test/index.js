@@ -10,7 +10,9 @@ import {
     Cube,
     Scripts,
     SunLight,
-    Universe
+    Universe,
+    PostProcessing,
+    Sky
 } from 'mage-engine';
 
 import TileMap, { HUMAN_DETAILS } from './map/TileMap';
@@ -30,17 +32,17 @@ export const DARKER_GROUND = 0X78e08f;
 export const GROUND = 0xb8e994;
 export const BACKGROUND = 0xdff9fb;//0xddf3f5;
 
-const DOF_OPTIONS = {
-    focus: 1.0,
-    aperture: 0.0001,
-    maxblur: 0.01
-};
-
-// const SATURATION_OPTIONS = {
-//     saturation: 0.2
+// const DOF_OPTIONS = {
+//     focus: 1.0,
+//     aperture: 0.0001,
+//     maxblur: 0.01
 // };
 
-const { MATERIALS, EFFECTS } = constants;
+const SATURATION_OPTIONS = {
+    saturation: 0.4
+};
+
+const { EFFECTS } = constants;
 
 export default class Test extends Level {
 
@@ -58,6 +60,11 @@ export default class Test extends Level {
         this.sunLight.setPosition({ y: 4, z: -3, x: -3 });
     }
 
+    addSky() {
+        this.sky = new Sky({});
+        this.sky.setSun(180, .205, 100);
+    }
+
     prepareCamera() {
         Scene.getCamera().setPosition({ x: 7.8, y: 5.48, z: 12.8 });
         Controls.setOrbitControl({ target: { x: 5, y: 0, z: 5 } });
@@ -67,10 +74,12 @@ export default class Test extends Level {
         Scene.setClearColor(0xff9f43);
         Scene.setBackground(0xff9f43);
         Scene.setRendererOutputEncoding(THREE.sRGBEncoding);
+        PostProcessing.add(EFFECTS.HUE_SATURATION, SATURATION_OPTIONS);
     }
 
     createWorld() {
         this.addSunLight();
+        this.addSky();
         this.prepareSceneEffects();
 
         TileMap.generate(0);

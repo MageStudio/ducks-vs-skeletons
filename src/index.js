@@ -50,7 +50,8 @@ const assets = {
         },
         textures: {
             'zombie': 'assets/textures/zombieA.png',
-            'fire': 'assets/textures/fire.png'
+            'fire': 'assets/textures/fire.png',
+            'waterNormal': 'assets/textures/waterNormals.jpg'
         }
     }
 }

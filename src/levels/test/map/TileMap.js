@@ -48,7 +48,7 @@ class TileMap {
             }
         }
 
-        this.createCollectible();
+        // this.createCollectible();
     }
 
     isValidTile = ({ x, z }) => {

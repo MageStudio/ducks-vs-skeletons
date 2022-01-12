@@ -105,6 +105,11 @@ export default class Tile {
         } else {
             // this.addRandomDetail();
         }
+
+        if (this.isWater()) {
+            this.tile.setOpacity(.3);
+            this.tile.setColor(0x00a8ff);
+        }
     }
 
     isDetailATreeOrLargeBuilding(detailName) {
