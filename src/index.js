@@ -17,7 +17,8 @@ const assets = {
             // 'forestTile': 'assets/models/tileLow_forest.gltf.glb',
             // 'desertTile': 'assets/models/tileLow_desert.gltf.glb',
             // 'humanTile': 'assets/models/tileLow_teamBlue.gltf.glb',
-            'humanTile': 'assets/models/building_village.glb',
+            // 'humanTile': 'assets/models/building_village.glb',
+            'humanTile': 'assets/models/humanTile.glb',
             'waterTile': 'assets/models/waterTile.glb',
 
             'humanStart': 'assets/models/skyscraperD.glb',

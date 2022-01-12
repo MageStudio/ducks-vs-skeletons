@@ -10,7 +10,9 @@ import {
     TILE_SCALE,
     TILES_STATES,
     STARTING_TILE_DETAILS_MAP,
-    TILE_DETAILS_RELATIVE_POSITION
+    TILE_DETAILS_RELATIVE_POSITION,
+    WATER_TILE_COLOR,
+    WATER_TILE_OPACITY
 } from './constants';
 
 const { MATERIALS } = constants;
@@ -107,9 +109,14 @@ export default class Tile {
         }
 
         if (this.isWater()) {
-            this.tile.setOpacity(.3);
-            this.tile.setColor(0x00a8ff);
+            this.applyWaterTileStyle();
         }
+    }
+
+    applyWaterTileStyle() {
+        this.tile.setOpacity(WATER_TILE_OPACITY);
+        this.tile.setColor(WATER_TILE_COLOR);
+        this.tile.addScript('Bobbing', { angleOffset: this.position.x  });
     }
 
     isDetailATreeOrLargeBuilding(detailName) {

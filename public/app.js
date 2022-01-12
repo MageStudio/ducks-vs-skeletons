@@ -7135,6 +7135,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _nature_Selector__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./nature/Selector */ "./src/levels/test/nature/Selector.js");
 /* harmony import */ var _humans_BulletBehaviour__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./humans/BulletBehaviour */ "./src/levels/test/humans/BulletBehaviour.js");
 /* harmony import */ var _nature_DuckBehaviour__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./nature/DuckBehaviour */ "./src/levels/test/nature/DuckBehaviour.js");
+/* harmony import */ var _map_Bobbing__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./map/Bobbing */ "./src/levels/test/map/Bobbing.js");
 
 
 
@@ -7144,6 +7145,7 @@ __webpack_require__.r(__webpack_exports__);
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default()(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default()(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3___default()(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 
 
 
@@ -7189,7 +7191,7 @@ var Test = /*#__PURE__*/function (_Level) {
       this.hemisphereLight = new mage_engine__WEBPACK_IMPORTED_MODULE_5__.HemisphereLight({
         color: {
           sky: 0xff9f43,
-          ground: BACKGROUND
+          ground: GROUND
         },
         intensity: 1
       });
@@ -7207,8 +7209,10 @@ var Test = /*#__PURE__*/function (_Level) {
   }, {
     key: "addSky",
     value: function addSky() {
-      this.sky = new mage_engine__WEBPACK_IMPORTED_MODULE_5__.Sky({});
-      this.sky.setSun(180, .205, 100);
+      this.sky = new mage_engine__WEBPACK_IMPORTED_MODULE_5__.Sky({}); // this.sky.setSun(180, .205, 100);
+
+      this.sky.setSun(30, .01, 100);
+      window.sky = this.sky;
     }
   }, {
     key: "prepareCamera",
@@ -7258,6 +7262,7 @@ var Test = /*#__PURE__*/function (_Level) {
       mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('BulletBehaviour', _humans_BulletBehaviour__WEBPACK_IMPORTED_MODULE_14__.default);
       mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('DuckBehaviour', _nature_DuckBehaviour__WEBPACK_IMPORTED_MODULE_15__.default);
       mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('Selector', _nature_Selector__WEBPACK_IMPORTED_MODULE_13__.default);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('Bobbing', _map_Bobbing__WEBPACK_IMPORTED_MODULE_16__.default);
       this.createWorld();
       this.prepareCamera();
     }
@@ -7265,6 +7270,80 @@ var Test = /*#__PURE__*/function (_Level) {
 
   return Test;
 }(mage_engine__WEBPACK_IMPORTED_MODULE_5__.Level);
+
+
+
+/***/ }),
+
+/***/ "./src/levels/test/map/Bobbing.js":
+/*!****************************************!*\
+  !*** ./src/levels/test/map/Bobbing.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Bobbing)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/classCallCheck.js");
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js");
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/inherits */ "./node_modules/@babel/runtime/helpers/inherits.js");
+/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js");
+/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/getPrototypeOf.js");
+/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var mage_engine__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! mage-engine */ "../Mage/dist/mage.js");
+
+
+
+
+
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default()(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default()(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3___default()(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+
+
+var Bobbing = /*#__PURE__*/function (_BaseScript) {
+  _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2___default()(Bobbing, _BaseScript);
+
+  var _super = _createSuper(Bobbing);
+
+  function Bobbing() {
+    _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, Bobbing);
+
+    return _super.call(this, 'Bobbing');
+  }
+
+  _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(Bobbing, [{
+    key: "start",
+    value: function start(element, _ref) {
+      var _ref$angleOffset = _ref.angleOffset,
+          angleOffset = _ref$angleOffset === void 0 ? 0 : _ref$angleOffset,
+          _ref$offset = _ref.offset,
+          offset = _ref$offset === void 0 ? 0 : _ref$offset;
+      this.angleOffset = angleOffset;
+      this.element = element;
+      this.offset = offset;
+      this.angle = 0 + this.angleOffset;
+    }
+  }, {
+    key: "update",
+    value: function update(dt) {
+      this.angle += 1 * dt;
+      this.element.setPosition({
+        y: Math.sin(this.angle * 2) / 30 + this.offset
+      });
+    }
+  }]);
+
+  return Bobbing;
+}(mage_engine__WEBPACK_IMPORTED_MODULE_5__.BaseScript);
 
 
 
@@ -7431,9 +7510,11 @@ var Tile = /*#__PURE__*/function () {
       }
 
       if (this.isWater()) {
-        console.log('setting tile color');
         this.tile.setOpacity(.3);
         this.tile.setColor(0x00a8ff);
+        this.tile.addScript('Bobbing', {
+          angleOffset: this.position.x
+        });
       }
     }
   }, {
@@ -10990,7 +11071,8 @@ var assets = {
       // 'forestTile': 'assets/models/tileLow_forest.gltf.glb',
       // 'desertTile': 'assets/models/tileLow_desert.gltf.glb',
       // 'humanTile': 'assets/models/tileLow_teamBlue.gltf.glb',
-      'humanTile': 'assets/models/building_village.glb',
+      // 'humanTile': 'assets/models/building_village.glb',
+      'humanTile': 'assets/models/humanTile.glb',
       'waterTile': 'assets/models/waterTile.glb',
       'humanStart': 'assets/models/skyscraperD.glb',
       'forestStart': 'assets/models/tree.glb',

@@ -97,3 +97,6 @@ export const TILE_COLLECTIBLE_SCALE = {
     y: .3,
     z: .3
 }
+
+export const WATER_TILE_OPACITY = .3;
+export const WATER_TILE_COLOR = 0x00a8ff;

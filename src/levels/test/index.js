@@ -25,6 +25,7 @@ import Nature from './nature';
 import Selector from './nature/Selector';
 import BulletBehaviour from './humans/BulletBehaviour';
 import DuckBehaviour from './nature/DuckBehaviour';
+import Bobbing from './map/Bobbing';
 
 export const WHITE = 0xffffff;
 export const SUNLIGHT = 0xffeaa7;
@@ -62,7 +63,9 @@ export default class Test extends Level {
 
     addSky() {
         this.sky = new Sky({});
-        this.sky.setSun(180, .205, 100);
+        // this.sky.setSun(180, .205, 100);
+        this.sky.setSun(30, .01, 100);
+        window.sky = this.sky;
     }
 
     prepareCamera() {
@@ -101,6 +104,7 @@ export default class Test extends Level {
         Scripts.create('BulletBehaviour', BulletBehaviour);
         Scripts.create('DuckBehaviour', DuckBehaviour);
         Scripts.create('Selector', Selector);
+        Scripts.create('Bobbing', Bobbing);
 
         this.createWorld();
         this.prepareCamera();
