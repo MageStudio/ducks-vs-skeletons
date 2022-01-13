@@ -59,7 +59,11 @@ class Nature {
     }
 
     canMouseInteract(destination) {
-        return TileMap.isTileAdjacentToType(destination, TILES_TYPES.FOREST) && !TileMap.isTileType(destination, TILES_TYPES.FOREST)
+        const destinationTile = TileMap.getTileAt(destination);
+
+        return TileMap.isTileAdjacentToType(destination, TILES_TYPES.FOREST) &&
+            !destinationTile.isForest() &&
+            !destinationTile.isObstacle();
     }
 
     handleMouseIntersection = () => {

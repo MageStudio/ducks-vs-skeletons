@@ -8583,7 +8583,8 @@ var Nature = /*#__PURE__*/function () {
   }, {
     key: "canMouseInteract",
     value: function canMouseInteract(destination) {
-      return _map_TileMap__WEBPACK_IMPORTED_MODULE_5__.default.isTileAdjacentToType(destination, _map_constants__WEBPACK_IMPORTED_MODULE_4__.TILES_TYPES.FOREST) && !_map_TileMap__WEBPACK_IMPORTED_MODULE_5__.default.isTileType(destination, _map_constants__WEBPACK_IMPORTED_MODULE_4__.TILES_TYPES.FOREST);
+      var destinationTile = _map_TileMap__WEBPACK_IMPORTED_MODULE_5__.default.getTileAt(destination);
+      return _map_TileMap__WEBPACK_IMPORTED_MODULE_5__.default.isTileAdjacentToType(destination, _map_constants__WEBPACK_IMPORTED_MODULE_4__.TILES_TYPES.FOREST) && !destinationTile.isForest() && !destinationTile.isObstacle();
     }
   }]);
 
