@@ -23,7 +23,7 @@ class Humans {
 
     hasTooManyBuildersOnMap = () => Object.keys(this.builders).length >= MAX_BUILDERS;
 
-    isValidTile = tile => !tile.isBuilding() && !tile.isType(TILES_TYPES.HUMAN);
+    isValidTile = tile => !tile.isBuilding() && !tile.isType(TILES_TYPES.HUMAN) && !tile.isObstacle();
 
     expand = () => {
         if (this.hasTooManyBuildersOnMap()) return;

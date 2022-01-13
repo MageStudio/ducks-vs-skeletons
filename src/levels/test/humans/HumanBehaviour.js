@@ -55,12 +55,13 @@ export default class HumanBehaviour extends BaseScript {
             y: MINIMUM_HEIGHT
         };
 
+        console.log('setting human at', this.position);
+
         this.builder = builder;
         this.warrior = warrior;
 
         window.human = human;
 
-        
         this.human.setMaterialFromName(MATERIALS.STANDARD, HUMAN_MATERIAL_PROPERTIES);
         this.human.setScale(HUMAN_SCALE);
         this.human.playAnimation(HUMAN_ANIMATIONS.IDLE);
