@@ -85,8 +85,8 @@ export default class Test extends Level {
         this.addSky();
         this.prepareSceneEffects();
 
-        TileMap.generate(0);
-        // Humans.start();
+        const { human, nature } = TileMap.generate(0);
+        Humans.start(human);
 
         // window.humans = Humans;
         // const human = Humans.spawnHuman();

@@ -1,7 +1,7 @@
 
 import { Models, math, ENTITY_EVENTS } from 'mage-engine';
 import TileMap from '../map/TileMap';
-import { HUMAN_STARTING_POSITION, TILES_STATES, TILES_TYPES } from '../map/constants';
+import { TILES_STATES, TILES_TYPES } from '../map/constants';
 import { DEATH_REASONS } from '../constants';
 
 const MAX_BUILDERS = 2;
@@ -13,10 +13,11 @@ class Humans {
         this.warriors = {};
     }
 
-    start() {
-        TileMap.changeTile(HUMAN_STARTING_POSITION, TILES_TYPES.HUMAN, true);
+    start(initialPosition) {
+        TileMap.changeTile(initialPosition, TILES_TYPES.HUMAN, true);
+        this.initialPosition = initialPosition;
 
-        // setInterval(this.expand, 1000);
+        setInterval(this.expand, 1000);
         // this.sendWarriorToTile(TileMap.getTileAt({ x: 7, z: 7 }));
     }
 
@@ -32,13 +33,15 @@ class Humans {
                 .getTilesByType(TILES_TYPES.HUMAN)
                 .map(tile => (
                     TileMap
-                        .getAdjacentTiles(tile.getPosition())
+                        .getAdjacentTiles(tile.getIndex())
                         .filter(this.isValidTile)
                 ))
                 .filter(adjacents => adjacents.length)
                 .sort()
                 .pop()
         );
+
+        console.log('next tile,', nextTile);
 
         this.sendBuilderToTile(nextTile);
     }
@@ -55,7 +58,9 @@ class Humans {
 
     sendBuilderToTile = (tile) => {
         const human = Models.getModel('human', { name: `human_builder_${Math.random()}`});
-        const behaviour = human.addScript('HumanBehaviour', { position: HUMAN_STARTING_POSITION, builder: true });
+        const behaviour = human.addScript('HumanBehaviour', { position: this.initialPosition, builder: true });
+
+        console.log('sending human to tile', tile);
 
         behaviour
             .goTo(tile)
@@ -71,7 +76,7 @@ class Humans {
 
     sendWarriorToTile = tile => {
         const human = Models.getModel('human', { name: `human_warrior_${Math.random()}`});
-        const behaviour = human.addScript('HumanBehaviour', { position: HUMAN_STARTING_POSITION, warrior: true });
+        const behaviour = human.addScript('HumanBehaviour', { position: this.initialPosition, warrior: true });
 
         behaviour
             .goTo(tile)

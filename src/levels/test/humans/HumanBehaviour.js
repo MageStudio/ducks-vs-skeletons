@@ -137,17 +137,20 @@ export default class HumanBehaviour extends BaseScript {
     buildAtPosition(tile) {
         if (!this.isBuilder()) return;
 
+        console.log('building here');
+
         this.human.playAnimation(HUMAN_ANIMATIONS.BUILD);
         setTimeout(() => {
             this.human.playAnimation(HUMAN_ANIMATIONS.IDLE);
             if (!tile.isHuman()) {
-                TileMap.changeTile(tile.getPosition(), TILES_TYPES.HUMAN);
+                TileMap.changeTile(tile.getIndex(), TILES_TYPES.HUMAN);
                 this.die();
             }
         }, 3000)
     }
 
     goTo(tile) {
+        console.log('going to ', tile);
         const { x, z } = tile.getPosition();
         const targetPosition = new Vector3(x, MINIMUM_HEIGHT, z);
         const time = this.human.getPosition().distanceTo(targetPosition) / this.getSpeed() * 1000;

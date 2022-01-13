@@ -65,7 +65,7 @@ class Nature {
         const intersections = Input.mouse.getIntersections(true, 'tile');
 
         if (intersections.length) {
-            const destination = intersections[0].element.getPosition();
+            const destination = intersections[0].element.getData('index');
 
             this.selector.getScript('Selector').appearAt(destination);
             this.selector.getScript('Selector').markEnabled(this.canMouseInteract(destination))

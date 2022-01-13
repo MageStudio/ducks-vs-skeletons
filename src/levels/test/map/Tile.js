@@ -1,4 +1,4 @@
-import { Models, constants, math, Particles, PARTICLES } from 'mage-engine';
+import { Models, constants, math, Particles, PARTICLES, THREE } from 'mage-engine';
 import {
     TILES_DETAILS_MAP,
     TILES_TYPES,
@@ -15,6 +15,7 @@ import {
     WATER_TILE_OPACITY
 } from './constants';
 
+const { Vector3 } = THREE;
 const { MATERIALS } = constants;
 
 const FIRE_OPTIONS = {
@@ -52,10 +53,13 @@ export default class Tile {
 
     constructor(tileType, position, startingTile) {
         this.tileType = tileType;
+        this.index = position;
         this.position = {
             ...calculatePosition(position),
             y: convertTileTypeToHeight(this.tileType)
         };
+        
+        this.id = `${position.x}${position.z}`;
 
         this.startingTile = startingTile;
         this.burning = false;
@@ -86,6 +90,8 @@ export default class Tile {
     isWater = () => this.tileType === TILES_TYPES.WATER;
     isEmpty = () => this.tileType === TILES_TYPES.EMPTY;
 
+    isObstacle = () => this.isWater() || this.isEmpty();
+
     isType = tileType => this.tileType === tileType;
 
     setState = state => this.state = state;
@@ -96,7 +102,8 @@ export default class Tile {
     create() {
         if (this.isEmpty()) return;
 
-        this.tile = Models.getModel(this.tileType, { name: `tile_${this.position.x}_${this.position.z}`});
+        this.tile = Models.getModel(this.tileType, { name: `tile_${this.index.x}_${this.index.z}`});
+        this.tile.setData('index', this.index);
         this.tile.setPosition(this.position);
         this.tile.setScale(TILE_SCALE);
         this.tile.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
@@ -166,7 +173,9 @@ export default class Tile {
         this.tile.setOpacity(value);
     }
 
-    getPosition() { return this.position; }
+    getPosition() { return new Vector3(this.position.x, this.position.y, this.position.z); }
+
+    getIndex() { return this.index; }
 
     dispose() {
         this.tile.dispose();

@@ -34,21 +34,28 @@ class TileMap {
     }
 
     generate(level) {
-        const mapDescription = MAP_DESCRIPTIONS[level];
-        for (let x=0; x<mapDescription.length; x++) {
-            const row = mapDescription[x];
+        const { MAP, HUMAN_STARTING_POSITION, NATURE_STARTING_POSITION } = MAP_DESCRIPTIONS[level];
+        this.size = MAP.length;
+        for (let x=0; x<MAP.length; x++) {
+            const row = MAP[x];
             this.tiles.push([]);
 
             for (let z=0; z<row.length; z++) {
-                const tileType = convertIntegerToTileType(mapDescription[x][z]);
+                const tileType = convertIntegerToTileType(MAP[x][z]);
                 const tile = new Tile(tileType, { x, z });
-                // tile.setOpacity(0.9);
-
                 this.tiles[x].push(tile);
             }
         }
 
+        return {
+            human: HUMAN_STARTING_POSITION,
+            nature: NATURE_STARTING_POSITION
+        };
+
         // this.createCollectible();
+
+        // const path = this.getPathToTile(this.getTileAt({x: 4, z: 3 }), this.getTileAt({x: 10, z: 10}))
+        // path.forEach(t => t.setOpacity(.3));
     }
 
     isValidTile = ({ x, z }) => {
@@ -89,7 +96,8 @@ class TileMap {
             { x: x+1, z: z+1 },
         ]
         .filter(this.isValidTile)
-        .map(({ x, z }) => this.tiles[x][z])
+        .map(this.getTileAt)
+        .filter(t => !t.isObstacle())
     }
 
     isTileAdjacentToType = (position, tileType) => {
@@ -99,7 +107,7 @@ class TileMap {
     }
 
     setTileState(tile, state) {
-        const { x, z } = tile.getPosition();
+        const { x, z } = tile.getIndex();
         this.tiles[x][z].setState(state);
     }
 
@@ -113,6 +121,27 @@ class TileMap {
 
     isTileType({ x, z }, tileType) {
         return this.tiles[x][z] && this.tiles[x][z].isType(tileType);
+    }
+
+    getPathToTile(start, end) {
+        if (!this.isValidTile(end.getIndex())) return;
+
+        const calculatePath = (current, end, path) => {
+            if (current.id === end.id) {
+                return path;
+            }
+            const endPosition = end.getPosition();
+            const adjacent = this.getAdjacentTiles(current.getIndex());
+            const [closest, secondClosest] = adjacent.sort((a,b) => a.getPosition().distanceTo(endPosition) - b.getPosition().distanceTo(endPosition));
+
+            path.push(closest);
+            if (secondClosest) {
+                path.push(secondClosest);
+            }
+            return calculatePath(closest, end, path);
+        }
+
+        return calculatePath(start, end, []);
     }
 }
 
