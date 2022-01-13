@@ -94,7 +94,7 @@ export default class Test extends Level {
         window.uni = Universe;
         window.n = Nature;
         window.tm = TileMap;
-        // Nature.start();
+        Nature.start(nature);
     }
 
     onCreate() {

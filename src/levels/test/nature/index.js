@@ -11,14 +11,15 @@ class Nature {
         this.selector = null;
     }
 
-    start() {
+    start(position) {
+        this.initialPosition = position;
         Input.enable();
         Input.addEventListener(INPUT_EVENTS.MOUSE_DOWN, this.handleMouseClick);
-        TileMap.changeTile(NATURE_STARTING_POSITION, TILES_TYPES.FOREST, true);
+        TileMap.changeTile(this.initialPosition, TILES_TYPES.FOREST, true);
         setInterval(this.handleMouseIntersection, 250)
 
         this.selector = Models.getModel('selector');
-        this.selector.addScript('Selector', { position: NATURE_STARTING_POSITION });
+        this.selector.addScript('Selector', { position });
 
         // this.sendBuilderToTile(TileMap.getTileAt({ x: 8, z: 8 }));
     }
@@ -35,7 +36,7 @@ class Nature {
 
     sendBuilderToTile(tile) {
         const duck = Models.getModel('duck', { name: `duck_builder_${Math.random()}`});
-        const behaviour = duck.addScript('DuckBehaviour', { position: NATURE_STARTING_POSITION, builder: true });
+        const behaviour = duck.addScript('DuckBehaviour', { position: this.initialPosition, builder: true });
 
         behaviour
             .goTo(tile)
@@ -65,10 +66,11 @@ class Nature {
         const intersections = Input.mouse.getIntersections(true, 'tile');
 
         if (intersections.length) {
-            const destination = intersections[0].element.getData('index');
+            const destinationIndex = intersections[0].element.getData('index');
+            const position = intersections[0].element.getPosition();
 
-            this.selector.getScript('Selector').appearAt(destination);
-            this.selector.getScript('Selector').markEnabled(this.canMouseInteract(destination))
+            this.selector.getScript('Selector').appearAt(position, destinationIndex);
+            this.selector.getScript('Selector').markEnabled(this.canMouseInteract(destinationIndex))
         } else {
             this.selector.getScript('Selector').disappear();
         }
