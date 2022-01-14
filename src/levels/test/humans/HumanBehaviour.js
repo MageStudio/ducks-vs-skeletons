@@ -20,9 +20,9 @@ const HUMAN_MATERIAL_PROPERTIES = {
 };
 
 const HUMAN_SCALE = {
-    x: 0.001,
-    y: 0.001,
-    z: 0.001
+    x: 0.0008,
+    y: 0.0008,
+    z: 0.0008
 };
 
 const HUMAN_ANIMATIONS = {
@@ -33,7 +33,7 @@ const HUMAN_ANIMATIONS = {
     BUILD: 'Root|CrouchIdle'
 };
 
-const MINIMUM_HEIGHT = .5;
+const MINIMUM_HEIGHT = .2;
 const SPEEDS = {
     BUILDER: 0.5,
     WARRIOR: 0.8

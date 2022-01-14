@@ -1,10 +1,10 @@
 import { BaseScript, constants } from 'mage-engine';
 
-const CURSOR_HEIGHT = .5;
+const CURSOR_HEIGHT = .25;
 const CURSOR_SCALE = {
     x: .5,
-    y: .5,
-    z: .5
+    y: .3,
+    z: .62
 };
 
 const CURSOR_DEFAULT_DESTINATION = {

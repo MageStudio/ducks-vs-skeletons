@@ -6861,9 +6861,9 @@ var HUMAN_MATERIAL_PROPERTIES = {
   roughness: 1.0
 };
 var HUMAN_SCALE = {
-  x: 0.001,
-  y: 0.001,
-  z: 0.001
+  x: 0.0008,
+  y: 0.0008,
+  z: 0.0008
 };
 var HUMAN_ANIMATIONS = {
   IDLE: 'Root|Idle',
@@ -6872,7 +6872,7 @@ var HUMAN_ANIMATIONS = {
   DEATH: 'Root|Death',
   BUILD: 'Root|CrouchIdle'
 };
-var MINIMUM_HEIGHT = .5;
+var MINIMUM_HEIGHT = .2;
 var SPEEDS = {
   BUILDER: 0.5,
   WARRIOR: 0.8
@@ -6938,6 +6938,7 @@ var HumanBehaviour = /*#__PURE__*/function (_BaseScript) {
       this.position = _objectSpread(_objectSpread({}, position), {}, {
         y: MINIMUM_HEIGHT
       });
+      console.log('setting human at', this.position);
       this.builder = builder;
       this.warrior = warrior;
       window.human = human;
@@ -7104,7 +7105,7 @@ var Humans = /*#__PURE__*/function () {
     });
 
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "isValidTile", function (tile) {
-      return !tile.isBuilding() && !tile.isType(_map_constants__WEBPACK_IMPORTED_MODULE_5__.TILES_TYPES.HUMAN);
+      return !tile.isBuilding() && !tile.isType(_map_constants__WEBPACK_IMPORTED_MODULE_5__.TILES_TYPES.HUMAN) && !tile.isObstacle();
     });
 
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "expand", function () {
@@ -8147,9 +8148,9 @@ var DUCK_MATERIAL_PROPERTIES = {
   roughness: 1.0
 };
 var DUCK_SCALE = {
-  x: 0.3,
-  y: 0.3,
-  z: 0.3
+  x: 0.2,
+  y: 0.2,
+  z: 0.2
 };
 var WEAPON_RELATIVE_POSITION = {
   x: -.3,
@@ -8164,7 +8165,7 @@ var WEAPON_SCALE = {
   y: 15,
   z: 15
 };
-var MINIMUM_HEIGHT = .5;
+var MINIMUM_HEIGHT = .2;
 var SPEEDS = {
   BUILDER: 0.5,
   WARRIOR: 0.8
@@ -8387,11 +8388,11 @@ function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflec
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 
-var CURSOR_HEIGHT = .5;
+var CURSOR_HEIGHT = .25;
 var CURSOR_SCALE = {
   x: .5,
-  y: .5,
-  z: .5
+  y: .3,
+  z: .62
 };
 var CURSOR_DEFAULT_DESTINATION = {
   x: Infinity,

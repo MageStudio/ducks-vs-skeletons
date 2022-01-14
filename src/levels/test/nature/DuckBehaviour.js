@@ -20,9 +20,9 @@ const DUCK_MATERIAL_PROPERTIES = {
 };
 
 const DUCK_SCALE = {
-    x: 0.3,
-    y: 0.3,
-    z: 0.3
+    x: 0.2,
+    y: 0.2,
+    z: 0.2
 };
 
 const WEAPON_RELATIVE_POSITION = {
@@ -41,7 +41,7 @@ const WEAPON_SCALE = {
     z: 15
 }
 
-const MINIMUM_HEIGHT = .5;
+const MINIMUM_HEIGHT = .2;
 const SPEEDS = {
     BUILDER: 0.5,
     WARRIOR: 0.8
