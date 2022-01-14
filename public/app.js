@@ -8417,7 +8417,7 @@ var Selector = /*#__PURE__*/function (_BaseScript) {
     _this = _super.call(this, 'Selector');
 
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2___default()(_this), "markEnabled", function (flag) {
-      var color = flag ? _this.initialColor : 0xff0000;
+      var color = flag ? _this.initialColor : mage_engine__WEBPACK_IMPORTED_MODULE_7__.PALETTES.FRENCH_PALETTE.MANDARIN_RED;
 
       _this.selector.setColor(color);
     });

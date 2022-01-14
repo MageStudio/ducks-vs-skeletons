@@ -1,4 +1,4 @@
-import { BaseScript, constants } from 'mage-engine';
+import { BaseScript, constants, PALETTES } from 'mage-engine';
 
 const CURSOR_HEIGHT = .25;
 const CURSOR_SCALE = {
@@ -48,7 +48,7 @@ export default class Selector extends BaseScript {
     }
 
     markEnabled = flag => {
-        const color = flag ? this.initialColor : 0xff0000;
+        const color = flag ? this.initialColor : PALETTES.FRENCH_PALETTE.MANDARIN_RED;
 
         this.selector.setColor(color);
     }
