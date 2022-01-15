@@ -1,16 +1,22 @@
-import { Models, constants, math, Particles, PARTICLES } from 'mage-engine';
+import { Models, constants, math, Particles, PARTICLES, THREE } from 'mage-engine';
 import {
     TILES_DETAILS_MAP,
     TILES_TYPES,
     TILE_DETAILS_SCALE,
+    TILE_LARGE_DETAILS_SCALE,
     TILE_MATERIAL_PROPERTIES,
     TILES_RANDOMNESS_MAP,
     DESERT_DETAILS,
     TILE_SCALE,
     TILES_STATES,
-    STARTING_TILE_DETAILS_MAP
+    STARTING_TILE_DETAILS_MAP,
+    TILE_DETAILS_RELATIVE_POSITION,
+    WATER_TILE_COLOR,
+    WATER_TILE_OPACITY,
+    TILE_BASE_VARIATIONS_MAP
 } from './constants';
 
+const { Vector3 } = THREE;
 const { MATERIALS } = constants;
 
 const FIRE_OPTIONS = {
@@ -26,23 +32,50 @@ const TILE_LIFE_FACTOR = 1;
 const TILE_CRITICAL_DAMAGE_PERCENTAGE = .4;
 
 const getDetailsListFromTileType = (tileType) =>  (TILES_DETAILS_MAP[tileType]) || DESERT_DETAILS;
-const getRandomDetailForTile = (tileType) => {
-    const detailsList = getDetailsListFromTileType(tileType);
-    return detailsList[Math.floor(Math.random() * detailsList.length)];
-};
+const getRandomDetailForTile = (tileType) => math.pickRandom(getDetailsListFromTileType(tileType));
 const shouldRenderDetailsForTiletype = (tileType) => Math.random() > TILES_RANDOMNESS_MAP[tileType];
+const getRandomVariationForTile = tileType => {
+    const variations = TILE_BASE_VARIATIONS_MAP[tileType] || [tileType] 
+    return math.pickRandom(variations);
+}
+
+const convertTileTypeToHeight = (tileType) => ({
+    [TILES_TYPES.WATER]: -.05, 
+    [TILES_TYPES.DESERT]: 0,
+    [TILES_TYPES.HUMAN]: 0,
+    [TILES_TYPES.FOREST]: 0
+})[tileType] || 0;
+
+const calculatePosition = ({ x, z }) => ({
+    x: z % 2 === 0 ? x + .5 : x,
+    z
+})
 
 export default class Tile {
 
-    constructor(tileType, position, startingTile) {
+    constructor(tileType, options = {}) {
+        const {
+            variation = getRandomVariationForTile(tileType),
+            startingTile = false,
+            position
+        } = options;
+        
         this.tileType = tileType;
-        this.position = position;
-        this.startingTile = startingTile;
+        this.variation = variation;
+        
+        this.index = position;
+        this.position = {
+            ...calculatePosition(position),
+            y: convertTileTypeToHeight(this.tileType)
+        };
+        
+        this.id = `${position.x}${position.z}`;
 
+        this.startingTile = startingTile;
         this.burning = false;
 
         this.setLife();
-        this.create();
+        this.create(variation);
     }
 
     setLife() {
@@ -64,6 +97,11 @@ export default class Tile {
     isDesert = () => this.tileType === TILES_TYPES.DESERT;
     isForest = () => this.tileType === TILES_TYPES.FOREST;
     isHuman = () => this.tileType === TILES_TYPES.HUMAN;
+    isWater = () => this.tileType === TILES_TYPES.WATER;
+    isEmpty = () => this.tileType === TILES_TYPES.EMPTY;
+
+    isObstacle = () => this.isWater() || this.isEmpty();
+
     isType = tileType => this.tileType === tileType;
 
     setState = state => this.state = state;
@@ -72,7 +110,10 @@ export default class Tile {
     isBuilding = () => this.state === TILES_STATES.BUILDING;
 
     create() {
-        this.tile = Models.getModel(this.tileType, { name: `tile_${this.position.x}_${this.position.z}`});
+        if (this.isEmpty()) return;
+
+        this.tile = Models.getModel(this.variation, { name: `tile_${this.index.x}_${this.index.z}`});
+        this.tile.setData('index', this.index);
         this.tile.setPosition(this.position);
         this.tile.setScale(TILE_SCALE);
         this.tile.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
@@ -81,8 +122,18 @@ export default class Tile {
         if (this.startingTile) {
             this.addStartingDetail();
         } else {
-            this.addRandomDetail();
+            // this.addRandomDetail();
         }
+
+        if (this.isWater()) {
+            this.applyWaterTileStyle();
+        }
+    }
+
+    applyWaterTileStyle() {
+        this.tile.setOpacity(WATER_TILE_OPACITY);
+        this.tile.setColor(WATER_TILE_COLOR);
+        this.tile.addScript('Bobbing', { angleOffset: this.position.x  });
     }
 
     isDetailATreeOrLargeBuilding(detailName) {
@@ -94,8 +145,9 @@ export default class Tile {
         startingDetail.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
         
         this.tile.add(startingDetail);
+        startingDetail.setScale(TILE_LARGE_DETAILS_SCALE);
 
-        startingDetail.setPosition({ y: 1 });
+        startingDetail.setPosition({ y: .2 });
     }
 
     addRandomDetail() {
@@ -106,11 +158,8 @@ export default class Tile {
             details.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
             this.tile.add(details);
 
-            if (this.isDetailATreeOrLargeBuilding(detailName)) {
-                details.setScale(TILE_DETAILS_SCALE);
-            }
-
-            details.setPosition({ y: 1 });
+            details.setScale(this.isDetailATreeOrLargeBuilding(detailName) ? TILE_LARGE_DETAILS_SCALE : TILE_DETAILS_SCALE);
+            details.setPosition(TILE_DETAILS_RELATIVE_POSITION);
         }
     }
 
@@ -135,7 +184,9 @@ export default class Tile {
         this.tile.setOpacity(value);
     }
 
-    getPosition() { return this.tile.getPosition(); }
+    getPosition() { return new Vector3(this.position.x, this.position.y, this.position.z); }
+
+    getIndex() { return this.index; }
 
     dispose() {
         this.tile.dispose();

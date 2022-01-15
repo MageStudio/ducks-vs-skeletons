@@ -36,10 +36,55 @@ export const HUMAN_DETAILS = [
 ];
 
 export const TILES_TYPES = {
-    FOREST: 'forestTile',
+    EMPTY: 'empty',
+    WATER: 'waterTile',
     DESERT: 'desertTile',
+    FOREST: 'forestTile',
     HUMAN: 'humanTile'
 };
+
+export const HUMAN_TILES = {
+    [TILES_TYPES.HUMAN]: TILES_TYPES.HUMAN,
+    HUMAN_TOWER: 'humanTileTower',
+    HUMAN_WARRIORS_HUT: 'humanTileWarriorsHut',
+    HUMAN_BUILDERS_HUT: 'humanTileBuildersHut'
+}
+
+export const FOREST_TILES = {
+    [TILES_TYPES.FOREST]: TILES_TYPES.FOREST,
+    FOREST_TOWER: 'forestTileTower',
+    FOREST_WARRIORS_HUT: 'forestTileWarriorsHut',
+    FOREST_BUILDERS_HUT: 'forestTileBuildersHut',
+};
+
+export const WATER_TILE_BASE_VARIATIONS = [
+    TILES_TYPES.WATER
+];
+
+export const DESERT_TILE_BASE_VARIATIONS = [
+    TILES_TYPES.DESERT,
+    TILES_TYPES.DESERT,
+    TILES_TYPES.DESERT,
+    'desertTileA'
+];
+
+export const FOREST_TILE_BASE_VARIATIONS = [
+    TILES_TYPES.FOREST,
+    TILES_TYPES.FOREST,
+    'forestTileA',
+    'forestTileB'
+];
+
+export const HUMAN_TILE_BASE_VARIATIONS = [
+    TILES_TYPES.HUMAN
+];
+
+export const TILE_BASE_VARIATIONS_MAP = {
+    [TILES_TYPES.WATER]: WATER_TILE_BASE_VARIATIONS,
+    [TILES_TYPES.DESERT]: DESERT_TILE_BASE_VARIATIONS,
+    [TILES_TYPES.FOREST]: FOREST_TILE_BASE_VARIATIONS,
+    [TILES_TYPES.HUMAN]: HUMAN_TILE_BASE_VARIATIONS,
+}
 
 export const TILES_STATES = {
     BUILDING: 'BUILDING',
@@ -64,15 +109,25 @@ export const TILES_RANDOMNESS_MAP = {
 };
 
 export const TILE_SCALE = {
-    x: .5,
-    z: .5,
-    y: .5
+    x: .97,
+    z: 1.12,
+    y: 1
+};
+
+export const TILE_LARGE_DETAILS_SCALE = {
+    x: .2,
+    y: .2,
+    z: .2
 };
 
 export const TILE_DETAILS_SCALE = {
-    x: .4,
-    y: .4,
-    z: .4
+    x: .3,
+    y: .3,
+    z: .3
+};
+
+export const TILE_DETAILS_RELATIVE_POSITION = {
+    y: .2
 };
 
 export const TILE_MATERIAL_PROPERTIES = {
@@ -85,3 +140,6 @@ export const TILE_COLLECTIBLE_SCALE = {
     y: .3,
     z: .3
 }
+
+export const WATER_TILE_OPACITY = .3;
+export const WATER_TILE_COLOR = 0x00a8ff;

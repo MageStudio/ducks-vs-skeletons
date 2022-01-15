@@ -1,10 +1,10 @@
-import { BaseScript, constants } from 'mage-engine';
+import { BaseScript, constants, PALETTES } from 'mage-engine';
 
-const CURSOR_HEIGHT = .5;
+const CURSOR_HEIGHT = .25;
 const CURSOR_SCALE = {
     x: .5,
-    y: .5,
-    z: .5
+    y: .3,
+    z: .62
 };
 
 const CURSOR_DEFAULT_DESTINATION = {
@@ -40,15 +40,15 @@ export default class Selector extends BaseScript {
         this.selector.setOpacity(0);
     }
 
-    appearAt({ x, z }) {
-        this.destination = { x, z };
+    appearAt({ x, z }, destination) {
+        this.destination = destination;
         this.selector.goTo({ x, y: CURSOR_HEIGHT, z }, 150);
         this.selector.fadeTo(1, 250);
         this.visible = true;
     }
 
     markEnabled = flag => {
-        const color = flag ? this.initialColor : 0xff0000;
+        const color = flag ? this.initialColor : PALETTES.FRENCH_PALETTE.MANDARIN_RED;
 
         this.selector.setColor(color);
     }

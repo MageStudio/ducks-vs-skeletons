@@ -1,0 +1,28 @@
+# Made using Asset Forge (2.1.1)
+
+:materials
+
+[name:dirt;color:RGBA(0.886, 0.514, 0.341, 1.000);scale:(1.0, 1.0);shader:Default;valueA:0.5;valueB:0;]
+[name:stone;color:RGBA(0.678, 0.798, 0.821, 1.000);scale:(1.0, 1.0);shader:Default;valueA:0.5;valueB:0;]
+[name:roof;color:RGBA(0.389, 0.510, 0.868, 1.000);scale:(1.0, 1.0);shader:Default;valueA:0.5;valueB:0;]
+[name:wood;color:RGBA(0.710, 0.408, 0.271, 1.000);scale:(1.0, 1.0);shader:Default;valueA:0.5;valueB:0;]
+[name:border;color:RGBA(0.561, 0.569, 0.600, 1.000);scale:(1.0, 1.0);shader:Default;valueA:0.5;valueB:0;]
+[name:door;color:RGBA(0.388, 0.400, 0.447, 1.000);scale:(1.0, 1.0);shader:Default;valueA:0.5;valueB:0;]
+[name:_defaultMat;color:RGBA(0.764, 0.764, 0.764, 1.000);scale:(1.0, 1.0);shader:Default;valueA:0.5;valueB:0;]
+[name:window;color:RGBA(0.737, 0.886, 1.000, 1.000);scale:(1.0, 1.0);shader:Default;valueA:0.5;valueB:0;]
+[name:dark;color:RGBA(0.224, 0.235, 0.275, 1.000);scale:(1.0, 1.0);shader:Default;valueA:0.35;valueB:0;]
+[name:metalGreen;color:RGBA(0.047, 0.847, 0.624, 1.000);scale:(1.0, 1.0);shader:Default;valueA:0.35;valueB:0.75;]
+[name:steel;color:RGBA(0.311, 0.309, 0.340, 1.000);scale:(1.0, 1.0);shader:Default;valueA:0.35;valueB:0.25;]
+[name:metalOrange;color:RGBA(1.000, 0.702, 0.000, 1.000);scale:(1.0, 1.0);shader:Default;valueA:0.5;valueB:0.2;]
+[name:water;color:RGBA(0.524, 0.934, 0.885, 1.000);scale:(1.0, 1.0);shader:Default;valueA:0.5;valueB:0;]
+[name:stoneDark;color:RGBA(0.604, 0.710, 0.729, 1.000);scale:(1.0, 1.0);shader:Default;valueA:0.5;valueB:0;]
+
+:models
+
+[name:;collection:housekit_kenney;type:house_type19;position:(-0.2000, 0.2000, -0.0040);rotation:(0.0000, 90.0000, 0.0000);scale:(0.4000, 0.4000, 0.4000);group:;locked:False;hidden:False;materials:border+window+door+_defaultMat;]
+[name:;collection:Mechanical;type:pipe_smallBend;position:(-0.1800, 0.2400, 0.2340);rotation:(90.0000, 0.0000, 0.0000);scale:(0.1000, 0.1000, 0.1000);group:;locked:False;hidden:False;materials:_defaultMat;]
+[name:;collection:Mechanical;type:pipe_smallBend;position:(-0.2900, 0.2400, 0.2340);rotation:(90.0000, 0.0000, 0.0000);scale:(0.1000, 0.1000, 0.1000);group:;locked:False;hidden:False;materials:_defaultMat;]
+[name:;collection:hexagonal_kenney;type:stone;position:(0.0000, 0.0000, 0.0000);rotation:(0.0000, 0.0000, 0.0000);scale:(1.0000, 1.0000, 1.0000);group:;locked:False;hidden:False;materials:dirt+stone;]
+[name:;collection:nature_kenney;type:statue_block;position:(0.2260, 0.1800, 0.0167);rotation:(0.0000, 0.0000, 0.0000);scale:(0.8300, 0.2950, 1.2383);group:;locked:False;hidden:False;materials:stone+stoneDark;]
+[name:;collection:Ships;type:detail_chimney;position:(0.2200, 0.1900, 0.0840);rotation:(0.0000, 0.0000, 0.0000);scale:(0.2000, 0.4000, 0.2000);group:;locked:False;hidden:False;materials:dark+metalGreen;]
+[name:;collection:Ships;type:detail_chimney;position:(0.2200, 0.1900, -0.0360);rotation:(0.0000, 0.0000, 0.0000);scale:(0.2000, 0.4000, 0.2000);group:;locked:False;hidden:False;materials:dark+metalGreen;]
