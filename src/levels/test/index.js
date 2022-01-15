@@ -19,12 +19,12 @@ import TileMap, { HUMAN_DETAILS } from './map/TileMap';
 import SlowRotation from './collectibles/slowRotation';
 import Worm from './worm';
 import WormBlock from './worm/wormBlock';
-import HumanBehaviour from './humans/HumanBehaviour';
-import Humans from './humans';
-import Nature from './nature';
-import Selector from './nature/Selector';
-import BulletBehaviour from './humans/BulletBehaviour';
-import DuckBehaviour from './nature/DuckBehaviour';
+import HumanBehaviour from './players/humans/HumanBehaviour';
+import Humans from './players/humans';
+import Nature from './players/nature';
+import Selector from './players/nature/Selector';
+import BulletBehaviour from './players/humans/BulletBehaviour';
+import DuckBehaviour from './players/nature/DuckBehaviour';
 import Bobbing from './map/Bobbing';
 
 export const WHITE = 0xffffff;
@@ -89,14 +89,10 @@ export default class Test extends Level {
 
         const { human, nature } = TileMap.generate(0);
         Humans.start(human);
+        Nature.start(nature);
 
-        // window.humans = Humans;
-        // const human = Humans.spawnHuman();
-        // Worm.start();
-        window.uni = Universe;
         window.n = Nature;
         window.tm = TileMap;
-        Nature.start(nature);
     }
 
     onCreate() {

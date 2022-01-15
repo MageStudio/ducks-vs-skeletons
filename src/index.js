@@ -10,7 +10,7 @@ const assets = {
             'selector': 'assets/models/selector.glb',
             
             'human': 'assets/models/human.fbx',
-            'duck': 'assets/models/duck.fbx',
+            'nature': 'assets/models/duck.fbx',
             
             'forestTile': 'assets/models/forestTile.glb',
             'forestTileA': 'assets/models/forestTile_variation_A.glb',

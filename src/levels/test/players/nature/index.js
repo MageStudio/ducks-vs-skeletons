@@ -1,18 +1,18 @@
-import { Input, Models, INPUT_EVENTS, ENTITY_EVENTS } from "mage-engine";
-import { FOREST_TILES, NATURE_STARTING_POSITION, TILES_STATES, TILES_TYPES } from "../map/constants";
-import TileMap from "../map/TileMap";
-import { DEATH_REASONS } from '../constants';
-class Nature {
+import { Input, Models, INPUT_EVENTS } from "mage-engine";
+import { TILES_TYPES } from "../../map/constants";
+import TileMap from "../../map/TileMap";
+import Player from "../Player";
+
+class Nature extends Player {
 
     constructor() {
-        this.builders = [];
-        this.warriors = [];
-        this.currentTile = null;
+        super('nature');
         this.selector = null;
     }
 
     start(position) {
-        this.initialPosition = position;
+        super.start(position);
+
         Input.enable();
         Input.addEventListener(INPUT_EVENTS.MOUSE_DOWN, this.handleMouseClick);
         TileMap.changeTile(this.initialPosition, TILES_TYPES.FOREST, { startingTile: true });
@@ -24,37 +24,13 @@ class Nature {
         // this.sendBuilderToTile(TileMap.getTileAt({ x: 8, z: 8 }));
     }
 
-    handleDuckDeath = (reason) => ({ target }) => {
-        if (reason === DEATH_REASONS.BUILDING) {
-            delete this.builders[target.uuid()];
-        }
-
-        if (reason === DEATH_REASONS.KILLED) {
-            delete this.warriors[target.uuid()]
-        }
-    }
-
-    sendBuilderToTile(tile, variation) {
-        const duck = Models.getModel('duck', { name: `duck_builder_${Math.random()}`});
-        const behaviour = duck.addScript('DuckBehaviour', { position: this.initialPosition, builder: true });
-
-        behaviour
-            .goTo(tile)
-            .then(() => behaviour.buildAtPosition(tile, variation));
-
-        TileMap.setTileState(tile, TILES_STATES.BUILDING);
-        duck.addEventListener(ENTITY_EVENTS.DISPOSE, this.handleDuckDeath(DEATH_REASONS.BUILDING));
-
-        this.builders[duck.uuid()] = duck;
-
-        return duck;
-    }
+    getUnitScriptName() { return 'DuckBehaviour'; }
 
     handleMouseClick = () => {
         const { visible, destination } = this.selector.getScript('Selector');
 
         if (visible && this.canMouseInteract(destination)) {
-            this.sendBuilderToTile(TileMap.getTileAt(destination), FOREST_TILES.FOREST_TOWER);
+            this.sendBuilderToTile(TileMap.getTileAt(destination, TILES_TYPES.FOREST));
         }
     }
 
