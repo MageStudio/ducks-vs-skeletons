@@ -64,7 +64,8 @@ export default class Test extends Level {
     addSky() {
         this.sky = new Sky({});
         // this.sky.setSun(180, .205, 100);
-        this.sky.setSun(30, .01, 100);
+        this.azimuth = .01;
+        this.sky.setSun(30, this.azimuth, 100);
         window.sky = this.sky;
     }
 
@@ -95,6 +96,13 @@ export default class Test extends Level {
         window.tm = TileMap;
     }
 
+    onUpdate = (dt) => {
+        this.azimuth += 0.001 * dt;
+        if (this.sky) {
+            this.sky.setSun(30, this.azimuth, 100);
+        }
+    }
+
     onCreate() {
         Scripts.create('WormBlock', WormBlock);
         Scripts.create('slowRotation', SlowRotation);
@@ -103,6 +111,8 @@ export default class Test extends Level {
         Scripts.create('DuckBehaviour', DuckBehaviour);
         Scripts.create('Selector', Selector);
         Scripts.create('Bobbing', Bobbing);
+
+        this.azimuth = .01;
 
         this.createWorld();
         this.prepareCamera();

@@ -6776,31 +6776,37 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js");
 /* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/inherits */ "./node_modules/@babel/runtime/helpers/inherits.js");
-/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js");
-/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/getPrototypeOf.js");
-/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var mage_engine__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! mage-engine */ "../Mage/dist/mage.js");
-/* harmony import */ var _map_TileMap__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./map/TileMap */ "./src/levels/test/map/TileMap.js");
-/* harmony import */ var _collectibles_slowRotation__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./collectibles/slowRotation */ "./src/levels/test/collectibles/slowRotation.js");
-/* harmony import */ var _worm__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./worm */ "./src/levels/test/worm/index.js");
-/* harmony import */ var _worm_wormBlock__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./worm/wormBlock */ "./src/levels/test/worm/wormBlock.js");
-/* harmony import */ var _players_humans_HumanBehaviour__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./players/humans/HumanBehaviour */ "./src/levels/test/players/humans/HumanBehaviour.js");
-/* harmony import */ var _players_humans__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./players/humans */ "./src/levels/test/players/humans/index.js");
-/* harmony import */ var _players_nature__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./players/nature */ "./src/levels/test/players/nature/index.js");
-/* harmony import */ var _players_nature_Selector__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./players/nature/Selector */ "./src/levels/test/players/nature/Selector.js");
-/* harmony import */ var _players_humans_BulletBehaviour__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./players/humans/BulletBehaviour */ "./src/levels/test/players/humans/BulletBehaviour.js");
-/* harmony import */ var _players_nature_DuckBehaviour__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./players/nature/DuckBehaviour */ "./src/levels/test/players/nature/DuckBehaviour.js");
-/* harmony import */ var _map_Bobbing__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./map/Bobbing */ "./src/levels/test/map/Bobbing.js");
+/* harmony import */ var _babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/assertThisInitialized */ "./node_modules/@babel/runtime/helpers/assertThisInitialized.js");
+/* harmony import */ var _babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/inherits */ "./node_modules/@babel/runtime/helpers/inherits.js");
+/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js");
+/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/getPrototypeOf.js");
+/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var mage_engine__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! mage-engine */ "../Mage/dist/mage.js");
+/* harmony import */ var _map_TileMap__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./map/TileMap */ "./src/levels/test/map/TileMap.js");
+/* harmony import */ var _collectibles_slowRotation__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./collectibles/slowRotation */ "./src/levels/test/collectibles/slowRotation.js");
+/* harmony import */ var _worm__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./worm */ "./src/levels/test/worm/index.js");
+/* harmony import */ var _worm_wormBlock__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./worm/wormBlock */ "./src/levels/test/worm/wormBlock.js");
+/* harmony import */ var _players_humans_HumanBehaviour__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./players/humans/HumanBehaviour */ "./src/levels/test/players/humans/HumanBehaviour.js");
+/* harmony import */ var _players_humans__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./players/humans */ "./src/levels/test/players/humans/index.js");
+/* harmony import */ var _players_nature__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./players/nature */ "./src/levels/test/players/nature/index.js");
+/* harmony import */ var _players_nature_Selector__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./players/nature/Selector */ "./src/levels/test/players/nature/Selector.js");
+/* harmony import */ var _players_humans_BulletBehaviour__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./players/humans/BulletBehaviour */ "./src/levels/test/players/humans/BulletBehaviour.js");
+/* harmony import */ var _players_nature_DuckBehaviour__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./players/nature/DuckBehaviour */ "./src/levels/test/players/nature/DuckBehaviour.js");
+/* harmony import */ var _map_Bobbing__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./map/Bobbing */ "./src/levels/test/map/Bobbing.js");
 
 
 
 
 
 
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default()(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default()(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3___default()(this, result); }; }
+
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5___default()(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5___default()(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4___default()(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
@@ -6830,30 +6836,46 @@ var BACKGROUND = 0xdff9fb; //0xddf3f5;
 var SATURATION_OPTIONS = {
   saturation: 0.4
 };
-var EFFECTS = mage_engine__WEBPACK_IMPORTED_MODULE_5__.constants.EFFECTS;
+var EFFECTS = mage_engine__WEBPACK_IMPORTED_MODULE_7__.constants.EFFECTS;
 
 var Test = /*#__PURE__*/function (_Level) {
-  _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2___default()(Test, _Level);
+  _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3___default()(Test, _Level);
 
   var _super = _createSuper(Test);
 
   function Test() {
+    var _this;
+
     _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, Test);
 
-    return _super.apply(this, arguments);
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = _super.call.apply(_super, [this].concat(args));
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2___default()(_this), "onUpdate", function (dt) {
+      _this.azimuth += 0.01 * dt;
+
+      if (_this.sky) {
+        _this.sky.setSun(30, _this.azimuth, 100);
+      }
+    });
+
+    return _this;
   }
 
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(Test, [{
     key: "addSunLight",
     value: function addSunLight() {
-      this.hemisphereLight = new mage_engine__WEBPACK_IMPORTED_MODULE_5__.HemisphereLight({
+      this.hemisphereLight = new mage_engine__WEBPACK_IMPORTED_MODULE_7__.HemisphereLight({
         color: {
           sky: 0xff9f43,
           ground: GROUND
         },
         intensity: 1
       });
-      this.sunLight = new mage_engine__WEBPACK_IMPORTED_MODULE_5__.SunLight({
+      this.sunLight = new mage_engine__WEBPACK_IMPORTED_MODULE_7__.SunLight({
         color: 0xff9f43,
         intensity: 1,
         far: 20
@@ -6867,37 +6889,38 @@ var Test = /*#__PURE__*/function (_Level) {
   }, {
     key: "addSky",
     value: function addSky() {
-      this.sky = new mage_engine__WEBPACK_IMPORTED_MODULE_5__.Sky({}); // this.sky.setSun(180, .205, 100);
+      this.sky = new mage_engine__WEBPACK_IMPORTED_MODULE_7__.Sky({}); // this.sky.setSun(180, .205, 100);
 
-      this.sky.setSun(30, .01, 100);
+      this.azimuth = .01;
+      this.sky.setSun(30, this.azimuth, 100);
       window.sky = this.sky;
     }
   }, {
     key: "prepareCamera",
     value: function prepareCamera() {
       // 2.5958724045158155, y: 1.9694966995502956, z: -0.006603738747897658}
-      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.getCamera().setPosition({
+      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scene.getCamera().setPosition({
         x: 2,
         y: 4,
         z: 0
       }); //({ x: 7.8, y: 5.48, z: 12.8 });
 
-      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Controls.setOrbitControl({
+      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Controls.setOrbitControl({
         target: {
           x: 5,
           y: 0,
           z: 5
         }
       });
-      window.camera = mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.getCamera();
+      window.camera = mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scene.getCamera();
     }
   }, {
     key: "prepareSceneEffects",
     value: function prepareSceneEffects() {
-      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.setClearColor(0xff9f43);
-      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.setBackground(0xff9f43);
-      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.setRendererOutputEncoding(mage_engine__WEBPACK_IMPORTED_MODULE_5__.THREE.sRGBEncoding);
-      mage_engine__WEBPACK_IMPORTED_MODULE_5__.PostProcessing.add(EFFECTS.HUE_SATURATION, SATURATION_OPTIONS);
+      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scene.setClearColor(0xff9f43);
+      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scene.setBackground(0xff9f43);
+      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scene.setRendererOutputEncoding(mage_engine__WEBPACK_IMPORTED_MODULE_7__.THREE.sRGBEncoding);
+      mage_engine__WEBPACK_IMPORTED_MODULE_7__.PostProcessing.add(EFFECTS.HUE_SATURATION, SATURATION_OPTIONS);
     }
   }, {
     key: "createWorld",
@@ -6906,32 +6929,33 @@ var Test = /*#__PURE__*/function (_Level) {
       this.addSky();
       this.prepareSceneEffects();
 
-      var _TileMap$generate = _map_TileMap__WEBPACK_IMPORTED_MODULE_6__.default.generate(0),
+      var _TileMap$generate = _map_TileMap__WEBPACK_IMPORTED_MODULE_8__.default.generate(0),
           human = _TileMap$generate.human,
           nature = _TileMap$generate.nature;
 
-      _players_humans__WEBPACK_IMPORTED_MODULE_11__.default.start(human);
-      _players_nature__WEBPACK_IMPORTED_MODULE_12__.default.start(nature);
-      window.n = _players_nature__WEBPACK_IMPORTED_MODULE_12__.default;
-      window.tm = _map_TileMap__WEBPACK_IMPORTED_MODULE_6__.default;
+      _players_humans__WEBPACK_IMPORTED_MODULE_13__.default.start(human);
+      _players_nature__WEBPACK_IMPORTED_MODULE_14__.default.start(nature);
+      window.n = _players_nature__WEBPACK_IMPORTED_MODULE_14__.default;
+      window.tm = _map_TileMap__WEBPACK_IMPORTED_MODULE_8__.default;
     }
   }, {
     key: "onCreate",
     value: function onCreate() {
-      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('WormBlock', _worm_wormBlock__WEBPACK_IMPORTED_MODULE_9__.default);
-      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('slowRotation', _collectibles_slowRotation__WEBPACK_IMPORTED_MODULE_7__.default);
-      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('HumanBehaviour', _players_humans_HumanBehaviour__WEBPACK_IMPORTED_MODULE_10__.default);
-      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('BulletBehaviour', _players_humans_BulletBehaviour__WEBPACK_IMPORTED_MODULE_14__.default);
-      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('DuckBehaviour', _players_nature_DuckBehaviour__WEBPACK_IMPORTED_MODULE_15__.default);
-      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('Selector', _players_nature_Selector__WEBPACK_IMPORTED_MODULE_13__.default);
-      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('Bobbing', _map_Bobbing__WEBPACK_IMPORTED_MODULE_16__.default);
+      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scripts.create('WormBlock', _worm_wormBlock__WEBPACK_IMPORTED_MODULE_11__.default);
+      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scripts.create('slowRotation', _collectibles_slowRotation__WEBPACK_IMPORTED_MODULE_9__.default);
+      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scripts.create('HumanBehaviour', _players_humans_HumanBehaviour__WEBPACK_IMPORTED_MODULE_12__.default);
+      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scripts.create('BulletBehaviour', _players_humans_BulletBehaviour__WEBPACK_IMPORTED_MODULE_16__.default);
+      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scripts.create('DuckBehaviour', _players_nature_DuckBehaviour__WEBPACK_IMPORTED_MODULE_17__.default);
+      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scripts.create('Selector', _players_nature_Selector__WEBPACK_IMPORTED_MODULE_15__.default);
+      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scripts.create('Bobbing', _map_Bobbing__WEBPACK_IMPORTED_MODULE_18__.default);
+      this.azimuth = .01;
       this.createWorld();
       this.prepareCamera();
     }
   }]);
 
   return Test;
-}(mage_engine__WEBPACK_IMPORTED_MODULE_5__.Level);
+}(mage_engine__WEBPACK_IMPORTED_MODULE_7__.Level);
 
 
 
