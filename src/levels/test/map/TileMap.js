@@ -42,7 +42,7 @@ class TileMap {
 
             for (let z=0; z<row.length; z++) {
                 const tileType = convertIntegerToTileType(MAP[x][z]);
-                const tile = new Tile(tileType, { x, z });
+                const tile = new Tile(tileType, { position: { x, z } });
                 this.tiles[x].push(tile);
             }
         }
@@ -111,12 +111,12 @@ class TileMap {
         this.tiles[x][z].setState(state);
     }
 
-    changeTile({ x, z }, tileType, startingTile = false) {
+    changeTile({ x, z }, tileType, { variation, startingTile = false } = {} ) {
         const _x = Math.floor(math.clamp(x, 0, this.size - 1 ));
         const _z = Math.floor(math.clamp(z, 0, this.size - 1 ));
 
         this.tiles[_x][_z].dispose();
-        this.tiles[_x][_z] = new Tile(tileType, { x: _x, z: _z }, startingTile);
+        this.tiles[_x][_z] = new Tile(tileType, { variation, position: { x: _x, z: _z }, startingTile });
     }
 
     isTileType({ x, z }, tileType) {

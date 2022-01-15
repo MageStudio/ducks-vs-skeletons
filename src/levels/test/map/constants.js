@@ -43,6 +43,49 @@ export const TILES_TYPES = {
     HUMAN: 'humanTile'
 };
 
+export const HUMAN_TILES = {
+    [TILES_TYPES.HUMAN]: TILES_TYPES.HUMAN,
+    HUMAN_TOWER: 'humanTileTower',
+    HUMAN_WARRIORS_HUT: 'humanTileWarriorsHut',
+    HUMAN_BUILDERS_HUT: 'humanTileBuildersHut'
+}
+
+export const FOREST_TILES = {
+    [TILES_TYPES.FOREST]: TILES_TYPES.FOREST,
+    FOREST_TOWER: 'forestTileTower',
+    FOREST_WARRIORS_HUT: 'forestTileWarriorsHut',
+    FOREST_BUILDERS_HUT: 'forestTileBuildersHut',
+};
+
+export const WATER_TILE_BASE_VARIATIONS = [
+    TILES_TYPES.WATER
+];
+
+export const DESERT_TILE_BASE_VARIATIONS = [
+    TILES_TYPES.DESERT,
+    TILES_TYPES.DESERT,
+    TILES_TYPES.DESERT,
+    'desertTileA'
+];
+
+export const FOREST_TILE_BASE_VARIATIONS = [
+    TILES_TYPES.FOREST,
+    TILES_TYPES.FOREST,
+    'forestTileA',
+    'forestTileB'
+];
+
+export const HUMAN_TILE_BASE_VARIATIONS = [
+    TILES_TYPES.HUMAN
+];
+
+export const TILE_BASE_VARIATIONS_MAP = {
+    [TILES_TYPES.WATER]: WATER_TILE_BASE_VARIATIONS,
+    [TILES_TYPES.DESERT]: DESERT_TILE_BASE_VARIATIONS,
+    [TILES_TYPES.FOREST]: FOREST_TILE_BASE_VARIATIONS,
+    [TILES_TYPES.HUMAN]: HUMAN_TILE_BASE_VARIATIONS,
+}
+
 export const TILES_STATES = {
     BUILDING: 'BUILDING',
     FIGHTING: 'FIGHTING'

@@ -69,8 +69,10 @@ export default class Test extends Level {
     }
 
     prepareCamera() {
-        Scene.getCamera().setPosition({ x: 7.8, y: 5.48, z: 12.8 });
+        // 2.5958724045158155, y: 1.9694966995502956, z: -0.006603738747897658}
+        Scene.getCamera().setPosition({x: 2, y: 4, z: 0 });//({ x: 7.8, y: 5.48, z: 12.8 });
         Controls.setOrbitControl({ target: { x: 5, y: 0, z: 5 } });
+        window.camera = Scene.getCamera();
     }
 
     prepareSceneEffects() {

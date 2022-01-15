@@ -7017,7 +7017,7 @@ var HumanBehaviour = /*#__PURE__*/function (_BaseScript) {
     }
   }, {
     key: "buildAtPosition",
-    value: function buildAtPosition(tile) {
+    value: function buildAtPosition(tile, variation) {
       var _this3 = this;
 
       if (!this.isBuilder()) return;
@@ -7027,7 +7027,9 @@ var HumanBehaviour = /*#__PURE__*/function (_BaseScript) {
         _this3.human.playAnimation(HUMAN_ANIMATIONS.IDLE);
 
         if (!tile.isHuman()) {
-          _map_TileMap__WEBPACK_IMPORTED_MODULE_9__.default.changeTile(tile.getIndex(), _map_constants__WEBPACK_IMPORTED_MODULE_8__.TILES_TYPES.HUMAN);
+          _map_TileMap__WEBPACK_IMPORTED_MODULE_9__.default.changeTile(tile.getIndex(), _map_constants__WEBPACK_IMPORTED_MODULE_8__.TILES_TYPES.HUMAN, {
+            variation: variation
+          });
 
           _this3.die();
         }
@@ -7117,7 +7119,7 @@ var Humans = /*#__PURE__*/function () {
       }).sort().pop());
       console.log('next tile,', nextTile);
 
-      _this.sendBuilderToTile(nextTile);
+      _this.sendBuilderToTile(nextTile, _map_constants__WEBPACK_IMPORTED_MODULE_5__.HUMAN_TILES.HUMAN_BUILDERS_HUT);
     });
 
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "handleHumanDeath", function (reason) {
@@ -7134,7 +7136,7 @@ var Humans = /*#__PURE__*/function () {
       };
     });
 
-    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "sendBuilderToTile", function (tile) {
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "sendBuilderToTile", function (tile, variation) {
       var human = mage_engine__WEBPACK_IMPORTED_MODULE_3__.Models.getModel('human', {
         name: "human_builder_".concat(Math.random())
       });
@@ -7144,7 +7146,7 @@ var Humans = /*#__PURE__*/function () {
       });
       console.log('sending human to tile', tile);
       behaviour.goTo(tile).then(function () {
-        return behaviour.buildAtPosition(tile);
+        return behaviour.buildAtPosition(tile, variation);
       });
       _map_TileMap__WEBPACK_IMPORTED_MODULE_4__.default.setTileState(tile, _map_constants__WEBPACK_IMPORTED_MODULE_5__.TILES_STATES.BUILDING);
       human.addEventListener(mage_engine__WEBPACK_IMPORTED_MODULE_3__.ENTITY_EVENTS.DISPOSE, _this.handleHumanDeath(_constants__WEBPACK_IMPORTED_MODULE_6__.DEATH_REASONS.BUILDING));
@@ -7176,7 +7178,9 @@ var Humans = /*#__PURE__*/function () {
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(Humans, [{
     key: "start",
     value: function start(initialPosition) {
-      _map_TileMap__WEBPACK_IMPORTED_MODULE_4__.default.changeTile(initialPosition, _map_constants__WEBPACK_IMPORTED_MODULE_5__.TILES_TYPES.HUMAN, true);
+      _map_TileMap__WEBPACK_IMPORTED_MODULE_4__.default.changeTile(initialPosition, _map_constants__WEBPACK_IMPORTED_MODULE_5__.TILES_TYPES.HUMAN, {
+        startingTile: true
+      });
       this.initialPosition = initialPosition;
       setInterval(this.expand, 1000); // this.sendWarriorToTile(TileMap.getTileAt({ x: 7, z: 7 }));
     }
@@ -7308,11 +7312,13 @@ var Test = /*#__PURE__*/function (_Level) {
   }, {
     key: "prepareCamera",
     value: function prepareCamera() {
+      // 2.5958724045158155, y: 1.9694966995502956, z: -0.006603738747897658}
       mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.getCamera().setPosition({
-        x: 7.8,
-        y: 5.48,
-        z: 12.8
-      });
+        x: 2,
+        y: 4,
+        z: 0
+      }); //({ x: 7.8, y: 5.48, z: 12.8 });
+
       mage_engine__WEBPACK_IMPORTED_MODULE_5__.Controls.setOrbitControl({
         target: {
           x: 5,
@@ -7320,6 +7326,7 @@ var Test = /*#__PURE__*/function (_Level) {
           z: 5
         }
       });
+      window.camera = mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.getCamera();
     }
   }, {
     key: "prepareSceneEffects",
@@ -7496,12 +7503,16 @@ var getDetailsListFromTileType = function getDetailsListFromTileType(tileType) {
 };
 
 var getRandomDetailForTile = function getRandomDetailForTile(tileType) {
-  var detailsList = getDetailsListFromTileType(tileType);
-  return detailsList[Math.floor(Math.random() * detailsList.length)];
+  return mage_engine__WEBPACK_IMPORTED_MODULE_3__.math.pickRandom(getDetailsListFromTileType(tileType));
 };
 
 var shouldRenderDetailsForTiletype = function shouldRenderDetailsForTiletype(tileType) {
   return Math.random() > _constants__WEBPACK_IMPORTED_MODULE_4__.TILES_RANDOMNESS_MAP[tileType];
+};
+
+var getRandomVariationForTile = function getRandomVariationForTile(tileType) {
+  var variations = _constants__WEBPACK_IMPORTED_MODULE_4__.TILE_BASE_VARIATIONS_MAP[tileType] || [tileType];
+  return mage_engine__WEBPACK_IMPORTED_MODULE_3__.math.pickRandom(variations);
 };
 
 var convertTileTypeToHeight = function convertTileTypeToHeight(tileType) {
@@ -7520,8 +7531,10 @@ var calculatePosition = function calculatePosition(_ref) {
 };
 
 var Tile = /*#__PURE__*/function () {
-  function Tile(_tileType, position, startingTile) {
+  function Tile(_tileType) {
     var _this = this;
+
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
     _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, Tile);
 
@@ -7565,7 +7578,13 @@ var Tile = /*#__PURE__*/function () {
       return _this.state === _constants__WEBPACK_IMPORTED_MODULE_4__.TILES_STATES.BUILDING;
     });
 
+    var _options$variation = options.variation,
+        variation = _options$variation === void 0 ? getRandomVariationForTile(_tileType) : _options$variation,
+        _options$startingTile = options.startingTile,
+        startingTile = _options$startingTile === void 0 ? false : _options$startingTile,
+        position = options.position;
     this.tileType = _tileType;
+    this.variation = variation;
     this.index = position;
     this.position = _objectSpread(_objectSpread({}, calculatePosition(position)), {}, {
       y: convertTileTypeToHeight(this.tileType)
@@ -7574,7 +7593,7 @@ var Tile = /*#__PURE__*/function () {
     this.startingTile = startingTile;
     this.burning = false;
     this.setLife();
-    this.create();
+    this.create(variation);
   }
 
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(Tile, [{
@@ -7599,7 +7618,7 @@ var Tile = /*#__PURE__*/function () {
     key: "create",
     value: function create() {
       if (this.isEmpty()) return;
-      this.tile = mage_engine__WEBPACK_IMPORTED_MODULE_3__.Models.getModel(this.tileType, {
+      this.tile = mage_engine__WEBPACK_IMPORTED_MODULE_3__.Models.getModel(this.variation, {
         name: "tile_".concat(this.index.x, "_").concat(this.index.z)
       });
       this.tile.setData('index', this.index);
@@ -7639,8 +7658,9 @@ var Tile = /*#__PURE__*/function () {
       });
       startingDetail.setMaterialFromName(MATERIALS.STANDARD, _constants__WEBPACK_IMPORTED_MODULE_4__.TILE_MATERIAL_PROPERTIES);
       this.tile.add(startingDetail);
+      startingDetail.setScale(_constants__WEBPACK_IMPORTED_MODULE_4__.TILE_LARGE_DETAILS_SCALE);
       startingDetail.setPosition({
-        y: 1
+        y: .2
       });
     }
   }, {
@@ -7807,8 +7827,10 @@ var TileMap = /*#__PURE__*/function () {
         for (var z = 0; z < row.length; z++) {
           var tileType = convertIntegerToTileType(MAP[x][z]);
           var tile = new _Tile__WEBPACK_IMPORTED_MODULE_5__.default(tileType, {
-            x: x,
-            z: z
+            position: {
+              x: x,
+              z: z
+            }
           });
           this.tiles[x].push(tile);
         }
@@ -7890,7 +7912,11 @@ var TileMap = /*#__PURE__*/function () {
     value: function changeTile(_ref4, tileType) {
       var x = _ref4.x,
           z = _ref4.z;
-      var startingTile = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+      var _ref5 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
+          variation = _ref5.variation,
+          _ref5$startingTile = _ref5.startingTile,
+          startingTile = _ref5$startingTile === void 0 ? false : _ref5$startingTile;
 
       var _x = Math.floor(mage_engine__WEBPACK_IMPORTED_MODULE_4__.math.clamp(x, 0, this.size - 1));
 
@@ -7899,15 +7925,19 @@ var TileMap = /*#__PURE__*/function () {
       this.tiles[_x][_z].dispose();
 
       this.tiles[_x][_z] = new _Tile__WEBPACK_IMPORTED_MODULE_5__.default(tileType, {
-        x: _x,
-        z: _z
-      }, startingTile);
+        variation: variation,
+        position: {
+          x: _x,
+          z: _z
+        },
+        startingTile: startingTile
+      });
     }
   }, {
     key: "isTileType",
-    value: function isTileType(_ref5, tileType) {
-      var x = _ref5.x,
-          z = _ref5.z;
+    value: function isTileType(_ref6, tileType) {
+      var x = _ref6.x,
+          z = _ref6.z;
       return this.tiles[x][z] && this.tiles[x][z].isType(tileType);
     }
   }, {
@@ -7968,6 +7998,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "FOREST_DETAILS": () => (/* binding */ FOREST_DETAILS),
 /* harmony export */   "HUMAN_DETAILS": () => (/* binding */ HUMAN_DETAILS),
 /* harmony export */   "TILES_TYPES": () => (/* binding */ TILES_TYPES),
+/* harmony export */   "HUMAN_TILES": () => (/* binding */ HUMAN_TILES),
+/* harmony export */   "FOREST_TILES": () => (/* binding */ FOREST_TILES),
+/* harmony export */   "WATER_TILE_BASE_VARIATIONS": () => (/* binding */ WATER_TILE_BASE_VARIATIONS),
+/* harmony export */   "DESERT_TILE_BASE_VARIATIONS": () => (/* binding */ DESERT_TILE_BASE_VARIATIONS),
+/* harmony export */   "FOREST_TILE_BASE_VARIATIONS": () => (/* binding */ FOREST_TILE_BASE_VARIATIONS),
+/* harmony export */   "HUMAN_TILE_BASE_VARIATIONS": () => (/* binding */ HUMAN_TILE_BASE_VARIATIONS),
+/* harmony export */   "TILE_BASE_VARIATIONS_MAP": () => (/* binding */ TILE_BASE_VARIATIONS_MAP),
 /* harmony export */   "TILES_STATES": () => (/* binding */ TILES_STATES),
 /* harmony export */   "TILES_DETAILS_MAP": () => (/* binding */ TILES_DETAILS_MAP),
 /* harmony export */   "STARTING_TILE_DETAILS_MAP": () => (/* binding */ STARTING_TILE_DETAILS_MAP),
@@ -7985,7 +8022,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
 
 
-var _TILES_DETAILS_MAP, _STARTING_TILE_DETAIL, _TILES_RANDOMNESS_MAP;
+var _HUMAN_TILES, _FOREST_TILES, _TILE_BASE_VARIATIONS, _TILES_DETAILS_MAP, _STARTING_TILE_DETAIL, _TILES_RANDOMNESS_MAP;
 
 var HUMAN_STARTING_POSITION = {
   x: 0,
@@ -8005,6 +8042,13 @@ var TILES_TYPES = {
   FOREST: 'forestTile',
   HUMAN: 'humanTile'
 };
+var HUMAN_TILES = (_HUMAN_TILES = {}, _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_HUMAN_TILES, TILES_TYPES.HUMAN, TILES_TYPES.HUMAN), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_HUMAN_TILES, "HUMAN_TOWER", 'humanTileTower'), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_HUMAN_TILES, "HUMAN_WARRIORS_HUT", 'humanTileWarriorsHut'), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_HUMAN_TILES, "HUMAN_BUILDERS_HUT", 'humanTileBuildersHut'), _HUMAN_TILES);
+var FOREST_TILES = (_FOREST_TILES = {}, _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_FOREST_TILES, TILES_TYPES.FOREST, TILES_TYPES.FOREST), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_FOREST_TILES, "FOREST_TOWER", 'forestTileTower'), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_FOREST_TILES, "FOREST_WARRIORS_HUT", 'forestTileWarriorsHut'), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_FOREST_TILES, "FOREST_BUILDERS_HUT", 'forestTileBuildersHut'), _FOREST_TILES);
+var WATER_TILE_BASE_VARIATIONS = [TILES_TYPES.WATER];
+var DESERT_TILE_BASE_VARIATIONS = [TILES_TYPES.DESERT, TILES_TYPES.DESERT, TILES_TYPES.DESERT, 'desertTileA'];
+var FOREST_TILE_BASE_VARIATIONS = [TILES_TYPES.FOREST, TILES_TYPES.FOREST, 'forestTileA', 'forestTileB'];
+var HUMAN_TILE_BASE_VARIATIONS = [TILES_TYPES.HUMAN];
+var TILE_BASE_VARIATIONS_MAP = (_TILE_BASE_VARIATIONS = {}, _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILE_BASE_VARIATIONS, TILES_TYPES.WATER, WATER_TILE_BASE_VARIATIONS), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILE_BASE_VARIATIONS, TILES_TYPES.DESERT, DESERT_TILE_BASE_VARIATIONS), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILE_BASE_VARIATIONS, TILES_TYPES.FOREST, FOREST_TILE_BASE_VARIATIONS), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILE_BASE_VARIATIONS, TILES_TYPES.HUMAN, HUMAN_TILE_BASE_VARIATIONS), _TILE_BASE_VARIATIONS);
 var TILES_STATES = {
   BUILDING: 'BUILDING',
   FIGHTING: 'FIGHTING'
@@ -8300,13 +8344,15 @@ var DuckBehaviour = /*#__PURE__*/function (_BaseScript) {
     }
   }, {
     key: "buildAtPosition",
-    value: function buildAtPosition(tile) {
+    value: function buildAtPosition(tile, variation) {
       var _this3 = this;
 
       if (!this.isBuilder()) return;
       setTimeout(function () {
         if (!tile.isForest()) {
-          _map_TileMap__WEBPACK_IMPORTED_MODULE_9__.default.changeTile(tile.getIndex(), _map_constants__WEBPACK_IMPORTED_MODULE_8__.TILES_TYPES.FOREST);
+          _map_TileMap__WEBPACK_IMPORTED_MODULE_9__.default.changeTile(tile.getIndex(), _map_constants__WEBPACK_IMPORTED_MODULE_8__.TILES_TYPES.FOREST, {
+            variation: variation
+          });
 
           _this3.die();
         }
@@ -8525,7 +8571,7 @@ var Nature = /*#__PURE__*/function () {
           destination = _this$selector$getScr.destination;
 
       if (visible && _this.canMouseInteract(destination)) {
-        _this.sendBuilderToTile(_map_TileMap__WEBPACK_IMPORTED_MODULE_5__.default.getTileAt(destination));
+        _this.sendBuilderToTile(_map_TileMap__WEBPACK_IMPORTED_MODULE_5__.default.getTileAt(destination), _map_constants__WEBPACK_IMPORTED_MODULE_4__.FOREST_TILES.FOREST_TOWER);
       }
     });
 
@@ -8556,7 +8602,9 @@ var Nature = /*#__PURE__*/function () {
       this.initialPosition = position;
       mage_engine__WEBPACK_IMPORTED_MODULE_3__.Input.enable();
       mage_engine__WEBPACK_IMPORTED_MODULE_3__.Input.addEventListener(mage_engine__WEBPACK_IMPORTED_MODULE_3__.INPUT_EVENTS.MOUSE_DOWN, this.handleMouseClick);
-      _map_TileMap__WEBPACK_IMPORTED_MODULE_5__.default.changeTile(this.initialPosition, _map_constants__WEBPACK_IMPORTED_MODULE_4__.TILES_TYPES.FOREST, true);
+      _map_TileMap__WEBPACK_IMPORTED_MODULE_5__.default.changeTile(this.initialPosition, _map_constants__WEBPACK_IMPORTED_MODULE_4__.TILES_TYPES.FOREST, {
+        startingTile: true
+      });
       setInterval(this.handleMouseIntersection, 250);
       this.selector = mage_engine__WEBPACK_IMPORTED_MODULE_3__.Models.getModel('selector');
       this.selector.addScript('Selector', {
@@ -8565,7 +8613,7 @@ var Nature = /*#__PURE__*/function () {
     }
   }, {
     key: "sendBuilderToTile",
-    value: function sendBuilderToTile(tile) {
+    value: function sendBuilderToTile(tile, variation) {
       var duck = mage_engine__WEBPACK_IMPORTED_MODULE_3__.Models.getModel('duck', {
         name: "duck_builder_".concat(Math.random())
       });
@@ -8574,7 +8622,7 @@ var Nature = /*#__PURE__*/function () {
         builder: true
       });
       behaviour.goTo(tile).then(function () {
-        return behaviour.buildAtPosition(tile);
+        return behaviour.buildAtPosition(tile, variation);
       });
       _map_TileMap__WEBPACK_IMPORTED_MODULE_5__.default.setTileState(tile, _map_constants__WEBPACK_IMPORTED_MODULE_4__.TILES_STATES.BUILDING);
       duck.addEventListener(mage_engine__WEBPACK_IMPORTED_MODULE_3__.ENTITY_EVENTS.DISPOSE, this.handleDuckDeath(_constants__WEBPACK_IMPORTED_MODULE_6__.DEATH_REASONS.BUILDING));
@@ -11238,13 +11286,22 @@ var assets = {
       'selector': 'assets/models/selector.glb',
       'human': 'assets/models/human.fbx',
       'duck': 'assets/models/duck.fbx',
+      'forestTile': 'assets/models/forestTile.glb',
+      'forestTileA': 'assets/models/forestTile_variation_A.glb',
+      'forestTileB': 'assets/models/forestTile_variation_B.glb',
+      'forestTileBuildersHut': 'assets/models/forestTileBuildersHut.glb',
+      'forestTileTower': 'assets/models/forestTileTower.glb',
+      'forestTileWarriorsHut': 'assets/models/forestTileWarriorsHut.glb',
       'desertTile': 'assets/models/desertTile.glb',
-      'forestTile': 'assets/models/grass_forest.glb',
+      'desertTileA': 'assets/models/desertTile_variation_A.glb',
       // 'forestTile': 'assets/models/tileLow_forest.gltf.glb',
       // 'desertTile': 'assets/models/tileLow_desert.gltf.glb',
       // 'humanTile': 'assets/models/tileLow_teamBlue.gltf.glb',
       // 'humanTile': 'assets/models/building_village.glb',
       'humanTile': 'assets/models/humanTile.glb',
+      'humanTileTower': 'assets/models/humanTileTower.glb',
+      'humanTileWarriorsHut': 'assets/models/humanTileWarriorsHut.glb',
+      'humanTileBuildersHut': 'assets/models/humanTileBuildersHut.glb',
       'waterTile': 'assets/models/waterTile.glb',
       'humanStart': 'assets/models/skyscraperD.glb',
       'forestStart': 'assets/models/tree.glb',

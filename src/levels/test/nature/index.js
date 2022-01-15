@@ -1,5 +1,5 @@
 import { Input, Models, INPUT_EVENTS, ENTITY_EVENTS } from "mage-engine";
-import { NATURE_STARTING_POSITION, TILES_STATES, TILES_TYPES } from "../map/constants";
+import { FOREST_TILES, NATURE_STARTING_POSITION, TILES_STATES, TILES_TYPES } from "../map/constants";
 import TileMap from "../map/TileMap";
 import { DEATH_REASONS } from '../constants';
 class Nature {
@@ -15,7 +15,7 @@ class Nature {
         this.initialPosition = position;
         Input.enable();
         Input.addEventListener(INPUT_EVENTS.MOUSE_DOWN, this.handleMouseClick);
-        TileMap.changeTile(this.initialPosition, TILES_TYPES.FOREST, true);
+        TileMap.changeTile(this.initialPosition, TILES_TYPES.FOREST, { startingTile: true });
         setInterval(this.handleMouseIntersection, 250)
 
         this.selector = Models.getModel('selector');
@@ -34,13 +34,13 @@ class Nature {
         }
     }
 
-    sendBuilderToTile(tile) {
+    sendBuilderToTile(tile, variation) {
         const duck = Models.getModel('duck', { name: `duck_builder_${Math.random()}`});
         const behaviour = duck.addScript('DuckBehaviour', { position: this.initialPosition, builder: true });
 
         behaviour
             .goTo(tile)
-            .then(() => behaviour.buildAtPosition(tile));
+            .then(() => behaviour.buildAtPosition(tile, variation));
 
         TileMap.setTileState(tile, TILES_STATES.BUILDING);
         duck.addEventListener(ENTITY_EVENTS.DISPOSE, this.handleDuckDeath(DEATH_REASONS.BUILDING));
@@ -54,7 +54,7 @@ class Nature {
         const { visible, destination } = this.selector.getScript('Selector');
 
         if (visible && this.canMouseInteract(destination)) {
-            this.sendBuilderToTile(TileMap.getTileAt(destination));
+            this.sendBuilderToTile(TileMap.getTileAt(destination), FOREST_TILES.FOREST_TOWER);
         }
     }
 

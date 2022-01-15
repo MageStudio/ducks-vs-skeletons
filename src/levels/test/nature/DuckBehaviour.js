@@ -140,12 +140,12 @@ export default class DuckBehaviour extends BaseScript {
         }
     }
 
-    buildAtPosition(tile) {
+    buildAtPosition(tile, variation) {
         if (!this.isBuilder()) return;
 
         setTimeout(() => {
             if (!tile.isForest()) {
-                TileMap.changeTile(tile.getIndex(), TILES_TYPES.FOREST);
+                TileMap.changeTile(tile.getIndex(), TILES_TYPES.FOREST, { variation });
                 this.die();
             }
         }, 3000)

@@ -135,7 +135,7 @@ export default class HumanBehaviour extends BaseScript {
         }
     }
 
-    buildAtPosition(tile) {
+    buildAtPosition(tile, variation) {
         if (!this.isBuilder()) return;
 
         console.log('building here');
@@ -144,7 +144,7 @@ export default class HumanBehaviour extends BaseScript {
         setTimeout(() => {
             this.human.playAnimation(HUMAN_ANIMATIONS.IDLE);
             if (!tile.isHuman()) {
-                TileMap.changeTile(tile.getIndex(), TILES_TYPES.HUMAN);
+                TileMap.changeTile(tile.getIndex(), TILES_TYPES.HUMAN, { variation });
                 this.die();
             }
         }, 3000)

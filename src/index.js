@@ -12,13 +12,24 @@ const assets = {
             'human': 'assets/models/human.fbx',
             'duck': 'assets/models/duck.fbx',
             
+            'forestTile': 'assets/models/forestTile.glb',
+            'forestTileA': 'assets/models/forestTile_variation_A.glb',
+            'forestTileB': 'assets/models/forestTile_variation_B.glb',
+            'forestTileBuildersHut': 'assets/models/forestTileBuildersHut.glb',
+            'forestTileTower': 'assets/models/forestTileTower.glb',
+            'forestTileWarriorsHut': 'assets/models/forestTileWarriorsHut.glb',
+            
             'desertTile': 'assets/models/desertTile.glb',
-            'forestTile': 'assets/models/grass_forest.glb',
+            'desertTileA': 'assets/models/desertTile_variation_A.glb',
             // 'forestTile': 'assets/models/tileLow_forest.gltf.glb',
             // 'desertTile': 'assets/models/tileLow_desert.gltf.glb',
             // 'humanTile': 'assets/models/tileLow_teamBlue.gltf.glb',
             // 'humanTile': 'assets/models/building_village.glb',
             'humanTile': 'assets/models/humanTile.glb',
+            'humanTileTower': 'assets/models/humanTileTower.glb',
+            'humanTileWarriorsHut': 'assets/models/humanTileWarriorsHut.glb',
+            'humanTileBuildersHut': 'assets/models/humanTileBuildersHut.glb',
+            
             'waterTile': 'assets/models/waterTile.glb',
 
             'humanStart': 'assets/models/skyscraperD.glb',

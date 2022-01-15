@@ -1,7 +1,7 @@
 
 import { Models, math, ENTITY_EVENTS } from 'mage-engine';
 import TileMap from '../map/TileMap';
-import { TILES_STATES, TILES_TYPES } from '../map/constants';
+import { HUMAN_TILES, TILES_STATES, TILES_TYPES } from '../map/constants';
 import { DEATH_REASONS } from '../constants';
 
 const MAX_BUILDERS = 2;
@@ -14,7 +14,7 @@ class Humans {
     }
 
     start(initialPosition) {
-        TileMap.changeTile(initialPosition, TILES_TYPES.HUMAN, true);
+        TileMap.changeTile(initialPosition, TILES_TYPES.HUMAN, { startingTile: true });
         this.initialPosition = initialPosition;
 
         setInterval(this.expand, 1000);
@@ -43,7 +43,7 @@ class Humans {
 
         console.log('next tile,', nextTile);
 
-        this.sendBuilderToTile(nextTile);
+        this.sendBuilderToTile(nextTile, HUMAN_TILES.HUMAN_BUILDERS_HUT);
     }
 
     handleHumanDeath = (reason) => ({ target }) => {
@@ -56,7 +56,7 @@ class Humans {
         }
     }
 
-    sendBuilderToTile = (tile) => {
+    sendBuilderToTile = (tile, variation) => {
         const human = Models.getModel('human', { name: `human_builder_${Math.random()}`});
         const behaviour = human.addScript('HumanBehaviour', { position: this.initialPosition, builder: true });
 
@@ -64,7 +64,7 @@ class Humans {
 
         behaviour
             .goTo(tile)
-            .then(() => behaviour.buildAtPosition(tile));
+            .then(() => behaviour.buildAtPosition(tile, variation));
 
         TileMap.setTileState(tile, TILES_STATES.BUILDING);
         human.addEventListener(ENTITY_EVENTS.DISPOSE, this.handleHumanDeath(DEATH_REASONS.BUILDING));

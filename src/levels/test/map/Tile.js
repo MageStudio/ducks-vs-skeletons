@@ -12,7 +12,8 @@ import {
     STARTING_TILE_DETAILS_MAP,
     TILE_DETAILS_RELATIVE_POSITION,
     WATER_TILE_COLOR,
-    WATER_TILE_OPACITY
+    WATER_TILE_OPACITY,
+    TILE_BASE_VARIATIONS_MAP
 } from './constants';
 
 const { Vector3 } = THREE;
@@ -31,11 +32,12 @@ const TILE_LIFE_FACTOR = 1;
 const TILE_CRITICAL_DAMAGE_PERCENTAGE = .4;
 
 const getDetailsListFromTileType = (tileType) =>  (TILES_DETAILS_MAP[tileType]) || DESERT_DETAILS;
-const getRandomDetailForTile = (tileType) => {
-    const detailsList = getDetailsListFromTileType(tileType);
-    return detailsList[Math.floor(Math.random() * detailsList.length)];
-};
+const getRandomDetailForTile = (tileType) => math.pickRandom(getDetailsListFromTileType(tileType));
 const shouldRenderDetailsForTiletype = (tileType) => Math.random() > TILES_RANDOMNESS_MAP[tileType];
+const getRandomVariationForTile = tileType => {
+    const variations = TILE_BASE_VARIATIONS_MAP[tileType] || [tileType] 
+    return math.pickRandom(variations);
+}
 
 const convertTileTypeToHeight = (tileType) => ({
     [TILES_TYPES.WATER]: -.05, 
@@ -51,8 +53,16 @@ const calculatePosition = ({ x, z }) => ({
 
 export default class Tile {
 
-    constructor(tileType, position, startingTile) {
+    constructor(tileType, options = {}) {
+        const {
+            variation = getRandomVariationForTile(tileType),
+            startingTile = false,
+            position
+        } = options;
+        
         this.tileType = tileType;
+        this.variation = variation;
+        
         this.index = position;
         this.position = {
             ...calculatePosition(position),
@@ -65,7 +75,7 @@ export default class Tile {
         this.burning = false;
 
         this.setLife();
-        this.create();
+        this.create(variation);
     }
 
     setLife() {
@@ -102,7 +112,7 @@ export default class Tile {
     create() {
         if (this.isEmpty()) return;
 
-        this.tile = Models.getModel(this.tileType, { name: `tile_${this.index.x}_${this.index.z}`});
+        this.tile = Models.getModel(this.variation, { name: `tile_${this.index.x}_${this.index.z}`});
         this.tile.setData('index', this.index);
         this.tile.setPosition(this.position);
         this.tile.setScale(TILE_SCALE);
@@ -135,8 +145,9 @@ export default class Tile {
         startingDetail.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
         
         this.tile.add(startingDetail);
+        startingDetail.setScale(TILE_LARGE_DETAILS_SCALE);
 
-        startingDetail.setPosition({ y: 1 });
+        startingDetail.setPosition({ y: .2 });
     }
 
     addRandomDetail() {
