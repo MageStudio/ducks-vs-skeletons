@@ -1,0 +1,1 @@
+export const TILE_MAP_STATS_CHANGE = 'MAP_STATS_CHANGE';

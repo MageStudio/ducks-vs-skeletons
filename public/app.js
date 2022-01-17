@@ -6855,7 +6855,7 @@ var Test = /*#__PURE__*/function (_Level) {
     _this = _super.call.apply(_super, [this].concat(args));
 
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2___default()(_this), "onUpdate", function (dt) {
-      _this.azimuth += 0.01 * dt;
+      _this.azimuth += 0.001 * dt;
 
       if (_this.sky) {
         _this.sky.setSun(30, _this.azimuth, 100);
@@ -7333,6 +7333,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Tile__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Tile */ "./src/levels/test/map/Tile.js");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./constants */ "./src/levels/test/map/constants.js");
 /* harmony import */ var _descriptions__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./descriptions */ "./src/levels/test/map/descriptions/index.js");
+/* harmony import */ var _ui_actions_game__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../ui/actions/game */ "./src/ui/actions/game.js");
+
 
 
 
@@ -7515,6 +7517,7 @@ var TileMap = /*#__PURE__*/function () {
         },
         startingTile: startingTile
       });
+      mage_engine__WEBPACK_IMPORTED_MODULE_4__.store.dispatch((0,_ui_actions_game__WEBPACK_IMPORTED_MODULE_8__.updateTileMapStats)());
     }
   }, {
     key: "isTileType",
@@ -7556,6 +7559,23 @@ var TileMap = /*#__PURE__*/function () {
       };
 
       return calculatePath(start, end, []);
+    }
+  }, {
+    key: "getStats",
+    value: function getStats() {
+      return this.tiles.flat().reduce(function (acc, tile) {
+        return {
+          desert: acc.desert + tile.isDesert(),
+          nature: acc.nature + tile.isForest(),
+          human: acc.human + tile.isHuman(),
+          total: acc.total + !tile.isObstacle()
+        };
+      }, {
+        desert: 0,
+        human: 0,
+        nature: 0,
+        total: 0
+      });
     }
   }]);
 
@@ -8989,10 +9009,10 @@ var WormBlock = /*#__PURE__*/function (_BaseScript) {
 
 /***/ }),
 
-/***/ "./src/ui/root.js":
-/*!************************!*\
-  !*** ./src/ui/root.js ***!
-  \************************/
+/***/ "./src/ui/LoadingScreen.js":
+/*!*********************************!*\
+  !*** ./src/ui/LoadingScreen.js ***!
+  \*********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -9004,11 +9024,250 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(xferno__WEBPACK_IMPORTED_MODULE_0__);
 
 
-var Root = function Root() {
-  return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "h1", null, "Hello", 16);
+var getLoadingScreenMessage = function getLoadingScreenMessage(message) {
+  return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "span", 'loading-bar-message', message, 0);
 };
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Root);
+var LoadingScreen = function LoadingScreen(_ref) {
+  var message = _ref.message;
+  return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'loading-screen gradient-background', (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'loading-bar-container', [message && getLoadingScreenMessage(message), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", "progress-bar", (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'track', (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "img", 'car', null, 1, {
+    "src": '/img/car.png',
+    "height": '16px'
+  }), 2), 2)], 0), 2);
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (LoadingScreen);
+
+/***/ }),
+
+/***/ "./src/ui/actions/game.js":
+/*!********************************!*\
+  !*** ./src/ui/actions/game.js ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "updateTileMapStats": () => (/* binding */ updateTileMapStats)
+/* harmony export */ });
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./types */ "./src/ui/actions/types.js");
+
+var updateTileMapStats = function updateTileMapStats() {
+  return {
+    type: _types__WEBPACK_IMPORTED_MODULE_0__.TILE_MAP_STATS_CHANGE
+  };
+};
+
+/***/ }),
+
+/***/ "./src/ui/actions/types.js":
+/*!*********************************!*\
+  !*** ./src/ui/actions/types.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TILE_MAP_STATS_CHANGE": () => (/* binding */ TILE_MAP_STATS_CHANGE)
+/* harmony export */ });
+var TILE_MAP_STATS_CHANGE = 'MAP_STATS_CHANGE';
+
+/***/ }),
+
+/***/ "./src/ui/gameui/TileControlBar.js":
+/*!*****************************************!*\
+  !*** ./src/ui/gameui/TileControlBar.js ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! xferno */ "./node_modules/xferno/dist/xferno.js");
+/* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(xferno__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var TileControlBar = function TileControlBar(_ref) {
+  var _ref$tileStats = _ref.tileStats,
+      tileStats = _ref$tileStats === void 0 ? {} : _ref$tileStats;
+  var nature = tileStats.nature,
+      human = tileStats.human,
+      desert = tileStats.desert,
+      total = tileStats.total;
+
+  var getRatio = function getRatio(value) {
+    return value * 100 / total;
+  };
+
+  var getStyleString = function getStyleString(value) {
+    return "width: ".concat(getRatio(value), "%;");
+  };
+
+  return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'tile-control-bar-container widget', (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'tile-control-bar', [(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'human tile-control-bar-item', null, 1, {
+    "style": getStyleString(human)
+  }), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'desert tile-control-bar-item', null, 1, {
+    "style": getStyleString(desert)
+  }), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'nature tile-control-bar-item', null, 1, {
+    "style": getStyleString(nature)
+  })], 4), 2);
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (TileControlBar);
+
+/***/ }),
+
+/***/ "./src/ui/gameui/index.js":
+/*!********************************!*\
+  !*** ./src/ui/gameui/index.js ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! xferno */ "./node_modules/xferno/dist/xferno.js");
+/* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(xferno__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _TileControlBar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TileControlBar */ "./src/ui/gameui/TileControlBar.js");
+
+
+
+var Game = function Game(_ref) {
+  var tileStats = _ref.tileStats;
+  return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _TileControlBar__WEBPACK_IMPORTED_MODULE_1__.default, {
+    "tileStats": tileStats
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Game);
+
+/***/ }),
+
+/***/ "./src/ui/reducers/game.js":
+/*!*********************************!*\
+  !*** ./src/ui/reducers/game.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _levels_test_map_TileMap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../levels/test/map/TileMap */ "./src/levels/test/map/TileMap.js");
+/* harmony import */ var _actions_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../actions/types */ "./src/ui/actions/types.js");
+
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+
+
+var DEFAULT_STATE = {
+  tileStats: {
+    nature: 0,
+    human: 0,
+    desert: 0,
+    total: 100
+  }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function () {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : DEFAULT_STATE;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case _actions_types__WEBPACK_IMPORTED_MODULE_2__.TILE_MAP_STATS_CHANGE:
+      {
+        var tileStats = _levels_test_map_TileMap__WEBPACK_IMPORTED_MODULE_1__.default.getStats();
+        return _objectSpread(_objectSpread({}, state), {}, {
+          tileStats: tileStats
+        });
+      }
+
+    default:
+      return state;
+  }
+});
+
+/***/ }),
+
+/***/ "./src/ui/reducers/index.js":
+/*!**********************************!*\
+  !*** ./src/ui/reducers/index.js ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./game */ "./src/ui/reducers/game.js");
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  game: _game__WEBPACK_IMPORTED_MODULE_0__.default
+});
+
+/***/ }),
+
+/***/ "./src/ui/root.js":
+/*!************************!*\
+  !*** ./src/ui/root.js ***!
+  \************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! xferno */ "./node_modules/xferno/dist/xferno.js");
+/* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(xferno__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var mage_engine__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! mage-engine */ "../Mage/dist/mage.js");
+/* harmony import */ var _gameui__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./gameui */ "./src/ui/gameui/index.js");
+/* harmony import */ var _LoadingScreen__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./LoadingScreen */ "./src/ui/LoadingScreen.js");
+
+
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+
+
+
+
+var Root = function Root(_ref) {
+  var loadingScreenVisible = _ref.loadingScreenVisible,
+      tileStats = _ref.tileStats;
+  return loadingScreenVisible ? (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createComponentVNode)(2, _LoadingScreen__WEBPACK_IMPORTED_MODULE_4__.default) : (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createComponentVNode)(2, _gameui__WEBPACK_IMPORTED_MODULE_3__.default, {
+    "tileStats": tileStats
+  });
+};
+
+var mapStateToProps = function mapStateToProps(_ref2) {
+  var ui = _ref2.ui,
+      game = _ref2.game;
+  return _objectSpread({
+    loadingScreenVisible: ui.loadingScreenVisible
+  }, game);
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {};
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,mage_engine__WEBPACK_IMPORTED_MODULE_2__.connect)(mapStateToProps, mapDispatchToProps)(Root));
 
 /***/ }),
 
@@ -11387,6 +11646,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var mage_engine__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mage-engine */ "../Mage/dist/mage.js");
 /* harmony import */ var _levels_test__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./levels/test */ "./src/levels/test/index.js");
 /* harmony import */ var _ui_root__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ui/root */ "./src/ui/root.js");
+/* harmony import */ var _ui_reducers__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ui/reducers */ "./src/ui/reducers/index.js");
+
 
 
 
@@ -11481,7 +11742,7 @@ var config = {
   selector: 'body'
 };
 window.addEventListener('load', function () {
-  // store.createStore(reducers, {}, true);
+  mage_engine__WEBPACK_IMPORTED_MODULE_0__.store.createStore(_ui_reducers__WEBPACK_IMPORTED_MODULE_3__.default, {}, true);
   mage_engine__WEBPACK_IMPORTED_MODULE_0__.Router.on('/test', _levels_test__WEBPACK_IMPORTED_MODULE_1__.default);
   mage_engine__WEBPACK_IMPORTED_MODULE_0__.Router.start(config, assets);
 });

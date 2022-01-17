@@ -1,6 +1,7 @@
 import { Router, store, constants } from 'mage-engine';
 import Test from './levels/test';
 import Root from './ui/root';
+import reducers from './ui/reducers';
 
 const { SHADOW_TYPES } = constants;
 
@@ -108,7 +109,7 @@ const config = {
 };
 
 window.addEventListener('load', () => {
-    // store.createStore(reducers, {}, true);
+    store.createStore(reducers, {}, true);
 
     Router.on('/test', Test);
     Router.start(config, assets);

@@ -1,4 +1,4 @@
-import { Models, constants, math } from "mage-engine";
+import { Models, constants, math, store } from "mage-engine";
 import Tile from './Tile';
 import {
     TILE_COLLECTIBLE_SCALE,
@@ -7,6 +7,7 @@ import {
 } from './constants';
 
 import MAP_DESCRIPTIONS from './descriptions';
+import { updateTileMapStats } from "../../../ui/actions/game";
 
 const { MATERIALS } = constants;
 
@@ -117,6 +118,8 @@ class TileMap {
 
         this.tiles[_x][_z].dispose();
         this.tiles[_x][_z] = new Tile(tileType, { variation, position: { x: _x, z: _z }, startingTile });
+
+        store.dispatch(updateTileMapStats());
     }
 
     isTileType({ x, z }, tileType) {
@@ -142,6 +145,24 @@ class TileMap {
         }
 
         return calculatePath(start, end, []);
+    }
+
+    getStats() {
+        return this.tiles
+            .flat()
+            .reduce((acc, tile) => {
+            return {
+                desert: acc.desert + tile.isDesert(),
+                nature: acc.nature + tile.isForest(),
+                human: acc.human + tile.isHuman(),
+                total: acc.total + !tile.isObstacle()
+            }
+        }, {
+            desert: 0,
+            human: 0,
+            nature: 0,
+            total: 0
+        })
     }
 }
 
