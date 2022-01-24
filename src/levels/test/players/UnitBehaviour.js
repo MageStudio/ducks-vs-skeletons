@@ -55,8 +55,6 @@ export default class UnitBehaviour extends BaseScript {
             y: MINIMUM_HEIGHT
         };
 
-        console.log('setting unit at', this.position);
-
         this.builder = builder;
         this.warrior = warrior;
 
@@ -178,8 +176,6 @@ export default class UnitBehaviour extends BaseScript {
     buildAtPosition(tile, variation) {
         if (!this.isBuilder()) return;
 
-        console.log('building here');
-
         this.unit.playAnimation(UNIT_ANIMATIONS.BUILD);
         setTimeout(() => {
             this.unit.playAnimation(UNIT_ANIMATIONS.IDLE);
@@ -190,15 +186,25 @@ export default class UnitBehaviour extends BaseScript {
         }, 3000)
     }
 
-    goTo(tile) {
-        console.log('going to ', tile);
-        const { x, z } = tile.getPosition();
-        const targetPosition = new Vector3(x, MINIMUM_HEIGHT, z);
-        const time = this.unit.getPosition().distanceTo(targetPosition) / this.getSpeed() * 1000;
+    goTo(startingPosition, tile) {
+        return new Promise(resolve => {
+            const path = TileMap.getPathToTile(TileMap.getTileAt(startingPosition), tile);
+            const move = () => {
+                if (!path.length) return resolve();
 
-        this.unit.lookAt(targetPosition);
-        this.unit.playAnimation(UNIT_ANIMATIONS.RUN);
-        return this.unit.goTo(targetPosition, time);
+                const tile = path.shift();
+
+                const { x, z } = tile.getPosition();
+                const targetPosition = new Vector3(x, MINIMUM_HEIGHT, z);
+                const time = this.unit.getPosition().distanceTo(targetPosition) / this.getSpeed() * 1000;
+
+                this.unit.lookAt(targetPosition);
+                this.unit.playAnimation(UNIT_ANIMATIONS.RUN);
+                this.unit.goTo(targetPosition, time).then(() => move());
+            }
+
+            move();
+        });
     }
 
     update() {

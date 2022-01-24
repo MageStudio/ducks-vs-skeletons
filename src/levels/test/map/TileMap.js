@@ -138,9 +138,9 @@ class TileMap {
             const [closest, secondClosest] = adjacent.sort((a,b) => a.getPosition().distanceTo(endPosition) - b.getPosition().distanceTo(endPosition));
 
             path.push(closest);
-            if (secondClosest) {
-                path.push(secondClosest);
-            }
+            // if (secondClosest) {
+            //     path.push(secondClosest);
+            // }
             return calculatePath(closest, end, path);
         }
 

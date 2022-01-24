@@ -34,10 +34,11 @@ export default class Player {
 
     sendBuilderToTile(tile, variation) {
         const unit = Models.getModel(this.type, { name: `${this.type}_builder_${Math.random()}`});
-        const behaviour = unit.addScript(this.getUnitScriptName(), { position: this.initialPosition, builder: true });
+        const start = this.initialPosition;
+        const behaviour = unit.addScript(this.getUnitScriptName(), { position: start, builder: true });
 
         behaviour
-            .goTo(tile)
+            .goTo(start, tile)
             .then(() => behaviour.buildAtPosition(tile, variation));
 
         TileMap.setTileState(tile, TILES_STATES.BUILDING);
@@ -53,7 +54,7 @@ export default class Player {
         const behaviour = unit.addScript(this.getUnitScriptName(), { position: this.initialPosition, warrior: true });
 
         behaviour
-            .goTo(tile)
+            .goTo(start, tile)
             .then(() => behaviour.scanForTargets(tile));
 
         // TileMap.setTileState(tile, TILES_STATES.FIGHTING);

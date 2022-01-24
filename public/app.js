@@ -6244,7 +6244,7 @@ _this.mouseButtons={LEFT:MOUSE.LEFT,MIDDLE:MOUSE.MIDDLE,RIGHT:MOUSE.RIGHT};// fo
 _this.target0=_this.target.clone();_this.position0=_this.object.position.clone();_this.zoom0=_this.object.zoom;_this.changeEvent={type:'change'};_this.startEvent={type:'start'};_this.endEvent={type:'end'};_this.STATE={NONE:-1,ROTATE:0,DOLLY:1,PAN:2,TOUCH_ROTATE:3,TOUCH_DOLLY_PAN:4};_this.state=_this.STATE.NONE;_this.EPS=0.000001;// current position in spherical coordinates
 _this.spherical=new Spherical();_this.sphericalDelta=new Spherical();_this.scale=1;_this.panOffset=new Vector3$1();_this.zoomChanged=false;_this.rotateStart=new Vector2();_this.rotateEnd=new Vector2();_this.rotateDelta=new Vector2();_this.panStart=new Vector2();_this.panEnd=new Vector2();_this.panDelta=new Vector2();_this.dollyStart=new Vector2();_this.dollyEnd=new Vector2();_this.dollyDelta=new Vector2();_this.offset=new Vector3$1();// so camera.up is the orbit axis
 _this.quat=new Quaternion().setFromUnitVectors(_this.object.up,new Vector3$1(0,1,0));_this.quatInverse=_this.quat.clone().invert();_this.lastPosition=new Vector3$1();_this.lastQuaternion=new Quaternion();return _this;}_createClass(Orbit,[{key:"init",value:function init(){this.domElement.addEventListener('contextmenu',this.onContextMenu,false);this.domElement.addEventListener('mousedown',this.onMouseDown,false);this.domElement.addEventListener('wheel',this.onMouseWheel,false);this.domElement.addEventListener('touchstart',this.onTouchStart,false);this.domElement.addEventListener('touchend',this.onTouchEnd,false);this.domElement.addEventListener('touchmove',this.onTouchMove,false);window.addEventListener('keydown',this.onKeyDown,false);// force an update at start
-this.update();}},{key:"getPolarAngle",value:function getPolarAngle(){return this.spherical.phi;}},{key:"getAzimuthalAngle",value:function getAzimuthalAngle(){return spherical.theta;}},{key:"saveState",value:function saveState(){this.target0.copy(this.target);this.position0.copy(this.object.position);this.zoom0=this.object.zoom;}},{key:"reset",value:function reset(){this.target.copy(this.target0);this.object.position.copy(this.position0);this.object.zoom=this.zoom0;this.object.updateProjectionMatrix();this.dispatchEvent(this.changeEvent);this.update();this.state=STATE.NONE;}},{key:"dispose",value:function dispose(){this.domElement.removeEventListener('contextmenu',this.onContextMenu,false);this.domElement.removeEventListener('mousedown',this.onMouseDown,false);this.domElement.removeEventListener('wheel',this.onMouseWheel,false);this.domElement.removeEventListener('touchstart',this.onTouchStart,false);this.domElement.removeEventListener('touchend',this.onTouchEnd,false);this.domElement.removeEventListener('touchmove',this.onTouchMove,false);document.removeEventListener('mousemove',this.onMouseMove,false);document.removeEventListener('mouseup',this.onMouseUp,false);window.removeEventListener('keydown',this.onKeyDown,false);}},{key:"getAutoRotationAngle",value:function getAutoRotationAngle(){return 2*Math.PI/60/60*this.autoRotateSpeed;}},{key:"getZoomScale",value:function getZoomScale(){return Math.pow(0.95,this.zoomSpeed);}}]);return Orbit;}(EventDispatcher);var Gizmo=/*#__PURE__*/function(_Object3D){_inherits(Gizmo,_Object3D);var _super=_createSuper(Gizmo);function Gizmo(){var _thisSuper,_this;_classCallCheck(this,Gizmo);_this=_super.call(this);_defineProperty(_assertThisInitialized(_this),"updateMatrixWorld",function(){var space=_this.space;if(_this.mode==='scale')space='local';// scale always oriented to local rotation
+this.update();}},{key:"setMinAzimuthAngle",value:function setMinAzimuthAngle(){var angle=arguments.length>0&&arguments[0]!==undefined?arguments[0]:-Infinity;this.minAzimuthAngle=angle;}},{key:"setMaxAzimuthAngle",value:function setMaxAzimuthAngle(){var angle=arguments.length>0&&arguments[0]!==undefined?arguments[0]:Infinity;this.maxAzimuthAngle=angle;}},{key:"setMinPolarAngle",value:function setMinPolarAngle(){var angle=arguments.length>0&&arguments[0]!==undefined?arguments[0]:0;this.minPolarAngle=angle;}},{key:"setMaxPolarAngle",value:function setMaxPolarAngle(){var angle=arguments.length>0&&arguments[0]!==undefined?arguments[0]:Math.PI;this.maxPolarAngle=angle;}},{key:"setMinDistance",value:function setMinDistance(){var distance=arguments.length>0&&arguments[0]!==undefined?arguments[0]:0;this.minDistance=distance;}},{key:"setMaxDistance",value:function setMaxDistance(){var distance=arguments.length>0&&arguments[0]!==undefined?arguments[0]:Infinity;this.maxDistance=distance;}},{key:"getPolarAngle",value:function getPolarAngle(){return this.spherical.phi;}},{key:"getAzimuthalAngle",value:function getAzimuthalAngle(){return spherical.theta;}},{key:"saveState",value:function saveState(){this.target0.copy(this.target);this.position0.copy(this.object.position);this.zoom0=this.object.zoom;}},{key:"reset",value:function reset(){this.target.copy(this.target0);this.object.position.copy(this.position0);this.object.zoom=this.zoom0;this.object.updateProjectionMatrix();this.dispatchEvent(this.changeEvent);this.update();this.state=STATE.NONE;}},{key:"dispose",value:function dispose(){this.domElement.removeEventListener('contextmenu',this.onContextMenu,false);this.domElement.removeEventListener('mousedown',this.onMouseDown,false);this.domElement.removeEventListener('wheel',this.onMouseWheel,false);this.domElement.removeEventListener('touchstart',this.onTouchStart,false);this.domElement.removeEventListener('touchend',this.onTouchEnd,false);this.domElement.removeEventListener('touchmove',this.onTouchMove,false);document.removeEventListener('mousemove',this.onMouseMove,false);document.removeEventListener('mouseup',this.onMouseUp,false);window.removeEventListener('keydown',this.onKeyDown,false);}},{key:"getAutoRotationAngle",value:function getAutoRotationAngle(){return 2*Math.PI/60/60*this.autoRotateSpeed;}},{key:"getZoomScale",value:function getZoomScale(){return Math.pow(0.95,this.zoomSpeed);}}]);return Orbit;}(EventDispatcher);var Gizmo=/*#__PURE__*/function(_Object3D){_inherits(Gizmo,_Object3D);var _super=_createSuper(Gizmo);function Gizmo(){var _thisSuper,_this;_classCallCheck(this,Gizmo);_this=_super.call(this);_defineProperty(_assertThisInitialized(_this),"updateMatrixWorld",function(){var space=_this.space;if(_this.mode==='scale')space='local';// scale always oriented to local rotation
 var quaternion=space==="local"?_this.worldQuaternion:_this.identityQuaternion;// Show only gizmos for current transform mode
 _this.gizmo["translate"].visible=_this.mode==="translate";_this.gizmo["rotate"].visible=_this.mode==="rotate";_this.gizmo["scale"].visible=_this.mode==="scale";_this.helper["translate"].visible=_this.mode==="translate";_this.helper["rotate"].visible=_this.mode==="rotate";_this.helper["scale"].visible=_this.mode==="scale";var handles=[].concat(_toConsumableArray(_this.picker[_this.mode].children),_toConsumableArray(_this.gizmo[_this.mode].children),_toConsumableArray(_this.helper[_this.mode].children));//handles = handles.concat(this.picker[this.mode].children);
 //handles = handles.concat(this.gizmo[this.mode].children);
@@ -6827,12 +6827,14 @@ var SUNLIGHT = 0xffeaa7;
 var DARKER_GROUND = 0X78e08f;
 var GROUND = 0xb8e994;
 var BACKGROUND = 0xdff9fb; //0xddf3f5;
-// const DOF_OPTIONS = {
-//     focus: 1.0,
-//     aperture: 0.0001,
-//     maxblur: 0.01
-// };
 
+var DOF_OPTIONS = {
+  focus: 1.0,
+  aperture: 0.0002,
+  //0.0001,
+  maxblur: 0.01 //0.01
+
+};
 var SATURATION_OPTIONS = {
   saturation: 0.4
 };
@@ -6905,13 +6907,15 @@ var Test = /*#__PURE__*/function (_Level) {
         z: 0
       }); //({ x: 7.8, y: 5.48, z: 12.8 });
 
-      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Controls.setOrbitControl({
-        target: {
-          x: 5,
-          y: 0,
-          z: 5
-        }
+      var orbit = mage_engine__WEBPACK_IMPORTED_MODULE_7__.Controls.setOrbitControl();
+      orbit.setTarget({
+        x: 5,
+        y: 0,
+        z: 5
       });
+      orbit.setMinPolarAngle(0);
+      orbit.setMaxPolarAngle(Math.PI / 2.5);
+      orbit.setMaxDistance(10);
       window.camera = mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scene.getCamera();
     }
   }, {
@@ -6921,6 +6925,7 @@ var Test = /*#__PURE__*/function (_Level) {
       mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scene.setBackground(0xff9f43);
       mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scene.setRendererOutputEncoding(mage_engine__WEBPACK_IMPORTED_MODULE_7__.THREE.sRGBEncoding);
       mage_engine__WEBPACK_IMPORTED_MODULE_7__.PostProcessing.add(EFFECTS.HUE_SATURATION, SATURATION_OPTIONS);
+      mage_engine__WEBPACK_IMPORTED_MODULE_7__.PostProcessing.add(EFFECTS.DEPTH_OF_FIELD, DOF_OPTIONS);
     }
   }, {
     key: "createWorld",
@@ -7549,11 +7554,9 @@ var TileMap = /*#__PURE__*/function () {
             closest = _adjacent$sort2[0],
             secondClosest = _adjacent$sort2[1];
 
-        path.push(closest);
-
-        if (secondClosest) {
-          path.push(secondClosest);
-        }
+        path.push(closest); // if (secondClosest) {
+        //     path.push(secondClosest);
+        // }
 
         return calculatePath(closest, end, path);
       };
@@ -7798,7 +7801,7 @@ var Player = /*#__PURE__*/function () {
         position: _this.initialPosition,
         warrior: true
       });
-      behaviour.goTo(tile).then(function () {
+      behaviour.goTo(start, tile).then(function () {
         return behaviour.scanForTargets(tile);
       }); // TileMap.setTileState(tile, TILES_STATES.FIGHTING);
 
@@ -7829,11 +7832,12 @@ var Player = /*#__PURE__*/function () {
       var unit = mage_engine__WEBPACK_IMPORTED_MODULE_3__.Models.getModel(this.type, {
         name: "".concat(this.type, "_builder_").concat(Math.random())
       });
+      var start = this.initialPosition;
       var behaviour = unit.addScript(this.getUnitScriptName(), {
-        position: this.initialPosition,
+        position: start,
         builder: true
       });
-      behaviour.goTo(tile).then(function () {
+      behaviour.goTo(start, tile).then(function () {
         return behaviour.buildAtPosition(tile, variation);
       });
       _map_TileMap__WEBPACK_IMPORTED_MODULE_5__.default.setTileState(tile, _map_constants__WEBPACK_IMPORTED_MODULE_4__.TILES_STATES.BUILDING);
@@ -7982,7 +7986,6 @@ var UnitBehaviour = /*#__PURE__*/function (_BaseScript) {
       this.position = _objectSpread(_objectSpread({}, position), {}, {
         y: MINIMUM_HEIGHT
       });
-      console.log('setting unit at', this.position);
       this.builder = builder;
       this.warrior = warrior;
       window.unit = unit;
@@ -8112,7 +8115,6 @@ var UnitBehaviour = /*#__PURE__*/function (_BaseScript) {
       var _this3 = this;
 
       if (!this.isBuilder()) return;
-      console.log('building here');
       this.unit.playAnimation(UNIT_ANIMATIONS.BUILD);
       setTimeout(function () {
         _this3.unit.playAnimation(UNIT_ANIMATIONS.IDLE);
@@ -8128,18 +8130,34 @@ var UnitBehaviour = /*#__PURE__*/function (_BaseScript) {
     }
   }, {
     key: "goTo",
-    value: function goTo(tile) {
-      console.log('going to ', tile);
+    value: function goTo(startingPosition, tile) {
+      var _this4 = this;
 
-      var _tile$getPosition = tile.getPosition(),
-          x = _tile$getPosition.x,
-          z = _tile$getPosition.z;
+      return new Promise(function (resolve) {
+        var path = _map_TileMap__WEBPACK_IMPORTED_MODULE_9__.default.getPathToTile(_map_TileMap__WEBPACK_IMPORTED_MODULE_9__.default.getTileAt(startingPosition), tile);
 
-      var targetPosition = new Vector3(x, MINIMUM_HEIGHT, z);
-      var time = this.unit.getPosition().distanceTo(targetPosition) / this.getSpeed() * 1000;
-      this.unit.lookAt(targetPosition);
-      this.unit.playAnimation(UNIT_ANIMATIONS.RUN);
-      return this.unit.goTo(targetPosition, time);
+        var move = function move() {
+          if (!path.length) return resolve();
+          var tile = path.shift();
+
+          var _tile$getPosition = tile.getPosition(),
+              x = _tile$getPosition.x,
+              z = _tile$getPosition.z;
+
+          var targetPosition = new Vector3(x, MINIMUM_HEIGHT, z);
+          var time = _this4.unit.getPosition().distanceTo(targetPosition) / _this4.getSpeed() * 1000;
+
+          _this4.unit.lookAt(targetPosition);
+
+          _this4.unit.playAnimation(UNIT_ANIMATIONS.RUN);
+
+          _this4.unit.goTo(targetPosition, time).then(function () {
+            return move();
+          });
+        };
+
+        move();
+      });
     }
   }, {
     key: "update",
@@ -8387,8 +8405,7 @@ var Humans = /*#__PURE__*/function (_Player) {
         return _map_TileMap__WEBPACK_IMPORTED_MODULE_9__.default.getAdjacentTiles(tile.getIndex()).filter(_this.isValidTile);
       }).filter(function (adjacents) {
         return adjacents.length;
-      }).sort().pop());
-      console.log('next tile,', nextTile); //  TODO: needs to decide which tile to build based on algo?
+      }).sort().pop()); //  TODO: needs to decide which tile to build based on algo?
 
       _this.sendBuilderToTile(nextTile, _map_constants__WEBPACK_IMPORTED_MODULE_10__.HUMAN_TILES.HUMAN_BUILDERS_HUT);
     });

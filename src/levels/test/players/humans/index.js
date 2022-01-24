@@ -44,8 +44,6 @@ class Humans extends Player {
                 .pop()
         );
 
-        console.log('next tile,', nextTile);
-
         //  TODO: needs to decide which tile to build based on algo?
         this.sendBuilderToTile(nextTile, HUMAN_TILES.HUMAN_BUILDERS_HUT);
     }

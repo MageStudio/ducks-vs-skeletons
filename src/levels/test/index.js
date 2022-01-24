@@ -33,11 +33,11 @@ export const DARKER_GROUND = 0X78e08f;
 export const GROUND = 0xb8e994;
 export const BACKGROUND = 0xdff9fb;//0xddf3f5;
 
-// const DOF_OPTIONS = {
-//     focus: 1.0,
-//     aperture: 0.0001,
-//     maxblur: 0.01
-// };
+const DOF_OPTIONS = {
+    focus: 1.0,
+    aperture: 0.0002,//0.0001,
+    maxblur: 0.01//0.01
+};
 
 const SATURATION_OPTIONS = {
     saturation: 0.4
@@ -63,16 +63,20 @@ export default class Test extends Level {
 
     addSky() {
         this.sky = new Sky({});
-        // this.sky.setSun(180, .205, 100);
         this.azimuth = .01;
         this.sky.setSun(30, this.azimuth, 100);
         window.sky = this.sky;
     }
 
     prepareCamera() {
-        // 2.5958724045158155, y: 1.9694966995502956, z: -0.006603738747897658}
-        Scene.getCamera().setPosition({x: 2, y: 4, z: 0 });//({ x: 7.8, y: 5.48, z: 12.8 });
-        Controls.setOrbitControl({ target: { x: 5, y: 0, z: 5 } });
+        Scene.getCamera().setPosition({x: 2, y: 4, z: 0 });
+        const orbit = Controls.setOrbitControl();
+
+        orbit.setTarget({ x: 5, y: 0, z: 5 });
+        orbit.setMinPolarAngle(0);
+        orbit.setMaxPolarAngle(Math.PI/2.5);
+        orbit.setMaxDistance(10);
+
         window.camera = Scene.getCamera();
     }
 
@@ -81,6 +85,7 @@ export default class Test extends Level {
         Scene.setBackground(0xff9f43);
         Scene.setRendererOutputEncoding(THREE.sRGBEncoding);
         PostProcessing.add(EFFECTS.HUE_SATURATION, SATURATION_OPTIONS);
+        // PostProcessing.add(EFFECTS.DEPTH_OF_FIELD, DOF_OPTIONS);
     }
 
     createWorld() {
