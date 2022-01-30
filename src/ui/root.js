@@ -2,17 +2,18 @@ import { connect } from 'mage-engine';
 import Game from './gameui';
 import LoadingScreen from './LoadingScreen';
 
-const Root = ({ loadingScreenVisible, tileStats }) => {
-    return (
-        loadingScreenVisible ?
-            <LoadingScreen /> :
-            <Game tileStats={tileStats}/>
-    );
-}
+const Root = ({ loadingScreenVisible, tileStats, energy }) => (
+    loadingScreenVisible ?
+        <LoadingScreen/> :
+        <Game
+            tileStats={tileStats}
+            energy={energy}/>
+);
 
-const mapStateToProps = ({ ui, game }) => ({
+const mapStateToProps = ({ ui, game, player }) => ({
     loadingScreenVisible: ui.loadingScreenVisible,
-    ...game
+    ...game,
+    ...player
 });
 
 const mapDispatchToProps = dispatch => ({

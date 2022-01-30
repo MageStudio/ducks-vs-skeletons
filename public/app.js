@@ -4847,7 +4847,7 @@ m.elements[12]=mx;m.elements[13]=my;m.elements[14]=mz;}}},{key:"update",value:fu
 //     });
 //     return this.sound;
 // }
-},{key:"addLight",value:function addLight(light){var _this$getPosition=this.getPosition(),x=_this$getPosition.x,y=_this$getPosition.y,z=_this$getPosition.z;light.setPosition({x:x,y:y,z:z});this.light=light;}},{key:"playSound",value:function playSound(){if(this.sound&&!this.isPlayingSound){this.sound.play();this.isPlayingSound=true;}}},{key:"stopSound",value:function stopSound(){if(this.sound&&this.isPlayingSound){this.sound.stop();this.isPlayingSound=false;}}},{key:"getScale",value:function getScale(){return{x:this.body.scale.x,y:this.body.scale.y,z:this.body.scale.z};}},{key:"setScale",value:function setScale(howbig){if(this.hasBody()){var scale=_objectSpread2({},this.getScale(),{},howbig);this.body.scale.set(scale.x,scale.y,scale.z);}}},{key:"getWorldPosition",value:function getWorldPosition(){var vector=new Vector3$1();if(this.hasBody()){var _this$body$getWorldPo=this.body.getWorldPosition(vector),x=_this$body$getWorldPo.x,y=_this$body$getWorldPo.y,z=_this$body$getWorldPo.z;return{x:x,y:y,z:z};}return DEFAULT_POSITION$1;}},{key:"getQuaternion",value:function getQuaternion(){if(this.hasBody()){return this.getBody().quaternion.clone();}}},{key:"getPosition",value:function getPosition(){return this.getBody().position.clone();}},{key:"setPosition",value:function setPosition(where){if(this.hasBody()){var _this$getPosition2=this.getPosition(),x=_this$getPosition2.x,y=_this$getPosition2.y,z=_this$getPosition2.z;var position=_objectSpread2({x:x,y:y,z:z},where);this.body.position.set(position.x,position.y,position.z);}}},{key:"getRotation",value:function getRotation(){return this.getBody().rotation.clone();}},{key:"setRotation",value:function setRotation(how){if(this.hasBody()){var _this$getRotation=this.getRotation(),x=_this$getRotation.x,y=_this$getRotation.y,z=_this$getRotation.z;var rotation=_objectSpread2({x:x,y:y,z:z},how);this.body.rotation.set(rotation.x,rotation.y,rotation.z);}}},{key:"getAngularVelocity",value:function getAngularVelocity(){return this.angularVelocity||DEFAULT_ANGULAR_VELOCITY;}},{key:"setAngularVelocity",value:function setAngularVelocity(velocity){this.angularVelocity=velocity;Physics$1.updateAngularVelocity(this.uuid(),velocity);}},{key:"getLinearVelocity",value:function getLinearVelocity(){return this.linearVelocity||DEFAULT_LINEAR_VELOCITY$1;}},{key:"setLinearVelocity",value:function setLinearVelocity(velocity){this.linearVelocity=velocity;Physics$1.updateLinearVelocity(this.uuid(),velocity);}},{key:"translate",value:function translate(_ref7){var _ref7$x=_ref7.x,x=_ref7$x===void 0?0:_ref7$x,_ref7$y=_ref7.y,y=_ref7$y===void 0?0:_ref7$y,_ref7$z=_ref7.z,z=_ref7$z===void 0?0:_ref7$z;if(this.hasBody()){this.body.translateX(x);this.body.translateY(y);this.body.translateZ(z);}}},{key:"rotateTo",value:function rotateTo(){var _this6=this;var rotation=arguments.length>0&&arguments[0]!==undefined?arguments[0]:this.getRotation();var time=arguments.length>1&&arguments[1]!==undefined?arguments[1]:250;var _this$getRotation2=this.getRotation(),x=_this$getRotation2.x,y=_this$getRotation2.y,z=_this$getRotation2.z;return new Promise(function(resolve){return new between({x:x,y:y,z:z},rotation).time(time).on('update',function(value){return _this6.setRotation(value);}).on('complete',resolve);});}},{key:"goTo",value:function goTo(){var _this7=this;var position=arguments.length>0&&arguments[0]!==undefined?arguments[0]:this.getPosition();var time=arguments.length>1&&arguments[1]!==undefined?arguments[1]:250;var _this$getPosition3=this.getPosition(),x=_this$getPosition3.x,y=_this$getPosition3.y,z=_this$getPosition3.z;return new Promise(function(resolve){return new between({x:x,y:y,z:z},position).time(time).on('update',function(value){return _this7.setPosition(value);}).on('complete',resolve);});}},{key:"uuid",value:function uuid(){return this.body.uuid;}},{key:"equals",value:function equals(entity){try{return entity.uuid?this.uuid()===entity.uuid():false;}catch(e){return false;}}},{key:"setName",value:function setName(name){this.name=name;}},{key:"getName",value:function getName(){return this.name;}},{key:"setData",value:function setData(key,value){if(this.getBody().userData){if(key&&value){this.getBody().userData[key]=value;}else{console.log(KEY_VALUE_IS_MISSING);}}else{console.log(USER_DATA_IS_MISSING);}}},{key:"getData",value:function getData(key){if(this.getBody().userData){if(key){return this.getBody().userData[key];}else{console.log(KEY_IS_MISSING);}}else{console.log(USER_DATA_IS_MISSING);}}},{key:"mapScriptsToJSON",value:function mapScriptsToJSON(){this.scripts.reduce(function(acc,_ref8){var name=_ref8.name,_ref8$options=_ref8.options,options=_ref8$options===void 0?{}:_ref8$options;acc.names.push(name);acc.options.push(options);return acc;},{names:[],options:[]});}},{key:"toJSON",value:function toJSON(){return{position:this.getPosition(),rotation:this.getRotation(),scale:this.getScale(),entityType:this.getEntityType(),tags:this.getTags()};}}]);return Entity;}(EventDispatcher);var AnimationHandler=/*#__PURE__*/function(_EventDispatcher){_inherits(AnimationHandler,_EventDispatcher);var _super=_createSuper(AnimationHandler);function AnimationHandler(mesh){var _this;var animations=arguments.length>1&&arguments[1]!==undefined?arguments[1]:[];_classCallCheck(this,AnimationHandler);_this=_super.call(this);_defineProperty(_assertThisInitialized(_this),"getAnimationEventHandler",function(type){return function(_ref){var action=_ref.action,direction=_ref.direction;_this.dispatchEvent({type:type,action:action,direction:direction});};});_this.mixer=new AnimationMixer(mesh);_this.animations=animations;_this.addEventsListeners();return _this;}_createClass(AnimationHandler,[{key:"addEventsListeners",value:function addEventsListeners(){this.mixer.addEventListener('loop',this.getAnimationEventHandler(ENTITY_EVENTS.ANIMATION.LOOP));this.mixer.addEventListener('finished',this.getAnimationEventHandler(ENTITY_EVENTS.ANIMATION.FINISHED));}},{key:"getAction",value:function getAction(id){var action;if(typeof id==='number'){action=this.animations[id];}else if(typeof id==='string'){action=AnimationClip.findByName(this.animations,id);}return action;}},{key:"getAvailableAnimations",value:function getAvailableAnimations(){return this.animations.map(function(_ref2){var name=_ref2.name;return name;});}},{key:"stopAll",value:function stopAll(){this.mixer.stopAllAction();}},{key:"stopCurrentAnimation",value:function stopCurrentAnimation(){if(this.currentAction){this.currentAction.stop();}}},{key:"playAnimation",value:function playAnimation(id,options){var action=this.getAction(id);var _options$loop=options.loop,loop=_options$loop===void 0?LoopRepeat:_options$loop;if(this.currentAction){this.fadeToAnimation(action,options);}else if(action){this.currentAction=this.mixer.clipAction(action).setLoop(loop).play();}else{console.warn(ANIMATION_NOT_FOUND);}}},{key:"fadeToAnimation",value:function fadeToAnimation(action){var _ref3=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{},_ref3$duration=_ref3.duration,duration=_ref3$duration===void 0?0.2:_ref3$duration,_ref3$loop=_ref3.loop,loop=_ref3$loop===void 0?LoopRepeat:_ref3$loop;var previousAction=this.currentAction;this.currentAction=this.mixer.clipAction(action);if(previousAction!==this.currentAction){previousAction.fadeOut(duration);}this.currentAction.reset().setEffectiveTimeScale(1).setEffectiveWeight(1).fadeIn(duration).setLoop(loop).play();}},{key:"update",value:function update(dt){this.mixer.update(dt);}}]);return AnimationHandler;}(EventDispatcher);var inverseProjectionMatrix=new Matrix4();var Frustum$1=/*#__PURE__*/function(){function Frustum(data){_classCallCheck(this,Frustum);data=data||{};this.vertices={near:[new Vector3$1(),new Vector3$1(),new Vector3$1(),new Vector3$1()],far:[new Vector3$1(),new Vector3$1(),new Vector3$1(),new Vector3$1()]};if(data.projectionMatrix!==undefined){this.setFromProjectionMatrix(data.projectionMatrix,data.maxFar||10000);}}_createClass(Frustum,[{key:"setFromProjectionMatrix",value:function setFromProjectionMatrix(projectionMatrix,maxFar){var isOrthographic=projectionMatrix.elements[2*4+3]===0;inverseProjectionMatrix.copy(projectionMatrix).invert();// 3 --- 0  vertices.near/far order
+},{key:"addLight",value:function addLight(light){var _this$getPosition=this.getPosition(),x=_this$getPosition.x,y=_this$getPosition.y,z=_this$getPosition.z;light.setPosition({x:x,y:y,z:z});this.light=light;}},{key:"playSound",value:function playSound(){if(this.sound&&!this.isPlayingSound){this.sound.play();this.isPlayingSound=true;}}},{key:"stopSound",value:function stopSound(){if(this.sound&&this.isPlayingSound){this.sound.stop();this.isPlayingSound=false;}}},{key:"getScale",value:function getScale(){return{x:this.body.scale.x,y:this.body.scale.y,z:this.body.scale.z};}},{key:"setScale",value:function setScale(howbig){if(this.hasBody()){var scale=_objectSpread2({},this.getScale(),{},howbig);this.body.scale.set(scale.x,scale.y,scale.z);}}},{key:"getWorldPosition",value:function getWorldPosition(){var vector=new Vector3$1();if(this.hasBody()){var _this$body$getWorldPo=this.body.getWorldPosition(vector),x=_this$body$getWorldPo.x,y=_this$body$getWorldPo.y,z=_this$body$getWorldPo.z;return{x:x,y:y,z:z};}return DEFAULT_POSITION$1;}},{key:"getQuaternion",value:function getQuaternion(){if(this.hasBody()){return this.getBody().quaternion.clone();}}},{key:"getPosition",value:function getPosition(){return this.getBody().position.clone();}},{key:"setPosition",value:function setPosition(where){if(this.hasBody()){var _this$getPosition2=this.getPosition(),x=_this$getPosition2.x,y=_this$getPosition2.y,z=_this$getPosition2.z;var position=_objectSpread2({x:x,y:y,z:z},where);this.body.position.set(position.x,position.y,position.z);}}},{key:"getRotation",value:function getRotation(){return this.getBody().rotation.clone();}},{key:"setRotation",value:function setRotation(how){if(this.hasBody()){var _this$getRotation=this.getRotation(),x=_this$getRotation.x,y=_this$getRotation.y,z=_this$getRotation.z;var rotation=_objectSpread2({x:x,y:y,z:z},how);this.body.rotation.set(rotation.x,rotation.y,rotation.z);}}},{key:"getAngularVelocity",value:function getAngularVelocity(){return this.angularVelocity||DEFAULT_ANGULAR_VELOCITY;}},{key:"setAngularVelocity",value:function setAngularVelocity(velocity){this.angularVelocity=velocity;Physics$1.updateAngularVelocity(this.uuid(),velocity);}},{key:"getLinearVelocity",value:function getLinearVelocity(){return this.linearVelocity||DEFAULT_LINEAR_VELOCITY$1;}},{key:"setLinearVelocity",value:function setLinearVelocity(velocity){this.linearVelocity=velocity;Physics$1.updateLinearVelocity(this.uuid(),velocity);}},{key:"translate",value:function translate(_ref7){var _ref7$x=_ref7.x,x=_ref7$x===void 0?0:_ref7$x,_ref7$y=_ref7.y,y=_ref7$y===void 0?0:_ref7$y,_ref7$z=_ref7.z,z=_ref7$z===void 0?0:_ref7$z;if(this.hasBody()){this.body.translateX(x);this.body.translateY(y);this.body.translateZ(z);}}},{key:"rotateTo",value:function rotateTo(){var _this6=this;var rotation=arguments.length>0&&arguments[0]!==undefined?arguments[0]:this.getRotation();var time=arguments.length>1&&arguments[1]!==undefined?arguments[1]:250;var _this$getRotation2=this.getRotation(),x=_this$getRotation2.x,y=_this$getRotation2.y,z=_this$getRotation2.z;return new Promise(function(resolve){return new between({x:x,y:y,z:z},rotation).time(time).on('update',function(value){return _this6.setRotation(value);}).on('complete',resolve);});}},{key:"goTo",value:function goTo(){var _this7=this;var position=arguments.length>0&&arguments[0]!==undefined?arguments[0]:this.getPosition();var time=arguments.length>1&&arguments[1]!==undefined?arguments[1]:250;var _this$getPosition3=this.getPosition(),x=_this$getPosition3.x,y=_this$getPosition3.y,z=_this$getPosition3.z;return new Promise(function(resolve){return new between({x:x,y:y,z:z},position).time(time).on('update',function(value){return _this7.setPosition(value);}).on('complete',resolve);});}},{key:"uuid",value:function uuid(){return this.body.uuid;}},{key:"setVisible",value:function setVisible(){var flag=arguments.length>0&&arguments[0]!==undefined?arguments[0]:true;this.getBody().visible=flag;}},{key:"equals",value:function equals(entity){try{return entity.uuid?this.uuid()===entity.uuid():false;}catch(e){return false;}}},{key:"setName",value:function setName(name){this.name=name;}},{key:"getName",value:function getName(){return this.name;}},{key:"setData",value:function setData(key,value){if(this.getBody().userData){if(key&&value){this.getBody().userData[key]=value;}else{console.log(KEY_VALUE_IS_MISSING);}}else{console.log(USER_DATA_IS_MISSING);}}},{key:"getData",value:function getData(key){if(this.getBody().userData){if(key){return this.getBody().userData[key];}else{console.log(KEY_IS_MISSING);}}else{console.log(USER_DATA_IS_MISSING);}}},{key:"mapScriptsToJSON",value:function mapScriptsToJSON(){this.scripts.reduce(function(acc,_ref8){var name=_ref8.name,_ref8$options=_ref8.options,options=_ref8$options===void 0?{}:_ref8$options;acc.names.push(name);acc.options.push(options);return acc;},{names:[],options:[]});}},{key:"toJSON",value:function toJSON(){return{position:this.getPosition(),rotation:this.getRotation(),scale:this.getScale(),entityType:this.getEntityType(),tags:this.getTags()};}}]);return Entity;}(EventDispatcher);var AnimationHandler=/*#__PURE__*/function(_EventDispatcher){_inherits(AnimationHandler,_EventDispatcher);var _super=_createSuper(AnimationHandler);function AnimationHandler(mesh){var _this;var animations=arguments.length>1&&arguments[1]!==undefined?arguments[1]:[];_classCallCheck(this,AnimationHandler);_this=_super.call(this);_defineProperty(_assertThisInitialized(_this),"getAnimationEventHandler",function(type){return function(_ref){var action=_ref.action,direction=_ref.direction;_this.dispatchEvent({type:type,action:action,direction:direction});};});_this.mixer=new AnimationMixer(mesh);_this.animations=animations;_this.addEventsListeners();return _this;}_createClass(AnimationHandler,[{key:"addEventsListeners",value:function addEventsListeners(){this.mixer.addEventListener('loop',this.getAnimationEventHandler(ENTITY_EVENTS.ANIMATION.LOOP));this.mixer.addEventListener('finished',this.getAnimationEventHandler(ENTITY_EVENTS.ANIMATION.FINISHED));}},{key:"getAction",value:function getAction(id){var action;if(typeof id==='number'){action=this.animations[id];}else if(typeof id==='string'){action=AnimationClip.findByName(this.animations,id);}return action;}},{key:"getAvailableAnimations",value:function getAvailableAnimations(){return this.animations.map(function(_ref2){var name=_ref2.name;return name;});}},{key:"stopAll",value:function stopAll(){this.mixer.stopAllAction();}},{key:"stopCurrentAnimation",value:function stopCurrentAnimation(){if(this.currentAction){this.currentAction.stop();}}},{key:"playAnimation",value:function playAnimation(id,options){var action=this.getAction(id);var _options$loop=options.loop,loop=_options$loop===void 0?LoopRepeat:_options$loop;if(this.currentAction){this.fadeToAnimation(action,options);}else if(action){this.currentAction=this.mixer.clipAction(action).setLoop(loop).play();}else{console.warn(ANIMATION_NOT_FOUND);}}},{key:"fadeToAnimation",value:function fadeToAnimation(action){var _ref3=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{},_ref3$duration=_ref3.duration,duration=_ref3$duration===void 0?0.2:_ref3$duration,_ref3$loop=_ref3.loop,loop=_ref3$loop===void 0?LoopRepeat:_ref3$loop;var previousAction=this.currentAction;this.currentAction=this.mixer.clipAction(action);if(previousAction!==this.currentAction){previousAction.fadeOut(duration);}this.currentAction.reset().setEffectiveTimeScale(1).setEffectiveWeight(1).fadeIn(duration).setLoop(loop).play();}},{key:"update",value:function update(dt){this.mixer.update(dt);}}]);return AnimationHandler;}(EventDispatcher);var inverseProjectionMatrix=new Matrix4();var Frustum$1=/*#__PURE__*/function(){function Frustum(data){_classCallCheck(this,Frustum);data=data||{};this.vertices={near:[new Vector3$1(),new Vector3$1(),new Vector3$1(),new Vector3$1()],far:[new Vector3$1(),new Vector3$1(),new Vector3$1(),new Vector3$1()]};if(data.projectionMatrix!==undefined){this.setFromProjectionMatrix(data.projectionMatrix,data.maxFar||10000);}}_createClass(Frustum,[{key:"setFromProjectionMatrix",value:function setFromProjectionMatrix(projectionMatrix,maxFar){var isOrthographic=projectionMatrix.elements[2*4+3]===0;inverseProjectionMatrix.copy(projectionMatrix).invert();// 3 --- 0  vertices.near/far order
 // |     |
 // 2 --- 1
 // clip space spans from [-1, 1]
@@ -6084,7 +6084,7 @@ this.fsQuad.material=this.materialCopy;this.copyUniforms["tDiffuse"].value=this.
 'uniform float aperture;',// aperture - bigger values for shallower depth of field
 'uniform float nearClip;','uniform float farClip;','uniform float focus;','uniform float aspect;','#include <packing>','float getDepth( const in vec2 screenPosition ) {','    #if DEPTH_PACKING == 1','    return unpackRGBAToDepth( texture2D( tDepth, screenPosition ) );','    #else','    return texture2D( tDepth, screenPosition ).x;','    #endif','}','float getViewZ( const in float depth ) {','    #if PERSPECTIVE_CAMERA == 1','    return perspectiveDepthToViewZ( depth, nearClip, farClip );','    #else','    return orthographicDepthToViewZ( depth, nearClip, farClip );','    #endif','}','void main() {','    vec2 aspectcorrect = vec2( 1.0, aspect );','    float viewZ = getViewZ( getDepth( vUv ) );','    float factor = ( focus + viewZ );',// viewZ is <= 0, so this is a difference equation
 '    vec2 dofblur = vec2 ( clamp( factor * aperture, -maxblur, maxblur ) );','    vec2 dofblur9 = dofblur * 0.9;','    vec2 dofblur7 = dofblur * 0.7;','    vec2 dofblur4 = dofblur * 0.4;','    vec4 col = vec4( 0.0 );','    col += texture2D( tColor, vUv.xy );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.0,   0.4  ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.15,  0.37 ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.29,  0.29 ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.37,  0.15 ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.40,  0.0  ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.37, -0.15 ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.29, -0.29 ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.15, -0.37 ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.0,  -0.4  ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.15,  0.37 ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.29,  0.29 ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.37,  0.15 ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.4,   0.0  ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.37, -0.15 ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.29, -0.29 ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.15, -0.37 ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.15,  0.37 ) * aspectcorrect ) * dofblur9 );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.37,  0.15 ) * aspectcorrect ) * dofblur9 );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.37, -0.15 ) * aspectcorrect ) * dofblur9 );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.15, -0.37 ) * aspectcorrect ) * dofblur9 );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.15,  0.37 ) * aspectcorrect ) * dofblur9 );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.37,  0.15 ) * aspectcorrect ) * dofblur9 );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.37, -0.15 ) * aspectcorrect ) * dofblur9 );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.15, -0.37 ) * aspectcorrect ) * dofblur9 );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.29,  0.29 ) * aspectcorrect ) * dofblur7 );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.40,  0.0  ) * aspectcorrect ) * dofblur7 );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.29, -0.29 ) * aspectcorrect ) * dofblur7 );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.0,  -0.4  ) * aspectcorrect ) * dofblur7 );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.29,  0.29 ) * aspectcorrect ) * dofblur7 );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.4,   0.0  ) * aspectcorrect ) * dofblur7 );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.29, -0.29 ) * aspectcorrect ) * dofblur7 );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.0,   0.4  ) * aspectcorrect ) * dofblur7 );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.29,  0.29 ) * aspectcorrect ) * dofblur4 );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.4,   0.0  ) * aspectcorrect ) * dofblur4 );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.29, -0.29 ) * aspectcorrect ) * dofblur4 );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.0,  -0.4  ) * aspectcorrect ) * dofblur4 );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.29,  0.29 ) * aspectcorrect ) * dofblur4 );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.4,   0.0  ) * aspectcorrect ) * dofblur4 );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.29, -0.29 ) * aspectcorrect ) * dofblur4 );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.0,   0.4  ) * aspectcorrect ) * dofblur4 );','    gl_FragColor = col / 41.0;','    gl_FragColor.a = 1.0;','}'].join('\n')};var BokehPass=/*#__PURE__*/function(_Pass){_inherits(BokehPass,_Pass);var _super=_createSuper(BokehPass);function BokehPass(scene,camera,params){var _this;_classCallCheck(this,BokehPass);_this=_super.call(this);var _params$focus=params.focus,focus=_params$focus===void 0?1.0:_params$focus,_params$aspect=params.aspect,aspect=_params$aspect===void 0?camera.aspect:_params$aspect,_params$aperture=params.aperture,aperture=_params$aperture===void 0?0.025:_params$aperture,_params$maxblur=params.maxblur,maxblur=_params$maxblur===void 0?0.1:_params$maxblur,_params$width=params.width,width=_params$width===void 0?window.innerWidth:_params$width,_params$height=params.height,height=_params$height===void 0?window.innerHeight:_params$height,_params$renderToScree=params.renderToScreen,renderToScreen=_params$renderToScree===void 0?false:_params$renderToScree;_this.scene=scene;_this.camera=camera;_this.renderTargetDepth=new WebGLRenderTarget(width,height,{minFilter:NearestFilter,magFilter:NearestFilter});_this.renderTargetDepth.texture.name='BokehPass.depth';// depth material
-_this.materialDepth=new MeshDepthMaterial();_this.materialDepth.depthPacking=RGBADepthPacking;_this.materialDepth.blending=NoBlending;var bokehShader=BokehShader;var bokehUniforms=UniformsUtils.clone(bokehShader.uniforms);bokehUniforms['tDepth'].value=_this.renderTargetDepth.texture;bokehUniforms['focus'].value=focus;bokehUniforms['aspect'].value=aspect;bokehUniforms['aperture'].value=aperture;bokehUniforms['maxblur'].value=maxblur;bokehUniforms['nearClip'].value=camera.near;bokehUniforms['farClip'].value=camera.far;_this.materialBokeh=new ShaderMaterial({defines:Object.assign({},bokehShader.defines),uniforms:bokehUniforms,vertexShader:bokehShader.vertexShader,fragmentShader:bokehShader.fragmentShader});_this.uniforms=bokehUniforms;_this.needsSwap=false;_this.fsQuad=new Pass.FullScreenQuad(_this.materialBokeh);_this._oldClearColor=new Color();_this.renderToScreen=renderToScreen;return _this;}_createClass(BokehPass,[{key:"render",value:function render(renderer,writeBuffer,readBuffer/*, deltaTime, maskActive*/){this.scene.overrideMaterial=this.materialDepth;renderer.getClearColor(this._oldClearColor);var oldClearAlpha=renderer.getClearAlpha();var oldAutoClear=renderer.autoClear;renderer.autoClear=false;renderer.setClearColor(0xffffff);renderer.setClearAlpha(1.0);renderer.setRenderTarget(this.renderTargetDepth);renderer.clear();renderer.render(this.scene,this.camera);// Render bokeh composite
+_this.materialDepth=new MeshDepthMaterial();_this.materialDepth.depthPacking=RGBADepthPacking;_this.materialDepth.blending=NoBlending;var bokehShader=BokehShader;var bokehUniforms=UniformsUtils.clone(bokehShader.uniforms);bokehUniforms['tDepth'].value=_this.renderTargetDepth.texture;bokehUniforms['focus'].value=focus;bokehUniforms['aspect'].value=aspect;bokehUniforms['aperture'].value=aperture;bokehUniforms['maxblur'].value=maxblur;bokehUniforms['nearClip'].value=camera.near;bokehUniforms['farClip'].value=camera.far;_this.materialBokeh=new ShaderMaterial({defines:Object.assign({},bokehShader.defines),uniforms:bokehUniforms,vertexShader:bokehShader.vertexShader,fragmentShader:bokehShader.fragmentShader});_this.uniforms=bokehUniforms;_this.needsSwap=false;_this.fsQuad=new Pass.FullScreenQuad(_this.materialBokeh);_this._oldClearColor=new Color();_this.renderToScreen=renderToScreen;return _this;}_createClass(BokehPass,[{key:"setFocus",value:function setFocus(focus){this.uniforms.focus.value=focus;}},{key:"setAperture",value:function setAperture(aperture){this.uniforms.aperture.value=aperture;}},{key:"setMaxBlur",value:function setMaxBlur(maxblur){this.uniforms.maxblur.value=maxblur;}},{key:"render",value:function render(renderer,writeBuffer,readBuffer/*, deltaTime, maskActive*/){this.scene.overrideMaterial=this.materialDepth;renderer.getClearColor(this._oldClearColor);var oldClearAlpha=renderer.getClearAlpha();var oldAutoClear=renderer.autoClear;renderer.autoClear=false;renderer.setClearColor(0xffffff);renderer.setClearAlpha(1.0);renderer.setRenderTarget(this.renderTargetDepth);renderer.clear();renderer.render(this.scene,this.camera);// Render bokeh composite
 this.uniforms['tColor'].value=readBuffer.texture;this.uniforms['nearClip'].value=this.camera.near;this.uniforms['farClip'].value=this.camera.far;if(this.renderToScreen){renderer.setRenderTarget(null);this.fsQuad.render(renderer);}else{renderer.setRenderTarget(writeBuffer);renderer.clear();this.fsQuad.render(renderer);}this.scene.overrideMaterial=null;renderer.setClearColor(this._oldClearColor);renderer.setClearAlpha(oldClearAlpha);renderer.autoClear=oldAutoClear;}}]);return BokehPass;}(Pass);var DepthOfField=/*#__PURE__*/function(_BokehPass){_inherits(DepthOfField,_BokehPass);var _super=_createSuper(DepthOfField);function DepthOfField(params){_classCallCheck(this,DepthOfField);var _config$screen=Config$1.screen(),width=_config$screen.w,height=_config$screen.h,aspect=_config$screen.ratio;return _super.call(this,Scene$2.scene,Scene$2.getCameraBody(),_objectSpread2({},params,{width:width,height:height,aspect:aspect}));}return DepthOfField;}(BokehPass);/**
  * RGB Shift Shader
  * Shifts red and blue channels from center in opposite directions
@@ -6832,7 +6832,7 @@ var DOF_OPTIONS = {
   focus: 1.0,
   aperture: 0.0002,
   //0.0001,
-  maxblur: 0.01 //0.01
+  maxblur: 0.015 //0.01
 
 };
 var SATURATION_OPTIONS = {
@@ -6878,9 +6878,10 @@ var Test = /*#__PURE__*/function (_Level) {
         intensity: 1
       });
       this.sunLight = new mage_engine__WEBPACK_IMPORTED_MODULE_7__.SunLight({
-        color: 0xff9f43,
+        color: 0xffffff,
         intensity: 1,
-        far: 20
+        far: 20,
+        mapSize: 2048
       });
       this.sunLight.setPosition({
         y: 4,
@@ -6891,8 +6892,7 @@ var Test = /*#__PURE__*/function (_Level) {
   }, {
     key: "addSky",
     value: function addSky() {
-      this.sky = new mage_engine__WEBPACK_IMPORTED_MODULE_7__.Sky({}); // this.sky.setSun(180, .205, 100);
-
+      this.sky = new mage_engine__WEBPACK_IMPORTED_MODULE_7__.Sky({});
       this.azimuth = .01;
       this.sky.setSun(30, this.azimuth, 100);
       window.sky = this.sky;
@@ -6900,13 +6900,11 @@ var Test = /*#__PURE__*/function (_Level) {
   }, {
     key: "prepareCamera",
     value: function prepareCamera() {
-      // 2.5958724045158155, y: 1.9694966995502956, z: -0.006603738747897658}
       mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scene.getCamera().setPosition({
         x: 2,
         y: 4,
         z: 0
-      }); //({ x: 7.8, y: 5.48, z: 12.8 });
-
+      });
       var orbit = mage_engine__WEBPACK_IMPORTED_MODULE_7__.Controls.setOrbitControl();
       orbit.setTarget({
         x: 5,
@@ -6923,9 +6921,8 @@ var Test = /*#__PURE__*/function (_Level) {
     value: function prepareSceneEffects() {
       mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scene.setClearColor(0xff9f43);
       mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scene.setBackground(0xff9f43);
-      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scene.setRendererOutputEncoding(mage_engine__WEBPACK_IMPORTED_MODULE_7__.THREE.sRGBEncoding);
-      mage_engine__WEBPACK_IMPORTED_MODULE_7__.PostProcessing.add(EFFECTS.HUE_SATURATION, SATURATION_OPTIONS);
-      mage_engine__WEBPACK_IMPORTED_MODULE_7__.PostProcessing.add(EFFECTS.DEPTH_OF_FIELD, DOF_OPTIONS);
+      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scene.setRendererOutputEncoding(mage_engine__WEBPACK_IMPORTED_MODULE_7__.THREE.sRGBEncoding); // PostProcessing.add(EFFECTS.HUE_SATURATION, SATURATION_OPTIONS);
+      // PostProcessing.add(EFFECTS.DEPTH_OF_FIELD, DOF_OPTIONS);
     }
   }, {
     key: "createWorld",
@@ -8647,13 +8644,18 @@ var Selector = /*#__PURE__*/function (_BaseScript) {
         y: CURSOR_HEIGHT,
         z: z
       }, 150);
+      this.selector.setVisible(true);
       this.selector.fadeTo(1, 250);
       this.visible = true;
     }
   }, {
     key: "disappear",
     value: function disappear() {
-      this.selector.fadeTo(0, 250);
+      var _this2 = this;
+
+      this.selector.fadeTo(0, 250).then(function () {
+        return _this2.selector.setVisible(false);
+      });
       this.visible = false;
       this.destination = CURSOR_DEFAULT_DESTINATION;
     }
@@ -9087,9 +9089,11 @@ var updateTileMapStats = function updateTileMapStats() {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TILE_MAP_STATS_CHANGE": () => (/* binding */ TILE_MAP_STATS_CHANGE)
+/* harmony export */   "TILE_MAP_STATS_CHANGE": () => (/* binding */ TILE_MAP_STATS_CHANGE),
+/* harmony export */   "NATURE_ENERGY_CHANGE": () => (/* binding */ NATURE_ENERGY_CHANGE)
 /* harmony export */ });
 var TILE_MAP_STATS_CHANGE = 'MAP_STATS_CHANGE';
+var NATURE_ENERGY_CHANGE = 'NATURE_ENERGY_CHANGE';
 
 /***/ }),
 
@@ -9124,16 +9128,71 @@ var TileControlBar = function TileControlBar(_ref) {
     return "width: ".concat(getRatio(value), "%;");
   };
 
-  return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'tile-control-bar-container widget', (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'tile-control-bar', [(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'human tile-control-bar-item', null, 1, {
+  return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'tile-control-bar-container bar-container widget', (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'bar', [(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'human bar-section', null, 1, {
     "style": getStyleString(human)
-  }), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'desert tile-control-bar-item', null, 1, {
+  }), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'desert bar-section', null, 1, {
     "style": getStyleString(desert)
-  }), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'nature tile-control-bar-item', null, 1, {
+  }), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'nature bar-section', null, 1, {
     "style": getStyleString(nature)
   })], 4), 2);
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (TileControlBar);
+
+/***/ }),
+
+/***/ "./src/ui/gameui/controls/EnergyMeter.js":
+/*!***********************************************!*\
+  !*** ./src/ui/gameui/controls/EnergyMeter.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! xferno */ "./node_modules/xferno/dist/xferno.js");
+/* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(xferno__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var EnergyMeter = function EnergyMeter(_ref) {
+  var _ref$energy = _ref.energy,
+      energy = _ref$energy === void 0 ? 52 : _ref$energy;
+  return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'EnergyMeter bar-container widget', [(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "span", "material-icons icon", "bolt", 16), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'bar', [(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'bar-loader', null, 1, {
+    "style": "width: ".concat(energy, "%;")
+  }), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "span", 'value', [energy, (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("%")], 0)], 4), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "ul", 'marker-list', [(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'marker'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'marker'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'marker'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'marker'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'marker'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'marker'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'marker'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'marker'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'marker'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'marker')], 4)], 4);
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (EnergyMeter);
+
+/***/ }),
+
+/***/ "./src/ui/gameui/controls/index.js":
+/*!*****************************************!*\
+  !*** ./src/ui/gameui/controls/index.js ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! xferno */ "./node_modules/xferno/dist/xferno.js");
+/* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(xferno__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _EnergyMeter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EnergyMeter */ "./src/ui/gameui/controls/EnergyMeter.js");
+
+
+
+var Controls = function Controls(_ref) {
+  var energy = _ref.energy;
+  return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'controls-container', [(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _EnergyMeter__WEBPACK_IMPORTED_MODULE_1__.default, {
+    "energy": energy
+  }), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'row', [(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'map widget'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'selection widget', [(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'box', "here goes the image of the selected building", 16), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "ul", 'selection-list', [(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'item'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'item'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'item'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'item')], 4)], 4)], 4)], 4);
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Controls);
 
 /***/ }),
 
@@ -9150,15 +9209,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! xferno */ "./node_modules/xferno/dist/xferno.js");
 /* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(xferno__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _TileControlBar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TileControlBar */ "./src/ui/gameui/TileControlBar.js");
+/* harmony import */ var _controls__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./controls */ "./src/ui/gameui/controls/index.js");
+/* harmony import */ var _controls_EnergyMeter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./controls/EnergyMeter */ "./src/ui/gameui/controls/EnergyMeter.js");
+/* harmony import */ var _TileControlBar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./TileControlBar */ "./src/ui/gameui/TileControlBar.js");
+
+
 
 
 
 var Game = function Game(_ref) {
-  var tileStats = _ref.tileStats;
-  return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _TileControlBar__WEBPACK_IMPORTED_MODULE_1__.default, {
+  var tileStats = _ref.tileStats,
+      energy = _ref.energy;
+  return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createFragment)([(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _TileControlBar__WEBPACK_IMPORTED_MODULE_3__.default, {
     "tileStats": tileStats
-  });
+  }), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _controls__WEBPACK_IMPORTED_MODULE_1__.default, {
+    "energy": energy
+  })], 0);
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Game);
@@ -9228,9 +9294,58 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./game */ "./src/ui/reducers/game.js");
+/* harmony import */ var _player__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./player */ "./src/ui/reducers/player.js");
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  game: _game__WEBPACK_IMPORTED_MODULE_0__.default
+  game: _game__WEBPACK_IMPORTED_MODULE_0__.default,
+  player: _player__WEBPACK_IMPORTED_MODULE_1__.default
+});
+
+/***/ }),
+
+/***/ "./src/ui/reducers/player.js":
+/*!***********************************!*\
+  !*** ./src/ui/reducers/player.js ***!
+  \***********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var mage_engine__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mage-engine */ "../Mage/dist/mage.js");
+/* harmony import */ var _actions_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../actions/types */ "./src/ui/actions/types.js");
+
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+
+
+var DEFAULT_STATE = {
+  energy: 0
+};
+var MIN_ENERGY = 0;
+var MAX_ENERGY = 1000;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function () {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : DEFAULT_STATE;
+  var action = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+  switch (action.type) {
+    case _actions_types__WEBPACK_IMPORTED_MODULE_2__.NATURE_ENERGY_CHANGE:
+      var energy = mage_engine__WEBPACK_IMPORTED_MODULE_1__.math.clamp(state.energy + action.amount, MIN_ENERGY, MAX_ENERGY);
+      return _objectSpread(_objectSpread({}, state), {}, {
+        energy: energy
+      });
+
+    default:
+      return state;
+  }
 });
 
 /***/ }),
@@ -9266,18 +9381,21 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 var Root = function Root(_ref) {
   var loadingScreenVisible = _ref.loadingScreenVisible,
-      tileStats = _ref.tileStats;
+      tileStats = _ref.tileStats,
+      energy = _ref.energy;
   return loadingScreenVisible ? (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createComponentVNode)(2, _LoadingScreen__WEBPACK_IMPORTED_MODULE_4__.default) : (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createComponentVNode)(2, _gameui__WEBPACK_IMPORTED_MODULE_3__.default, {
-    "tileStats": tileStats
+    "tileStats": tileStats,
+    "energy": energy
   });
 };
 
 var mapStateToProps = function mapStateToProps(_ref2) {
   var ui = _ref2.ui,
-      game = _ref2.game;
-  return _objectSpread({
+      game = _ref2.game,
+      player = _ref2.player;
+  return _objectSpread(_objectSpread({
     loadingScreenVisible: ui.loadingScreenVisible
-  }, game);
+  }, game), player);
 };
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
@@ -11732,7 +11850,7 @@ var config = {
   },
   lights: {
     shadows: true,
-    shadowType: SHADOW_TYPES.SOFT,
+    shadowType: SHADOW_TYPES.HARD,
     textureAnisotropy: 1
   },
   physics: {

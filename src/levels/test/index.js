@@ -36,7 +36,7 @@ export const BACKGROUND = 0xdff9fb;//0xddf3f5;
 const DOF_OPTIONS = {
     focus: 1.0,
     aperture: 0.0002,//0.0001,
-    maxblur: 0.01//0.01
+    maxblur: 0.015//0.01
 };
 
 const SATURATION_OPTIONS = {
@@ -57,7 +57,7 @@ export default class Test extends Level {
             intensity: 1
         });
 
-        this.sunLight = new SunLight({ color: 0xff9f43, intensity: 1, far: 20 });
+        this.sunLight = new SunLight({ color: 0xffffff, intensity: 1, far: 20, mapSize: 2048 });
         this.sunLight.setPosition({ y: 4, z: -3, x: -3 });
     }
 
@@ -84,7 +84,7 @@ export default class Test extends Level {
         Scene.setClearColor(0xff9f43);
         Scene.setBackground(0xff9f43);
         Scene.setRendererOutputEncoding(THREE.sRGBEncoding);
-        PostProcessing.add(EFFECTS.HUE_SATURATION, SATURATION_OPTIONS);
+        // PostProcessing.add(EFFECTS.HUE_SATURATION, SATURATION_OPTIONS);
         // PostProcessing.add(EFFECTS.DEPTH_OF_FIELD, DOF_OPTIONS);
     }
 

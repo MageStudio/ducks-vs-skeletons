@@ -1,0 +1,79 @@
+.EnergyMeter {
+    width: calc(100% - 24px);
+
+    &.bar-container {
+        height: 16px;
+        line-height: 16px;
+        margin: 8px;
+        display: flex;
+        padding: 2px;
+        flex: 0 1 auto;
+        flex-direction: row;
+        position: relative;
+        margin-bottom: 0;
+        
+        & .icon {
+            color: #fffa65;
+            text-shadow: 1px 1px 1px #ff3838;
+            line-height: 2px;
+            font-size: 1.3rem;
+            padding: 8px;
+        }
+        
+        & .bar {
+            border-radius: 4px;
+            padding: 2px;
+            line-height: inherit;
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .bar-loader {
+            background: #81ecec;
+            // width: 50%;
+            height: inherit;
+            border-radius: 4px;
+            box-shadow: inset -1px -3px #74b9ff;
+            transition: width 5s ease-in;
+        }
+          
+        .value {
+            color: #ffffff;
+            display: inline-block;
+            margin-left: 8px;
+            font-weight: bold;
+            font-family: sans-serif;
+            flex: 1 1 auto;
+            letter-spacing: 1px;
+            text-align: right;
+            line-height: 14px;
+            font-size: .8rem;
+        }
+          
+        .marker-list {
+            padding: 6px 0px;
+            position: absolute;
+            height: 12px;
+            display: flex;
+            flex-direction: row;
+            width: calc(100% - 130px);
+            left: 56px;
+            margin: 0;
+            flex-wrap: nowrap;
+            justify-content: space-evenly;
+            align-content: stretch;
+            
+            & .marker {
+                list-style: none;
+                flex: 1 1 auto;
+                border-right: 4px solid #34495e;
+                // box-shadow: 2px 0px black;
+                
+                &:last-child {
+                    border-right: none;
+                }
+            }
+        }
+    }
+}
