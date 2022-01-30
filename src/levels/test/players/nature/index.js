@@ -1,7 +1,8 @@
-import { Input, Models, INPUT_EVENTS } from "mage-engine";
+import { Input, Models, INPUT_EVENTS, store } from "mage-engine";
 import { TILES_TYPES } from "../../map/constants";
 import TileMap from "../../map/TileMap";
 import Player from "../Player";
+import { updateEnergyLevel } from '../../../../ui/actions/player';
 
 class Nature extends Player {
 
@@ -26,11 +27,18 @@ class Nature extends Player {
 
     getUnitScriptName() { return 'DuckBehaviour'; }
 
+    getBaseTiles() {
+        return TileMap
+            .getTilesByType(TILES_TYPES.FOREST)
+            .filter(t => t.isBaseTile())
+    }
+
     handleMouseClick = () => {
         const { visible, destination } = this.selector.getScript('Selector');
 
         if (visible && this.canMouseInteract(destination)) {
             this.sendBuilderToTile(TileMap.getTileAt(destination, TILES_TYPES.FOREST));
+            store.dispatch(updateEnergyLevel(this.getBaseTiles().length));
         }
     }
 

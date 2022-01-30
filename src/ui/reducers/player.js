@@ -6,12 +6,12 @@ const DEFAULT_STATE = {
 };
 
 const MIN_ENERGY = 0;
-const MAX_ENERGY = 1000;
+const MAX_ENERGY = 100;
 
 export default (state = DEFAULT_STATE, action = {}) => {
     switch(action.type) {
         case NATURE_ENERGY_CHANGE:
-            const energy = math.clamp(state.energy + action.amount, MIN_ENERGY, MAX_ENERGY);
+            const energy = math.clamp(action.amount, MIN_ENERGY, MAX_ENERGY);
 
             return {
                 ...state,
