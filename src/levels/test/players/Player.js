@@ -1,7 +1,11 @@
-import { Models, ENTITY_EVENTS } from "mage-engine";
-import { TILES_STATES } from "../map/constants";
+import { Models, ENTITY_EVENTS, math } from "mage-engine";
+import { HUMAN_TILES, TILES_STATES, TILES_TYPES } from "../map/constants";
 import TileMap from "../map/TileMap";
 import { DEATH_REASONS } from '../constants';
+
+export const BASE_TILE_ENERGY_INCREASE = 5;
+const MIN_ENERGY = 0;
+const MAX_ENERGY = 100;
 
 export default class Player {
 
@@ -12,6 +16,17 @@ export default class Player {
         this.energy = 0;
 
         this.type = type;
+    }
+
+    updateEnergy() {
+        const energy = (TileMap
+            .getTilesByType(this.getBaseTileType())
+            .filter(t => t.isBaseTile())
+            .length || 0) * BASE_TILE_ENERGY_INCREASE;
+
+        this.energy = math.clamp(energy, MIN_ENERGY, MAX_ENERGY);
+
+        return this.energy;
     }
 
     start(position) {
@@ -28,9 +43,20 @@ export default class Player {
         }
     }
 
-    getUnitScriptName() {
-        return 'UnitBehaviour';
+    getBaseTileType = () => TILES_TYPES.HUMAN;
+    getWarriorsHutVariation = () => HUMAN_TILES.HUMAN_WARRIORS_HUT;
+    getBuildersHutVariation = () => HUMAN_TILES.HUMAN_BUILDERS_HUT;
+    getTowerVariation = () => HUMAN_TILES.HUMAN_TOWER;
+    
+    getUnitScriptName = () =>'UnitBehaviour';
+
+    buildBaseTile(destination) {
+        this.sendBuilderToTile(TileMap.getTileAt(destination), this.getBaseTileType());
+        this.updateEnergy();
     }
+    buildWarriorsHut = (destination) => this.sendBuilderToTile(TileMap.getTileAt(destination), this.getWarriorsHutVariation());
+    buildBuildersHut = (destination) => this.sendBuilderToTile(TileMap.getTileAt(destination), this.getBuildersHutVariation());
+    buildTower = (destination) => this.sendBuilderToTile(TileMap.getTileAt(destination), this.getTowerVariation());
 
     sendBuilderToTile(tile, variation) {
         const unit = Models.getModel(this.type, { name: `${this.type}_builder_${Math.random()}`});

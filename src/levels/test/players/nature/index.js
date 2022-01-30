@@ -1,5 +1,5 @@
 import { Input, Models, INPUT_EVENTS, store } from "mage-engine";
-import { TILES_TYPES } from "../../map/constants";
+import { FOREST_TILES, TILES_TYPES } from "../../map/constants";
 import TileMap from "../../map/TileMap";
 import Player from "../Player";
 import { updateEnergyLevel } from '../../../../ui/actions/player';
@@ -25,20 +25,23 @@ class Nature extends Player {
         // this.sendBuilderToTile(TileMap.getTileAt({ x: 8, z: 8 }));
     }
 
-    getUnitScriptName() { return 'DuckBehaviour'; }
-
-    getBaseTiles() {
-        return TileMap
-            .getTilesByType(TILES_TYPES.FOREST)
-            .filter(t => t.isBaseTile())
+    getUnitScriptName = () => 'DuckBehaviour';
+    getBaseTileType = () => TILES_TYPES.FOREST;
+    getWarriorsHutVariation = () => FOREST_TILES.FOREST_WARRIORS_HUT;
+    getBuildersHutVariation = () => FOREST_TILES.FOREST_BUILDERS_HUT;
+    getTowerVariation = () => FOREST_TILES.FOREST_TOWER;
+    
+    buildBaseTile(destination) {
+        super.buildBaseTile(destination);
+        console.log('energy', this.energy);
+        store.dispatch(updateEnergyLevel(this.energy));
     }
 
     handleMouseClick = () => {
         const { visible, destination } = this.selector.getScript('Selector');
 
         if (visible && this.canMouseInteract(destination)) {
-            this.sendBuilderToTile(TileMap.getTileAt(destination, TILES_TYPES.FOREST));
-            store.dispatch(updateEnergyLevel(this.getBaseTiles().length));
+            this.buildBaseTile(destination);
         }
     }
 

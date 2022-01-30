@@ -1,8 +1,6 @@
 import { NATURE_ENERGY_CHANGE } from "./types";
 
-export const BASE_TILE_ENERGY_INCREASE = 5;
-
-export const updateEnergyLevel = (tiles) => ({
+export const updateEnergyLevel = (energy) => ({
     type: NATURE_ENERGY_CHANGE,
-    amount: tiles * BASE_TILE_ENERGY_INCREASE
+    energy
 });
