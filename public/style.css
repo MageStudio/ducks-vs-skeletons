@@ -493,13 +493,13 @@ canvas {
 }
 .widget {
   position: absolute;
-  background: rgba(0, 0, 0, 0.2);
-  box-shadow: 2px 2px 0px #e55039;
-  opacity: .9;
-  border-radius: 8px;
+  /* background: rgba(0, 0, 0, 0.2); */
+  /* box-shadow: 2px 2px 0px #e55039; */
+  /* opacity: .9; */
+  /* border-radius: 8px; */
   display: flex;
   flex-direction: row;
-  border: 2px solid #f7d794; }
+  /* border: 2px solid #f7d794; */ }
 
 .bar-container {
   height: 16px;
@@ -517,8 +517,11 @@ canvas {
     flex-direction: row; }
 
 .tile-control-bar-container {
-  width: calc(100vw - 42px);
-  padding-top: 32px; }
+  /* width: calc(100vw - 42px); */
+  padding-top: 32px;
+  width: 100vw;
+  background: rgba(0, 0, 0, 0.7);
+  margin: 0; }
 
 .bar-section {
   box-shadow: inset -1px -3px rgba(255, 255, 255, 0.5); }
@@ -527,7 +530,7 @@ canvas {
     .bar-section.human::before {
       content: "Human";
       font-family: 'Sigmar One', cursive;
-      color: #3498db;
+      color: white;
       position: absolute;
       font-size: 1.2rem;
       top: 8px;
@@ -539,7 +542,7 @@ canvas {
     .bar-section.nature::before {
       content: "Ducks";
       font-family: 'Sigmar One', cursive;
-      color: #27ae60;
+      color: white;
       position: absolute;
       font-size: 1.2rem;
       top: 8px;
@@ -582,11 +585,12 @@ h1:nth-child(2) {
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: calc(100vh - 200px);
-  left: calc(50vw - 372px);
+  top: calc(100vh - 190px);
   height: 190px;
   margin: auto;
-  align-self: center; }
+  align-self: center;
+  color: WHITE;
+  background: rgba(0, 0, 0, 0.7); }
   .controls-container .row {
     display: flex;
     height: 160px;
@@ -595,13 +599,6 @@ h1:nth-child(2) {
     flex-wrap: nowrap;
     align-content: stretch;
     justify-content: flex-start; }
-
-.map {
-  height: 144px;
-  width: 144px;
-  margin: 8px;
-  flex: 0 1 auto;
-  position: relative; }
 
 .selection {
   height: 144px;
@@ -630,18 +627,18 @@ h1:nth-child(2) {
     .selection .selection-list .item {
       height: 80px;
       width: 80px;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.5);
       margin: 32px 8px;
       border-radius: 8px;
-      border: 2px solid #636e72;
-      box-shadow: inset 3px -3px black, 1px 1px 0px #b2bec3; }
+      border: 1px dashed rgba(99, 110, 114, 0.9);
+      /* box-shadow: inset 3px -3px black, 1px 1px 0px #b2bec3; */ }
 
 .EnergyMeter {
   width: calc(100% - 24px); }
   .EnergyMeter.bar-container {
     height: 16px;
     line-height: 16px;
-    margin: 8px;
+    margin: 8px 0px;
     display: flex;
     padding: 2px;
     flex: 0 1 auto;
@@ -679,7 +676,7 @@ h1:nth-child(2) {
       line-height: 14px;
       font-size: .8rem; }
     .EnergyMeter.bar-container .marker-list {
-      padding: 6px 0px;
+      padding: 2px 0px;
       position: absolute;
       height: 12px;
       display: flex;
@@ -693,7 +690,15 @@ h1:nth-child(2) {
       .EnergyMeter.bar-container .marker-list .marker {
         list-style: none;
         flex: 1 1 auto;
-        border-right: 4px solid #34495e; }
+        border-right: 4px solid rgba(0, 0, 0, 0.7); }
         .EnergyMeter.bar-container .marker-list .marker:last-child {
           border-right: none; }
+
+.map {
+  position: absolute;
+  height: 144px;
+  width: 144px;
+  margin: 8px;
+  bottom: 0;
+  right: 0; }
 

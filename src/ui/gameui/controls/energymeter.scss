@@ -4,7 +4,7 @@
     &.bar-container {
         height: 16px;
         line-height: 16px;
-        margin: 8px;
+        margin: 8px 0px;
         display: flex;
         padding: 2px;
         flex: 0 1 auto;
@@ -52,7 +52,7 @@
         }
           
         .marker-list {
-            padding: 6px 0px;
+            padding: 2px 0px;
             position: absolute;
             height: 12px;
             display: flex;
@@ -67,7 +67,7 @@
             & .marker {
                 list-style: none;
                 flex: 1 1 auto;
-                border-right: 4px solid #34495e;
+                border-right: 4px solid rgba(0, 0, 0, .7);
                 // box-shadow: 2px 0px black;
                 
                 &:last-child {

@@ -9202,6 +9202,29 @@ var NATURE_ENERGY_CHANGE = 'NATURE_ENERGY_CHANGE';
 
 /***/ }),
 
+/***/ "./src/ui/gameui/Map.js":
+/*!******************************!*\
+  !*** ./src/ui/gameui/Map.js ***!
+  \******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! xferno */ "./node_modules/xferno/dist/xferno.js");
+/* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(xferno__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var Map = function Map() {
+  return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'map widget');
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Map);
+
+/***/ }),
+
 /***/ "./src/ui/gameui/TileControlBar.js":
 /*!*****************************************!*\
   !*** ./src/ui/gameui/TileControlBar.js ***!
@@ -9273,6 +9296,29 @@ var EnergyMeter = function EnergyMeter(_ref) {
 
 /***/ }),
 
+/***/ "./src/ui/gameui/controls/SelectionWidget.js":
+/*!***************************************************!*\
+  !*** ./src/ui/gameui/controls/SelectionWidget.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! xferno */ "./node_modules/xferno/dist/xferno.js");
+/* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(xferno__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var SelectionWidget = function SelectionWidget() {
+  return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'row', (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'selection widget', [(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'box', "here goes the image of the selected building", 16), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "ul", 'selection-list', [(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'item'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'item'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'item'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'item')], 4)], 4), 2);
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SelectionWidget);
+
+/***/ }),
+
 /***/ "./src/ui/gameui/controls/index.js":
 /*!*****************************************!*\
   !*** ./src/ui/gameui/controls/index.js ***!
@@ -9287,6 +9333,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! xferno */ "./node_modules/xferno/dist/xferno.js");
 /* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(xferno__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _EnergyMeter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EnergyMeter */ "./src/ui/gameui/controls/EnergyMeter.js");
+/* harmony import */ var _SelectionWidget__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SelectionWidget */ "./src/ui/gameui/controls/SelectionWidget.js");
+
 
 
 
@@ -9294,7 +9342,7 @@ var Controls = function Controls(_ref) {
   var energy = _ref.energy;
   return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'controls-container', [(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _EnergyMeter__WEBPACK_IMPORTED_MODULE_1__.default, {
     "energy": energy
-  }), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'row', [(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'map widget'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'selection widget', [(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'box', "here goes the image of the selected building", 16), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "ul", 'selection-list', [(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'item'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'item'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'item'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'item')], 4)], 4)], 4)], 4);
+  }), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _SelectionWidget__WEBPACK_IMPORTED_MODULE_2__.default)], 4);
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Controls);
@@ -9316,7 +9364,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(xferno__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _controls__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./controls */ "./src/ui/gameui/controls/index.js");
 /* harmony import */ var _controls_EnergyMeter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./controls/EnergyMeter */ "./src/ui/gameui/controls/EnergyMeter.js");
-/* harmony import */ var _TileControlBar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./TileControlBar */ "./src/ui/gameui/TileControlBar.js");
+/* harmony import */ var _Map__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Map */ "./src/ui/gameui/Map.js");
+/* harmony import */ var _TileControlBar__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./TileControlBar */ "./src/ui/gameui/TileControlBar.js");
+
 
 
 
@@ -9325,11 +9375,11 @@ __webpack_require__.r(__webpack_exports__);
 var Game = function Game(_ref) {
   var tileStats = _ref.tileStats,
       energy = _ref.energy;
-  return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createFragment)([(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _TileControlBar__WEBPACK_IMPORTED_MODULE_3__.default, {
+  return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createFragment)([(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _TileControlBar__WEBPACK_IMPORTED_MODULE_4__.default, {
     "tileStats": tileStats
   }), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _controls__WEBPACK_IMPORTED_MODULE_1__.default, {
     "energy": energy
-  })], 0);
+  }), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _Map__WEBPACK_IMPORTED_MODULE_3__.default)], 4);
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Game);

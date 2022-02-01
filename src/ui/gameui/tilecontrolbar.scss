@@ -1,6 +1,9 @@
 .tile-control-bar-container {
-  width: calc(100vw - 42px);
-  padding-top: 32px;
+      /* width: calc(100vw - 42px); */
+      padding-top: 32px;
+      width: 100vw;
+      background: rgba(0, 0, 0, .7);
+      margin: 0;
 }
 
 .bar-section {
@@ -12,7 +15,7 @@
       &::before {
         content: "Human";
         font-family: 'Sigmar One', cursive;
-        color: #3498db;
+        color: white;
         position: absolute;
         font-size: 1.2rem;
         top: 8px;
@@ -27,7 +30,7 @@
       &::before {
         content: "Ducks";
         font-family: 'Sigmar One', cursive;
-        color: #27ae60;
+        color: white;
         position: absolute;
         font-size: 1.2rem;
         top: 8px;

@@ -1,13 +1,14 @@
 .controls-container {
-  max-width: 744px;
+    max-width: 744px;
     display: flex;
     flex-direction: column;
     position: absolute;
-    top: calc(100vh - 200px);
-    left: calc(50vw - 372px);
+    top: calc(100vh - 190px);
     height: 190px;
     margin: auto;
     align-self: center;
+    color: WHITE;
+    background: rgba(0, 0, 0, .7);
 
     & .row {
       display: flex;
@@ -19,15 +20,7 @@
       justify-content: flex-start;
     }
 }
-  
-  .map {
-    height: 144px;
-    width: 144px;
-    margin: 8px;
-    flex: 0 1 auto;
-    position: relative;
-  }
-  
+
   .selection {
     height: 144px;
     max-width: 640px;
@@ -59,11 +52,11 @@
       & .item {
         height: 80px;
         width: 80px;
-        background: rgba(0, 0, 0, 0.4);
+        background: rgba(0, 0, 0, 0.5);
         margin: 32px 8px;
         border-radius: 8px;
-        border: 2px solid #636e72;
-        box-shadow: inset 3px -3px black, 1px 1px 0px #b2bec3;
+        border: 1px dashed rgba(99,110,114, .9);
+        /* box-shadow: inset 3px -3px black, 1px 1px 0px #b2bec3; */
       }
     }
   }
