@@ -1,9 +1,9 @@
-const SelectionWidget = () => {
+const SelectionWidget = ({ selection }) => {
     return (
         <div className='row'>
             <div class='selection widget'>
                 <div class='box'>
-                    here goes the image of the selected building
+                    { selection }
                 </div>
 
                 <ul class='selection-list'>

@@ -27,6 +27,7 @@ export default class Selector extends BaseScript {
     start(selector, { position }) {
         this.selector = selector;
         this.visible = false;
+        this.enabled = false;
         this.destination = CURSOR_DEFAULT_DESTINATION;
 
         this.initialColor = this.selector.getColor();
@@ -50,7 +51,7 @@ export default class Selector extends BaseScript {
 
     markEnabled = flag => {
         const color = flag ? this.initialColor : PALETTES.FRENCH_PALETTE.MANDARIN_RED;
-
+        this.enabled = flag;
         this.selector.setColor(color);
     }
 

@@ -8669,6 +8669,7 @@ var Selector = /*#__PURE__*/function (_BaseScript) {
 
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2___default()(_this), "markEnabled", function (flag) {
       var color = flag ? _this.initialColor : mage_engine__WEBPACK_IMPORTED_MODULE_7__.PALETTES.FRENCH_PALETTE.MANDARIN_RED;
+      _this.enabled = flag;
 
       _this.selector.setColor(color);
     });
@@ -8682,6 +8683,7 @@ var Selector = /*#__PURE__*/function (_BaseScript) {
       var position = _ref.position;
       this.selector = selector;
       this.visible = false;
+      this.enabled = false;
       this.destination = CURSOR_DEFAULT_DESTINATION;
       this.initialColor = this.selector.getColor();
       this.selector.setPosition(_objectSpread(_objectSpread({}, position), {}, {
@@ -8822,15 +8824,16 @@ var Nature = /*#__PURE__*/function (_Player) {
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_7___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2___default()(_this), "handleMouseIntersection", function () {
       var intersections = mage_engine__WEBPACK_IMPORTED_MODULE_8__.Input.mouse.getIntersections(true, 'tile');
 
+      var selectorScript = _this.selector.getScript('Selector');
+
       if (intersections.length) {
-        var destinationIndex = intersections[0].element.getData('index');
-        var position = intersections[0].element.getPosition();
-
-        _this.selector.getScript('Selector').appearAt(position, destinationIndex);
-
-        _this.selector.getScript('Selector').markEnabled(_this.canMouseInteract(destinationIndex));
+        var element = intersections[0].element;
+        var destinationIndex = element.getData('index');
+        var position = element.getPosition();
+        selectorScript.appearAt(position, destinationIndex);
+        selectorScript.markEnabled(_this.canMouseInteract(destinationIndex));
       } else {
-        _this.selector.getScript('Selector').disappear();
+        selectorScript.disappear();
       }
     });
 
@@ -8863,10 +8866,38 @@ var Nature = /*#__PURE__*/function (_Player) {
       mage_engine__WEBPACK_IMPORTED_MODULE_8__.store.dispatch((0,_ui_actions_player__WEBPACK_IMPORTED_MODULE_12__.updateEnergyLevel)(this.energy));
     }
   }, {
+    key: "getSelectionType",
+    value: function getSelectionType() {
+      var _store$getState = mage_engine__WEBPACK_IMPORTED_MODULE_8__.store.getState(),
+          _store$getState$playe = _store$getState.player,
+          selection = _store$getState$playe.selection,
+          option = _store$getState$playe.option;
+
+      return {
+        selection: selection,
+        option: option
+      };
+    }
+  }, {
+    key: "canBuildOnTile",
+    value: function canBuildOnTile(tile) {
+      return _map_TileMap__WEBPACK_IMPORTED_MODULE_10__.default.isTileAdjacentToType(tile.getIndex(), _map_constants__WEBPACK_IMPORTED_MODULE_9__.TILES_TYPES.FOREST) && !tile.isForest() && !tile.isObstacle();
+    }
+  }, {
     key: "canMouseInteract",
     value: function canMouseInteract(destination) {
       var destinationTile = _map_TileMap__WEBPACK_IMPORTED_MODULE_10__.default.getTileAt(destination);
-      return _map_TileMap__WEBPACK_IMPORTED_MODULE_10__.default.isTileAdjacentToType(destination, _map_constants__WEBPACK_IMPORTED_MODULE_9__.TILES_TYPES.FOREST) && !destinationTile.isForest() && !destinationTile.isObstacle();
+
+      var _this$getSelectionTyp = this.getSelectionType(),
+          selection = _this$getSelectionTyp.selection,
+          option = _this$getSelectionTyp.option;
+
+      if (selection === _map_constants__WEBPACK_IMPORTED_MODULE_9__.TILES_TYPES.FOREST) {
+        return this.canBuildOnTile(destinationTile);
+      } // return TileMap.isTileAdjacentToType(destination, TILES_TYPES.FOREST) &&
+      //     !destinationTile.isForest() &&
+      //     !destinationTile.isObstacle();
+
     }
   }]);
 
@@ -9172,7 +9203,8 @@ var updateTileMapStats = function updateTileMapStats() {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "updateEnergyLevel": () => (/* binding */ updateEnergyLevel)
+/* harmony export */   "updateEnergyLevel": () => (/* binding */ updateEnergyLevel),
+/* harmony export */   "changeSelection": () => (/* binding */ changeSelection)
 /* harmony export */ });
 /* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./types */ "./src/ui/actions/types.js");
 
@@ -9180,6 +9212,12 @@ var updateEnergyLevel = function updateEnergyLevel(energy) {
   return {
     type: _types__WEBPACK_IMPORTED_MODULE_0__.NATURE_ENERGY_CHANGE,
     energy: energy
+  };
+};
+var changeSelection = function changeSelection(selection) {
+  return {
+    type: _types__WEBPACK_IMPORTED_MODULE_0__.NATURE_SELECTION_CHANGE,
+    selection: selection
   };
 };
 
@@ -9195,10 +9233,12 @@ var updateEnergyLevel = function updateEnergyLevel(energy) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "TILE_MAP_STATS_CHANGE": () => (/* binding */ TILE_MAP_STATS_CHANGE),
-/* harmony export */   "NATURE_ENERGY_CHANGE": () => (/* binding */ NATURE_ENERGY_CHANGE)
+/* harmony export */   "NATURE_ENERGY_CHANGE": () => (/* binding */ NATURE_ENERGY_CHANGE),
+/* harmony export */   "NATURE_SELECTION_CHANGE": () => (/* binding */ NATURE_SELECTION_CHANGE)
 /* harmony export */ });
 var TILE_MAP_STATS_CHANGE = 'MAP_STATS_CHANGE';
 var NATURE_ENERGY_CHANGE = 'NATURE_ENERGY_CHANGE';
+var NATURE_SELECTION_CHANGE = 'NATURE_SELECTION_CHANGE';
 
 /***/ }),
 
@@ -9311,8 +9351,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(xferno__WEBPACK_IMPORTED_MODULE_0__);
 
 
-var SelectionWidget = function SelectionWidget() {
-  return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'row', (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'selection widget', [(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'box', "here goes the image of the selected building", 16), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "ul", 'selection-list', [(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'item'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'item'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'item'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'item')], 4)], 4), 2);
+var SelectionWidget = function SelectionWidget(_ref) {
+  var selection = _ref.selection;
+  return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'row', (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'selection widget', [(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'box', selection, 0), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "ul", 'selection-list', [(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'item'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'item'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'item'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'item')], 4)], 4), 2);
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SelectionWidget);
@@ -9339,10 +9380,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var Controls = function Controls(_ref) {
-  var energy = _ref.energy;
+  var energy = _ref.energy,
+      selection = _ref.selection;
   return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'controls-container', [(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _EnergyMeter__WEBPACK_IMPORTED_MODULE_1__.default, {
     "energy": energy
-  }), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _SelectionWidget__WEBPACK_IMPORTED_MODULE_2__.default)], 4);
+  }), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _SelectionWidget__WEBPACK_IMPORTED_MODULE_2__.default, {
+    "selection": selection
+  })], 4);
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Controls);
@@ -9374,11 +9418,13 @@ __webpack_require__.r(__webpack_exports__);
 
 var Game = function Game(_ref) {
   var tileStats = _ref.tileStats,
-      energy = _ref.energy;
+      energy = _ref.energy,
+      selection = _ref.selection;
   return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createFragment)([(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _TileControlBar__WEBPACK_IMPORTED_MODULE_4__.default, {
     "tileStats": tileStats
   }), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _controls__WEBPACK_IMPORTED_MODULE_1__.default, {
-    "energy": energy
+    "energy": energy,
+    "selection": selection
   }), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _Map__WEBPACK_IMPORTED_MODULE_3__.default)], 4);
 };
 
@@ -9472,7 +9518,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
 /* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var mage_engine__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mage-engine */ "../Mage/dist/mage.js");
+/* harmony import */ var _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../levels/test/map/constants */ "./src/levels/test/map/constants.js");
 /* harmony import */ var _actions_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../actions/types */ "./src/ui/actions/types.js");
 
 
@@ -9483,7 +9529,8 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 
 var DEFAULT_STATE = {
-  energy: 0
+  energy: 0,
+  selection: _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_1__.TILES_TYPES.FOREST
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function () {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : DEFAULT_STATE;
@@ -9493,6 +9540,11 @@ var DEFAULT_STATE = {
     case _actions_types__WEBPACK_IMPORTED_MODULE_2__.NATURE_ENERGY_CHANGE:
       return _objectSpread(_objectSpread({}, state), {}, {
         energy: action.energy
+      });
+
+    case _actions_types__WEBPACK_IMPORTED_MODULE_2__.NATURE_SELECTION_CHANGE:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        selection: action.selection
       });
 
     default:
@@ -9534,10 +9586,12 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 var Root = function Root(_ref) {
   var loadingScreenVisible = _ref.loadingScreenVisible,
       tileStats = _ref.tileStats,
-      energy = _ref.energy;
+      energy = _ref.energy,
+      selection = _ref.selection;
   return loadingScreenVisible ? (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createComponentVNode)(2, _LoadingScreen__WEBPACK_IMPORTED_MODULE_4__.default) : (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createComponentVNode)(2, _gameui__WEBPACK_IMPORTED_MODULE_3__.default, {
     "tileStats": tileStats,
-    "energy": energy
+    "energy": energy,
+    "selection": selection
   });
 };
 

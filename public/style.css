@@ -696,9 +696,9 @@ h1:nth-child(2) {
 
 .map {
   position: absolute;
-  height: 144px;
-  width: 144px;
-  margin: 8px;
-  bottom: 0;
-  right: 0; }
+  height: 160px;
+  width: 160px;
+  top: calc(100vh - 160px);
+  left: calc(100vw - 160px);
+  background: rgba(0, 0, 0, 0.7); }
 

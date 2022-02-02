@@ -45,25 +45,39 @@ class Nature extends Player {
         }
     }
 
+    getSelectionType() {
+        const { player: { selection, option } } = store.getState();
+        return { selection, option };
+    }
+
+    canBuildOnTile(tile) {
+        return TileMap.isTileAdjacentToType(tile.getIndex(), TILES_TYPES.FOREST) &&
+            !tile.isForest() &&
+            !tile.isObstacle();
+    }
+
     canMouseInteract(destination) {
         const destinationTile = TileMap.getTileAt(destination);
+        const { selection, option } = this.getSelectionType();
 
-        return TileMap.isTileAdjacentToType(destination, TILES_TYPES.FOREST) &&
-            !destinationTile.isForest() &&
-            !destinationTile.isObstacle();
+        if (selection === TILES_TYPES.FOREST) {
+            return this.canBuildOnTile(destinationTile);
+        }
     }
 
     handleMouseIntersection = () => {
         const intersections = Input.mouse.getIntersections(true, 'tile');
+        const selectorScript = this.selector.getScript('Selector');
 
         if (intersections.length) {
-            const destinationIndex = intersections[0].element.getData('index');
-            const position = intersections[0].element.getPosition();
+            const { element } = intersections[0];
+            const destinationIndex = element.getData('index');
+            const position = element.getPosition();
 
-            this.selector.getScript('Selector').appearAt(position, destinationIndex);
-            this.selector.getScript('Selector').markEnabled(this.canMouseInteract(destinationIndex))
+            selectorScript.appearAt(position, destinationIndex);
+            selectorScript.markEnabled(this.canMouseInteract(destinationIndex))
         } else {
-            this.selector.getScript('Selector').disappear();
+            selectorScript.disappear();
         }
     }
 }

@@ -1,11 +1,11 @@
 import EnergyMeter from "./EnergyMeter"
 import SelectionWidget from "./SelectionWidget";
 
-const Controls = ({ energy }) => {
+const Controls = ({ energy, selection }) => {
     return (
         <div className='controls-container'>
             <EnergyMeter energy={energy} />
-            <SelectionWidget />
+            <SelectionWidget selection={selection} />
         </div>
     )
 };
