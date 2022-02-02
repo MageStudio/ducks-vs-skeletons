@@ -50,29 +50,29 @@ export default class Player {
     
     getUnitScriptName = () =>'UnitBehaviour';
 
-    buildBaseTile(destination) {
-        this.sendBuilderToTile(TileMap.getTileAt(destination), this.getBaseTileType());
+    buildBaseTile(destination, startingPosition) {
         this.updateEnergy();
+        return this.sendBuilderToTile(TileMap.getTileAt(destination), this.getBaseTileType(), startingPosition);
     }
-    buildWarriorsHut = (destination) => this.sendBuilderToTile(TileMap.getTileAt(destination), this.getWarriorsHutVariation());
-    buildBuildersHut = (destination) => this.sendBuilderToTile(TileMap.getTileAt(destination), this.getBuildersHutVariation());
-    buildTower = (destination) => this.sendBuilderToTile(TileMap.getTileAt(destination), this.getTowerVariation());
+    buildWarriorsHut = (destination, startingPosition) => this.sendBuilderToTile(TileMap.getTileAt(destination), this.getWarriorsHutVariation(), startingPosition);
+    buildBuildersHut = (destination, startingPosition) => this.sendBuilderToTile(TileMap.getTileAt(destination), this.getBuildersHutVariation(), startingPosition);
+    buildTower = (destination, startingPosition) => this.sendBuilderToTile(TileMap.getTileAt(destination), this.getTowerVariation(), startingPosition);
 
-    sendBuilderToTile(tile, variation) {
+    sendBuilderToTile(tile, variation, position = this.initialPosition) {
         const unit = Models.getModel(this.type, { name: `${this.type}_builder_${Math.random()}`});
-        const start = this.initialPosition;
-        const behaviour = unit.addScript(this.getUnitScriptName(), { position: start, builder: true });
-
-        behaviour
-            .goTo(start, tile)
-            .then(() => behaviour.buildAtPosition(tile, variation));
+        const behaviour = unit.addScript(this.getUnitScriptName(), { position, builder: true });
 
         TileMap.setTileState(tile, TILES_STATES.BUILDING);
         unit.addEventListener(ENTITY_EVENTS.DISPOSE, this.handleUnitDeath(DEATH_REASONS.BUILDING));
 
         this.builders[unit.uuid()] = unit;
 
-        return unit;
+        return new Promise(resolve => {
+            behaviour
+                .goTo(position, tile)
+                .then(() => behaviour.buildAtPosition(tile, variation))
+                .then(resolve);
+        });
     }
 
     sendWarriorToTile = tile => {

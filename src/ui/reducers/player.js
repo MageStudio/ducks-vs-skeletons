@@ -1,9 +1,20 @@
 import { TILES_TYPES } from "../../levels/test/map/constants";
-import { NATURE_ENERGY_CHANGE, NATURE_SELECTION_CHANGE } from "../actions/types";
+import {
+    NATURE_ENERGY_CHANGE,
+    NATURE_SELECTION_CHANGE,
+    NATURE_SELECTION_OPTION_CHANGE
+} from "../actions/types";
 
 const DEFAULT_STATE = {
     energy: 0,
-    selection: TILES_TYPES.FOREST
+    selection: {
+        type: TILES_TYPES.FOREST,
+        index: {
+            x: 2,
+            z: 2
+        }
+    },
+    option: false
 };
 
 export default (state = DEFAULT_STATE, action = {}) => {
@@ -18,6 +29,11 @@ export default (state = DEFAULT_STATE, action = {}) => {
                 ...state,
                 selection: action.selection
             };
+        case NATURE_SELECTION_OPTION_CHANGE:
+            return {
+                ...state,
+                option: action.option
+            }
         default:
             return state;
     }

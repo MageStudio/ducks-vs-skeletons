@@ -13,7 +13,9 @@ import {
     TILE_DETAILS_RELATIVE_POSITION,
     WATER_TILE_COLOR,
     WATER_TILE_OPACITY,
-    TILE_BASE_VARIATIONS_MAP
+    TILE_BASE_VARIATIONS_MAP,
+    FOREST_TILES,
+    HUMAN_TILES
 } from './constants';
 
 const { Vector3 } = THREE;
@@ -98,12 +100,17 @@ export default class Tile {
     isHuman = () => this.tileType === TILES_TYPES.HUMAN;
     isWater = () => this.tileType === TILES_TYPES.WATER;
     isEmpty = () => this.tileType === TILES_TYPES.EMPTY;
+    isWarriorsHut = () => this.variation === FOREST_TILES.FOREST_WARRIORS_HUT || this.variation === HUMAN_TILES.HUMAN_WARRIORS_HUT;
+    isBuildersHut = () => this.variation === FOREST_TILES.FOREST_BUILDERS_HUT || this.variation === HUMAN_TILES.HUMAN_BUILDERS_HUT;
+    isTower = () => this.variation === FOREST_TILES.FOREST_TOWER || this.variation === HUMAN_TILES.HUMAN_TOWER;
 
     isBaseTile = () => Boolean(this.baseTile);
     isStartingTile = () => Boolean(this.startingTile);
     isObstacle = () => this.isWater() || this.isEmpty();
 
     isType = tileType => this.tileType === tileType;
+    getType = () => this.tileType;
+    getVariation = () => this.variation;
 
     setState = state => this.state = state;
     getState = () => this.state;

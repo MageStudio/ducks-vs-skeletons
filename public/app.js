@@ -7146,6 +7146,18 @@ var Tile = /*#__PURE__*/function () {
       return _this.tileType === _constants__WEBPACK_IMPORTED_MODULE_4__.TILES_TYPES.EMPTY;
     });
 
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "isWarriorsHut", function () {
+      return _this.variation === _constants__WEBPACK_IMPORTED_MODULE_4__.FOREST_TILES.FOREST_WARRIORS_HUT || _this.variation === _constants__WEBPACK_IMPORTED_MODULE_4__.HUMAN_TILES.HUMAN_WARRIORS_HUT;
+    });
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "isBuildersHut", function () {
+      return _this.variation === _constants__WEBPACK_IMPORTED_MODULE_4__.FOREST_TILES.FOREST_BUILDERS_HUT || _this.variation === _constants__WEBPACK_IMPORTED_MODULE_4__.HUMAN_TILES.HUMAN_BUILDERS_HUT;
+    });
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "isTower", function () {
+      return _this.variation === _constants__WEBPACK_IMPORTED_MODULE_4__.FOREST_TILES.FOREST_TOWER || _this.variation === _constants__WEBPACK_IMPORTED_MODULE_4__.HUMAN_TILES.HUMAN_TOWER;
+    });
+
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "isBaseTile", function () {
       return Boolean(_this.baseTile);
     });
@@ -7160,6 +7172,14 @@ var Tile = /*#__PURE__*/function () {
 
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "isType", function (tileType) {
       return _this.tileType === tileType;
+    });
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "getType", function () {
+      return _this.tileType;
+    });
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "getVariation", function () {
+      return _this.variation;
     });
 
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "setState", function (state) {
@@ -7615,6 +7635,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "TILES_TYPES": () => (/* binding */ TILES_TYPES),
 /* harmony export */   "HUMAN_TILES": () => (/* binding */ HUMAN_TILES),
 /* harmony export */   "FOREST_TILES": () => (/* binding */ FOREST_TILES),
+/* harmony export */   "FOREST_OPTIONS": () => (/* binding */ FOREST_OPTIONS),
 /* harmony export */   "WATER_TILE_BASE_VARIATIONS": () => (/* binding */ WATER_TILE_BASE_VARIATIONS),
 /* harmony export */   "DESERT_TILE_BASE_VARIATIONS": () => (/* binding */ DESERT_TILE_BASE_VARIATIONS),
 /* harmony export */   "FOREST_TILE_BASE_VARIATIONS": () => (/* binding */ FOREST_TILE_BASE_VARIATIONS),
@@ -7659,6 +7680,13 @@ var TILES_TYPES = {
 };
 var HUMAN_TILES = (_HUMAN_TILES = {}, _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_HUMAN_TILES, TILES_TYPES.HUMAN, TILES_TYPES.HUMAN), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_HUMAN_TILES, "HUMAN_TOWER", 'humanTileTower'), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_HUMAN_TILES, "HUMAN_WARRIORS_HUT", 'humanTileWarriorsHut'), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_HUMAN_TILES, "HUMAN_BUILDERS_HUT", 'humanTileBuildersHut'), _HUMAN_TILES);
 var FOREST_TILES = (_FOREST_TILES = {}, _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_FOREST_TILES, TILES_TYPES.FOREST, TILES_TYPES.FOREST), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_FOREST_TILES, "FOREST_TOWER", 'forestTileTower'), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_FOREST_TILES, "FOREST_WARRIORS_HUT", 'forestTileWarriorsHut'), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_FOREST_TILES, "FOREST_BUILDERS_HUT", 'forestTileBuildersHut'), _FOREST_TILES);
+var FOREST_OPTIONS = {
+  BASE_TILE: 'BASE_TILE',
+  TOWER_TILE: 'TOWER_TILE',
+  BUILDERS_HUT_TILE: 'BUILDERS_HUT_TILE',
+  WARRIORS_HUT_TILE: 'WARRIORS_HUT_TILE',
+  ATTACK: 'ATTACK'
+};
 var WATER_TILE_BASE_VARIATIONS = [TILES_TYPES.WATER];
 var DESERT_TILE_BASE_VARIATIONS = [TILES_TYPES.DESERT, TILES_TYPES.DESERT, TILES_TYPES.DESERT, 'desertTileA'];
 var FOREST_TILE_BASE_VARIATIONS = [TILES_TYPES.FOREST, TILES_TYPES.FOREST, 'forestTileA', 'forestTileB'];
@@ -7826,16 +7854,16 @@ var Player = /*#__PURE__*/function () {
       return 'UnitBehaviour';
     });
 
-    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "buildWarriorsHut", function (destination) {
-      return _this.sendBuilderToTile(_map_TileMap__WEBPACK_IMPORTED_MODULE_5__.default.getTileAt(destination), _this.getWarriorsHutVariation());
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "buildWarriorsHut", function (destination, startingPosition) {
+      return _this.sendBuilderToTile(_map_TileMap__WEBPACK_IMPORTED_MODULE_5__.default.getTileAt(destination), _this.getWarriorsHutVariation(), startingPosition);
     });
 
-    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "buildBuildersHut", function (destination) {
-      return _this.sendBuilderToTile(_map_TileMap__WEBPACK_IMPORTED_MODULE_5__.default.getTileAt(destination), _this.getBuildersHutVariation());
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "buildBuildersHut", function (destination, startingPosition) {
+      return _this.sendBuilderToTile(_map_TileMap__WEBPACK_IMPORTED_MODULE_5__.default.getTileAt(destination), _this.getBuildersHutVariation(), startingPosition);
     });
 
-    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "buildTower", function (destination) {
-      return _this.sendBuilderToTile(_map_TileMap__WEBPACK_IMPORTED_MODULE_5__.default.getTileAt(destination), _this.getTowerVariation());
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "buildTower", function (destination, startingPosition) {
+      return _this.sendBuilderToTile(_map_TileMap__WEBPACK_IMPORTED_MODULE_5__.default.getTileAt(destination), _this.getTowerVariation(), startingPosition);
     });
 
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "sendWarriorToTile", function (tile) {
@@ -7877,28 +7905,29 @@ var Player = /*#__PURE__*/function () {
     }
   }, {
     key: "buildBaseTile",
-    value: function buildBaseTile(destination) {
-      this.sendBuilderToTile(_map_TileMap__WEBPACK_IMPORTED_MODULE_5__.default.getTileAt(destination), this.getBaseTileType());
+    value: function buildBaseTile(destination, startingPosition) {
       this.updateEnergy();
+      return this.sendBuilderToTile(_map_TileMap__WEBPACK_IMPORTED_MODULE_5__.default.getTileAt(destination), this.getBaseTileType(), startingPosition);
     }
   }, {
     key: "sendBuilderToTile",
     value: function sendBuilderToTile(tile, variation) {
+      var position = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : this.initialPosition;
       var unit = mage_engine__WEBPACK_IMPORTED_MODULE_3__.Models.getModel(this.type, {
         name: "".concat(this.type, "_builder_").concat(Math.random())
       });
-      var start = this.initialPosition;
       var behaviour = unit.addScript(this.getUnitScriptName(), {
-        position: start,
+        position: position,
         builder: true
-      });
-      behaviour.goTo(start, tile).then(function () {
-        return behaviour.buildAtPosition(tile, variation);
       });
       _map_TileMap__WEBPACK_IMPORTED_MODULE_5__.default.setTileState(tile, _map_constants__WEBPACK_IMPORTED_MODULE_4__.TILES_STATES.BUILDING);
       unit.addEventListener(mage_engine__WEBPACK_IMPORTED_MODULE_3__.ENTITY_EVENTS.DISPOSE, this.handleUnitDeath(_constants__WEBPACK_IMPORTED_MODULE_6__.DEATH_REASONS.BUILDING));
       this.builders[unit.uuid()] = unit;
-      return unit;
+      return new Promise(function (resolve) {
+        behaviour.goTo(position, tile).then(function () {
+          return behaviour.buildAtPosition(tile, variation);
+        }).then(resolve);
+      });
     }
   }]);
 
@@ -8169,19 +8198,24 @@ var UnitBehaviour = /*#__PURE__*/function (_BaseScript) {
     value: function buildAtPosition(tile, variation) {
       var _this3 = this;
 
-      if (!this.isBuilder()) return;
-      this.unit.playAnimation(UNIT_ANIMATIONS.BUILD);
-      setTimeout(function () {
-        _this3.unit.playAnimation(UNIT_ANIMATIONS.IDLE);
+      if (!this.isBuilder()) return Promise.resolve();
+      return new Promise(function (resolve) {
+        _this3.unit.playAnimation(UNIT_ANIMATIONS.BUILD);
 
-        if (!_this3.isFriendlyTile(tile)) {
-          _map_TileMap__WEBPACK_IMPORTED_MODULE_9__.default.changeTile(tile.getIndex(), _this3.getFriendlyTileType(), {
-            variation: variation
-          });
+        setTimeout(function () {
+          _this3.unit.playAnimation(UNIT_ANIMATIONS.IDLE);
 
-          _this3.die();
-        }
-      }, 3000);
+          if (!_this3.isFriendlyTile(tile)) {
+            _map_TileMap__WEBPACK_IMPORTED_MODULE_9__.default.changeTile(tile.getIndex(), _this3.getFriendlyTileType(), {
+              variation: variation
+            });
+
+            _this3.die();
+          }
+
+          resolve();
+        }, 3000);
+      });
     }
   }, {
     key: "goTo",
@@ -8816,9 +8850,42 @@ var Nature = /*#__PURE__*/function (_Player) {
           visible = _this$selector$getScr.visible,
           destination = _this$selector$getScr.destination;
 
+      var _this$getSelectionTyp = _this.getSelectionType(),
+          _this$getSelectionTyp2 = _this$getSelectionTyp.selection,
+          type = _this$getSelectionTyp2.type,
+          index = _this$getSelectionTyp2.index,
+          option = _this$getSelectionTyp.option;
+
       if (visible && _this.canMouseInteract(destination)) {
-        _this.buildBaseTile(destination);
+        if (!option) {
+          _this.selectTile(_map_TileMap__WEBPACK_IMPORTED_MODULE_10__.default.getTileAt(destination));
+        } else {
+          switch (type) {
+            case _map_constants__WEBPACK_IMPORTED_MODULE_9__.TILES_TYPES.FOREST:
+            case _map_constants__WEBPACK_IMPORTED_MODULE_9__.FOREST_TILES.FOREST_BUILDERS_HUT:
+              _this.build(option, index, destination);
+
+              break;
+
+            case _map_constants__WEBPACK_IMPORTED_MODULE_9__.FOREST_TILES.FOREST_TOWER:
+              // select target? 
+              break;
+
+            case _map_constants__WEBPACK_IMPORTED_MODULE_9__.FOREST_TILES.FOREST_WARRIORS_HUT:
+              _this.sendWarriorToTile(destination);
+
+              break;
+          }
+        }
       }
+    });
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_7___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2___default()(_this), "clearSelection", function () {
+      mage_engine__WEBPACK_IMPORTED_MODULE_8__.store.dispatch((0,_ui_actions_player__WEBPACK_IMPORTED_MODULE_12__.changeSelectionOption)(false));
+    });
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_7___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2___default()(_this), "canSelectTile", function (tile) {
+      return !tile.isObstacle() && (tile.isWarriorsHut() || tile.isTower() || tile.isBuildersHut() || tile.isStartingTile());
     });
 
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_7___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2___default()(_this), "handleMouseIntersection", function () {
@@ -8855,15 +8922,46 @@ var Nature = /*#__PURE__*/function (_Player) {
       this.selector = mage_engine__WEBPACK_IMPORTED_MODULE_8__.Models.getModel('selector');
       this.selector.addScript('Selector', {
         position: position
-      }); // this.sendBuilderToTile(TileMap.getTileAt({ x: 8, z: 8 }));
+      });
     }
   }, {
     key: "buildBaseTile",
-    value: function buildBaseTile(destination) {
-      _babel_runtime_helpers_get__WEBPACK_IMPORTED_MODULE_3___default()(_babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_6___default()(Nature.prototype), "buildBaseTile", this).call(this, destination);
+    value: function buildBaseTile(destination, startingPosition) {
+      var _this2 = this;
 
-      console.log('energy', this.energy);
-      mage_engine__WEBPACK_IMPORTED_MODULE_8__.store.dispatch((0,_ui_actions_player__WEBPACK_IMPORTED_MODULE_12__.updateEnergyLevel)(this.energy));
+      _babel_runtime_helpers_get__WEBPACK_IMPORTED_MODULE_3___default()(_babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_6___default()(Nature.prototype), "buildBaseTile", this).call(this, destination, startingPosition).then(function () {
+        mage_engine__WEBPACK_IMPORTED_MODULE_8__.store.dispatch((0,_ui_actions_player__WEBPACK_IMPORTED_MODULE_12__.updateEnergyLevel)(_this2.energy));
+        mage_engine__WEBPACK_IMPORTED_MODULE_8__.store.dispatch((0,_ui_actions_player__WEBPACK_IMPORTED_MODULE_12__.changeSelectionOption)(false));
+      });
+    }
+  }, {
+    key: "build",
+    value: function build(option, startingPosition, destination) {
+      switch (option) {
+        case _map_constants__WEBPACK_IMPORTED_MODULE_9__.FOREST_OPTIONS.BASE_TILE:
+          this.buildBaseTile(destination, startingPosition);
+          break;
+
+        case _map_constants__WEBPACK_IMPORTED_MODULE_9__.FOREST_OPTIONS.BUILDERS_HUT_TILE:
+          this.buildBuildersHut(destination, startingPosition).then(this.clearSelection);
+          break;
+
+        case _map_constants__WEBPACK_IMPORTED_MODULE_9__.FOREST_OPTIONS.WARRIORS_HUT_TILE:
+          this.buildWarriorsHut(destination, startingPosition).then(this.clearSelection);
+          break;
+
+        case _map_constants__WEBPACK_IMPORTED_MODULE_9__.FOREST_OPTIONS.TOWER_TILE:
+          this.buildTower(destination, startingPosition).then(this.clearSelection);
+          break;
+      }
+    }
+  }, {
+    key: "selectTile",
+    value: function selectTile(tile) {
+      mage_engine__WEBPACK_IMPORTED_MODULE_8__.store.dispatch((0,_ui_actions_player__WEBPACK_IMPORTED_MODULE_12__.changeSelection)({
+        type: tile.isStartingTile() ? tile.getType() : tile.getVariation(),
+        index: tile.getIndex()
+      }));
     }
   }, {
     key: "getSelectionType",
@@ -8884,20 +8982,37 @@ var Nature = /*#__PURE__*/function (_Player) {
       return _map_TileMap__WEBPACK_IMPORTED_MODULE_10__.default.isTileAdjacentToType(tile.getIndex(), _map_constants__WEBPACK_IMPORTED_MODULE_9__.TILES_TYPES.FOREST) && !tile.isForest() && !tile.isObstacle();
     }
   }, {
+    key: "canAttackTile",
+    value: function canAttackTile(tile) {
+      return true;
+    }
+  }, {
     key: "canMouseInteract",
     value: function canMouseInteract(destination) {
       var destinationTile = _map_TileMap__WEBPACK_IMPORTED_MODULE_10__.default.getTileAt(destination);
 
-      var _this$getSelectionTyp = this.getSelectionType(),
-          selection = _this$getSelectionTyp.selection,
-          option = _this$getSelectionTyp.option;
+      var _this$getSelectionTyp3 = this.getSelectionType(),
+          selection = _this$getSelectionTyp3.selection,
+          option = _this$getSelectionTyp3.option;
 
-      if (selection === _map_constants__WEBPACK_IMPORTED_MODULE_9__.TILES_TYPES.FOREST) {
-        return this.canBuildOnTile(destinationTile);
-      } // return TileMap.isTileAdjacentToType(destination, TILES_TYPES.FOREST) &&
-      //     !destinationTile.isForest() &&
-      //     !destinationTile.isObstacle();
+      var type = selection.type;
 
+      if (!option) {
+        return this.canSelectTile(destinationTile);
+      }
+
+      switch (type) {
+        case _map_constants__WEBPACK_IMPORTED_MODULE_9__.TILES_TYPES.FOREST:
+        case _map_constants__WEBPACK_IMPORTED_MODULE_9__.FOREST_TILES.FOREST_BUILDERS_HUT:
+          return this.canBuildOnTile(destinationTile);
+
+        case _map_constants__WEBPACK_IMPORTED_MODULE_9__.FOREST_TILES.FOREST_TOWER:
+          // select target? 
+          break;
+
+        case _map_constants__WEBPACK_IMPORTED_MODULE_9__.FOREST_TILES.FOREST_WARRIORS_HUT:
+          return this.canAttackTile(destinationTile);
+      }
     }
   }]);
 
@@ -9204,7 +9319,8 @@ var updateTileMapStats = function updateTileMapStats() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "updateEnergyLevel": () => (/* binding */ updateEnergyLevel),
-/* harmony export */   "changeSelection": () => (/* binding */ changeSelection)
+/* harmony export */   "changeSelection": () => (/* binding */ changeSelection),
+/* harmony export */   "changeSelectionOption": () => (/* binding */ changeSelectionOption)
 /* harmony export */ });
 /* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./types */ "./src/ui/actions/types.js");
 
@@ -9218,6 +9334,12 @@ var changeSelection = function changeSelection(selection) {
   return {
     type: _types__WEBPACK_IMPORTED_MODULE_0__.NATURE_SELECTION_CHANGE,
     selection: selection
+  };
+};
+var changeSelectionOption = function changeSelectionOption(option) {
+  return {
+    type: _types__WEBPACK_IMPORTED_MODULE_0__.NATURE_SELECTION_OPTION_CHANGE,
+    option: option
   };
 };
 
@@ -9234,11 +9356,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "TILE_MAP_STATS_CHANGE": () => (/* binding */ TILE_MAP_STATS_CHANGE),
 /* harmony export */   "NATURE_ENERGY_CHANGE": () => (/* binding */ NATURE_ENERGY_CHANGE),
-/* harmony export */   "NATURE_SELECTION_CHANGE": () => (/* binding */ NATURE_SELECTION_CHANGE)
+/* harmony export */   "NATURE_SELECTION_CHANGE": () => (/* binding */ NATURE_SELECTION_CHANGE),
+/* harmony export */   "NATURE_SELECTION_OPTION_CHANGE": () => (/* binding */ NATURE_SELECTION_OPTION_CHANGE)
 /* harmony export */ });
 var TILE_MAP_STATS_CHANGE = 'MAP_STATS_CHANGE';
 var NATURE_ENERGY_CHANGE = 'NATURE_ENERGY_CHANGE';
 var NATURE_SELECTION_CHANGE = 'NATURE_SELECTION_CHANGE';
+var NATURE_SELECTION_OPTION_CHANGE = 'NATURE_SELECTION_OPTION_CHANGE';
 
 /***/ }),
 
@@ -9347,13 +9471,65 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! xferno */ "./node_modules/xferno/dist/xferno.js");
-/* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(xferno__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! xferno */ "./node_modules/xferno/dist/xferno.js");
+/* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(xferno__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var mage_engine__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! mage-engine */ "../Mage/dist/mage.js");
+/* harmony import */ var _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../levels/test/map/constants */ "./src/levels/test/map/constants.js");
+/* harmony import */ var _actions_player__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../actions/player */ "./src/ui/actions/player.js");
 
+
+
+
+
+
+var mapSelectionTypeToOptions = function mapSelectionTypeToOptions(selectionType, _onClick) {
+  var _TILES_TYPES$FOREST$F;
+
+  return (_TILES_TYPES$FOREST$F = {}, _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILES_TYPES$FOREST$F, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_3__.TILES_TYPES.FOREST, [(0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "li", 'item', "BASE", 16, {
+    "onClick": function onClick() {
+      return _onClick(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_3__.FOREST_OPTIONS.BASE_TILE);
+    }
+  }), (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "li", 'item', "BUILDERS", 16, {
+    "onClick": function onClick() {
+      return _onClick(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_3__.FOREST_OPTIONS.BUILDERS_HUT_TILE);
+    }
+  }), (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "li", 'item', "WARRIORS", 16, {
+    "onClick": function onClick() {
+      return _onClick(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_3__.FOREST_OPTIONS.WARRIORS_HUT_TILE);
+    }
+  }), (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "li", 'item', "TOWER", 16, {
+    "onClick": function onClick() {
+      return _onClick(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_3__.FOREST_OPTIONS.TOWER_TILE);
+    }
+  })]), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILES_TYPES$FOREST$F, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_3__.FOREST_TILES.FOREST_BUILDERS_HUT, [(0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "li", 'item', "BASE", 16, {
+    "onClick": function onClick() {
+      return _onClick(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_3__.FOREST_OPTIONS.BASE_TILE);
+    }
+  }), (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "li", 'item', "BUILDERS", 16, {
+    "onClick": function onClick() {
+      return _onClick(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_3__.FOREST_OPTIONS.BUILDERS_HUT_TILE);
+    }
+  }), (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "li", 'item', "WARRIORS", 16, {
+    "onClick": function onClick() {
+      return _onClick(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_3__.FOREST_OPTIONS.WARRIORS_HUT_TILE);
+    }
+  }), (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "li", 'item', "TOWER", 16, {
+    "onClick": function onClick() {
+      return _onClick(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_3__.FOREST_OPTIONS.TOWER_TILE);
+    }
+  })]), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILES_TYPES$FOREST$F, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_3__.FOREST_TILES.FOREST_TOWER, []), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILES_TYPES$FOREST$F, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_3__.FOREST_TILES.FOREST_WARRIORS_HUT, [(0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "li", 'item', "ATTACK", 16, {
+    "onClick": function onClick() {
+      return _onClick(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_3__.FOREST_OPTIONS.ATTACK);
+    }
+  })]), _TILES_TYPES$FOREST$F)[selectionType];
+};
 
 var SelectionWidget = function SelectionWidget(_ref) {
-  var selection = _ref.selection;
-  return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'row', (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'selection widget', [(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'box', selection, 0), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "ul", 'selection-list', [(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'item'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'item'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'item'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'item')], 4)], 4), 2);
+  var selection = _ref.selection,
+      onOptionClick = _ref.onOptionClick;
+  return (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "div", 'row', (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "div", 'selection widget', [(0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "div", 'box', selection.type, 0), (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "ul", 'selection-list', mapSelectionTypeToOptions(selection.type, onOptionClick), 0)], 4), 2);
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SelectionWidget);
@@ -9381,11 +9557,13 @@ __webpack_require__.r(__webpack_exports__);
 
 var Controls = function Controls(_ref) {
   var energy = _ref.energy,
-      selection = _ref.selection;
+      selection = _ref.selection,
+      onOptionClick = _ref.onOptionClick;
   return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'controls-container', [(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _EnergyMeter__WEBPACK_IMPORTED_MODULE_1__.default, {
     "energy": energy
   }), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _SelectionWidget__WEBPACK_IMPORTED_MODULE_2__.default, {
-    "selection": selection
+    "selection": selection,
+    "onOptionClick": onOptionClick
   })], 4);
 };
 
@@ -9419,12 +9597,14 @@ __webpack_require__.r(__webpack_exports__);
 var Game = function Game(_ref) {
   var tileStats = _ref.tileStats,
       energy = _ref.energy,
-      selection = _ref.selection;
+      selection = _ref.selection,
+      onOptionClick = _ref.onOptionClick;
   return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createFragment)([(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _TileControlBar__WEBPACK_IMPORTED_MODULE_4__.default, {
     "tileStats": tileStats
   }), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _controls__WEBPACK_IMPORTED_MODULE_1__.default, {
     "energy": energy,
-    "selection": selection
+    "selection": selection,
+    "onOptionClick": onOptionClick
   }), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _Map__WEBPACK_IMPORTED_MODULE_3__.default)], 4);
 };
 
@@ -9530,7 +9710,14 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 var DEFAULT_STATE = {
   energy: 0,
-  selection: _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_1__.TILES_TYPES.FOREST
+  selection: {
+    type: _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_1__.TILES_TYPES.FOREST,
+    index: {
+      x: 2,
+      z: 2
+    }
+  },
+  option: false
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function () {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : DEFAULT_STATE;
@@ -9545,6 +9732,11 @@ var DEFAULT_STATE = {
     case _actions_types__WEBPACK_IMPORTED_MODULE_2__.NATURE_SELECTION_CHANGE:
       return _objectSpread(_objectSpread({}, state), {}, {
         selection: action.selection
+      });
+
+    case _actions_types__WEBPACK_IMPORTED_MODULE_2__.NATURE_SELECTION_OPTION_CHANGE:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        option: action.option
       });
 
     default:
@@ -9570,8 +9762,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! xferno */ "./node_modules/xferno/dist/xferno.js");
 /* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(xferno__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var mage_engine__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! mage-engine */ "../Mage/dist/mage.js");
-/* harmony import */ var _gameui__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./gameui */ "./src/ui/gameui/index.js");
-/* harmony import */ var _LoadingScreen__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./LoadingScreen */ "./src/ui/LoadingScreen.js");
+/* harmony import */ var _actions_player__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./actions/player */ "./src/ui/actions/player.js");
+/* harmony import */ var _gameui__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./gameui */ "./src/ui/gameui/index.js");
+/* harmony import */ var _LoadingScreen__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./LoadingScreen */ "./src/ui/LoadingScreen.js");
 
 
 
@@ -9583,15 +9776,18 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 
 
+
 var Root = function Root(_ref) {
   var loadingScreenVisible = _ref.loadingScreenVisible,
       tileStats = _ref.tileStats,
       energy = _ref.energy,
-      selection = _ref.selection;
-  return loadingScreenVisible ? (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createComponentVNode)(2, _LoadingScreen__WEBPACK_IMPORTED_MODULE_4__.default) : (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createComponentVNode)(2, _gameui__WEBPACK_IMPORTED_MODULE_3__.default, {
+      selection = _ref.selection,
+      onOptionClick = _ref.onOptionClick;
+  return loadingScreenVisible ? (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createComponentVNode)(2, _LoadingScreen__WEBPACK_IMPORTED_MODULE_5__.default) : (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createComponentVNode)(2, _gameui__WEBPACK_IMPORTED_MODULE_4__.default, {
     "tileStats": tileStats,
     "energy": energy,
-    "selection": selection
+    "selection": selection,
+    "onOptionClick": onOptionClick
   });
 };
 
@@ -9605,7 +9801,11 @@ var mapStateToProps = function mapStateToProps(_ref2) {
 };
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-  return {};
+  return {
+    onOptionClick: function onOptionClick(option) {
+      return dispatch((0,_actions_player__WEBPACK_IMPORTED_MODULE_3__.changeSelectionOption)(option));
+    }
+  };
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,mage_engine__WEBPACK_IMPORTED_MODULE_2__.connect)(mapStateToProps, mapDispatchToProps)(Root));

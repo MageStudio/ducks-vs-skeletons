@@ -1,14 +1,16 @@
 import { connect } from 'mage-engine';
+import { changeSelectionOption } from './actions/player';
 import Game from './gameui';
 import LoadingScreen from './LoadingScreen';
 
-const Root = ({ loadingScreenVisible, tileStats, energy, selection }) => (
+const Root = ({ loadingScreenVisible, tileStats, energy, selection, onOptionClick }) => (
     loadingScreenVisible ?
         <LoadingScreen/> :
         <Game
             tileStats={tileStats}
             energy={energy}
-            selection={selection} />
+            selection={selection}
+            onOptionClick={onOptionClick}/>
 );
 
 const mapStateToProps = ({ ui, game, player }) => ({
@@ -18,6 +20,7 @@ const mapStateToProps = ({ ui, game, player }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+    onOptionClick: option => dispatch(changeSelectionOption(option))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Root);

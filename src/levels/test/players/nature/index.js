@@ -1,8 +1,12 @@
 import { Input, Models, INPUT_EVENTS, store } from "mage-engine";
-import { FOREST_TILES, TILES_TYPES } from "../../map/constants";
+import { FOREST_OPTIONS, FOREST_TILES, TILES_TYPES } from "../../map/constants";
 import TileMap from "../../map/TileMap";
 import Player from "../Player";
-import { updateEnergyLevel } from '../../../../ui/actions/player';
+import {
+    updateEnergyLevel,
+    changeSelection,
+    changeSelectionOption
+} from '../../../../ui/actions/player';
 
 class Nature extends Player {
 
@@ -21,8 +25,6 @@ class Nature extends Player {
 
         this.selector = Models.getModel('selector');
         this.selector.addScript('Selector', { position });
-
-        // this.sendBuilderToTile(TileMap.getTileAt({ x: 8, z: 8 }));
     }
 
     getUnitScriptName = () => 'DuckBehaviour';
@@ -31,18 +33,67 @@ class Nature extends Player {
     getBuildersHutVariation = () => FOREST_TILES.FOREST_BUILDERS_HUT;
     getTowerVariation = () => FOREST_TILES.FOREST_TOWER;
     
-    buildBaseTile(destination) {
-        super.buildBaseTile(destination);
-        console.log('energy', this.energy);
-        store.dispatch(updateEnergyLevel(this.energy));
+    buildBaseTile(destination, startingPosition) {
+        super.buildBaseTile(destination, startingPosition)
+            .then(() => {
+                store.dispatch(updateEnergyLevel(this.energy));
+                store.dispatch(changeSelectionOption(false));
+            });
+    }
+
+    build(option, startingPosition, destination) {
+        switch(option) {
+            case FOREST_OPTIONS.BASE_TILE:
+                this.buildBaseTile(destination, startingPosition);
+                break;
+            case FOREST_OPTIONS.BUILDERS_HUT_TILE:
+                this.buildBuildersHut(destination, startingPosition)
+                    .then(this.clearSelection);
+                break;
+            case FOREST_OPTIONS.WARRIORS_HUT_TILE:
+                this.buildWarriorsHut(destination, startingPosition)
+                    .then(this.clearSelection);
+                break;
+            case FOREST_OPTIONS.TOWER_TILE:
+                this.buildTower(destination, startingPosition)
+                    .then(this.clearSelection);
+                break;
+        }
     }
 
     handleMouseClick = () => {
         const { visible, destination } = this.selector.getScript('Selector');
+        const { selection: { type, index }, option } = this.getSelectionType();
 
         if (visible && this.canMouseInteract(destination)) {
-            this.buildBaseTile(destination);
+            if (!option) {
+                this.selectTile(TileMap.getTileAt(destination));
+            } else {
+                switch(type) {
+                    case TILES_TYPES.FOREST:
+                    case FOREST_TILES.FOREST_BUILDERS_HUT:
+                        this.build(option, index, destination);
+                        break;
+                    case FOREST_TILES.FOREST_TOWER:
+                        // select target? 
+                        break;
+                    case FOREST_TILES.FOREST_WARRIORS_HUT:
+                        this.sendWarriorToTile(destination);
+                        break;
+                }
+            }
         }
+    }
+
+    clearSelection = () => {
+        store.dispatch(changeSelectionOption(false));
+    }
+
+    selectTile(tile) {
+        store.dispatch(changeSelection({
+            type: tile.isStartingTile() ? tile.getType() : tile.getVariation(),
+            index: tile.getIndex()
+        }));
     }
 
     getSelectionType() {
@@ -56,12 +107,36 @@ class Nature extends Player {
             !tile.isObstacle();
     }
 
+    canSelectTile = (tile) =>
+        !tile.isObstacle() && (
+        tile.isWarriorsHut() ||
+        tile.isTower() ||
+        tile.isBuildersHut() ||
+        tile.isStartingTile()
+    ); 
+
+    canAttackTile(tile) {
+        return true;
+    }
+
     canMouseInteract(destination) {
         const destinationTile = TileMap.getTileAt(destination);
         const { selection, option } = this.getSelectionType();
+        const { type } = selection;
 
-        if (selection === TILES_TYPES.FOREST) {
-            return this.canBuildOnTile(destinationTile);
+        if (!option) {
+            return this.canSelectTile(destinationTile);
+        }
+
+        switch(type) {
+            case TILES_TYPES.FOREST:
+            case FOREST_TILES.FOREST_BUILDERS_HUT:
+                return this.canBuildOnTile(destinationTile);
+            case FOREST_TILES.FOREST_TOWER:
+                // select target? 
+                break;
+            case FOREST_TILES.FOREST_WARRIORS_HUT:
+                return this.canAttackTile(destinationTile);
         }
     }
 
