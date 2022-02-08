@@ -1,5 +1,5 @@
 .EnergyMeter {
-    width: calc(100% - 24px);
+    width: calc(100% - 16px);
 
     &.bar-container {
         height: 16px;
@@ -13,49 +13,48 @@
         margin-bottom: 0;
         
         & .icon {
-            color: #fffa65;
-            text-shadow: 1px 1px 1px #ff3838;
-            line-height: 2px;
-            font-size: 1.3rem;
-            padding: 8px;
+            color: #2c2c54;
+            text-shadow: 1px 1px 1px #ffb142;
+            line-height: 11px;
+            font-size: 1.5rem;
+            padding: 4px;
         }
         
         & .bar {
             border-radius: 4px;
-            padding: 2px;
+            padding: 0;
             line-height: inherit;
             flex: 1 1 auto;
             display: flex;
             flex-direction: row;
+            background: rgba(255, 255, 255, .4);
         }
 
         .bar-loader {
-            background: #81ecec;
-            // width: 50%;
-            height: inherit;
+            background: #34ace0;
+            height: 16px;
             border-radius: 4px;
-            box-shadow: inset -1px -3px #74b9ff;
+            box-shadow: inset -1px -3px #227093;
             transition: width 5s ease-in;
         }
           
         .value {
-            color: #ffffff;
+            color: #666;
             display: inline-block;
-            margin-left: 8px;
+            margin: 0px 8px;
             font-weight: bold;
-            font-family: sans-serif;
             flex: 1 1 auto;
             letter-spacing: 1px;
             text-align: right;
-            line-height: 14px;
-            font-size: .8rem;
+            line-height: 17px;
+            font-size: .7rem;
         }
           
         .marker-list {
             padding: 2px 0px;
             position: absolute;
             height: 12px;
-            display: flex;
+            display: none;
             flex-direction: row;
             width: calc(100% - 130px);
             left: 56px;

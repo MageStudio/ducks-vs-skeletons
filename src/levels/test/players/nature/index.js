@@ -21,7 +21,7 @@ class Nature extends Player {
         Input.enable();
         Input.addEventListener(INPUT_EVENTS.MOUSE_DOWN, this.handleMouseClick);
         TileMap.changeTile(this.initialPosition, TILES_TYPES.FOREST, { startingTile: true });
-        setInterval(this.handleMouseIntersection, 250)
+        setInterval(this.handleMouseIntersection, 100)
 
         this.selector = Models.getModel('selector');
         this.selector.addScript('Selector', { position });

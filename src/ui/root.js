@@ -3,10 +3,11 @@ import { changeSelectionOption } from './actions/player';
 import Game from './gameui';
 import LoadingScreen from './LoadingScreen';
 
-const Root = ({ loadingScreenVisible, tileStats, energy, selection, onOptionClick }) => (
+const Root = ({ loadingScreenVisible, tileStats, energy, selection, option, onOptionClick }) => (
     loadingScreenVisible ?
         <LoadingScreen/> :
         <Game
+            option={option}
             tileStats={tileStats}
             energy={energy}
             selection={selection}

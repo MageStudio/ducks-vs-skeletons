@@ -1356,6 +1356,62 @@ module.exports = _nonIterableRest;
 
 /***/ }),
 
+/***/ "./node_modules/@babel/runtime/helpers/objectWithoutProperties.js":
+/*!************************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/objectWithoutProperties.js ***!
+  \************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var objectWithoutPropertiesLoose = __webpack_require__(/*! ./objectWithoutPropertiesLoose */ "./node_modules/@babel/runtime/helpers/objectWithoutPropertiesLoose.js");
+
+function _objectWithoutProperties(source, excluded) {
+  if (source == null) return {};
+  var target = objectWithoutPropertiesLoose(source, excluded);
+  var key, i;
+
+  if (Object.getOwnPropertySymbols) {
+    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+
+    for (i = 0; i < sourceSymbolKeys.length; i++) {
+      key = sourceSymbolKeys[i];
+      if (excluded.indexOf(key) >= 0) continue;
+      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+      target[key] = source[key];
+    }
+  }
+
+  return target;
+}
+
+module.exports = _objectWithoutProperties;
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/objectWithoutPropertiesLoose.js":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/objectWithoutPropertiesLoose.js ***!
+  \*****************************************************************************/
+/***/ ((module) => {
+
+function _objectWithoutPropertiesLoose(source, excluded) {
+  if (source == null) return {};
+  var target = {};
+  var sourceKeys = Object.keys(source);
+  var key, i;
+
+  for (i = 0; i < sourceKeys.length; i++) {
+    key = sourceKeys[i];
+    if (excluded.indexOf(key) >= 0) continue;
+    target[key] = source[key];
+  }
+
+  return target;
+}
+
+module.exports = _objectWithoutPropertiesLoose;
+
+/***/ }),
+
 /***/ "./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js":
 /*!**************************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js ***!
@@ -6776,37 +6832,31 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js");
 /* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/assertThisInitialized */ "./node_modules/@babel/runtime/helpers/assertThisInitialized.js");
-/* harmony import */ var _babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/inherits */ "./node_modules/@babel/runtime/helpers/inherits.js");
-/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js");
-/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/getPrototypeOf.js");
-/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
-/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var mage_engine__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! mage-engine */ "../Mage/dist/mage.js");
-/* harmony import */ var _map_TileMap__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./map/TileMap */ "./src/levels/test/map/TileMap.js");
-/* harmony import */ var _collectibles_slowRotation__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./collectibles/slowRotation */ "./src/levels/test/collectibles/slowRotation.js");
-/* harmony import */ var _worm__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./worm */ "./src/levels/test/worm/index.js");
-/* harmony import */ var _worm_wormBlock__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./worm/wormBlock */ "./src/levels/test/worm/wormBlock.js");
-/* harmony import */ var _players_humans_HumanBehaviour__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./players/humans/HumanBehaviour */ "./src/levels/test/players/humans/HumanBehaviour.js");
-/* harmony import */ var _players_humans__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./players/humans */ "./src/levels/test/players/humans/index.js");
-/* harmony import */ var _players_nature__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./players/nature */ "./src/levels/test/players/nature/index.js");
-/* harmony import */ var _players_nature_Selector__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./players/nature/Selector */ "./src/levels/test/players/nature/Selector.js");
-/* harmony import */ var _players_humans_BulletBehaviour__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./players/humans/BulletBehaviour */ "./src/levels/test/players/humans/BulletBehaviour.js");
-/* harmony import */ var _players_nature_DuckBehaviour__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./players/nature/DuckBehaviour */ "./src/levels/test/players/nature/DuckBehaviour.js");
-/* harmony import */ var _map_Bobbing__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./map/Bobbing */ "./src/levels/test/map/Bobbing.js");
+/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/inherits */ "./node_modules/@babel/runtime/helpers/inherits.js");
+/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js");
+/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/getPrototypeOf.js");
+/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var mage_engine__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! mage-engine */ "../Mage/dist/mage.js");
+/* harmony import */ var _map_TileMap__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./map/TileMap */ "./src/levels/test/map/TileMap.js");
+/* harmony import */ var _collectibles_slowRotation__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./collectibles/slowRotation */ "./src/levels/test/collectibles/slowRotation.js");
+/* harmony import */ var _worm__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./worm */ "./src/levels/test/worm/index.js");
+/* harmony import */ var _worm_wormBlock__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./worm/wormBlock */ "./src/levels/test/worm/wormBlock.js");
+/* harmony import */ var _players_humans_HumanBehaviour__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./players/humans/HumanBehaviour */ "./src/levels/test/players/humans/HumanBehaviour.js");
+/* harmony import */ var _players_humans__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./players/humans */ "./src/levels/test/players/humans/index.js");
+/* harmony import */ var _players_nature__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./players/nature */ "./src/levels/test/players/nature/index.js");
+/* harmony import */ var _players_nature_Selector__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./players/nature/Selector */ "./src/levels/test/players/nature/Selector.js");
+/* harmony import */ var _players_humans_BulletBehaviour__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./players/humans/BulletBehaviour */ "./src/levels/test/players/humans/BulletBehaviour.js");
+/* harmony import */ var _players_nature_DuckBehaviour__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./players/nature/DuckBehaviour */ "./src/levels/test/players/nature/DuckBehaviour.js");
+/* harmony import */ var _map_Bobbing__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./map/Bobbing */ "./src/levels/test/map/Bobbing.js");
 
 
 
 
 
 
-
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5___default()(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5___default()(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4___default()(this, result); }; }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default()(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default()(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3___default()(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
@@ -6830,54 +6880,38 @@ var BACKGROUND = 0xdff9fb; //0xddf3f5;
 
 var DOF_OPTIONS = {
   focus: 1.0,
-  aperture: 0.0002,
-  //0.0001,
-  maxblur: 0.015 //0.01
+  aperture: .001,
+  //0.0002,//0.0001,
+  maxblur: 0.01 //0.01
 
 };
 var SATURATION_OPTIONS = {
   saturation: 0.4
 };
-var EFFECTS = mage_engine__WEBPACK_IMPORTED_MODULE_7__.constants.EFFECTS;
+var EFFECTS = mage_engine__WEBPACK_IMPORTED_MODULE_5__.constants.EFFECTS;
 
 var Test = /*#__PURE__*/function (_Level) {
-  _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3___default()(Test, _Level);
+  _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2___default()(Test, _Level);
 
   var _super = _createSuper(Test);
 
   function Test() {
-    var _this;
-
     _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, Test);
 
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _super.call.apply(_super, [this].concat(args));
-
-    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2___default()(_this), "onUpdate", function (dt) {
-      _this.azimuth += 0.001 * dt;
-
-      if (_this.sky) {
-        _this.sky.setSun(30, _this.azimuth, 100);
-      }
-    });
-
-    return _this;
+    return _super.apply(this, arguments);
   }
 
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(Test, [{
     key: "addSunLight",
     value: function addSunLight() {
-      this.hemisphereLight = new mage_engine__WEBPACK_IMPORTED_MODULE_7__.HemisphereLight({
+      this.hemisphereLight = new mage_engine__WEBPACK_IMPORTED_MODULE_5__.HemisphereLight({
         color: {
           sky: 0xff9f43,
           ground: GROUND
         },
         intensity: 1
       });
-      this.sunLight = new mage_engine__WEBPACK_IMPORTED_MODULE_7__.SunLight({
+      this.sunLight = new mage_engine__WEBPACK_IMPORTED_MODULE_5__.SunLight({
         color: 0xffffff,
         intensity: 1,
         far: 20,
@@ -6892,20 +6926,20 @@ var Test = /*#__PURE__*/function (_Level) {
   }, {
     key: "addSky",
     value: function addSky() {
-      this.sky = new mage_engine__WEBPACK_IMPORTED_MODULE_7__.Sky({});
-      this.azimuth = .01;
+      this.sky = new mage_engine__WEBPACK_IMPORTED_MODULE_5__.Sky({});
+      this.azimuth = .1;
       this.sky.setSun(30, this.azimuth, 100);
       window.sky = this.sky;
     }
   }, {
     key: "prepareCamera",
     value: function prepareCamera() {
-      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scene.getCamera().setPosition({
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.getCamera().setPosition({
         x: 2,
         y: 4,
         z: 0
       });
-      var orbit = mage_engine__WEBPACK_IMPORTED_MODULE_7__.Controls.setOrbitControl();
+      var orbit = mage_engine__WEBPACK_IMPORTED_MODULE_5__.Controls.setOrbitControl();
       orbit.setTarget({
         x: 5,
         y: 0,
@@ -6914,15 +6948,16 @@ var Test = /*#__PURE__*/function (_Level) {
       orbit.setMinPolarAngle(0);
       orbit.setMaxPolarAngle(Math.PI / 2.5);
       orbit.setMaxDistance(10);
-      window.camera = mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scene.getCamera();
+      window.camera = mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.getCamera();
     }
   }, {
     key: "prepareSceneEffects",
     value: function prepareSceneEffects() {
-      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scene.setClearColor(0xff9f43);
-      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scene.setBackground(0xff9f43);
-      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scene.setRendererOutputEncoding(mage_engine__WEBPACK_IMPORTED_MODULE_7__.THREE.sRGBEncoding); // PostProcessing.add(EFFECTS.HUE_SATURATION, SATURATION_OPTIONS);
-      // PostProcessing.add(EFFECTS.DEPTH_OF_FIELD, DOF_OPTIONS);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.setClearColor(0xff9f43);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.setBackground(0xff9f43);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.setRendererOutputEncoding(mage_engine__WEBPACK_IMPORTED_MODULE_5__.THREE.sRGBEncoding);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.PostProcessing.add(EFFECTS.HUE_SATURATION, SATURATION_OPTIONS);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.PostProcessing.add(EFFECTS.DEPTH_OF_FIELD, DOF_OPTIONS);
     }
   }, {
     key: "createWorld",
@@ -6931,25 +6966,32 @@ var Test = /*#__PURE__*/function (_Level) {
       this.addSky();
       this.prepareSceneEffects();
 
-      var _TileMap$generate = _map_TileMap__WEBPACK_IMPORTED_MODULE_8__.default.generate(0),
+      var _TileMap$generate = _map_TileMap__WEBPACK_IMPORTED_MODULE_6__.default.generate(0),
           human = _TileMap$generate.human,
           nature = _TileMap$generate.nature;
 
-      _players_humans__WEBPACK_IMPORTED_MODULE_13__.default.start(human);
-      _players_nature__WEBPACK_IMPORTED_MODULE_14__.default.start(nature);
-      window.n = _players_nature__WEBPACK_IMPORTED_MODULE_14__.default;
-      window.tm = _map_TileMap__WEBPACK_IMPORTED_MODULE_8__.default;
-    }
+      _players_humans__WEBPACK_IMPORTED_MODULE_11__.default.start(human);
+      _players_nature__WEBPACK_IMPORTED_MODULE_12__.default.start(nature);
+      window.n = _players_nature__WEBPACK_IMPORTED_MODULE_12__.default;
+      window.tm = _map_TileMap__WEBPACK_IMPORTED_MODULE_6__.default;
+    } // onUpdate = (dt) => {
+    //     this.azimuth += 0.001 * dt;
+    //     if (this.sky) {
+    //         console.log(this.azimuth);
+    //         this.sky.setSun(30, this.azimuth, 100);
+    //     }
+    // }
+
   }, {
     key: "onCreate",
     value: function onCreate() {
-      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scripts.create('WormBlock', _worm_wormBlock__WEBPACK_IMPORTED_MODULE_11__.default);
-      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scripts.create('slowRotation', _collectibles_slowRotation__WEBPACK_IMPORTED_MODULE_9__.default);
-      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scripts.create('HumanBehaviour', _players_humans_HumanBehaviour__WEBPACK_IMPORTED_MODULE_12__.default);
-      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scripts.create('BulletBehaviour', _players_humans_BulletBehaviour__WEBPACK_IMPORTED_MODULE_16__.default);
-      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scripts.create('DuckBehaviour', _players_nature_DuckBehaviour__WEBPACK_IMPORTED_MODULE_17__.default);
-      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scripts.create('Selector', _players_nature_Selector__WEBPACK_IMPORTED_MODULE_15__.default);
-      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scripts.create('Bobbing', _map_Bobbing__WEBPACK_IMPORTED_MODULE_18__.default);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('WormBlock', _worm_wormBlock__WEBPACK_IMPORTED_MODULE_9__.default);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('slowRotation', _collectibles_slowRotation__WEBPACK_IMPORTED_MODULE_7__.default);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('HumanBehaviour', _players_humans_HumanBehaviour__WEBPACK_IMPORTED_MODULE_10__.default);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('BulletBehaviour', _players_humans_BulletBehaviour__WEBPACK_IMPORTED_MODULE_14__.default);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('DuckBehaviour', _players_nature_DuckBehaviour__WEBPACK_IMPORTED_MODULE_15__.default);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('Selector', _players_nature_Selector__WEBPACK_IMPORTED_MODULE_13__.default);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('Bobbing', _map_Bobbing__WEBPACK_IMPORTED_MODULE_16__.default);
       this.azimuth = .01;
       this.createWorld();
       this.prepareCamera();
@@ -6957,7 +6999,7 @@ var Test = /*#__PURE__*/function (_Level) {
   }]);
 
   return Test;
-}(mage_engine__WEBPACK_IMPORTED_MODULE_7__.Level);
+}(mage_engine__WEBPACK_IMPORTED_MODULE_5__.Level);
 
 
 
@@ -7401,6 +7443,10 @@ var TileMap = /*#__PURE__*/function () {
       return _this.tiles[x][z];
     });
 
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_3___default()(this, "getSize", function () {
+      return _this.size;
+    });
+
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_3___default()(this, "isTileAdjacentToType", function (position, tileType) {
       return _this.getAdjacentTiles(position).filter(function (tile) {
         return tile.isType(tileType);
@@ -7437,6 +7483,7 @@ var TileMap = /*#__PURE__*/function () {
           MAP = _MAP_DESCRIPTIONS$lev.MAP,
           HUMAN_STARTING_POSITION = _MAP_DESCRIPTIONS$lev.HUMAN_STARTING_POSITION,
           NATURE_STARTING_POSITION = _MAP_DESCRIPTIONS$lev.NATURE_STARTING_POSITION;
+      this.level = level;
       this.size = MAP.length;
 
       for (var x = 0; x < MAP.length; x++) {
@@ -7458,9 +7505,7 @@ var TileMap = /*#__PURE__*/function () {
       return {
         human: HUMAN_STARTING_POSITION,
         nature: NATURE_STARTING_POSITION
-      }; // this.createCollectible();
-      // const path = this.getPathToTile(this.getTileAt({x: 4, z: 3 }), this.getTileAt({x: 10, z: 10}))
-      // path.forEach(t => t.setOpacity(.3));
+      };
     }
   }, {
     key: "getRandomAdjacentTile",
@@ -8737,9 +8782,9 @@ var Selector = /*#__PURE__*/function (_BaseScript) {
         x: x,
         y: CURSOR_HEIGHT,
         z: z
-      }, 150);
+      }, 75);
       this.selector.setVisible(true);
-      this.selector.fadeTo(1, 250);
+      this.selector.fadeTo(1, 125);
       this.visible = true;
     }
   }, {
@@ -8747,7 +8792,7 @@ var Selector = /*#__PURE__*/function (_BaseScript) {
     value: function disappear() {
       var _this2 = this;
 
-      this.selector.fadeTo(0, 250).then(function () {
+      this.selector.fadeTo(0, 125).then(function () {
         return _this2.selector.setVisible(false);
       });
       this.visible = false;
@@ -8918,7 +8963,7 @@ var Nature = /*#__PURE__*/function (_Player) {
       _map_TileMap__WEBPACK_IMPORTED_MODULE_10__.default.changeTile(this.initialPosition, _map_constants__WEBPACK_IMPORTED_MODULE_9__.TILES_TYPES.FOREST, {
         startingTile: true
       });
-      setInterval(this.handleMouseIntersection, 250);
+      setInterval(this.handleMouseIntersection, 100);
       this.selector = mage_engine__WEBPACK_IMPORTED_MODULE_8__.Models.getModel('selector');
       this.selector.addScript('Selector', {
         position: position
@@ -9366,6 +9411,181 @@ var NATURE_SELECTION_OPTION_CHANGE = 'NATURE_SELECTION_OPTION_CHANGE';
 
 /***/ }),
 
+/***/ "./src/ui/gameui/Canvas.js":
+/*!*********************************!*\
+  !*** ./src/ui/gameui/Canvas.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ InfernoCanvasComponent)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/objectWithoutProperties */ "./node_modules/@babel/runtime/helpers/objectWithoutProperties.js");
+/* harmony import */ var _babel_runtime_helpers_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/classCallCheck.js");
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/assertThisInitialized */ "./node_modules/@babel/runtime/helpers/assertThisInitialized.js");
+/* harmony import */ var _babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js");
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/inherits */ "./node_modules/@babel/runtime/helpers/inherits.js");
+/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js");
+/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/getPrototypeOf.js");
+/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! xferno */ "./node_modules/xferno/dist/xferno.js");
+/* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(xferno__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var inferno__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! inferno */ "./node_modules/inferno/index.esm.js");
+
+
+
+
+
+
+
+
+
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_7___default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_6___default()(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_6___default()(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_5___default()(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+
+
+var InfernoCanvasComponent = /*#__PURE__*/function (_Component) {
+  _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4___default()(InfernoCanvasComponent, _Component);
+
+  var _super = _createSuper(InfernoCanvasComponent);
+
+  _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3___default()(InfernoCanvasComponent, [{
+    key: "getChildContext",
+    value: function getChildContext() {
+      var context = this.context,
+          props = this.props,
+          canvasElement = this.canvasElement;
+      var ctx = context && context.ctx || canvasElement && canvasElement.getContext('2d');
+      var realtime = context && context.realtime || props.realtime;
+      return {
+        ctx: ctx,
+        realtime: realtime
+      };
+    }
+  }]);
+
+  function InfernoCanvasComponent(props) {
+    var _this;
+
+    _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1___default()(this, InfernoCanvasComponent);
+
+    _this = _super.call(this, props);
+    _this.refDOM = _this.refDOM.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2___default()(_this));
+    _this.requestAnimationFrameCallback = _this.requestAnimationFrameCallback.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2___default()(_this));
+    return _this;
+  }
+
+  _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3___default()(InfernoCanvasComponent, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.forceUpdate();
+      requestAnimationFrame(this.requestAnimationFrameCallback);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var props = this.props,
+          context = this.context;
+
+      var draw = props.draw,
+          realtime = props.realtime,
+          top = props.top,
+          left = props.left,
+          other = _babel_runtime_helpers_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_0___default()(props, ["draw", "realtime", "top", "left"]); // eslint-disable-line no-unused-vars
+
+
+      requestAnimationFrame(this.requestAnimationFrameCallback);
+
+      if (context.ctx) {
+        return (0,xferno__WEBPACK_IMPORTED_MODULE_8__.normalizeProps)((0,xferno__WEBPACK_IMPORTED_MODULE_8__.createVNode)(1, "div", null, props.children, 0, _objectSpread({}, other), "canvas"));
+      }
+
+      return (0,xferno__WEBPACK_IMPORTED_MODULE_8__.normalizeProps)((0,xferno__WEBPACK_IMPORTED_MODULE_8__.createVNode)(1, "canvas", null, props.children, 0, _objectSpread({}, other), "canvas", this.refDOM));
+    }
+  }, {
+    key: "refDOM",
+    value: function refDOM(element) {
+      this.canvasElement = element;
+    }
+  }, {
+    key: "requestAnimationFrameCallback",
+    value: function requestAnimationFrameCallback(time) {
+      if (this.previousFrameTime !== time) {
+        var props = this.props,
+            context = this.context,
+            canvasElement = this.canvasElement;
+        var draw = props.draw,
+            top = props.top,
+            left = props.left;
+        var ctx = context && context.ctx || canvasElement && canvasElement.getContext('2d');
+        var realtime = context && context.realtime || props.realtime;
+        var delta = 0;
+
+        if (!draw || !ctx) {
+          return;
+        }
+
+        if (realtime) {
+          requestAnimationFrame(this.requestAnimationFrameCallback);
+
+          if (this.previousFrameTime) {
+            delta = time - this.previousFrameTime;
+          } else {
+            this.previousFrameTime = time;
+          }
+
+          this.previousFrameTime = time;
+        }
+
+        if (top || left) {
+          ctx.translate(left, top);
+        }
+
+        draw({
+          time: time,
+          delta: delta,
+          ctx: ctx
+        });
+
+        if (top || left) {
+          ctx.translate(-1 * left, -1 * top); // eslint-disable-line no-magic-numbers
+        }
+      }
+    }
+  }]);
+
+  return InfernoCanvasComponent;
+}(inferno__WEBPACK_IMPORTED_MODULE_9__.Component);
+
+_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_7___default()(InfernoCanvasComponent, "defaultProps", {
+  draw: function draw() {},
+  // eslint-disable-line no-empty-function
+  realtime: false,
+  top: 0,
+  left: 0
+});
+
+
+
+/***/ }),
+
 /***/ "./src/ui/gameui/Map.js":
 /*!******************************!*\
   !*** ./src/ui/gameui/Map.js ***!
@@ -9379,10 +9599,71 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! xferno */ "./node_modules/xferno/dist/xferno.js");
 /* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(xferno__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _levels_test_map_TileMap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../levels/test/map/TileMap */ "./src/levels/test/map/TileMap.js");
+/* harmony import */ var _Canvas__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Canvas */ "./src/ui/gameui/Canvas.js");
 
+
+
+
+var mapTileToColor = function mapTileToColor(tile) {
+  if (tile.isWater()) return '#34ace0';
+  if (tile.isEmpty()) return 'transparent';
+  if (tile.isDesert()) return '#ffda79';
+  if (tile.isHuman()) return '#40407a';
+  if (tile.isForest()) return '#33d9b2';
+}; // const drawFlag = (ctx, path, { x, z }, { width, height }) => {
+//     const image = new Image(width, height);
+//     image.src = path;
+//     image.onload = function() {
+//         ctx.drawImage(this, x, z, width, height);
+//     };
+// };
+
+
+var draw = function draw(_ref) {
+  var ctx = _ref.ctx;
+  var _ctx$canvas = ctx.canvas,
+      width = _ctx$canvas.width,
+      height = _ctx$canvas.height;
+  var size = _levels_test_map_TileMap__WEBPACK_IMPORTED_MODULE_1__.default.getSize();
+  var tileHeight = height / size;
+  var tileWidth = width / size;
+  ctx.clearRect(0, 0, width, height);
+
+  for (var _x = 0; _x < size; _x++) {
+    for (var _z = 0; _z < size; _z++) {
+      var tile = _levels_test_map_TileMap__WEBPACK_IMPORTED_MODULE_1__.default.getTileAt({
+        x: _x,
+        z: _z
+      });
+
+      var _tile$getPosition = tile.getPosition(),
+          x = _tile$getPosition.x,
+          z = _tile$getPosition.z; // const drawingPosition = {
+      //     x: x * tileWidth,
+      //     z: z * tileHeight
+      // };
+      // const size = {
+      //     width: tileWidth,
+      //     height: tileHeight
+      // };
+
+
+      ctx.fillStyle = mapTileToColor(tile);
+      ctx.fillRect(x * tileWidth, z * tileHeight, tileWidth, tileHeight); // if (tile.isStartingTile()) {
+      //     let flagPath = `/img/${tile.isHuman() ? 'human' : 'forest'}_flag.png`;
+      //     drawFlag(ctx, flagPath, drawingPosition, size);
+      // }
+    }
+  }
+};
 
 var Map = function Map() {
-  return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'map widget');
+  return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'map widget', (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _Canvas__WEBPACK_IMPORTED_MODULE_2__.default, {
+    "draw": draw,
+    "width": 160,
+    "height": 160
+  }), 2);
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Map);
@@ -9475,61 +9756,52 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! xferno */ "./node_modules/xferno/dist/xferno.js");
 /* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(xferno__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var mage_engine__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! mage-engine */ "../Mage/dist/mage.js");
-/* harmony import */ var _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../levels/test/map/constants */ "./src/levels/test/map/constants.js");
-/* harmony import */ var _actions_player__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../actions/player */ "./src/ui/actions/player.js");
+/* harmony import */ var _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../levels/test/map/constants */ "./src/levels/test/map/constants.js");
+
+
+var _IMAGES_MAP, _LABELS_MAP;
 
 
 
+var IMAGES_MAP = (_IMAGES_MAP = {}, _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_IMAGES_MAP, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.BASE_TILE, '/img/forestBase.png'), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_IMAGES_MAP, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.BUILDERS_HUT_TILE, '/img/forestBuildersHut.png'), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_IMAGES_MAP, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.WARRIORS_HUT_TILE, '/img/forestWarriorsHut.png'), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_IMAGES_MAP, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.TOWER_TILE, '/img/forestTower.png'), _IMAGES_MAP);
+var LABELS_MAP = (_LABELS_MAP = {}, _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_LABELS_MAP, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.BASE_TILE, 'forest'), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_LABELS_MAP, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.BUILDERS_HUT_TILE, 'builders'), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_LABELS_MAP, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.WARRIORS_HUT_TILE, 'warriors'), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_LABELS_MAP, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.TOWER_TILE, 'tower'), _LABELS_MAP);
 
+var getSingleItem = function getSingleItem(optionName, option, _onClick) {
+  return (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "li", "item ".concat(option === optionName ? 'selected' : ''), [(0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "img", null, null, 1, {
+    "src": IMAGES_MAP[optionName]
+  }), (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "span", "label", LABELS_MAP[optionName], 0)], 4, {
+    "onClick": function onClick() {
+      return _onClick(optionName);
+    }
+  });
+};
 
-
-var mapSelectionTypeToOptions = function mapSelectionTypeToOptions(selectionType, _onClick) {
+var mapSelectionTypeToOptions = function mapSelectionTypeToOptions(selectionType, option, onClick) {
   var _TILES_TYPES$FOREST$F;
 
-  return (_TILES_TYPES$FOREST$F = {}, _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILES_TYPES$FOREST$F, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_3__.TILES_TYPES.FOREST, [(0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "li", 'item', "BASE", 16, {
-    "onClick": function onClick() {
-      return _onClick(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_3__.FOREST_OPTIONS.BASE_TILE);
-    }
-  }), (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "li", 'item', "BUILDERS", 16, {
-    "onClick": function onClick() {
-      return _onClick(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_3__.FOREST_OPTIONS.BUILDERS_HUT_TILE);
-    }
-  }), (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "li", 'item', "WARRIORS", 16, {
-    "onClick": function onClick() {
-      return _onClick(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_3__.FOREST_OPTIONS.WARRIORS_HUT_TILE);
-    }
-  }), (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "li", 'item', "TOWER", 16, {
-    "onClick": function onClick() {
-      return _onClick(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_3__.FOREST_OPTIONS.TOWER_TILE);
-    }
-  })]), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILES_TYPES$FOREST$F, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_3__.FOREST_TILES.FOREST_BUILDERS_HUT, [(0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "li", 'item', "BASE", 16, {
-    "onClick": function onClick() {
-      return _onClick(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_3__.FOREST_OPTIONS.BASE_TILE);
-    }
-  }), (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "li", 'item', "BUILDERS", 16, {
-    "onClick": function onClick() {
-      return _onClick(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_3__.FOREST_OPTIONS.BUILDERS_HUT_TILE);
-    }
-  }), (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "li", 'item', "WARRIORS", 16, {
-    "onClick": function onClick() {
-      return _onClick(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_3__.FOREST_OPTIONS.WARRIORS_HUT_TILE);
-    }
-  }), (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "li", 'item', "TOWER", 16, {
-    "onClick": function onClick() {
-      return _onClick(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_3__.FOREST_OPTIONS.TOWER_TILE);
-    }
-  })]), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILES_TYPES$FOREST$F, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_3__.FOREST_TILES.FOREST_TOWER, []), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILES_TYPES$FOREST$F, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_3__.FOREST_TILES.FOREST_WARRIORS_HUT, [(0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "li", 'item', "ATTACK", 16, {
-    "onClick": function onClick() {
-      return _onClick(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_3__.FOREST_OPTIONS.ATTACK);
-    }
-  })]), _TILES_TYPES$FOREST$F)[selectionType];
+  return (_TILES_TYPES$FOREST$F = {}, _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILES_TYPES$FOREST$F, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.TILES_TYPES.FOREST, [getSingleItem(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.BASE_TILE, option, onClick), getSingleItem(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.BUILDERS_HUT_TILE, option, onClick), getSingleItem(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.WARRIORS_HUT_TILE, option, onClick), getSingleItem(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.TOWER_TILE, option, onClick)]), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILES_TYPES$FOREST$F, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_TILES.FOREST_BUILDERS_HUT, [getSingleItem(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.BASE_TILE, option, onClick), getSingleItem(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.BUILDERS_HUT_TILE, option, onClick), getSingleItem(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.WARRIORS_HUT_TILE, option, onClick), getSingleItem(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.TOWER_TILE, option, onClick)]), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILES_TYPES$FOREST$F, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_TILES.FOREST_TOWER, []), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILES_TYPES$FOREST$F, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_TILES.FOREST_WARRIORS_HUT, [getSingleItem(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.ATTACK, option, onClick),,]), _TILES_TYPES$FOREST$F)[selectionType];
+};
+
+var mapSelectionTypeToImage = function mapSelectionTypeToImage(selectionType) {
+  var _TILES_TYPES$FOREST$F2;
+
+  return (_TILES_TYPES$FOREST$F2 = {}, _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILES_TYPES$FOREST$F2, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.TILES_TYPES.FOREST, (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "img", null, null, 1, {
+    "src": '/img/forestBase.png'
+  })), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILES_TYPES$FOREST$F2, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_TILES.FOREST_BUILDERS_HUT, (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "img", null, null, 1, {
+    "src": '/img/forestBuildersHut.png'
+  })), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILES_TYPES$FOREST$F2, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_TILES.FOREST_TOWER, (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "img", null, null, 1, {
+    "src": '/img/forestTower.png'
+  })), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILES_TYPES$FOREST$F2, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_TILES.FOREST_WARRIORS_HUT, (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "img", null, null, 1, {
+    "src": '/img/forestWarriorsHut.png'
+  })), _TILES_TYPES$FOREST$F2)[selectionType];
 };
 
 var SelectionWidget = function SelectionWidget(_ref) {
-  var selection = _ref.selection,
+  var type = _ref.selection.type,
+      option = _ref.option,
       onOptionClick = _ref.onOptionClick;
-  return (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "div", 'row', (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "div", 'selection widget', [(0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "div", 'box', selection.type, 0), (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "ul", 'selection-list', mapSelectionTypeToOptions(selection.type, onOptionClick), 0)], 4), 2);
+  console.log(type, option);
+  return (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "div", 'row', (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "div", 'selection widget', [(0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "div", 'box', mapSelectionTypeToImage(type), 0), (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "ul", 'selection-list', mapSelectionTypeToOptions(type, option, onOptionClick), 0)], 4), 2);
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SelectionWidget);
@@ -9558,10 +9830,12 @@ __webpack_require__.r(__webpack_exports__);
 var Controls = function Controls(_ref) {
   var energy = _ref.energy,
       selection = _ref.selection,
+      option = _ref.option,
       onOptionClick = _ref.onOptionClick;
   return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'controls-container', [(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _EnergyMeter__WEBPACK_IMPORTED_MODULE_1__.default, {
     "energy": energy
   }), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _SelectionWidget__WEBPACK_IMPORTED_MODULE_2__.default, {
+    "option": option,
     "selection": selection,
     "onOptionClick": onOptionClick
   })], 4);
@@ -9595,17 +9869,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var Game = function Game(_ref) {
-  var tileStats = _ref.tileStats,
+  var option = _ref.option,
       energy = _ref.energy,
       selection = _ref.selection,
       onOptionClick = _ref.onOptionClick;
-  return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createFragment)([(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _TileControlBar__WEBPACK_IMPORTED_MODULE_4__.default, {
-    "tileStats": tileStats
-  }), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _controls__WEBPACK_IMPORTED_MODULE_1__.default, {
+  return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createFragment)([(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _controls__WEBPACK_IMPORTED_MODULE_1__.default, {
+    "option": option,
     "energy": energy,
     "selection": selection,
     "onOptionClick": onOptionClick
-  }), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _Map__WEBPACK_IMPORTED_MODULE_3__.default)], 4);
+  }), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _Map__WEBPACK_IMPORTED_MODULE_3__.default)], 0);
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Game);
@@ -9782,8 +10055,10 @@ var Root = function Root(_ref) {
       tileStats = _ref.tileStats,
       energy = _ref.energy,
       selection = _ref.selection,
+      option = _ref.option,
       onOptionClick = _ref.onOptionClick;
   return loadingScreenVisible ? (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createComponentVNode)(2, _LoadingScreen__WEBPACK_IMPORTED_MODULE_5__.default) : (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createComponentVNode)(2, _gameui__WEBPACK_IMPORTED_MODULE_4__.default, {
+    "option": option,
     "tileStats": tileStats,
     "energy": energy,
     "selection": selection,

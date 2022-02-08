@@ -3,10 +3,11 @@ import EnergyMeter from "./controls/EnergyMeter";
 import Map from "./Map";
 import TileControlBar from "./TileControlBar";
 
-const Game = ({ tileStats, energy, selection, onOptionClick }) => (
+const Game = ({ option, energy, selection, onOptionClick }) => (
     <>
-        <TileControlBar tileStats={tileStats}/>
+        {/* <TileControlBar tileStats={tileStats}/> */}
         <Controls
+            option={option}
             energy={energy}
             selection={selection}
             onOptionClick={onOptionClick}/>
