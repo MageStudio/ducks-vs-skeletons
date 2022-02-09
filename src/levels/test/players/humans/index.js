@@ -22,7 +22,7 @@ class Humans extends Player {
         // this.sendWarriorToTile(TileMap.getTileAt({ x: 7, z: 7 }));
     }
 
-    getUnitScriptName() { return 'HumanBehaviour'; }
+    getUnitScriptName = () => 'HumanBehaviour';
 
     hasTooManyBuildersOnMap = () => Object.keys(this.builders).length >= MAX_BUILDERS;
 
@@ -45,7 +45,8 @@ class Humans extends Player {
         );
 
         //  TODO: needs to decide which tile to build based on algo?
-        this.sendBuilderToTile(nextTile, HUMAN_TILES.HUMAN_BUILDERS_HUT);
+        // this.sendBuilderToTile(nextTile, HUMAN_TILES.HUMAN_BUILDERS_HUT);
+        this.buildBaseTile(nextTile.getIndex());
     }
 
 }

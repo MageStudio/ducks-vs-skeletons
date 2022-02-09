@@ -1,7 +1,11 @@
-import { Models, ENTITY_EVENTS } from "mage-engine";
-import { TILES_STATES } from "../map/constants";
+import { Models, ENTITY_EVENTS, math } from "mage-engine";
+import { HUMAN_TILES, TILES_STATES, TILES_TYPES } from "../map/constants";
 import TileMap from "../map/TileMap";
 import { DEATH_REASONS } from '../constants';
+
+export const BASE_TILE_ENERGY_INCREASE = 5;
+const MIN_ENERGY = 0;
+const MAX_ENERGY = 100;
 
 export default class Player {
 
@@ -12,6 +16,17 @@ export default class Player {
         this.energy = 0;
 
         this.type = type;
+    }
+
+    updateEnergy() {
+        const energy = (TileMap
+            .getTilesByType(this.getBaseTileType())
+            .filter(t => t.isBaseTile())
+            .length || 0) * BASE_TILE_ENERGY_INCREASE;
+
+        this.energy = math.clamp(energy, MIN_ENERGY, MAX_ENERGY);
+
+        return this.energy;
     }
 
     start(position) {
@@ -28,25 +43,36 @@ export default class Player {
         }
     }
 
-    getUnitScriptName() {
-        return 'UnitBehaviour';
+    getBaseTileType = () => TILES_TYPES.HUMAN;
+    getWarriorsHutVariation = () => HUMAN_TILES.HUMAN_WARRIORS_HUT;
+    getBuildersHutVariation = () => HUMAN_TILES.HUMAN_BUILDERS_HUT;
+    getTowerVariation = () => HUMAN_TILES.HUMAN_TOWER;
+    
+    getUnitScriptName = () =>'UnitBehaviour';
+
+    buildBaseTile(destination, startingPosition) {
+        this.updateEnergy();
+        return this.sendBuilderToTile(TileMap.getTileAt(destination), this.getBaseTileType(), startingPosition);
     }
+    buildWarriorsHut = (destination, startingPosition) => this.sendBuilderToTile(TileMap.getTileAt(destination), this.getWarriorsHutVariation(), startingPosition);
+    buildBuildersHut = (destination, startingPosition) => this.sendBuilderToTile(TileMap.getTileAt(destination), this.getBuildersHutVariation(), startingPosition);
+    buildTower = (destination, startingPosition) => this.sendBuilderToTile(TileMap.getTileAt(destination), this.getTowerVariation(), startingPosition);
 
-    sendBuilderToTile(tile, variation) {
+    sendBuilderToTile(tile, variation, position = this.initialPosition) {
         const unit = Models.getModel(this.type, { name: `${this.type}_builder_${Math.random()}`});
-        const start = this.initialPosition;
-        const behaviour = unit.addScript(this.getUnitScriptName(), { position: start, builder: true });
-
-        behaviour
-            .goTo(start, tile)
-            .then(() => behaviour.buildAtPosition(tile, variation));
+        const behaviour = unit.addScript(this.getUnitScriptName(), { position, builder: true });
 
         TileMap.setTileState(tile, TILES_STATES.BUILDING);
         unit.addEventListener(ENTITY_EVENTS.DISPOSE, this.handleUnitDeath(DEATH_REASONS.BUILDING));
 
         this.builders[unit.uuid()] = unit;
 
-        return unit;
+        return new Promise(resolve => {
+            behaviour
+                .goTo(position, tile)
+                .then(() => behaviour.buildAtPosition(tile, variation))
+                .then(resolve);
+        });
     }
 
     sendWarriorToTile = tile => {

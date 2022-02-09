@@ -35,8 +35,15 @@ class TileMap {
     }
 
     generate(level) {
-        const { MAP, HUMAN_STARTING_POSITION, NATURE_STARTING_POSITION } = MAP_DESCRIPTIONS[level];
+        const {
+            MAP,
+            HUMAN_STARTING_POSITION,
+            NATURE_STARTING_POSITION
+        } = MAP_DESCRIPTIONS[level];
+
+        this.level = level;
         this.size = MAP.length;
+
         for (let x=0; x<MAP.length; x++) {
             const row = MAP[x];
             this.tiles.push([]);
@@ -52,11 +59,6 @@ class TileMap {
             human: HUMAN_STARTING_POSITION,
             nature: NATURE_STARTING_POSITION
         };
-
-        // this.createCollectible();
-
-        // const path = this.getPathToTile(this.getTileAt({x: 4, z: 3 }), this.getTileAt({x: 10, z: 10}))
-        // path.forEach(t => t.setOpacity(.3));
     }
 
     isValidTile = ({ x, z }) => {
@@ -68,6 +70,8 @@ class TileMap {
     }
 
     getTileAt = ({ x, z }) => this.tiles[x][z];
+
+    getSize = () => this.size;
 
     getTilesByType(tileType) {
         const list = [];

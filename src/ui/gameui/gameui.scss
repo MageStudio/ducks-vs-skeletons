@@ -1,4 +1,29 @@
 .widget {
     position: absolute;
+    /* background: rgba(0, 0, 0, 0.2); */
+    /* box-shadow: 2px 2px 0px #e55039; */
+    /* opacity: .9; */
+    /* border-radius: 8px; */
+    display: flex;
+    flex-direction: row;
+    /* border: 2px solid #f7d794; */
+}
+
+.bar-container {
+    height: 16px;
+    line-height: 16px;
+    margin: 1vw;
+    display: flex;
+    padding: 4px;
+    flex-direction: row;
+
+    & .bar {
+        border-radius: 4px;
+        padding: 2px;
+        line-height: inherit;
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: row;
+      }
 }
 

@@ -1356,6 +1356,62 @@ module.exports = _nonIterableRest;
 
 /***/ }),
 
+/***/ "./node_modules/@babel/runtime/helpers/objectWithoutProperties.js":
+/*!************************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/objectWithoutProperties.js ***!
+  \************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var objectWithoutPropertiesLoose = __webpack_require__(/*! ./objectWithoutPropertiesLoose */ "./node_modules/@babel/runtime/helpers/objectWithoutPropertiesLoose.js");
+
+function _objectWithoutProperties(source, excluded) {
+  if (source == null) return {};
+  var target = objectWithoutPropertiesLoose(source, excluded);
+  var key, i;
+
+  if (Object.getOwnPropertySymbols) {
+    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+
+    for (i = 0; i < sourceSymbolKeys.length; i++) {
+      key = sourceSymbolKeys[i];
+      if (excluded.indexOf(key) >= 0) continue;
+      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+      target[key] = source[key];
+    }
+  }
+
+  return target;
+}
+
+module.exports = _objectWithoutProperties;
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/objectWithoutPropertiesLoose.js":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/objectWithoutPropertiesLoose.js ***!
+  \*****************************************************************************/
+/***/ ((module) => {
+
+function _objectWithoutPropertiesLoose(source, excluded) {
+  if (source == null) return {};
+  var target = {};
+  var sourceKeys = Object.keys(source);
+  var key, i;
+
+  for (i = 0; i < sourceKeys.length; i++) {
+    key = sourceKeys[i];
+    if (excluded.indexOf(key) >= 0) continue;
+    target[key] = source[key];
+  }
+
+  return target;
+}
+
+module.exports = _objectWithoutPropertiesLoose;
+
+/***/ }),
+
 /***/ "./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js":
 /*!**************************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js ***!
@@ -4787,7 +4843,7 @@ var shapeAssertionError;try{assertReducerShape(finalReducers);}catch(e){shapeAss
  *
  * @param {...Function} middlewares The middleware chain to be applied.
  * @returns {Function} A store enhancer applying the middleware.
- */function applyMiddleware(){for(var _len=arguments.length,middlewares=new Array(_len),_key=0;_key<_len;_key++){middlewares[_key]=arguments[_key];}return function(createStore){return function(){var store=createStore.apply(void 0,arguments);var _dispatch=function dispatch(){throw new Error('Dispatching while constructing your middleware is not allowed. '+'Other middleware would not be applied to this dispatch.');};var middlewareAPI={getState:store.getState,dispatch:function dispatch(){return _dispatch.apply(void 0,arguments);}};var chain=middlewares.map(function(middleware){return middleware(middlewareAPI);});_dispatch=compose.apply(void 0,chain)(store.dispatch);return _objectSpread2$1({},store,{dispatch:_dispatch});};};}var redux=/*#__PURE__*/Object.freeze({__proto__:null,__DO_NOT_USE__ActionTypes:ActionTypes$1,applyMiddleware:applyMiddleware,bindActionCreators:bindActionCreators,combineReducers:combineReducers,compose:compose,createStore:createStore});function createThunkMiddleware(extraArgument){return function(_ref){var dispatch=_ref.dispatch,getState=_ref.getState;return function(next){return function(action){if(typeof action==='function'){return action(dispatch,getState,extraArgument);}return next(action);};};};}var thunk=createThunkMiddleware();thunk.withExtraArgument=createThunkMiddleware;var name="mage-engine";var version="3.15.4";var description="A WebGL Javascript Game Engine, built on top of THREE.js and many other libraries.";var main="dist/mage.js";var author={name:"Marco Stagni",email:"mrc.stagni@gmail.com"};var scripts={preversion:"npm test",version:"npm run build",dev:"concurrently 'npm:build:live' 'npm:start'",start:"http-server ./ -p 8085","postversion:push":"git push --no-verify && git push --tags --no-verify",postversion:"npm run postversion:push && npm publish",prebuild:"rimraf dist/mage.js",build:"rollup --config config/index.js","build:live":"rollup --config config/index.js --watch",test:"echo you should test"};var repository={type:"git",url:"git://github.com/marco-ponds/mage.git"};var license="BSD-3-Clause";var keywords=["mage","marco","stagni","three.js","webgl","game","engine","game engine","javascript","browser","shader"];var dependencies={"@babel/plugin-transform-classes":"^7.9.5","@babel/plugin-transform-runtime":"7.5.0","@babel/runtime":"7.5.0","between.js":"0.1.2-fix.2","hotkeys-js":"3.7.2",inferno:"7.3.2","inferno-create-element":"7.3.3","inferno-redux":"7.4.2","mage-engine.particles":"github:MageStudio/partykals#v2.0.5",redux:"4.0.5","redux-thunk":"^2.3.0",rxjs:"6.5.3",three:"0.126.0","three.proton.js":"0.2.3",vivifyjs:"*","whatwg-fetch":"3.0.0",xstate:"^4.8.0"};var devDependencies={"@babel/cli":"^7.12.7","@babel/core":"^7.5.0","@babel/node":"7.6.3","@babel/plugin-proposal-class-properties":"7.5.0","@babel/polyfill":"7.4.4","@babel/preset-env":"7.5.0","@babel/register":"7.4.4","@rollup/plugin-babel":"^5.2.1","@rollup/plugin-commonjs":"^16.0.0","@rollup/plugin-json":"4.0.1","@rollup/plugin-node-resolve":"^10.0.0","@rollup/plugin-replace":"^2.3.4","babel-loader":"8.0.6","babel-plugin-inferno":"6.1.0",concurrently:"^5.3.0","http-server":"^0.12.3",rimraf:"^3.0.0",rollup:"^2.33.3","rollup-plugin-terser":"5.2.0","rollup-plugin-web-worker-loader":"^1.4.0"};var packageJSON={name:name,version:version,description:description,main:main,author:author,scripts:scripts,repository:repository,license:license,keywords:keywords,dependencies:dependencies,devDependencies:devDependencies};var DEFAULT_STATE={mage:packageJSON.version};var info=function info(){var state=arguments.length>0&&arguments[0]!==undefined?arguments[0]:DEFAULT_STATE;return state;};var DEFAULT_STATE$1={error:false,saving:false,loading:false,errorDetails:'',sceneName:'',currentPath:'/',timestamp:''};var storage=function storage(){var state=arguments.length>0&&arguments[0]!==undefined?arguments[0]:DEFAULT_STATE$1;var action=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};switch(action.type){case SAVE_STARTED:return _objectSpread2({},state,{saving:true});case SAVE_COMPLETED:return _objectSpread2({},state,{saving:false,error:false,sceneName:action.currentScene,currentPath:action.currentPath,timestamp:action.timestamp});case SAVE_ERROR:return _objectSpread2({},state,{saving:false,error:true,errorDetails:action.errorDetails});case LOAD_STARTED:return _objectSpread2({},state,{loading:true});case LOAD_COMPLETED:return _objectSpread2({},state,{loading:false,error:false});case LOAD_ERROR:return _objectSpread2({},state,{loading:false,error:true,errorDetails:action.errorDetails});default:return state;}};var DEFAULT_STATE$2={keyboard:false,mouse:false,gamepad:false,gamepads:{}};var input=function input(){var state=arguments.length>0&&arguments[0]!==undefined?arguments[0]:DEFAULT_STATE$2;var action=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};switch(action.type){case INPUT_ENABLED:return _objectSpread2({},state,{keyboard:true,mouse:true,gamepad:true});case KEYBOARD_ENABLED:return _objectSpread2({},state,{keyboard:true});case MOUSE_ENABLED:return _objectSpread2({},state,{mouse:true});case GAMEPAD_ENABLED:return _objectSpread2({},state,{gamepad:true});case INPUT_DISABLED:return _objectSpread2({},state,{keyboard:false,mouse:false,gamepad:false});case KEYBOARD_DISABLED:return _objectSpread2({},state,{keyboard:false});case MOUSE_DISABLED:return _objectSpread2({},state,{mouse:false});case GAMEPAD_DISABLED:return _objectSpread2({},state,{gamepad:false});case GAMEPAD_CONNECTED:case GAMEPAD_DISCONNECTED:return _objectSpread2({},state,{gamepads:action.gamepads});default:return state;}};var DEFAULT_STATE$3={isOnline:true};var network=function network(){var state=arguments.length>0&&arguments[0]!==undefined?arguments[0]:DEFAULT_STATE$3;var action=arguments.length>1?arguments[1]:undefined;switch(action.type){case NETWORK_CHANGED:return _objectSpread2({},state,{isOnline:action.isOnline});default:return state;}};var DEFAULT_STATE$4={loadingScreenVisible:false};var ui=function ui(){var state=arguments.length>0&&arguments[0]!==undefined?arguments[0]:DEFAULT_STATE$4;var action=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};switch(action.type){case UI_LOADING_SCREEN:return _objectSpread2({},state,{loadingScreenVisible:action.loadingScreenVisible});default:return state;}};var DEFAULT_STATE$5={path:'/'};var location$1=function location$1(){var state=arguments.length>0&&arguments[0]!==undefined?arguments[0]:DEFAULT_STATE$5;var action=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};switch(action.type){case LOCATION_PATH_CHANGE:return _objectSpread2({},state,{path:action.path});default:return state;}};var createRootReducer=function createRootReducer(combinedReducer){return function(state,action){switch(action.type){case RESET:if(Object.keys(action.state).length>0){return _objectSpread2({},state,{},action.state);}else{return state;}default:return combinedReducer(state,action);}};};var DEFAULT_REDUCERS=/*#__PURE__*/Object.freeze({__proto__:null,info:info,input:input,storage:storage,network:network,ui:ui,location:location$1,'default':createRootReducer});var _this=undefined;var debounce=function debounce(func,wait,immediate){var context=arguments.length>3&&arguments[3]!==undefined?arguments[3]:_this;var timeout;return function(){var args=arguments;var later=function later(){timeout=null;if(!immediate)func.apply(context,args);};var callNow=immediate&&!timeout;clearTimeout(timeout);timeout=setTimeout(later,wait);if(callNow)func.apply(context,args);};};var NOOP=function NOOP(f){return f;};var functions=/*#__PURE__*/Object.freeze({__proto__:null,debounce:debounce,NOOP:NOOP});var store;var unsubscribe=NOOP;var subscribers=[];var applyMiddlewares=function applyMiddlewares(mdws,debug){if(debug){return compose(applyMiddleware.apply(redux,_toConsumableArray(mdws)),window.__REDUX_DEVTOOLS_EXTENSION__?window.__REDUX_DEVTOOLS_EXTENSION__():function(f){return f;});}return applyMiddleware.apply(redux,_toConsumableArray(mdws));};var defaultMiddleware=function defaultMiddleware(){return[thunk];};var combineReducers$1=function combineReducers$1(){var reducers=arguments.length>0&&arguments[0]!==undefined?arguments[0]:{};return combineReducers(_objectSpread2({},reducers,{},DEFAULT_REDUCERS));};var getState=function getState(){if(store){return store.getState();}else{console.log(STORE_DOESNT_EXIST);}};var getStore=function getStore(){return store;};var handleSubscriptions=function handleSubscriptions(){return subscribers.forEach(function(subscriber){if(subscriber.onStateChange){subscriber.onStateChange(getState());}});};var createStore$1=function createStore$1(reducers){var initialState=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};var debug=arguments.length>2&&arguments[2]!==undefined?arguments[2]:false;var storeReducers=combineReducers$1(reducers);if(!store){store=createStore(createRootReducer(storeReducers),initialState,applyMiddlewares(defaultMiddleware(),debug));unsubscribe=store.subscribe(handleSubscriptions);}};var subscribe=function subscribe(subscriber){return subscribers.push(subscriber);};var unsubscribeAll=function unsubscribeAll(){unsubscribe();subscribers=[];};var dispatch$1=function dispatch(action){if(store&&action){store.dispatch(action);}};var STANDARD='STANDARD';var GAMEPAD_BUTTON_MAPPINGS=_defineProperty({},STANDARD,['X','B','A','Y','L1','R1',null,null,'SELECT','START']);var WINDOW_GAMEPAD_CONNECTED_EVENT='gamepadconnected';var WINDOW_GAMEPAD_DISCONNECTED_EVENT='gamepaddisconnected';var GAMEPAD_CONNECTED_EVENT='gamepadConnected';var GAMEPAD_DISCONNECTED_EVENT='gamepadDisconnected';var AXIS_CHANGE_EVENT='axisChange';var BUTTON_PRESSED_EVENT='gamepadButtonPressed';var BUTTON_RELEASED_EVENT='gamepadButtonReleased';var isValidGamepad=function isValidGamepad(gamepad){return!!gamepad;};var getConnectedGamepads=function getConnectedGamepads(){var list=navigator.getGamepads?navigator.getGamepads():navigator.webkitGetGamepads?navigator.webkitGetGamepads():[];if(typeof list==='array')return list;var gamepads=[];var _iteratorNormalCompletion=true;var _didIteratorError=false;var _iteratorError=undefined;try{for(var _iterator=navigator.getGamepads()[Symbol.iterator](),_step;!(_iteratorNormalCompletion=(_step=_iterator.next()).done);_iteratorNormalCompletion=true){var gamepad=_step.value;if(isValidGamepad(gamepad)){gamepads.push(gamepad);}}}catch(err){_didIteratorError=true;_iteratorError=err;}finally{try{if(!_iteratorNormalCompletion&&_iterator.return!=null){_iterator.return();}}finally{if(_didIteratorError){throw _iteratorError;}}}return gamepads;};var mapButtonIndexToKey=function mapButtonIndexToKey(gamepad,index){return(GAMEPAD_BUTTON_MAPPINGS[gamepad.id]||GAMEPAD_BUTTON_MAPPINGS[STANDARD])[index];};var parseButton=function parseButton(button,index){if(typeof button==='number'){return{pressed:button===1.0,value:button,index:index,key:mapButtonIndexToKey(index)};}return{pressed:button.pressed,value:button.value,index:index,key:mapButtonIndexToKey(index)};};var Gamepad=/*#__PURE__*/function(_EventDispatcher){_inherits(Gamepad,_EventDispatcher);var _super=_createSuper(Gamepad);function Gamepad(){var _this;_classCallCheck(this,Gamepad);_this=_super.call(this);_defineProperty(_assertThisInitialized(_this),"transformGamepadsForEvent",function(){return Object.keys(_this.gamepads).reduce(function(acc,index){var _this$gamepads$index=_this.gamepads[index],gamepadIndex=_this$gamepads$index.index,connected=_this$gamepads$index.connected,timestamp=_this$gamepads$index.timestamp,id=_this$gamepads$index.id,mapping=_this$gamepads$index.mapping;acc[index]={index:gamepadIndex,connected:connected,timestamp:timestamp,id:id,mapping:mapping};return acc;},{});});_defineProperty(_assertThisInitialized(_this),"onGamepadConnected",function(e){_this.addGamepad(e.gamepad);_this.dispatchEvent({type:GAMEPAD_CONNECTED_EVENT,gamepad:e.gamepad});dispatch$1(gamepadConnected(_this.transformGamepadsForEvent()));});_defineProperty(_assertThisInitialized(_this),"onGamepadDisconnected",function(e){_this.removeGamepad(e.gamepad);_this.dispatchEvent({type:GAMEPAD_DISCONNECTED_EVENT,gamepad:e.gamepad});dispatch$1(gamepadDisconnected(_this.transformGamepadsForEvent()));});_defineProperty(_assertThisInitialized(_this),"evaluateGamepads",function(previousGamepads){Object.keys(_this.gamepads).forEach(function(index){var gamepad=_this.gamepads[index];var previousButtons=previousGamepads[index].buttons;_this.evaluateButtonsChange(previousButtons,gamepad);_this.evaluateAxesChange(gamepad);});});_defineProperty(_assertThisInitialized(_this),"evaluateButtonsChange",function(previousButtons,gamepad){gamepad.buttons.forEach(function(button,index){var current=parseButton(button,index);var previous=parseButton(previousButtons[index],index);if(current.pressed){_this.dispatchEvent({type:BUTTON_PRESSED_EVENT,button:current,gamepad:gamepad});}else if(previous.pressed){_this.dispatchEvent({type:BUTTON_RELEASED_EVENT,button:current,gamepad:gamepad});}});});_defineProperty(_assertThisInitialized(_this),"evaluateAxesChange",function(gamepad){var toFloat=function toFloat(number,fixed){return parseFloat(number.toFixed(fixed));};var joystick=0;var axes=gamepad.axes;for(var i=0;i<axes.length;i+=2){var x=toFloat(axes[i],2);var y=toFloat(axes[i+1],2);_this.dispatchEvent({type:AXIS_CHANGE_EVENT,value:{x:x,y:y},gamepad:gamepad,joystick:joystick});joystick++;}});_this.enabled=false;_this.gamepads={};return _this;}_createClass(Gamepad,[{key:"reset",value:function reset(){this.enabled=false;this.gamepads={};}},{key:"isEnabled",value:function isEnabled(){return this.enabled;}},{key:"enable",value:function enable(){if(Features$1.isFeatureSupported(FEATURES.GAMEPADAPI)){this.enabled=true;window.addEventListener(WINDOW_GAMEPAD_CONNECTED_EVENT,this.onGamepadConnected);window.addEventListener(WINDOW_GAMEPAD_DISCONNECTED_EVENT,this.onGamepadDisconnected);}}},{key:"disable",value:function disable(){this.reset();window.removeEventListener(WINDOW_GAMEPAD_CONNECTED_EVENT,this.onGamepadConnected);window.removeEventListener(WINDOW_GAMEPAD_DISCONNECTED_EVENT,this.onGamepadDisconnected);}},{key:"getConnectedGamepads",value:function getConnectedGamepads(){return this.gamepads;}},{key:"addGamepad",value:function addGamepad(gamepad){this.gamepads[gamepad.index]=gamepad;}},{key:"removeGamepad",value:function removeGamepad(gamepad){delete this.gamepads[gamepad.index];}},{key:"updateGamepadWithIndex",value:function updateGamepadWithIndex(index,gamepad){this.gamepads[index]=gamepad;}},{key:"hasGamepadWithIndex",value:function hasGamepadWithIndex(index){return!!(index in this.gamepads);}},{key:"updateGamepads",value:function updateGamepads(){var _this2=this;getConnectedGamepads().filter(isValidGamepad).forEach(function(gamepad){if(!_this2.hasGamepadWithIndex(gamepad.index)){_this2.addGamepad(gamepad);}else{_this2.updateGamepadWithIndex(gamepad.index,gamepad);}});}},{key:"update",value:function update(){if(this.enabled){var previous=_objectSpread2({},this.gamepads);this.updateGamepads();this.evaluateGamepads(previous);}}}]);return Gamepad;}(EventDispatcher);var _INPUT_EVENTS;var KEY_PRESS='keyPress';var KEY_DOWN='keyDown';var KEY_UP='keyUp';var INPUT_EVENTS_LIST=[KEY_PRESS,KEY_DOWN,KEY_UP,MOUSE_DOWN,MOUSE_UP,MOUSE_DOWN,ELEMENT_CLICK,ELEMENT_DESELECT,GAMEPAD_CONNECTED_EVENT,GAMEPAD_DISCONNECTED_EVENT,BUTTON_PRESSED_EVENT,BUTTON_RELEASED_EVENT,AXIS_CHANGE_EVENT];var INPUT_EVENTS=(_INPUT_EVENTS={KEY_PRESS:KEY_PRESS,KEY_DOWN:KEY_DOWN,KEY_UP:KEY_UP,MOUSE_DOWN:MOUSE_DOWN,MOUSE_UP:MOUSE_UP},_defineProperty(_INPUT_EVENTS,"MOUSE_DOWN",MOUSE_DOWN),_defineProperty(_INPUT_EVENTS,"ELEMENT_CLICK",ELEMENT_CLICK),_defineProperty(_INPUT_EVENTS,"ELEMENT_DESELECT",ELEMENT_DESELECT),_defineProperty(_INPUT_EVENTS,"GAMEPAD_CONNECTED_EVENT",GAMEPAD_CONNECTED_EVENT),_defineProperty(_INPUT_EVENTS,"GAMEPAD_DISCONNECTED_EVENT",GAMEPAD_DISCONNECTED_EVENT),_defineProperty(_INPUT_EVENTS,"BUTTON_PRESSED_EVENT",BUTTON_PRESSED_EVENT),_defineProperty(_INPUT_EVENTS,"BUTTON_RELEASED_EVENT",BUTTON_RELEASED_EVENT),_defineProperty(_INPUT_EVENTS,"AXIS_CHANGE_EVENT",AXIS_CHANGE_EVENT),_INPUT_EVENTS);var Input=/*#__PURE__*/function(_EventDispatcher){_inherits(Input,_EventDispatcher);var _super=_createSuper(Input);function Input(){var _this;_classCallCheck(this,Input);_this=_super.call(this);_defineProperty(_assertThisInitialized(_this),"propagate",function(event){_this.dispatchEvent(event);});_defineProperty(_assertThisInitialized(_this),"handleKeyBoardEvent",function(event,handler){if(event.type===Keyboard.KEYDOWN){_this.dispatchEvent({type:KEY_DOWN,event:_objectSpread2({},event,{},handler)});}if(event.type===Keyboard.KEYUP){_this.dispatchEvent({type:KEY_UP,event:_objectSpread2({},event,{},handler)});}_this.dispatchEvent({type:KEY_PRESS,event:_objectSpread2({},event,{},handler)});});_this.enabled=false;return _this;}_createClass(Input,[{key:"enable",value:function enable(){if(!this.enabled){dispatch$1(inputEnabled());this.mouse=new Mouse();this.keyboard=new Keyboard();this.gamepad=new Gamepad();this.enableGamepad();this.enableKeyboard();this.enableMouse();this.enabled=true;}}},{key:"disable",value:function disable(){if(this.enabled){dispatch$1(inputDisabled());this.disableKeyboard();this.disableMouse();this.disableGamepad();this.enabled=false;}}},{key:"isEnabled",value:function isEnabled(){return this.enabled;}},{key:"enableGamepad",value:function enableGamepad(){dispatch$1(gamepadEnabled());this.gamepad.enable();this.gamepad.addEventListener(GAMEPAD_CONNECTED_EVENT,this.propagate.bind(this));this.gamepad.addEventListener(GAMEPAD_DISCONNECTED_EVENT,this.propagate.bind(this));this.gamepad.addEventListener(BUTTON_RELEASED_EVENT,this.propagate.bind(this));this.gamepad.addEventListener(BUTTON_PRESSED_EVENT,this.propagate.bind(this));this.gamepad.addEventListener(BUTTON_RELEASED_EVENT,this.propagate.bind(this));this.gamepad.addEventListener(AXIS_CHANGE_EVENT,this.propagate.bind(this));}},{key:"enableKeyboard",value:function enableKeyboard(){dispatch$1(keyboardEnabled());this.keyboard.enable(this.handleKeyBoardEvent.bind(this));}},{key:"enableMouse",value:function enableMouse(){dispatch$1(mouseEnabled());this.mouse.enable();this.mouse.addEventListener(MOUSE_DOWN,this.propagate.bind(this));this.mouse.addEventListener(MOUSE_UP,this.propagate.bind(this));this.mouse.addEventListener(MOUSE_MOVE,this.propagate.bind(this));this.mouse.addEventListener(ELEMENT_CLICK,this.propagate.bind(this));this.mouse.addEventListener(ELEMENT_DESELECT,this.propagate.bind(this));}},{key:"disableKeyboard",value:function disableKeyboard(){dispatch$1(keyboardDisabled());this.keyboard.disable();this.keyboard=undefined;}},{key:"disableMouse",value:function disableMouse(){dispatch$1(mouseDisabled());this.mouse.disable();this.mouse.removeEventListener(MOUSE_DOWN,this.propagate.bind(this));this.mouse.removeEventListener(MOUSE_UP,this.propagate.bind(this));this.mouse.removeEventListener(MOUSE_MOVE,this.propagate.bind(this));this.mouse.removeEventListener(ELEMENT_CLICK,this.propagate.bind(this));this.mouse.removeEventListener(ELEMENT_DESELECT,this.propagate.bind(this));this.mouse=undefined;}},{key:"disableGamepad",value:function disableGamepad(){dispatch$1(gamepadDisabled());this.gamepad.disable();this.gamepad.removeEventListener(GAMEPAD_CONNECTED_EVENT,this.propagate.bind(this));this.gamepad.removeEventListener(GAMEPAD_DISCONNECTED_EVENT,this.propagate.bind(this));this.gamepad.removeEventListener(BUTTON_PRESSED_EVENT,this.propagate.bind(this));this.gamepad.removeEventListener(BUTTON_RELEASED_EVENT,this.propagate.bind(this));this.gamepad.removeEventListener(AXIS_CHANGE_EVENT,this.propagate.bind(this));this.gamepad=null;}},{key:"update",value:function update(){if(this.isEnabled()&&this.gamepad.isEnabled()){this.gamepad.update();}}},{key:"EVENTS",get:function get(){var _ref;return _ref={KEY_PRESS:KEY_PRESS,KEY_DOWN:KEY_DOWN,KEY_UP:KEY_UP,MOUSE_DOWN:MOUSE_DOWN,MOUSE_UP:MOUSE_UP},_defineProperty(_ref,"MOUSE_DOWN",MOUSE_DOWN),_defineProperty(_ref,"ELEMENT_CLICK",ELEMENT_CLICK),_defineProperty(_ref,"ELEMENT_DESELECT",ELEMENT_DESELECT),_defineProperty(_ref,"GAMEPAD_CONNECTED_EVENT",GAMEPAD_CONNECTED_EVENT),_defineProperty(_ref,"GAMEPAD_DISCONNECTED_EVENT",GAMEPAD_DISCONNECTED_EVENT),_defineProperty(_ref,"BUTTON_PRESSED_EVENT",BUTTON_PRESSED_EVENT),_defineProperty(_ref,"BUTTON_RELEASED_EVENT",BUTTON_RELEASED_EVENT),_defineProperty(_ref,"AXIS_CHANGE_EVENT",AXIS_CHANGE_EVENT),_ref;}}]);return Input;}(EventDispatcher);var Input$1=new Input();var support={searchParams:'URLSearchParams'in self,iterable:'Symbol'in self&&'iterator'in Symbol,blob:'FileReader'in self&&'Blob'in self&&function(){try{new Blob();return true;}catch(e){return false;}}(),formData:'FormData'in self,arrayBuffer:'ArrayBuffer'in self};function isDataView(obj){return obj&&DataView.prototype.isPrototypeOf(obj);}if(support.arrayBuffer){var viewClasses=['[object Int8Array]','[object Uint8Array]','[object Uint8ClampedArray]','[object Int16Array]','[object Uint16Array]','[object Int32Array]','[object Uint32Array]','[object Float32Array]','[object Float64Array]'];var isArrayBufferView=ArrayBuffer.isView||function(obj){return obj&&viewClasses.indexOf(Object.prototype.toString.call(obj))>-1;};}function normalizeName(name){if(typeof name!=='string'){name=String(name);}if(/[^a-z0-9\-#$%&'*+.^_`|~]/i.test(name)){throw new TypeError('Invalid character in header field name');}return name.toLowerCase();}function normalizeValue(value){if(typeof value!=='string'){value=String(value);}return value;}// Build a destructive iterator for the value list
+ */function applyMiddleware(){for(var _len=arguments.length,middlewares=new Array(_len),_key=0;_key<_len;_key++){middlewares[_key]=arguments[_key];}return function(createStore){return function(){var store=createStore.apply(void 0,arguments);var _dispatch=function dispatch(){throw new Error('Dispatching while constructing your middleware is not allowed. '+'Other middleware would not be applied to this dispatch.');};var middlewareAPI={getState:store.getState,dispatch:function dispatch(){return _dispatch.apply(void 0,arguments);}};var chain=middlewares.map(function(middleware){return middleware(middlewareAPI);});_dispatch=compose.apply(void 0,chain)(store.dispatch);return _objectSpread2$1({},store,{dispatch:_dispatch});};};}var redux=/*#__PURE__*/Object.freeze({__proto__:null,__DO_NOT_USE__ActionTypes:ActionTypes$1,applyMiddleware:applyMiddleware,bindActionCreators:bindActionCreators,combineReducers:combineReducers,compose:compose,createStore:createStore});function createThunkMiddleware(extraArgument){return function(_ref){var dispatch=_ref.dispatch,getState=_ref.getState;return function(next){return function(action){if(typeof action==='function'){return action(dispatch,getState,extraArgument);}return next(action);};};};}var thunk=createThunkMiddleware();thunk.withExtraArgument=createThunkMiddleware;var name="mage-engine";var version="3.15.4";var description="A WebGL Javascript Game Engine, built on top of THREE.js and many other libraries.";var main="dist/mage.js";var author={name:"Marco Stagni",email:"mrc.stagni@gmail.com"};var scripts={preversion:"npm test",version:"npm run build",dev:"concurrently 'npm:build:live' 'npm:start'",start:"http-server ./ -p 8085","postversion:push":"git push --no-verify && git push --tags --no-verify",postversion:"npm run postversion:push && npm publish",prebuild:"rimraf dist/mage.js",build:"rollup --config config/index.js","build:live":"rollup --config config/index.js --watch",test:"echo you should test"};var repository={type:"git",url:"git://github.com/marco-ponds/mage.git"};var license="BSD-3-Clause";var keywords=["mage","marco","stagni","three.js","webgl","game","engine","game engine","javascript","browser","shader"];var dependencies={"@babel/plugin-transform-classes":"^7.9.5","@babel/plugin-transform-runtime":"7.5.0","@babel/runtime":"7.5.0","between.js":"0.1.2-fix.2","hotkeys-js":"3.7.2",inferno:"7.3.2","inferno-create-element":"7.3.3","inferno-redux":"7.4.2","mage-engine.particles":"github:MageStudio/partykals#v2.0.5",redux:"4.0.5","redux-thunk":"^2.3.0",rxjs:"6.5.3",three:"0.126.0","three.proton.js":"0.2.3",vivifyjs:"*","whatwg-fetch":"3.0.0",xstate:"^4.8.0"};var devDependencies={"@babel/cli":"^7.12.7","@babel/core":"^7.5.0","@babel/node":"7.6.3","@babel/plugin-proposal-class-properties":"7.5.0","@babel/polyfill":"7.4.4","@babel/preset-env":"7.5.0","@babel/register":"7.4.4","@rollup/plugin-babel":"^5.2.1","@rollup/plugin-commonjs":"^16.0.0","@rollup/plugin-json":"4.0.1","@rollup/plugin-node-resolve":"^10.0.0","@rollup/plugin-replace":"^2.3.4","babel-loader":"8.0.6","babel-plugin-inferno":"6.1.0",concurrently:"^5.3.0","http-server":"^0.12.3",rimraf:"^3.0.0",rollup:"^2.33.3","rollup-plugin-terser":"5.2.0","rollup-plugin-web-worker-loader":"^1.4.0"};var packageJSON={name:name,version:version,description:description,main:main,author:author,scripts:scripts,repository:repository,license:license,keywords:keywords,dependencies:dependencies,devDependencies:devDependencies};var DEFAULT_STATE={mage:packageJSON.version};var info=function info(){var state=arguments.length>0&&arguments[0]!==undefined?arguments[0]:DEFAULT_STATE;return state;};var DEFAULT_STATE$1={error:false,saving:false,loading:false,errorDetails:'',sceneName:'',currentPath:'/',timestamp:''};var storage=function storage(){var state=arguments.length>0&&arguments[0]!==undefined?arguments[0]:DEFAULT_STATE$1;var action=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};switch(action.type){case SAVE_STARTED:return _objectSpread2({},state,{saving:true});case SAVE_COMPLETED:return _objectSpread2({},state,{saving:false,error:false,sceneName:action.currentScene,currentPath:action.currentPath,timestamp:action.timestamp});case SAVE_ERROR:return _objectSpread2({},state,{saving:false,error:true,errorDetails:action.errorDetails});case LOAD_STARTED:return _objectSpread2({},state,{loading:true});case LOAD_COMPLETED:return _objectSpread2({},state,{loading:false,error:false});case LOAD_ERROR:return _objectSpread2({},state,{loading:false,error:true,errorDetails:action.errorDetails});default:return state;}};var DEFAULT_STATE$2={keyboard:false,mouse:false,gamepad:false,gamepads:{}};var input=function input(){var state=arguments.length>0&&arguments[0]!==undefined?arguments[0]:DEFAULT_STATE$2;var action=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};switch(action.type){case INPUT_ENABLED:return _objectSpread2({},state,{keyboard:true,mouse:true,gamepad:true});case KEYBOARD_ENABLED:return _objectSpread2({},state,{keyboard:true});case MOUSE_ENABLED:return _objectSpread2({},state,{mouse:true});case GAMEPAD_ENABLED:return _objectSpread2({},state,{gamepad:true});case INPUT_DISABLED:return _objectSpread2({},state,{keyboard:false,mouse:false,gamepad:false});case KEYBOARD_DISABLED:return _objectSpread2({},state,{keyboard:false});case MOUSE_DISABLED:return _objectSpread2({},state,{mouse:false});case GAMEPAD_DISABLED:return _objectSpread2({},state,{gamepad:false});case GAMEPAD_CONNECTED:case GAMEPAD_DISCONNECTED:return _objectSpread2({},state,{gamepads:action.gamepads});default:return state;}};var DEFAULT_STATE$3={isOnline:true};var network=function network(){var state=arguments.length>0&&arguments[0]!==undefined?arguments[0]:DEFAULT_STATE$3;var action=arguments.length>1?arguments[1]:undefined;switch(action.type){case NETWORK_CHANGED:return _objectSpread2({},state,{isOnline:action.isOnline});default:return state;}};var DEFAULT_STATE$4={loadingScreenVisible:false};var ui=function ui(){var state=arguments.length>0&&arguments[0]!==undefined?arguments[0]:DEFAULT_STATE$4;var action=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};switch(action.type){case UI_LOADING_SCREEN:return _objectSpread2({},state,{loadingScreenVisible:action.loadingScreenVisible});default:return state;}};var DEFAULT_STATE$5={path:'/'};var location$1=function location$1(){var state=arguments.length>0&&arguments[0]!==undefined?arguments[0]:DEFAULT_STATE$5;var action=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};switch(action.type){case LOCATION_PATH_CHANGE:return _objectSpread2({},state,{path:action.path});default:return state;}};var createRootReducer=function createRootReducer(combinedReducer){return function(state,action){switch(action.type){case RESET:if(Object.keys(action.state).length>0){return _objectSpread2({},state,{},action.state);}else{return state;}default:return combinedReducer(state,action);}};};var DEFAULT_REDUCERS=/*#__PURE__*/Object.freeze({__proto__:null,info:info,input:input,storage:storage,network:network,ui:ui,location:location$1,'default':createRootReducer});var _this=undefined;var debounce=function debounce(func,wait,immediate){var context=arguments.length>3&&arguments[3]!==undefined?arguments[3]:_this;var timeout;return function(){var args=arguments;var later=function later(){timeout=null;if(!immediate)func.apply(context,args);};var callNow=immediate&&!timeout;clearTimeout(timeout);timeout=setTimeout(later,wait);if(callNow)func.apply(context,args);};};var NOOP=function NOOP(f){return f;};var functions=/*#__PURE__*/Object.freeze({__proto__:null,debounce:debounce,NOOP:NOOP});var store,latestAction;var unsubscribe=NOOP;var subscribers=[];var applyMiddlewares=function applyMiddlewares(mdws,debug){if(debug){return compose(applyMiddleware.apply(redux,_toConsumableArray(mdws)),window.__REDUX_DEVTOOLS_EXTENSION__?window.__REDUX_DEVTOOLS_EXTENSION__():function(f){return f;});}return applyMiddleware.apply(redux,_toConsumableArray(mdws));};var defaultMiddleware=function defaultMiddleware(){return[thunk];};var combineReducers$1=function combineReducers$1(){var reducers=arguments.length>0&&arguments[0]!==undefined?arguments[0]:{};return combineReducers(_objectSpread2({},reducers,{},DEFAULT_REDUCERS));};var getState=function getState(){if(store){return store.getState();}else{console.log(STORE_DOESNT_EXIST);}};var getStore=function getStore(){return store;};var handleSubscriptions=function handleSubscriptions(){return subscribers.forEach(function(subscriber){if(subscriber.onStateChange){subscriber.onStateChange(getState(),latestAction);}});};var createStore$1=function createStore$1(reducers){var initialState=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};var debug=arguments.length>2&&arguments[2]!==undefined?arguments[2]:false;var storeReducers=combineReducers$1(reducers);if(!store){store=createStore(createRootReducer(storeReducers),initialState,applyMiddlewares(defaultMiddleware(),debug));unsubscribe=store.subscribe(handleSubscriptions);}};var subscribe=function subscribe(subscriber){return subscribers.push(subscriber);};var unsubscribeAll=function unsubscribeAll(){unsubscribe();subscribers=[];};var dispatch$1=function dispatch(action){if(store&&action){store.dispatch(action);latestAction=action;}};var STANDARD='STANDARD';var GAMEPAD_BUTTON_MAPPINGS=_defineProperty({},STANDARD,['X','B','A','Y','L1','R1',null,null,'SELECT','START']);var WINDOW_GAMEPAD_CONNECTED_EVENT='gamepadconnected';var WINDOW_GAMEPAD_DISCONNECTED_EVENT='gamepaddisconnected';var GAMEPAD_CONNECTED_EVENT='gamepadConnected';var GAMEPAD_DISCONNECTED_EVENT='gamepadDisconnected';var AXIS_CHANGE_EVENT='axisChange';var BUTTON_PRESSED_EVENT='gamepadButtonPressed';var BUTTON_RELEASED_EVENT='gamepadButtonReleased';var isValidGamepad=function isValidGamepad(gamepad){return!!gamepad;};var getConnectedGamepads=function getConnectedGamepads(){var list=navigator.getGamepads?navigator.getGamepads():navigator.webkitGetGamepads?navigator.webkitGetGamepads():[];if(typeof list==='array')return list;var gamepads=[];var _iteratorNormalCompletion=true;var _didIteratorError=false;var _iteratorError=undefined;try{for(var _iterator=navigator.getGamepads()[Symbol.iterator](),_step;!(_iteratorNormalCompletion=(_step=_iterator.next()).done);_iteratorNormalCompletion=true){var gamepad=_step.value;if(isValidGamepad(gamepad)){gamepads.push(gamepad);}}}catch(err){_didIteratorError=true;_iteratorError=err;}finally{try{if(!_iteratorNormalCompletion&&_iterator.return!=null){_iterator.return();}}finally{if(_didIteratorError){throw _iteratorError;}}}return gamepads;};var mapButtonIndexToKey=function mapButtonIndexToKey(gamepad,index){return(GAMEPAD_BUTTON_MAPPINGS[gamepad.id]||GAMEPAD_BUTTON_MAPPINGS[STANDARD])[index];};var parseButton=function parseButton(button,index){if(typeof button==='number'){return{pressed:button===1.0,value:button,index:index,key:mapButtonIndexToKey(index)};}return{pressed:button.pressed,value:button.value,index:index,key:mapButtonIndexToKey(index)};};var Gamepad=/*#__PURE__*/function(_EventDispatcher){_inherits(Gamepad,_EventDispatcher);var _super=_createSuper(Gamepad);function Gamepad(){var _this;_classCallCheck(this,Gamepad);_this=_super.call(this);_defineProperty(_assertThisInitialized(_this),"transformGamepadsForEvent",function(){return Object.keys(_this.gamepads).reduce(function(acc,index){var _this$gamepads$index=_this.gamepads[index],gamepadIndex=_this$gamepads$index.index,connected=_this$gamepads$index.connected,timestamp=_this$gamepads$index.timestamp,id=_this$gamepads$index.id,mapping=_this$gamepads$index.mapping;acc[index]={index:gamepadIndex,connected:connected,timestamp:timestamp,id:id,mapping:mapping};return acc;},{});});_defineProperty(_assertThisInitialized(_this),"onGamepadConnected",function(e){_this.addGamepad(e.gamepad);_this.dispatchEvent({type:GAMEPAD_CONNECTED_EVENT,gamepad:e.gamepad});dispatch$1(gamepadConnected(_this.transformGamepadsForEvent()));});_defineProperty(_assertThisInitialized(_this),"onGamepadDisconnected",function(e){_this.removeGamepad(e.gamepad);_this.dispatchEvent({type:GAMEPAD_DISCONNECTED_EVENT,gamepad:e.gamepad});dispatch$1(gamepadDisconnected(_this.transformGamepadsForEvent()));});_defineProperty(_assertThisInitialized(_this),"evaluateGamepads",function(previousGamepads){Object.keys(_this.gamepads).forEach(function(index){var gamepad=_this.gamepads[index];var previousButtons=previousGamepads[index].buttons;_this.evaluateButtonsChange(previousButtons,gamepad);_this.evaluateAxesChange(gamepad);});});_defineProperty(_assertThisInitialized(_this),"evaluateButtonsChange",function(previousButtons,gamepad){gamepad.buttons.forEach(function(button,index){var current=parseButton(button,index);var previous=parseButton(previousButtons[index],index);if(current.pressed){_this.dispatchEvent({type:BUTTON_PRESSED_EVENT,button:current,gamepad:gamepad});}else if(previous.pressed){_this.dispatchEvent({type:BUTTON_RELEASED_EVENT,button:current,gamepad:gamepad});}});});_defineProperty(_assertThisInitialized(_this),"evaluateAxesChange",function(gamepad){var toFloat=function toFloat(number,fixed){return parseFloat(number.toFixed(fixed));};var joystick=0;var axes=gamepad.axes;for(var i=0;i<axes.length;i+=2){var x=toFloat(axes[i],2);var y=toFloat(axes[i+1],2);_this.dispatchEvent({type:AXIS_CHANGE_EVENT,value:{x:x,y:y},gamepad:gamepad,joystick:joystick});joystick++;}});_this.enabled=false;_this.gamepads={};return _this;}_createClass(Gamepad,[{key:"reset",value:function reset(){this.enabled=false;this.gamepads={};}},{key:"isEnabled",value:function isEnabled(){return this.enabled;}},{key:"enable",value:function enable(){if(Features$1.isFeatureSupported(FEATURES.GAMEPADAPI)){this.enabled=true;window.addEventListener(WINDOW_GAMEPAD_CONNECTED_EVENT,this.onGamepadConnected);window.addEventListener(WINDOW_GAMEPAD_DISCONNECTED_EVENT,this.onGamepadDisconnected);}}},{key:"disable",value:function disable(){this.reset();window.removeEventListener(WINDOW_GAMEPAD_CONNECTED_EVENT,this.onGamepadConnected);window.removeEventListener(WINDOW_GAMEPAD_DISCONNECTED_EVENT,this.onGamepadDisconnected);}},{key:"getConnectedGamepads",value:function getConnectedGamepads(){return this.gamepads;}},{key:"addGamepad",value:function addGamepad(gamepad){this.gamepads[gamepad.index]=gamepad;}},{key:"removeGamepad",value:function removeGamepad(gamepad){delete this.gamepads[gamepad.index];}},{key:"updateGamepadWithIndex",value:function updateGamepadWithIndex(index,gamepad){this.gamepads[index]=gamepad;}},{key:"hasGamepadWithIndex",value:function hasGamepadWithIndex(index){return!!(index in this.gamepads);}},{key:"updateGamepads",value:function updateGamepads(){var _this2=this;getConnectedGamepads().filter(isValidGamepad).forEach(function(gamepad){if(!_this2.hasGamepadWithIndex(gamepad.index)){_this2.addGamepad(gamepad);}else{_this2.updateGamepadWithIndex(gamepad.index,gamepad);}});}},{key:"update",value:function update(){if(this.enabled){var previous=_objectSpread2({},this.gamepads);this.updateGamepads();this.evaluateGamepads(previous);}}}]);return Gamepad;}(EventDispatcher);var _INPUT_EVENTS;var KEY_PRESS='keyPress';var KEY_DOWN='keyDown';var KEY_UP='keyUp';var INPUT_EVENTS_LIST=[KEY_PRESS,KEY_DOWN,KEY_UP,MOUSE_DOWN,MOUSE_UP,MOUSE_DOWN,ELEMENT_CLICK,ELEMENT_DESELECT,GAMEPAD_CONNECTED_EVENT,GAMEPAD_DISCONNECTED_EVENT,BUTTON_PRESSED_EVENT,BUTTON_RELEASED_EVENT,AXIS_CHANGE_EVENT];var INPUT_EVENTS=(_INPUT_EVENTS={KEY_PRESS:KEY_PRESS,KEY_DOWN:KEY_DOWN,KEY_UP:KEY_UP,MOUSE_DOWN:MOUSE_DOWN,MOUSE_UP:MOUSE_UP},_defineProperty(_INPUT_EVENTS,"MOUSE_DOWN",MOUSE_DOWN),_defineProperty(_INPUT_EVENTS,"ELEMENT_CLICK",ELEMENT_CLICK),_defineProperty(_INPUT_EVENTS,"ELEMENT_DESELECT",ELEMENT_DESELECT),_defineProperty(_INPUT_EVENTS,"GAMEPAD_CONNECTED_EVENT",GAMEPAD_CONNECTED_EVENT),_defineProperty(_INPUT_EVENTS,"GAMEPAD_DISCONNECTED_EVENT",GAMEPAD_DISCONNECTED_EVENT),_defineProperty(_INPUT_EVENTS,"BUTTON_PRESSED_EVENT",BUTTON_PRESSED_EVENT),_defineProperty(_INPUT_EVENTS,"BUTTON_RELEASED_EVENT",BUTTON_RELEASED_EVENT),_defineProperty(_INPUT_EVENTS,"AXIS_CHANGE_EVENT",AXIS_CHANGE_EVENT),_INPUT_EVENTS);var Input=/*#__PURE__*/function(_EventDispatcher){_inherits(Input,_EventDispatcher);var _super=_createSuper(Input);function Input(){var _this;_classCallCheck(this,Input);_this=_super.call(this);_defineProperty(_assertThisInitialized(_this),"propagate",function(event){_this.dispatchEvent(event);});_defineProperty(_assertThisInitialized(_this),"handleKeyBoardEvent",function(event,handler){if(event.type===Keyboard.KEYDOWN){_this.dispatchEvent({type:KEY_DOWN,event:_objectSpread2({},event,{},handler)});}if(event.type===Keyboard.KEYUP){_this.dispatchEvent({type:KEY_UP,event:_objectSpread2({},event,{},handler)});}_this.dispatchEvent({type:KEY_PRESS,event:_objectSpread2({},event,{},handler)});});_this.enabled=false;return _this;}_createClass(Input,[{key:"enable",value:function enable(){if(!this.enabled){dispatch$1(inputEnabled());this.mouse=new Mouse();this.keyboard=new Keyboard();this.gamepad=new Gamepad();this.enableGamepad();this.enableKeyboard();this.enableMouse();this.enabled=true;}}},{key:"disable",value:function disable(){if(this.enabled){dispatch$1(inputDisabled());this.disableKeyboard();this.disableMouse();this.disableGamepad();this.enabled=false;}}},{key:"isEnabled",value:function isEnabled(){return this.enabled;}},{key:"enableGamepad",value:function enableGamepad(){dispatch$1(gamepadEnabled());this.gamepad.enable();this.gamepad.addEventListener(GAMEPAD_CONNECTED_EVENT,this.propagate.bind(this));this.gamepad.addEventListener(GAMEPAD_DISCONNECTED_EVENT,this.propagate.bind(this));this.gamepad.addEventListener(BUTTON_RELEASED_EVENT,this.propagate.bind(this));this.gamepad.addEventListener(BUTTON_PRESSED_EVENT,this.propagate.bind(this));this.gamepad.addEventListener(BUTTON_RELEASED_EVENT,this.propagate.bind(this));this.gamepad.addEventListener(AXIS_CHANGE_EVENT,this.propagate.bind(this));}},{key:"enableKeyboard",value:function enableKeyboard(){dispatch$1(keyboardEnabled());this.keyboard.enable(this.handleKeyBoardEvent.bind(this));}},{key:"enableMouse",value:function enableMouse(){dispatch$1(mouseEnabled());this.mouse.enable();this.mouse.addEventListener(MOUSE_DOWN,this.propagate.bind(this));this.mouse.addEventListener(MOUSE_UP,this.propagate.bind(this));this.mouse.addEventListener(MOUSE_MOVE,this.propagate.bind(this));this.mouse.addEventListener(ELEMENT_CLICK,this.propagate.bind(this));this.mouse.addEventListener(ELEMENT_DESELECT,this.propagate.bind(this));}},{key:"disableKeyboard",value:function disableKeyboard(){dispatch$1(keyboardDisabled());this.keyboard.disable();this.keyboard=undefined;}},{key:"disableMouse",value:function disableMouse(){dispatch$1(mouseDisabled());this.mouse.disable();this.mouse.removeEventListener(MOUSE_DOWN,this.propagate.bind(this));this.mouse.removeEventListener(MOUSE_UP,this.propagate.bind(this));this.mouse.removeEventListener(MOUSE_MOVE,this.propagate.bind(this));this.mouse.removeEventListener(ELEMENT_CLICK,this.propagate.bind(this));this.mouse.removeEventListener(ELEMENT_DESELECT,this.propagate.bind(this));this.mouse=undefined;}},{key:"disableGamepad",value:function disableGamepad(){dispatch$1(gamepadDisabled());this.gamepad.disable();this.gamepad.removeEventListener(GAMEPAD_CONNECTED_EVENT,this.propagate.bind(this));this.gamepad.removeEventListener(GAMEPAD_DISCONNECTED_EVENT,this.propagate.bind(this));this.gamepad.removeEventListener(BUTTON_PRESSED_EVENT,this.propagate.bind(this));this.gamepad.removeEventListener(BUTTON_RELEASED_EVENT,this.propagate.bind(this));this.gamepad.removeEventListener(AXIS_CHANGE_EVENT,this.propagate.bind(this));this.gamepad=null;}},{key:"update",value:function update(){if(this.isEnabled()&&this.gamepad.isEnabled()){this.gamepad.update();}}},{key:"EVENTS",get:function get(){var _ref;return _ref={KEY_PRESS:KEY_PRESS,KEY_DOWN:KEY_DOWN,KEY_UP:KEY_UP,MOUSE_DOWN:MOUSE_DOWN,MOUSE_UP:MOUSE_UP},_defineProperty(_ref,"MOUSE_DOWN",MOUSE_DOWN),_defineProperty(_ref,"ELEMENT_CLICK",ELEMENT_CLICK),_defineProperty(_ref,"ELEMENT_DESELECT",ELEMENT_DESELECT),_defineProperty(_ref,"GAMEPAD_CONNECTED_EVENT",GAMEPAD_CONNECTED_EVENT),_defineProperty(_ref,"GAMEPAD_DISCONNECTED_EVENT",GAMEPAD_DISCONNECTED_EVENT),_defineProperty(_ref,"BUTTON_PRESSED_EVENT",BUTTON_PRESSED_EVENT),_defineProperty(_ref,"BUTTON_RELEASED_EVENT",BUTTON_RELEASED_EVENT),_defineProperty(_ref,"AXIS_CHANGE_EVENT",AXIS_CHANGE_EVENT),_ref;}}]);return Input;}(EventDispatcher);var Input$1=new Input();var support={searchParams:'URLSearchParams'in self,iterable:'Symbol'in self&&'iterator'in Symbol,blob:'FileReader'in self&&'Blob'in self&&function(){try{new Blob();return true;}catch(e){return false;}}(),formData:'FormData'in self,arrayBuffer:'ArrayBuffer'in self};function isDataView(obj){return obj&&DataView.prototype.isPrototypeOf(obj);}if(support.arrayBuffer){var viewClasses=['[object Int8Array]','[object Uint8Array]','[object Uint8ClampedArray]','[object Int16Array]','[object Uint16Array]','[object Int32Array]','[object Uint32Array]','[object Float32Array]','[object Float64Array]'];var isArrayBufferView=ArrayBuffer.isView||function(obj){return obj&&viewClasses.indexOf(Object.prototype.toString.call(obj))>-1;};}function normalizeName(name){if(typeof name!=='string'){name=String(name);}if(/[^a-z0-9\-#$%&'*+.^_`|~]/i.test(name)){throw new TypeError('Invalid character in header field name');}return name.toLowerCase();}function normalizeValue(value){if(typeof value!=='string'){value=String(value);}return value;}// Build a destructive iterator for the value list
 function iteratorFor(items){var iterator={next:function next(){var value=items.shift();return{done:value===undefined,value:value};}};if(support.iterable){iterator[Symbol.iterator]=function(){return iterator;};}return iterator;}function Headers(headers){this.map={};if(headers instanceof Headers){headers.forEach(function(value,name){this.append(name,value);},this);}else if(Array.isArray(headers)){headers.forEach(function(header){this.append(header[0],header[1]);},this);}else if(headers){Object.getOwnPropertyNames(headers).forEach(function(name){this.append(name,headers[name]);},this);}}Headers.prototype.append=function(name,value){name=normalizeName(name);value=normalizeValue(value);var oldValue=this.map[name];this.map[name]=oldValue?oldValue+', '+value:value;};Headers.prototype['delete']=function(name){delete this.map[normalizeName(name)];};Headers.prototype.get=function(name){name=normalizeName(name);return this.has(name)?this.map[name]:null;};Headers.prototype.has=function(name){return this.map.hasOwnProperty(normalizeName(name));};Headers.prototype.set=function(name,value){this.map[normalizeName(name)]=normalizeValue(value);};Headers.prototype.forEach=function(callback,thisArg){for(var name in this.map){if(this.map.hasOwnProperty(name)){callback.call(thisArg,this.map[name],name,this);}}};Headers.prototype.keys=function(){var items=[];this.forEach(function(value,name){items.push(name);});return iteratorFor(items);};Headers.prototype.values=function(){var items=[];this.forEach(function(value){items.push(value);});return iteratorFor(items);};Headers.prototype.entries=function(){var items=[];this.forEach(function(value,name){items.push([name,value]);});return iteratorFor(items);};if(support.iterable){Headers.prototype[Symbol.iterator]=Headers.prototype.entries;}function consumed(body){if(body.bodyUsed){return Promise.reject(new TypeError('Already read'));}body.bodyUsed=true;}function fileReaderReady(reader){return new Promise(function(resolve,reject){reader.onload=function(){resolve(reader.result);};reader.onerror=function(){reject(reader.error);};});}function readBlobAsArrayBuffer(blob){var reader=new FileReader();var promise=fileReaderReady(reader);reader.readAsArrayBuffer(blob);return promise;}function readBlobAsText(blob){var reader=new FileReader();var promise=fileReaderReady(reader);reader.readAsText(blob);return promise;}function readArrayBufferAsText(buf){var view=new Uint8Array(buf);var chars=new Array(view.length);for(var i=0;i<view.length;i++){chars[i]=String.fromCharCode(view[i]);}return chars.join('');}function bufferClone(buf){if(buf.slice){return buf.slice(0);}else{var view=new Uint8Array(buf.byteLength);view.set(new Uint8Array(buf));return view.buffer;}}function Body(){this.bodyUsed=false;this._initBody=function(body){this._bodyInit=body;if(!body){this._bodyText='';}else if(typeof body==='string'){this._bodyText=body;}else if(support.blob&&Blob.prototype.isPrototypeOf(body)){this._bodyBlob=body;}else if(support.formData&&FormData.prototype.isPrototypeOf(body)){this._bodyFormData=body;}else if(support.searchParams&&URLSearchParams.prototype.isPrototypeOf(body)){this._bodyText=body.toString();}else if(support.arrayBuffer&&support.blob&&isDataView(body)){this._bodyArrayBuffer=bufferClone(body.buffer);// IE 10-11 can't handle a DataView body.
 this._bodyInit=new Blob([this._bodyArrayBuffer]);}else if(support.arrayBuffer&&(ArrayBuffer.prototype.isPrototypeOf(body)||isArrayBufferView(body))){this._bodyArrayBuffer=bufferClone(body);}else{this._bodyText=body=Object.prototype.toString.call(body);}if(!this.headers.get('content-type')){if(typeof body==='string'){this.headers.set('content-type','text/plain;charset=UTF-8');}else if(this._bodyBlob&&this._bodyBlob.type){this.headers.set('content-type',this._bodyBlob.type);}else if(support.searchParams&&URLSearchParams.prototype.isPrototypeOf(body)){this.headers.set('content-type','application/x-www-form-urlencoded;charset=UTF-8');}}};if(support.blob){this.blob=function(){var rejected=consumed(this);if(rejected){return rejected;}if(this._bodyBlob){return Promise.resolve(this._bodyBlob);}else if(this._bodyArrayBuffer){return Promise.resolve(new Blob([this._bodyArrayBuffer]));}else if(this._bodyFormData){throw new Error('could not read FormData body as blob');}else{return Promise.resolve(new Blob([this._bodyText]));}};this.arrayBuffer=function(){if(this._bodyArrayBuffer){return consumed(this)||Promise.resolve(this._bodyArrayBuffer);}else{return this.blob().then(readBlobAsArrayBuffer);}};}this.text=function(){var rejected=consumed(this);if(rejected){return rejected;}if(this._bodyBlob){return readBlobAsText(this._bodyBlob);}else if(this._bodyArrayBuffer){return Promise.resolve(readArrayBufferAsText(this._bodyArrayBuffer));}else if(this._bodyFormData){throw new Error('could not read FormData body as text');}else{return Promise.resolve(this._bodyText);}};if(support.formData){this.formData=function(){return this.text().then(decode);};}this.json=function(){return this.text().then(JSON.parse);};return this;}// HTTP methods whose capitalization should be normalized
 var methods=['DELETE','GET','HEAD','OPTIONS','POST','PUT'];function normalizeMethod(method){var upcased=method.toUpperCase();return methods.indexOf(upcased)>-1?upcased:method;}function Request(input,options){options=options||{};var body=options.body;if(input instanceof Request){if(input.bodyUsed){throw new TypeError('Already read');}this.url=input.url;this.credentials=input.credentials;if(!options.headers){this.headers=new Headers(input.headers);}this.method=input.method;this.mode=input.mode;this.signal=input.signal;if(!body&&input._bodyInit!=null){body=input._bodyInit;input.bodyUsed=true;}}else{this.url=String(input);}this.credentials=options.credentials||this.credentials||'same-origin';if(options.headers||!this.headers){this.headers=new Headers(options.headers);}this.method=normalizeMethod(options.method||this.method||'GET');this.mode=options.mode||this.mode||null;this.signal=options.signal||this.signal;this.referrer=null;if((this.method==='GET'||this.method==='HEAD')&&body){throw new TypeError('Body not allowed for GET or HEAD requests');}this._initBody(body);}Request.prototype.clone=function(){return new Request(this,{body:this._bodyInit});};function decode(body){var form=new FormData();body.trim().split('&').forEach(function(bytes){if(bytes){var split=bytes.split('=');var name=split.shift().replace(/\+/g,' ');var value=split.join('=').replace(/\+/g,' ');form.append(decodeURIComponent(name),decodeURIComponent(value));}});return form;}function parseHeaders(rawHeaders){var headers=new Headers();// Replace instances of \r\n and \n followed by at least one space or horizontal tab with a space
@@ -4847,7 +4903,7 @@ m.elements[12]=mx;m.elements[13]=my;m.elements[14]=mz;}}},{key:"update",value:fu
 //     });
 //     return this.sound;
 // }
-},{key:"addLight",value:function addLight(light){var _this$getPosition=this.getPosition(),x=_this$getPosition.x,y=_this$getPosition.y,z=_this$getPosition.z;light.setPosition({x:x,y:y,z:z});this.light=light;}},{key:"playSound",value:function playSound(){if(this.sound&&!this.isPlayingSound){this.sound.play();this.isPlayingSound=true;}}},{key:"stopSound",value:function stopSound(){if(this.sound&&this.isPlayingSound){this.sound.stop();this.isPlayingSound=false;}}},{key:"getScale",value:function getScale(){return{x:this.body.scale.x,y:this.body.scale.y,z:this.body.scale.z};}},{key:"setScale",value:function setScale(howbig){if(this.hasBody()){var scale=_objectSpread2({},this.getScale(),{},howbig);this.body.scale.set(scale.x,scale.y,scale.z);}}},{key:"getWorldPosition",value:function getWorldPosition(){var vector=new Vector3$1();if(this.hasBody()){var _this$body$getWorldPo=this.body.getWorldPosition(vector),x=_this$body$getWorldPo.x,y=_this$body$getWorldPo.y,z=_this$body$getWorldPo.z;return{x:x,y:y,z:z};}return DEFAULT_POSITION$1;}},{key:"getQuaternion",value:function getQuaternion(){if(this.hasBody()){return this.getBody().quaternion.clone();}}},{key:"getPosition",value:function getPosition(){return this.getBody().position.clone();}},{key:"setPosition",value:function setPosition(where){if(this.hasBody()){var _this$getPosition2=this.getPosition(),x=_this$getPosition2.x,y=_this$getPosition2.y,z=_this$getPosition2.z;var position=_objectSpread2({x:x,y:y,z:z},where);this.body.position.set(position.x,position.y,position.z);}}},{key:"getRotation",value:function getRotation(){return this.getBody().rotation.clone();}},{key:"setRotation",value:function setRotation(how){if(this.hasBody()){var _this$getRotation=this.getRotation(),x=_this$getRotation.x,y=_this$getRotation.y,z=_this$getRotation.z;var rotation=_objectSpread2({x:x,y:y,z:z},how);this.body.rotation.set(rotation.x,rotation.y,rotation.z);}}},{key:"getAngularVelocity",value:function getAngularVelocity(){return this.angularVelocity||DEFAULT_ANGULAR_VELOCITY;}},{key:"setAngularVelocity",value:function setAngularVelocity(velocity){this.angularVelocity=velocity;Physics$1.updateAngularVelocity(this.uuid(),velocity);}},{key:"getLinearVelocity",value:function getLinearVelocity(){return this.linearVelocity||DEFAULT_LINEAR_VELOCITY$1;}},{key:"setLinearVelocity",value:function setLinearVelocity(velocity){this.linearVelocity=velocity;Physics$1.updateLinearVelocity(this.uuid(),velocity);}},{key:"translate",value:function translate(_ref7){var _ref7$x=_ref7.x,x=_ref7$x===void 0?0:_ref7$x,_ref7$y=_ref7.y,y=_ref7$y===void 0?0:_ref7$y,_ref7$z=_ref7.z,z=_ref7$z===void 0?0:_ref7$z;if(this.hasBody()){this.body.translateX(x);this.body.translateY(y);this.body.translateZ(z);}}},{key:"rotateTo",value:function rotateTo(){var _this6=this;var rotation=arguments.length>0&&arguments[0]!==undefined?arguments[0]:this.getRotation();var time=arguments.length>1&&arguments[1]!==undefined?arguments[1]:250;var _this$getRotation2=this.getRotation(),x=_this$getRotation2.x,y=_this$getRotation2.y,z=_this$getRotation2.z;return new Promise(function(resolve){return new between({x:x,y:y,z:z},rotation).time(time).on('update',function(value){return _this6.setRotation(value);}).on('complete',resolve);});}},{key:"goTo",value:function goTo(){var _this7=this;var position=arguments.length>0&&arguments[0]!==undefined?arguments[0]:this.getPosition();var time=arguments.length>1&&arguments[1]!==undefined?arguments[1]:250;var _this$getPosition3=this.getPosition(),x=_this$getPosition3.x,y=_this$getPosition3.y,z=_this$getPosition3.z;return new Promise(function(resolve){return new between({x:x,y:y,z:z},position).time(time).on('update',function(value){return _this7.setPosition(value);}).on('complete',resolve);});}},{key:"uuid",value:function uuid(){return this.body.uuid;}},{key:"equals",value:function equals(entity){try{return entity.uuid?this.uuid()===entity.uuid():false;}catch(e){return false;}}},{key:"setName",value:function setName(name){this.name=name;}},{key:"getName",value:function getName(){return this.name;}},{key:"setData",value:function setData(key,value){if(this.getBody().userData){if(key&&value){this.getBody().userData[key]=value;}else{console.log(KEY_VALUE_IS_MISSING);}}else{console.log(USER_DATA_IS_MISSING);}}},{key:"getData",value:function getData(key){if(this.getBody().userData){if(key){return this.getBody().userData[key];}else{console.log(KEY_IS_MISSING);}}else{console.log(USER_DATA_IS_MISSING);}}},{key:"mapScriptsToJSON",value:function mapScriptsToJSON(){this.scripts.reduce(function(acc,_ref8){var name=_ref8.name,_ref8$options=_ref8.options,options=_ref8$options===void 0?{}:_ref8$options;acc.names.push(name);acc.options.push(options);return acc;},{names:[],options:[]});}},{key:"toJSON",value:function toJSON(){return{position:this.getPosition(),rotation:this.getRotation(),scale:this.getScale(),entityType:this.getEntityType(),tags:this.getTags()};}}]);return Entity;}(EventDispatcher);var AnimationHandler=/*#__PURE__*/function(_EventDispatcher){_inherits(AnimationHandler,_EventDispatcher);var _super=_createSuper(AnimationHandler);function AnimationHandler(mesh){var _this;var animations=arguments.length>1&&arguments[1]!==undefined?arguments[1]:[];_classCallCheck(this,AnimationHandler);_this=_super.call(this);_defineProperty(_assertThisInitialized(_this),"getAnimationEventHandler",function(type){return function(_ref){var action=_ref.action,direction=_ref.direction;_this.dispatchEvent({type:type,action:action,direction:direction});};});_this.mixer=new AnimationMixer(mesh);_this.animations=animations;_this.addEventsListeners();return _this;}_createClass(AnimationHandler,[{key:"addEventsListeners",value:function addEventsListeners(){this.mixer.addEventListener('loop',this.getAnimationEventHandler(ENTITY_EVENTS.ANIMATION.LOOP));this.mixer.addEventListener('finished',this.getAnimationEventHandler(ENTITY_EVENTS.ANIMATION.FINISHED));}},{key:"getAction",value:function getAction(id){var action;if(typeof id==='number'){action=this.animations[id];}else if(typeof id==='string'){action=AnimationClip.findByName(this.animations,id);}return action;}},{key:"getAvailableAnimations",value:function getAvailableAnimations(){return this.animations.map(function(_ref2){var name=_ref2.name;return name;});}},{key:"stopAll",value:function stopAll(){this.mixer.stopAllAction();}},{key:"stopCurrentAnimation",value:function stopCurrentAnimation(){if(this.currentAction){this.currentAction.stop();}}},{key:"playAnimation",value:function playAnimation(id,options){var action=this.getAction(id);var _options$loop=options.loop,loop=_options$loop===void 0?LoopRepeat:_options$loop;if(this.currentAction){this.fadeToAnimation(action,options);}else if(action){this.currentAction=this.mixer.clipAction(action).setLoop(loop).play();}else{console.warn(ANIMATION_NOT_FOUND);}}},{key:"fadeToAnimation",value:function fadeToAnimation(action){var _ref3=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{},_ref3$duration=_ref3.duration,duration=_ref3$duration===void 0?0.2:_ref3$duration,_ref3$loop=_ref3.loop,loop=_ref3$loop===void 0?LoopRepeat:_ref3$loop;var previousAction=this.currentAction;this.currentAction=this.mixer.clipAction(action);if(previousAction!==this.currentAction){previousAction.fadeOut(duration);}this.currentAction.reset().setEffectiveTimeScale(1).setEffectiveWeight(1).fadeIn(duration).setLoop(loop).play();}},{key:"update",value:function update(dt){this.mixer.update(dt);}}]);return AnimationHandler;}(EventDispatcher);var inverseProjectionMatrix=new Matrix4();var Frustum$1=/*#__PURE__*/function(){function Frustum(data){_classCallCheck(this,Frustum);data=data||{};this.vertices={near:[new Vector3$1(),new Vector3$1(),new Vector3$1(),new Vector3$1()],far:[new Vector3$1(),new Vector3$1(),new Vector3$1(),new Vector3$1()]};if(data.projectionMatrix!==undefined){this.setFromProjectionMatrix(data.projectionMatrix,data.maxFar||10000);}}_createClass(Frustum,[{key:"setFromProjectionMatrix",value:function setFromProjectionMatrix(projectionMatrix,maxFar){var isOrthographic=projectionMatrix.elements[2*4+3]===0;inverseProjectionMatrix.copy(projectionMatrix).invert();// 3 --- 0  vertices.near/far order
+},{key:"addLight",value:function addLight(light){var _this$getPosition=this.getPosition(),x=_this$getPosition.x,y=_this$getPosition.y,z=_this$getPosition.z;light.setPosition({x:x,y:y,z:z});this.light=light;}},{key:"playSound",value:function playSound(){if(this.sound&&!this.isPlayingSound){this.sound.play();this.isPlayingSound=true;}}},{key:"stopSound",value:function stopSound(){if(this.sound&&this.isPlayingSound){this.sound.stop();this.isPlayingSound=false;}}},{key:"getScale",value:function getScale(){return{x:this.body.scale.x,y:this.body.scale.y,z:this.body.scale.z};}},{key:"setScale",value:function setScale(howbig){if(this.hasBody()){var scale=_objectSpread2({},this.getScale(),{},howbig);this.body.scale.set(scale.x,scale.y,scale.z);}}},{key:"getWorldPosition",value:function getWorldPosition(){var vector=new Vector3$1();if(this.hasBody()){var _this$body$getWorldPo=this.body.getWorldPosition(vector),x=_this$body$getWorldPo.x,y=_this$body$getWorldPo.y,z=_this$body$getWorldPo.z;return{x:x,y:y,z:z};}return DEFAULT_POSITION$1;}},{key:"getQuaternion",value:function getQuaternion(){if(this.hasBody()){return this.getBody().quaternion.clone();}}},{key:"getPosition",value:function getPosition(){return this.getBody().position.clone();}},{key:"setPosition",value:function setPosition(where){if(this.hasBody()){var _this$getPosition2=this.getPosition(),x=_this$getPosition2.x,y=_this$getPosition2.y,z=_this$getPosition2.z;var position=_objectSpread2({x:x,y:y,z:z},where);this.body.position.set(position.x,position.y,position.z);}}},{key:"getRotation",value:function getRotation(){return this.getBody().rotation.clone();}},{key:"setRotation",value:function setRotation(how){if(this.hasBody()){var _this$getRotation=this.getRotation(),x=_this$getRotation.x,y=_this$getRotation.y,z=_this$getRotation.z;var rotation=_objectSpread2({x:x,y:y,z:z},how);this.body.rotation.set(rotation.x,rotation.y,rotation.z);}}},{key:"getAngularVelocity",value:function getAngularVelocity(){return this.angularVelocity||DEFAULT_ANGULAR_VELOCITY;}},{key:"setAngularVelocity",value:function setAngularVelocity(velocity){this.angularVelocity=velocity;Physics$1.updateAngularVelocity(this.uuid(),velocity);}},{key:"getLinearVelocity",value:function getLinearVelocity(){return this.linearVelocity||DEFAULT_LINEAR_VELOCITY$1;}},{key:"setLinearVelocity",value:function setLinearVelocity(velocity){this.linearVelocity=velocity;Physics$1.updateLinearVelocity(this.uuid(),velocity);}},{key:"translate",value:function translate(_ref7){var _ref7$x=_ref7.x,x=_ref7$x===void 0?0:_ref7$x,_ref7$y=_ref7.y,y=_ref7$y===void 0?0:_ref7$y,_ref7$z=_ref7.z,z=_ref7$z===void 0?0:_ref7$z;if(this.hasBody()){this.body.translateX(x);this.body.translateY(y);this.body.translateZ(z);}}},{key:"rotateTo",value:function rotateTo(){var _this6=this;var rotation=arguments.length>0&&arguments[0]!==undefined?arguments[0]:this.getRotation();var time=arguments.length>1&&arguments[1]!==undefined?arguments[1]:250;var _this$getRotation2=this.getRotation(),x=_this$getRotation2.x,y=_this$getRotation2.y,z=_this$getRotation2.z;return new Promise(function(resolve){return new between({x:x,y:y,z:z},rotation).time(time).on('update',function(value){return _this6.setRotation(value);}).on('complete',resolve);});}},{key:"goTo",value:function goTo(){var _this7=this;var position=arguments.length>0&&arguments[0]!==undefined?arguments[0]:this.getPosition();var time=arguments.length>1&&arguments[1]!==undefined?arguments[1]:250;var _this$getPosition3=this.getPosition(),x=_this$getPosition3.x,y=_this$getPosition3.y,z=_this$getPosition3.z;return new Promise(function(resolve){return new between({x:x,y:y,z:z},position).time(time).on('update',function(value){return _this7.setPosition(value);}).on('complete',resolve);});}},{key:"uuid",value:function uuid(){return this.body.uuid;}},{key:"setVisible",value:function setVisible(){var flag=arguments.length>0&&arguments[0]!==undefined?arguments[0]:true;this.getBody().visible=flag;}},{key:"equals",value:function equals(entity){try{return entity.uuid?this.uuid()===entity.uuid():false;}catch(e){return false;}}},{key:"setName",value:function setName(name){this.name=name;}},{key:"getName",value:function getName(){return this.name;}},{key:"setData",value:function setData(key,value){if(this.getBody().userData){if(key&&value){this.getBody().userData[key]=value;}else{console.log(KEY_VALUE_IS_MISSING);}}else{console.log(USER_DATA_IS_MISSING);}}},{key:"getData",value:function getData(key){if(this.getBody().userData){if(key){return this.getBody().userData[key];}else{console.log(KEY_IS_MISSING);}}else{console.log(USER_DATA_IS_MISSING);}}},{key:"mapScriptsToJSON",value:function mapScriptsToJSON(){this.scripts.reduce(function(acc,_ref8){var name=_ref8.name,_ref8$options=_ref8.options,options=_ref8$options===void 0?{}:_ref8$options;acc.names.push(name);acc.options.push(options);return acc;},{names:[],options:[]});}},{key:"toJSON",value:function toJSON(){return{position:this.getPosition(),rotation:this.getRotation(),scale:this.getScale(),entityType:this.getEntityType(),tags:this.getTags()};}}]);return Entity;}(EventDispatcher);var AnimationHandler=/*#__PURE__*/function(_EventDispatcher){_inherits(AnimationHandler,_EventDispatcher);var _super=_createSuper(AnimationHandler);function AnimationHandler(mesh){var _this;var animations=arguments.length>1&&arguments[1]!==undefined?arguments[1]:[];_classCallCheck(this,AnimationHandler);_this=_super.call(this);_defineProperty(_assertThisInitialized(_this),"getAnimationEventHandler",function(type){return function(_ref){var action=_ref.action,direction=_ref.direction;_this.dispatchEvent({type:type,action:action,direction:direction});};});_this.mixer=new AnimationMixer(mesh);_this.animations=animations;_this.addEventsListeners();return _this;}_createClass(AnimationHandler,[{key:"addEventsListeners",value:function addEventsListeners(){this.mixer.addEventListener('loop',this.getAnimationEventHandler(ENTITY_EVENTS.ANIMATION.LOOP));this.mixer.addEventListener('finished',this.getAnimationEventHandler(ENTITY_EVENTS.ANIMATION.FINISHED));}},{key:"getAction",value:function getAction(id){var action;if(typeof id==='number'){action=this.animations[id];}else if(typeof id==='string'){action=AnimationClip.findByName(this.animations,id);}return action;}},{key:"getAvailableAnimations",value:function getAvailableAnimations(){return this.animations.map(function(_ref2){var name=_ref2.name;return name;});}},{key:"stopAll",value:function stopAll(){this.mixer.stopAllAction();}},{key:"stopCurrentAnimation",value:function stopCurrentAnimation(){if(this.currentAction){this.currentAction.stop();}}},{key:"playAnimation",value:function playAnimation(id,options){var action=this.getAction(id);var _options$loop=options.loop,loop=_options$loop===void 0?LoopRepeat:_options$loop;if(this.currentAction){this.fadeToAnimation(action,options);}else if(action){this.currentAction=this.mixer.clipAction(action).setLoop(loop).play();}else{console.warn(ANIMATION_NOT_FOUND);}}},{key:"fadeToAnimation",value:function fadeToAnimation(action){var _ref3=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{},_ref3$duration=_ref3.duration,duration=_ref3$duration===void 0?0.2:_ref3$duration,_ref3$loop=_ref3.loop,loop=_ref3$loop===void 0?LoopRepeat:_ref3$loop;var previousAction=this.currentAction;this.currentAction=this.mixer.clipAction(action);if(previousAction!==this.currentAction){previousAction.fadeOut(duration);}this.currentAction.reset().setEffectiveTimeScale(1).setEffectiveWeight(1).fadeIn(duration).setLoop(loop).play();}},{key:"update",value:function update(dt){this.mixer.update(dt);}}]);return AnimationHandler;}(EventDispatcher);var inverseProjectionMatrix=new Matrix4();var Frustum$1=/*#__PURE__*/function(){function Frustum(data){_classCallCheck(this,Frustum);data=data||{};this.vertices={near:[new Vector3$1(),new Vector3$1(),new Vector3$1(),new Vector3$1()],far:[new Vector3$1(),new Vector3$1(),new Vector3$1(),new Vector3$1()]};if(data.projectionMatrix!==undefined){this.setFromProjectionMatrix(data.projectionMatrix,data.maxFar||10000);}}_createClass(Frustum,[{key:"setFromProjectionMatrix",value:function setFromProjectionMatrix(projectionMatrix,maxFar){var isOrthographic=projectionMatrix.elements[2*4+3]===0;inverseProjectionMatrix.copy(projectionMatrix).invert();// 3 --- 0  vertices.near/far order
 // |     |
 // 2 --- 1
 // clip space spans from [-1, 1]
@@ -6084,7 +6140,7 @@ this.fsQuad.material=this.materialCopy;this.copyUniforms["tDiffuse"].value=this.
 'uniform float aperture;',// aperture - bigger values for shallower depth of field
 'uniform float nearClip;','uniform float farClip;','uniform float focus;','uniform float aspect;','#include <packing>','float getDepth( const in vec2 screenPosition ) {','    #if DEPTH_PACKING == 1','    return unpackRGBAToDepth( texture2D( tDepth, screenPosition ) );','    #else','    return texture2D( tDepth, screenPosition ).x;','    #endif','}','float getViewZ( const in float depth ) {','    #if PERSPECTIVE_CAMERA == 1','    return perspectiveDepthToViewZ( depth, nearClip, farClip );','    #else','    return orthographicDepthToViewZ( depth, nearClip, farClip );','    #endif','}','void main() {','    vec2 aspectcorrect = vec2( 1.0, aspect );','    float viewZ = getViewZ( getDepth( vUv ) );','    float factor = ( focus + viewZ );',// viewZ is <= 0, so this is a difference equation
 '    vec2 dofblur = vec2 ( clamp( factor * aperture, -maxblur, maxblur ) );','    vec2 dofblur9 = dofblur * 0.9;','    vec2 dofblur7 = dofblur * 0.7;','    vec2 dofblur4 = dofblur * 0.4;','    vec4 col = vec4( 0.0 );','    col += texture2D( tColor, vUv.xy );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.0,   0.4  ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.15,  0.37 ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.29,  0.29 ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.37,  0.15 ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.40,  0.0  ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.37, -0.15 ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.29, -0.29 ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.15, -0.37 ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.0,  -0.4  ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.15,  0.37 ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.29,  0.29 ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.37,  0.15 ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.4,   0.0  ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.37, -0.15 ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.29, -0.29 ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.15, -0.37 ) * aspectcorrect ) * dofblur );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.15,  0.37 ) * aspectcorrect ) * dofblur9 );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.37,  0.15 ) * aspectcorrect ) * dofblur9 );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.37, -0.15 ) * aspectcorrect ) * dofblur9 );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.15, -0.37 ) * aspectcorrect ) * dofblur9 );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.15,  0.37 ) * aspectcorrect ) * dofblur9 );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.37,  0.15 ) * aspectcorrect ) * dofblur9 );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.37, -0.15 ) * aspectcorrect ) * dofblur9 );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.15, -0.37 ) * aspectcorrect ) * dofblur9 );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.29,  0.29 ) * aspectcorrect ) * dofblur7 );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.40,  0.0  ) * aspectcorrect ) * dofblur7 );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.29, -0.29 ) * aspectcorrect ) * dofblur7 );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.0,  -0.4  ) * aspectcorrect ) * dofblur7 );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.29,  0.29 ) * aspectcorrect ) * dofblur7 );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.4,   0.0  ) * aspectcorrect ) * dofblur7 );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.29, -0.29 ) * aspectcorrect ) * dofblur7 );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.0,   0.4  ) * aspectcorrect ) * dofblur7 );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.29,  0.29 ) * aspectcorrect ) * dofblur4 );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.4,   0.0  ) * aspectcorrect ) * dofblur4 );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.29, -0.29 ) * aspectcorrect ) * dofblur4 );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.0,  -0.4  ) * aspectcorrect ) * dofblur4 );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.29,  0.29 ) * aspectcorrect ) * dofblur4 );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.4,   0.0  ) * aspectcorrect ) * dofblur4 );','    col += texture2D( tColor, vUv.xy + ( vec2( -0.29, -0.29 ) * aspectcorrect ) * dofblur4 );','    col += texture2D( tColor, vUv.xy + ( vec2(  0.0,   0.4  ) * aspectcorrect ) * dofblur4 );','    gl_FragColor = col / 41.0;','    gl_FragColor.a = 1.0;','}'].join('\n')};var BokehPass=/*#__PURE__*/function(_Pass){_inherits(BokehPass,_Pass);var _super=_createSuper(BokehPass);function BokehPass(scene,camera,params){var _this;_classCallCheck(this,BokehPass);_this=_super.call(this);var _params$focus=params.focus,focus=_params$focus===void 0?1.0:_params$focus,_params$aspect=params.aspect,aspect=_params$aspect===void 0?camera.aspect:_params$aspect,_params$aperture=params.aperture,aperture=_params$aperture===void 0?0.025:_params$aperture,_params$maxblur=params.maxblur,maxblur=_params$maxblur===void 0?0.1:_params$maxblur,_params$width=params.width,width=_params$width===void 0?window.innerWidth:_params$width,_params$height=params.height,height=_params$height===void 0?window.innerHeight:_params$height,_params$renderToScree=params.renderToScreen,renderToScreen=_params$renderToScree===void 0?false:_params$renderToScree;_this.scene=scene;_this.camera=camera;_this.renderTargetDepth=new WebGLRenderTarget(width,height,{minFilter:NearestFilter,magFilter:NearestFilter});_this.renderTargetDepth.texture.name='BokehPass.depth';// depth material
-_this.materialDepth=new MeshDepthMaterial();_this.materialDepth.depthPacking=RGBADepthPacking;_this.materialDepth.blending=NoBlending;var bokehShader=BokehShader;var bokehUniforms=UniformsUtils.clone(bokehShader.uniforms);bokehUniforms['tDepth'].value=_this.renderTargetDepth.texture;bokehUniforms['focus'].value=focus;bokehUniforms['aspect'].value=aspect;bokehUniforms['aperture'].value=aperture;bokehUniforms['maxblur'].value=maxblur;bokehUniforms['nearClip'].value=camera.near;bokehUniforms['farClip'].value=camera.far;_this.materialBokeh=new ShaderMaterial({defines:Object.assign({},bokehShader.defines),uniforms:bokehUniforms,vertexShader:bokehShader.vertexShader,fragmentShader:bokehShader.fragmentShader});_this.uniforms=bokehUniforms;_this.needsSwap=false;_this.fsQuad=new Pass.FullScreenQuad(_this.materialBokeh);_this._oldClearColor=new Color();_this.renderToScreen=renderToScreen;return _this;}_createClass(BokehPass,[{key:"render",value:function render(renderer,writeBuffer,readBuffer/*, deltaTime, maskActive*/){this.scene.overrideMaterial=this.materialDepth;renderer.getClearColor(this._oldClearColor);var oldClearAlpha=renderer.getClearAlpha();var oldAutoClear=renderer.autoClear;renderer.autoClear=false;renderer.setClearColor(0xffffff);renderer.setClearAlpha(1.0);renderer.setRenderTarget(this.renderTargetDepth);renderer.clear();renderer.render(this.scene,this.camera);// Render bokeh composite
+_this.materialDepth=new MeshDepthMaterial();_this.materialDepth.depthPacking=RGBADepthPacking;_this.materialDepth.blending=NoBlending;var bokehShader=BokehShader;var bokehUniforms=UniformsUtils.clone(bokehShader.uniforms);bokehUniforms['tDepth'].value=_this.renderTargetDepth.texture;bokehUniforms['focus'].value=focus;bokehUniforms['aspect'].value=aspect;bokehUniforms['aperture'].value=aperture;bokehUniforms['maxblur'].value=maxblur;bokehUniforms['nearClip'].value=camera.near;bokehUniforms['farClip'].value=camera.far;_this.materialBokeh=new ShaderMaterial({defines:Object.assign({},bokehShader.defines),uniforms:bokehUniforms,vertexShader:bokehShader.vertexShader,fragmentShader:bokehShader.fragmentShader});_this.uniforms=bokehUniforms;_this.needsSwap=false;_this.fsQuad=new Pass.FullScreenQuad(_this.materialBokeh);_this._oldClearColor=new Color();_this.renderToScreen=renderToScreen;return _this;}_createClass(BokehPass,[{key:"setFocus",value:function setFocus(focus){this.uniforms.focus.value=focus;}},{key:"setAperture",value:function setAperture(aperture){this.uniforms.aperture.value=aperture;}},{key:"setMaxBlur",value:function setMaxBlur(maxblur){this.uniforms.maxblur.value=maxblur;}},{key:"render",value:function render(renderer,writeBuffer,readBuffer/*, deltaTime, maskActive*/){this.scene.overrideMaterial=this.materialDepth;renderer.getClearColor(this._oldClearColor);var oldClearAlpha=renderer.getClearAlpha();var oldAutoClear=renderer.autoClear;renderer.autoClear=false;renderer.setClearColor(0xffffff);renderer.setClearAlpha(1.0);renderer.setRenderTarget(this.renderTargetDepth);renderer.clear();renderer.render(this.scene,this.camera);// Render bokeh composite
 this.uniforms['tColor'].value=readBuffer.texture;this.uniforms['nearClip'].value=this.camera.near;this.uniforms['farClip'].value=this.camera.far;if(this.renderToScreen){renderer.setRenderTarget(null);this.fsQuad.render(renderer);}else{renderer.setRenderTarget(writeBuffer);renderer.clear();this.fsQuad.render(renderer);}this.scene.overrideMaterial=null;renderer.setClearColor(this._oldClearColor);renderer.setClearAlpha(oldClearAlpha);renderer.autoClear=oldAutoClear;}}]);return BokehPass;}(Pass);var DepthOfField=/*#__PURE__*/function(_BokehPass){_inherits(DepthOfField,_BokehPass);var _super=_createSuper(DepthOfField);function DepthOfField(params){_classCallCheck(this,DepthOfField);var _config$screen=Config$1.screen(),width=_config$screen.w,height=_config$screen.h,aspect=_config$screen.ratio;return _super.call(this,Scene$2.scene,Scene$2.getCameraBody(),_objectSpread2({},params,{width:width,height:height,aspect:aspect}));}return DepthOfField;}(BokehPass);/**
  * RGB Shift Shader
  * Shifts red and blue channels from center in opposite directions
@@ -6776,37 +6832,31 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js");
 /* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/assertThisInitialized */ "./node_modules/@babel/runtime/helpers/assertThisInitialized.js");
-/* harmony import */ var _babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/inherits */ "./node_modules/@babel/runtime/helpers/inherits.js");
-/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js");
-/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/getPrototypeOf.js");
-/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
-/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var mage_engine__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! mage-engine */ "../Mage/dist/mage.js");
-/* harmony import */ var _map_TileMap__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./map/TileMap */ "./src/levels/test/map/TileMap.js");
-/* harmony import */ var _collectibles_slowRotation__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./collectibles/slowRotation */ "./src/levels/test/collectibles/slowRotation.js");
-/* harmony import */ var _worm__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./worm */ "./src/levels/test/worm/index.js");
-/* harmony import */ var _worm_wormBlock__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./worm/wormBlock */ "./src/levels/test/worm/wormBlock.js");
-/* harmony import */ var _players_humans_HumanBehaviour__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./players/humans/HumanBehaviour */ "./src/levels/test/players/humans/HumanBehaviour.js");
-/* harmony import */ var _players_humans__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./players/humans */ "./src/levels/test/players/humans/index.js");
-/* harmony import */ var _players_nature__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./players/nature */ "./src/levels/test/players/nature/index.js");
-/* harmony import */ var _players_nature_Selector__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./players/nature/Selector */ "./src/levels/test/players/nature/Selector.js");
-/* harmony import */ var _players_humans_BulletBehaviour__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./players/humans/BulletBehaviour */ "./src/levels/test/players/humans/BulletBehaviour.js");
-/* harmony import */ var _players_nature_DuckBehaviour__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./players/nature/DuckBehaviour */ "./src/levels/test/players/nature/DuckBehaviour.js");
-/* harmony import */ var _map_Bobbing__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./map/Bobbing */ "./src/levels/test/map/Bobbing.js");
+/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/inherits */ "./node_modules/@babel/runtime/helpers/inherits.js");
+/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js");
+/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/getPrototypeOf.js");
+/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var mage_engine__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! mage-engine */ "../Mage/dist/mage.js");
+/* harmony import */ var _map_TileMap__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./map/TileMap */ "./src/levels/test/map/TileMap.js");
+/* harmony import */ var _collectibles_slowRotation__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./collectibles/slowRotation */ "./src/levels/test/collectibles/slowRotation.js");
+/* harmony import */ var _worm__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./worm */ "./src/levels/test/worm/index.js");
+/* harmony import */ var _worm_wormBlock__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./worm/wormBlock */ "./src/levels/test/worm/wormBlock.js");
+/* harmony import */ var _players_humans_HumanBehaviour__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./players/humans/HumanBehaviour */ "./src/levels/test/players/humans/HumanBehaviour.js");
+/* harmony import */ var _players_humans__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./players/humans */ "./src/levels/test/players/humans/index.js");
+/* harmony import */ var _players_nature__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./players/nature */ "./src/levels/test/players/nature/index.js");
+/* harmony import */ var _players_nature_Selector__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./players/nature/Selector */ "./src/levels/test/players/nature/Selector.js");
+/* harmony import */ var _players_humans_BulletBehaviour__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./players/humans/BulletBehaviour */ "./src/levels/test/players/humans/BulletBehaviour.js");
+/* harmony import */ var _players_nature_DuckBehaviour__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./players/nature/DuckBehaviour */ "./src/levels/test/players/nature/DuckBehaviour.js");
+/* harmony import */ var _map_Bobbing__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./map/Bobbing */ "./src/levels/test/map/Bobbing.js");
 
 
 
 
 
 
-
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5___default()(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5___default()(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4___default()(this, result); }; }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default()(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default()(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3___default()(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
@@ -6830,57 +6880,42 @@ var BACKGROUND = 0xdff9fb; //0xddf3f5;
 
 var DOF_OPTIONS = {
   focus: 1.0,
-  aperture: 0.0002,
-  //0.0001,
+  aperture: .001,
+  //0.0002,//0.0001,
   maxblur: 0.01 //0.01
 
 };
 var SATURATION_OPTIONS = {
   saturation: 0.4
 };
-var EFFECTS = mage_engine__WEBPACK_IMPORTED_MODULE_7__.constants.EFFECTS;
+var EFFECTS = mage_engine__WEBPACK_IMPORTED_MODULE_5__.constants.EFFECTS;
 
 var Test = /*#__PURE__*/function (_Level) {
-  _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3___default()(Test, _Level);
+  _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_2___default()(Test, _Level);
 
   var _super = _createSuper(Test);
 
   function Test() {
-    var _this;
-
     _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, Test);
 
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _super.call.apply(_super, [this].concat(args));
-
-    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2___default()(_this), "onUpdate", function (dt) {
-      _this.azimuth += 0.001 * dt;
-
-      if (_this.sky) {
-        _this.sky.setSun(30, _this.azimuth, 100);
-      }
-    });
-
-    return _this;
+    return _super.apply(this, arguments);
   }
 
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(Test, [{
     key: "addSunLight",
     value: function addSunLight() {
-      this.hemisphereLight = new mage_engine__WEBPACK_IMPORTED_MODULE_7__.HemisphereLight({
+      this.hemisphereLight = new mage_engine__WEBPACK_IMPORTED_MODULE_5__.HemisphereLight({
         color: {
           sky: 0xff9f43,
           ground: GROUND
         },
         intensity: 1
       });
-      this.sunLight = new mage_engine__WEBPACK_IMPORTED_MODULE_7__.SunLight({
-        color: 0xff9f43,
+      this.sunLight = new mage_engine__WEBPACK_IMPORTED_MODULE_5__.SunLight({
+        color: 0xffffff,
         intensity: 1,
-        far: 20
+        far: 20,
+        mapSize: 2048
       });
       this.sunLight.setPosition({
         y: 4,
@@ -6891,23 +6926,20 @@ var Test = /*#__PURE__*/function (_Level) {
   }, {
     key: "addSky",
     value: function addSky() {
-      this.sky = new mage_engine__WEBPACK_IMPORTED_MODULE_7__.Sky({}); // this.sky.setSun(180, .205, 100);
-
-      this.azimuth = .01;
+      this.sky = new mage_engine__WEBPACK_IMPORTED_MODULE_5__.Sky({});
+      this.azimuth = .1;
       this.sky.setSun(30, this.azimuth, 100);
       window.sky = this.sky;
     }
   }, {
     key: "prepareCamera",
     value: function prepareCamera() {
-      // 2.5958724045158155, y: 1.9694966995502956, z: -0.006603738747897658}
-      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scene.getCamera().setPosition({
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.getCamera().setPosition({
         x: 2,
         y: 4,
         z: 0
-      }); //({ x: 7.8, y: 5.48, z: 12.8 });
-
-      var orbit = mage_engine__WEBPACK_IMPORTED_MODULE_7__.Controls.setOrbitControl();
+      });
+      var orbit = mage_engine__WEBPACK_IMPORTED_MODULE_5__.Controls.setOrbitControl();
       orbit.setTarget({
         x: 5,
         y: 0,
@@ -6916,16 +6948,16 @@ var Test = /*#__PURE__*/function (_Level) {
       orbit.setMinPolarAngle(0);
       orbit.setMaxPolarAngle(Math.PI / 2.5);
       orbit.setMaxDistance(10);
-      window.camera = mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scene.getCamera();
+      window.camera = mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.getCamera();
     }
   }, {
     key: "prepareSceneEffects",
     value: function prepareSceneEffects() {
-      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scene.setClearColor(0xff9f43);
-      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scene.setBackground(0xff9f43);
-      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scene.setRendererOutputEncoding(mage_engine__WEBPACK_IMPORTED_MODULE_7__.THREE.sRGBEncoding);
-      mage_engine__WEBPACK_IMPORTED_MODULE_7__.PostProcessing.add(EFFECTS.HUE_SATURATION, SATURATION_OPTIONS);
-      mage_engine__WEBPACK_IMPORTED_MODULE_7__.PostProcessing.add(EFFECTS.DEPTH_OF_FIELD, DOF_OPTIONS);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.setClearColor(0xff9f43);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.setBackground(0xff9f43);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scene.setRendererOutputEncoding(mage_engine__WEBPACK_IMPORTED_MODULE_5__.THREE.sRGBEncoding);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.PostProcessing.add(EFFECTS.HUE_SATURATION, SATURATION_OPTIONS);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.PostProcessing.add(EFFECTS.DEPTH_OF_FIELD, DOF_OPTIONS);
     }
   }, {
     key: "createWorld",
@@ -6934,25 +6966,32 @@ var Test = /*#__PURE__*/function (_Level) {
       this.addSky();
       this.prepareSceneEffects();
 
-      var _TileMap$generate = _map_TileMap__WEBPACK_IMPORTED_MODULE_8__.default.generate(0),
+      var _TileMap$generate = _map_TileMap__WEBPACK_IMPORTED_MODULE_6__.default.generate(0),
           human = _TileMap$generate.human,
           nature = _TileMap$generate.nature;
 
-      _players_humans__WEBPACK_IMPORTED_MODULE_13__.default.start(human);
-      _players_nature__WEBPACK_IMPORTED_MODULE_14__.default.start(nature);
-      window.n = _players_nature__WEBPACK_IMPORTED_MODULE_14__.default;
-      window.tm = _map_TileMap__WEBPACK_IMPORTED_MODULE_8__.default;
-    }
+      _players_humans__WEBPACK_IMPORTED_MODULE_11__.default.start(human);
+      _players_nature__WEBPACK_IMPORTED_MODULE_12__.default.start(nature);
+      window.n = _players_nature__WEBPACK_IMPORTED_MODULE_12__.default;
+      window.tm = _map_TileMap__WEBPACK_IMPORTED_MODULE_6__.default;
+    } // onUpdate = (dt) => {
+    //     this.azimuth += 0.001 * dt;
+    //     if (this.sky) {
+    //         console.log(this.azimuth);
+    //         this.sky.setSun(30, this.azimuth, 100);
+    //     }
+    // }
+
   }, {
     key: "onCreate",
     value: function onCreate() {
-      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scripts.create('WormBlock', _worm_wormBlock__WEBPACK_IMPORTED_MODULE_11__.default);
-      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scripts.create('slowRotation', _collectibles_slowRotation__WEBPACK_IMPORTED_MODULE_9__.default);
-      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scripts.create('HumanBehaviour', _players_humans_HumanBehaviour__WEBPACK_IMPORTED_MODULE_12__.default);
-      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scripts.create('BulletBehaviour', _players_humans_BulletBehaviour__WEBPACK_IMPORTED_MODULE_16__.default);
-      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scripts.create('DuckBehaviour', _players_nature_DuckBehaviour__WEBPACK_IMPORTED_MODULE_17__.default);
-      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scripts.create('Selector', _players_nature_Selector__WEBPACK_IMPORTED_MODULE_15__.default);
-      mage_engine__WEBPACK_IMPORTED_MODULE_7__.Scripts.create('Bobbing', _map_Bobbing__WEBPACK_IMPORTED_MODULE_18__.default);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('WormBlock', _worm_wormBlock__WEBPACK_IMPORTED_MODULE_9__.default);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('slowRotation', _collectibles_slowRotation__WEBPACK_IMPORTED_MODULE_7__.default);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('HumanBehaviour', _players_humans_HumanBehaviour__WEBPACK_IMPORTED_MODULE_10__.default);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('BulletBehaviour', _players_humans_BulletBehaviour__WEBPACK_IMPORTED_MODULE_14__.default);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('DuckBehaviour', _players_nature_DuckBehaviour__WEBPACK_IMPORTED_MODULE_15__.default);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('Selector', _players_nature_Selector__WEBPACK_IMPORTED_MODULE_13__.default);
+      mage_engine__WEBPACK_IMPORTED_MODULE_5__.Scripts.create('Bobbing', _map_Bobbing__WEBPACK_IMPORTED_MODULE_16__.default);
       this.azimuth = .01;
       this.createWorld();
       this.prepareCamera();
@@ -6960,7 +6999,7 @@ var Test = /*#__PURE__*/function (_Level) {
   }]);
 
   return Test;
-}(mage_engine__WEBPACK_IMPORTED_MODULE_7__.Level);
+}(mage_engine__WEBPACK_IMPORTED_MODULE_5__.Level);
 
 
 
@@ -7098,9 +7137,12 @@ var shouldRenderDetailsForTiletype = function shouldRenderDetailsForTiletype(til
   return Math.random() > _constants__WEBPACK_IMPORTED_MODULE_4__.TILES_RANDOMNESS_MAP[tileType];
 };
 
+var getVariationsForTyleTipe = function getVariationsForTyleTipe(tileType) {
+  return _constants__WEBPACK_IMPORTED_MODULE_4__.TILE_BASE_VARIATIONS_MAP[tileType] || [tileType];
+};
+
 var getRandomVariationForTile = function getRandomVariationForTile(tileType) {
-  var variations = _constants__WEBPACK_IMPORTED_MODULE_4__.TILE_BASE_VARIATIONS_MAP[tileType] || [tileType];
-  return mage_engine__WEBPACK_IMPORTED_MODULE_3__.math.pickRandom(variations);
+  return mage_engine__WEBPACK_IMPORTED_MODULE_3__.math.pickRandom(getVariationsForTyleTipe(tileType));
 };
 
 var convertTileTypeToHeight = function convertTileTypeToHeight(tileType) {
@@ -7146,12 +7188,40 @@ var Tile = /*#__PURE__*/function () {
       return _this.tileType === _constants__WEBPACK_IMPORTED_MODULE_4__.TILES_TYPES.EMPTY;
     });
 
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "isWarriorsHut", function () {
+      return _this.variation === _constants__WEBPACK_IMPORTED_MODULE_4__.FOREST_TILES.FOREST_WARRIORS_HUT || _this.variation === _constants__WEBPACK_IMPORTED_MODULE_4__.HUMAN_TILES.HUMAN_WARRIORS_HUT;
+    });
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "isBuildersHut", function () {
+      return _this.variation === _constants__WEBPACK_IMPORTED_MODULE_4__.FOREST_TILES.FOREST_BUILDERS_HUT || _this.variation === _constants__WEBPACK_IMPORTED_MODULE_4__.HUMAN_TILES.HUMAN_BUILDERS_HUT;
+    });
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "isTower", function () {
+      return _this.variation === _constants__WEBPACK_IMPORTED_MODULE_4__.FOREST_TILES.FOREST_TOWER || _this.variation === _constants__WEBPACK_IMPORTED_MODULE_4__.HUMAN_TILES.HUMAN_TOWER;
+    });
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "isBaseTile", function () {
+      return Boolean(_this.baseTile);
+    });
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "isStartingTile", function () {
+      return Boolean(_this.startingTile);
+    });
+
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "isObstacle", function () {
       return _this.isWater() || _this.isEmpty();
     });
 
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "isType", function (tileType) {
       return _this.tileType === tileType;
+    });
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "getType", function () {
+      return _this.tileType;
+    });
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "getVariation", function () {
+      return _this.variation;
     });
 
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "setState", function (state) {
@@ -7173,6 +7243,7 @@ var Tile = /*#__PURE__*/function () {
         position = options.position;
     this.tileType = _tileType;
     this.variation = variation;
+    this.baseTile = getVariationsForTyleTipe(_tileType).includes(variation);
     this.index = position;
     this.position = _objectSpread(_objectSpread({}, calculatePosition(position)), {}, {
       y: convertTileTypeToHeight(this.tileType)
@@ -7372,6 +7443,10 @@ var TileMap = /*#__PURE__*/function () {
       return _this.tiles[x][z];
     });
 
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_3___default()(this, "getSize", function () {
+      return _this.size;
+    });
+
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_3___default()(this, "isTileAdjacentToType", function (position, tileType) {
       return _this.getAdjacentTiles(position).filter(function (tile) {
         return tile.isType(tileType);
@@ -7408,6 +7483,7 @@ var TileMap = /*#__PURE__*/function () {
           MAP = _MAP_DESCRIPTIONS$lev.MAP,
           HUMAN_STARTING_POSITION = _MAP_DESCRIPTIONS$lev.HUMAN_STARTING_POSITION,
           NATURE_STARTING_POSITION = _MAP_DESCRIPTIONS$lev.NATURE_STARTING_POSITION;
+      this.level = level;
       this.size = MAP.length;
 
       for (var x = 0; x < MAP.length; x++) {
@@ -7429,9 +7505,7 @@ var TileMap = /*#__PURE__*/function () {
       return {
         human: HUMAN_STARTING_POSITION,
         nature: NATURE_STARTING_POSITION
-      }; // this.createCollectible();
-      // const path = this.getPathToTile(this.getTileAt({x: 4, z: 3 }), this.getTileAt({x: 10, z: 10}))
-      // path.forEach(t => t.setOpacity(.3));
+      };
     }
   }, {
     key: "getRandomAdjacentTile",
@@ -7606,6 +7680,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "TILES_TYPES": () => (/* binding */ TILES_TYPES),
 /* harmony export */   "HUMAN_TILES": () => (/* binding */ HUMAN_TILES),
 /* harmony export */   "FOREST_TILES": () => (/* binding */ FOREST_TILES),
+/* harmony export */   "FOREST_OPTIONS": () => (/* binding */ FOREST_OPTIONS),
 /* harmony export */   "WATER_TILE_BASE_VARIATIONS": () => (/* binding */ WATER_TILE_BASE_VARIATIONS),
 /* harmony export */   "DESERT_TILE_BASE_VARIATIONS": () => (/* binding */ DESERT_TILE_BASE_VARIATIONS),
 /* harmony export */   "FOREST_TILE_BASE_VARIATIONS": () => (/* binding */ FOREST_TILE_BASE_VARIATIONS),
@@ -7650,6 +7725,13 @@ var TILES_TYPES = {
 };
 var HUMAN_TILES = (_HUMAN_TILES = {}, _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_HUMAN_TILES, TILES_TYPES.HUMAN, TILES_TYPES.HUMAN), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_HUMAN_TILES, "HUMAN_TOWER", 'humanTileTower'), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_HUMAN_TILES, "HUMAN_WARRIORS_HUT", 'humanTileWarriorsHut'), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_HUMAN_TILES, "HUMAN_BUILDERS_HUT", 'humanTileBuildersHut'), _HUMAN_TILES);
 var FOREST_TILES = (_FOREST_TILES = {}, _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_FOREST_TILES, TILES_TYPES.FOREST, TILES_TYPES.FOREST), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_FOREST_TILES, "FOREST_TOWER", 'forestTileTower'), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_FOREST_TILES, "FOREST_WARRIORS_HUT", 'forestTileWarriorsHut'), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_FOREST_TILES, "FOREST_BUILDERS_HUT", 'forestTileBuildersHut'), _FOREST_TILES);
+var FOREST_OPTIONS = {
+  BASE_TILE: 'BASE_TILE',
+  TOWER_TILE: 'TOWER_TILE',
+  BUILDERS_HUT_TILE: 'BUILDERS_HUT_TILE',
+  WARRIORS_HUT_TILE: 'WARRIORS_HUT_TILE',
+  ATTACK: 'ATTACK'
+};
 var WATER_TILE_BASE_VARIATIONS = [TILES_TYPES.WATER];
 var DESERT_TILE_BASE_VARIATIONS = [TILES_TYPES.DESERT, TILES_TYPES.DESERT, TILES_TYPES.DESERT, 'desertTileA'];
 var FOREST_TILE_BASE_VARIATIONS = [TILES_TYPES.FOREST, TILES_TYPES.FOREST, 'forestTileA', 'forestTileB'];
@@ -7753,6 +7835,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "BASE_TILE_ENERGY_INCREASE": () => (/* binding */ BASE_TILE_ENERGY_INCREASE),
 /* harmony export */   "default": () => (/* binding */ Player)
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/classCallCheck.js");
@@ -7772,6 +7855,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+var BASE_TILE_ENERGY_INCREASE = 5;
+var MIN_ENERGY = 0;
+var MAX_ENERGY = 100;
 
 var Player = /*#__PURE__*/function () {
   function Player(type) {
@@ -7791,6 +7877,38 @@ var Player = /*#__PURE__*/function () {
           delete _this.warriors[target.uuid()];
         }
       };
+    });
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "getBaseTileType", function () {
+      return _map_constants__WEBPACK_IMPORTED_MODULE_4__.TILES_TYPES.HUMAN;
+    });
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "getWarriorsHutVariation", function () {
+      return _map_constants__WEBPACK_IMPORTED_MODULE_4__.HUMAN_TILES.HUMAN_WARRIORS_HUT;
+    });
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "getBuildersHutVariation", function () {
+      return _map_constants__WEBPACK_IMPORTED_MODULE_4__.HUMAN_TILES.HUMAN_BUILDERS_HUT;
+    });
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "getTowerVariation", function () {
+      return _map_constants__WEBPACK_IMPORTED_MODULE_4__.HUMAN_TILES.HUMAN_TOWER;
+    });
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "getUnitScriptName", function () {
+      return 'UnitBehaviour';
+    });
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "buildWarriorsHut", function (destination, startingPosition) {
+      return _this.sendBuilderToTile(_map_TileMap__WEBPACK_IMPORTED_MODULE_5__.default.getTileAt(destination), _this.getWarriorsHutVariation(), startingPosition);
+    });
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "buildBuildersHut", function (destination, startingPosition) {
+      return _this.sendBuilderToTile(_map_TileMap__WEBPACK_IMPORTED_MODULE_5__.default.getTileAt(destination), _this.getBuildersHutVariation(), startingPosition);
+    });
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "buildTower", function (destination, startingPosition) {
+      return _this.sendBuilderToTile(_map_TileMap__WEBPACK_IMPORTED_MODULE_5__.default.getTileAt(destination), _this.getTowerVariation(), startingPosition);
     });
 
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "sendWarriorToTile", function (tile) {
@@ -7817,33 +7935,44 @@ var Player = /*#__PURE__*/function () {
   }
 
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(Player, [{
+    key: "updateEnergy",
+    value: function updateEnergy() {
+      var energy = (_map_TileMap__WEBPACK_IMPORTED_MODULE_5__.default.getTilesByType(this.getBaseTileType()).filter(function (t) {
+        return t.isBaseTile();
+      }).length || 0) * BASE_TILE_ENERGY_INCREASE;
+      this.energy = mage_engine__WEBPACK_IMPORTED_MODULE_3__.math.clamp(energy, MIN_ENERGY, MAX_ENERGY);
+      return this.energy;
+    }
+  }, {
     key: "start",
     value: function start(position) {
       this.initialPosition = position;
     }
   }, {
-    key: "getUnitScriptName",
-    value: function getUnitScriptName() {
-      return 'UnitBehaviour';
+    key: "buildBaseTile",
+    value: function buildBaseTile(destination, startingPosition) {
+      this.updateEnergy();
+      return this.sendBuilderToTile(_map_TileMap__WEBPACK_IMPORTED_MODULE_5__.default.getTileAt(destination), this.getBaseTileType(), startingPosition);
     }
   }, {
     key: "sendBuilderToTile",
     value: function sendBuilderToTile(tile, variation) {
+      var position = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : this.initialPosition;
       var unit = mage_engine__WEBPACK_IMPORTED_MODULE_3__.Models.getModel(this.type, {
         name: "".concat(this.type, "_builder_").concat(Math.random())
       });
-      var start = this.initialPosition;
       var behaviour = unit.addScript(this.getUnitScriptName(), {
-        position: start,
+        position: position,
         builder: true
-      });
-      behaviour.goTo(start, tile).then(function () {
-        return behaviour.buildAtPosition(tile, variation);
       });
       _map_TileMap__WEBPACK_IMPORTED_MODULE_5__.default.setTileState(tile, _map_constants__WEBPACK_IMPORTED_MODULE_4__.TILES_STATES.BUILDING);
       unit.addEventListener(mage_engine__WEBPACK_IMPORTED_MODULE_3__.ENTITY_EVENTS.DISPOSE, this.handleUnitDeath(_constants__WEBPACK_IMPORTED_MODULE_6__.DEATH_REASONS.BUILDING));
       this.builders[unit.uuid()] = unit;
-      return unit;
+      return new Promise(function (resolve) {
+        behaviour.goTo(position, tile).then(function () {
+          return behaviour.buildAtPosition(tile, variation);
+        }).then(resolve);
+      });
     }
   }]);
 
@@ -8114,19 +8243,24 @@ var UnitBehaviour = /*#__PURE__*/function (_BaseScript) {
     value: function buildAtPosition(tile, variation) {
       var _this3 = this;
 
-      if (!this.isBuilder()) return;
-      this.unit.playAnimation(UNIT_ANIMATIONS.BUILD);
-      setTimeout(function () {
-        _this3.unit.playAnimation(UNIT_ANIMATIONS.IDLE);
+      if (!this.isBuilder()) return Promise.resolve();
+      return new Promise(function (resolve) {
+        _this3.unit.playAnimation(UNIT_ANIMATIONS.BUILD);
 
-        if (!_this3.isFriendlyTile(tile)) {
-          _map_TileMap__WEBPACK_IMPORTED_MODULE_9__.default.changeTile(tile.getIndex(), _this3.getFriendlyTileType(), {
-            variation: variation
-          });
+        setTimeout(function () {
+          _this3.unit.playAnimation(UNIT_ANIMATIONS.IDLE);
 
-          _this3.die();
-        }
-      }, 3000);
+          if (!_this3.isFriendlyTile(tile)) {
+            _map_TileMap__WEBPACK_IMPORTED_MODULE_9__.default.changeTile(tile.getIndex(), _this3.getFriendlyTileType(), {
+              variation: variation
+            });
+
+            _this3.die();
+          }
+
+          resolve();
+        }, 3000);
+      });
     }
   }, {
     key: "goTo",
@@ -8391,6 +8525,10 @@ var Humans = /*#__PURE__*/function (_Player) {
 
     _this = _super.call(this, "human");
 
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_7___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2___default()(_this), "getUnitScriptName", function () {
+      return 'HumanBehaviour';
+    });
+
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_7___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2___default()(_this), "hasTooManyBuildersOnMap", function () {
       return Object.keys(_this.builders).length >= MAX_BUILDERS;
     });
@@ -8406,8 +8544,9 @@ var Humans = /*#__PURE__*/function (_Player) {
       }).filter(function (adjacents) {
         return adjacents.length;
       }).sort().pop()); //  TODO: needs to decide which tile to build based on algo?
+      // this.sendBuilderToTile(nextTile, HUMAN_TILES.HUMAN_BUILDERS_HUT);
 
-      _this.sendBuilderToTile(nextTile, _map_constants__WEBPACK_IMPORTED_MODULE_10__.HUMAN_TILES.HUMAN_BUILDERS_HUT);
+      _this.buildBaseTile(nextTile.getIndex());
     });
 
     return _this;
@@ -8423,11 +8562,6 @@ var Humans = /*#__PURE__*/function (_Player) {
       });
       this.initialPosition = initialPosition;
       setInterval(this.expand, 1000); // this.sendWarriorToTile(TileMap.getTileAt({ x: 7, z: 7 }));
-    }
-  }, {
-    key: "getUnitScriptName",
-    value: function getUnitScriptName() {
-      return 'HumanBehaviour';
     }
   }]);
 
@@ -8614,6 +8748,7 @@ var Selector = /*#__PURE__*/function (_BaseScript) {
 
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2___default()(_this), "markEnabled", function (flag) {
       var color = flag ? _this.initialColor : mage_engine__WEBPACK_IMPORTED_MODULE_7__.PALETTES.FRENCH_PALETTE.MANDARIN_RED;
+      _this.enabled = flag;
 
       _this.selector.setColor(color);
     });
@@ -8627,6 +8762,7 @@ var Selector = /*#__PURE__*/function (_BaseScript) {
       var position = _ref.position;
       this.selector = selector;
       this.visible = false;
+      this.enabled = false;
       this.destination = CURSOR_DEFAULT_DESTINATION;
       this.initialColor = this.selector.getColor();
       this.selector.setPosition(_objectSpread(_objectSpread({}, position), {}, {
@@ -8646,14 +8782,19 @@ var Selector = /*#__PURE__*/function (_BaseScript) {
         x: x,
         y: CURSOR_HEIGHT,
         z: z
-      }, 150);
-      this.selector.fadeTo(1, 250);
+      }, 75);
+      this.selector.setVisible(true);
+      this.selector.fadeTo(1, 125);
       this.visible = true;
     }
   }, {
     key: "disappear",
     value: function disappear() {
-      this.selector.fadeTo(0, 250);
+      var _this2 = this;
+
+      this.selector.fadeTo(0, 125).then(function () {
+        return _this2.selector.setVisible(false);
+      });
       this.visible = false;
       this.destination = CURSOR_DEFAULT_DESTINATION;
     }
@@ -8697,6 +8838,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _map_constants__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../map/constants */ "./src/levels/test/map/constants.js");
 /* harmony import */ var _map_TileMap__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../map/TileMap */ "./src/levels/test/map/TileMap.js");
 /* harmony import */ var _Player__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../Player */ "./src/levels/test/players/Player.js");
+/* harmony import */ var _ui_actions_player__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../../../ui/actions/player */ "./src/ui/actions/player.js");
 
 
 
@@ -8715,6 +8857,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 
 
+
 var Nature = /*#__PURE__*/function (_Player) {
   _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4___default()(Nature, _Player);
 
@@ -8727,28 +8870,82 @@ var Nature = /*#__PURE__*/function (_Player) {
 
     _this = _super.call(this, 'nature');
 
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_7___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2___default()(_this), "getUnitScriptName", function () {
+      return 'DuckBehaviour';
+    });
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_7___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2___default()(_this), "getBaseTileType", function () {
+      return _map_constants__WEBPACK_IMPORTED_MODULE_9__.TILES_TYPES.FOREST;
+    });
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_7___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2___default()(_this), "getWarriorsHutVariation", function () {
+      return _map_constants__WEBPACK_IMPORTED_MODULE_9__.FOREST_TILES.FOREST_WARRIORS_HUT;
+    });
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_7___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2___default()(_this), "getBuildersHutVariation", function () {
+      return _map_constants__WEBPACK_IMPORTED_MODULE_9__.FOREST_TILES.FOREST_BUILDERS_HUT;
+    });
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_7___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2___default()(_this), "getTowerVariation", function () {
+      return _map_constants__WEBPACK_IMPORTED_MODULE_9__.FOREST_TILES.FOREST_TOWER;
+    });
+
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_7___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2___default()(_this), "handleMouseClick", function () {
       var _this$selector$getScr = _this.selector.getScript('Selector'),
           visible = _this$selector$getScr.visible,
           destination = _this$selector$getScr.destination;
 
+      var _this$getSelectionTyp = _this.getSelectionType(),
+          _this$getSelectionTyp2 = _this$getSelectionTyp.selection,
+          type = _this$getSelectionTyp2.type,
+          index = _this$getSelectionTyp2.index,
+          option = _this$getSelectionTyp.option;
+
       if (visible && _this.canMouseInteract(destination)) {
-        _this.sendBuilderToTile(_map_TileMap__WEBPACK_IMPORTED_MODULE_10__.default.getTileAt(destination, _map_constants__WEBPACK_IMPORTED_MODULE_9__.TILES_TYPES.FOREST));
+        if (!option) {
+          _this.selectTile(_map_TileMap__WEBPACK_IMPORTED_MODULE_10__.default.getTileAt(destination));
+        } else {
+          switch (type) {
+            case _map_constants__WEBPACK_IMPORTED_MODULE_9__.TILES_TYPES.FOREST:
+            case _map_constants__WEBPACK_IMPORTED_MODULE_9__.FOREST_TILES.FOREST_BUILDERS_HUT:
+              _this.build(option, index, destination);
+
+              break;
+
+            case _map_constants__WEBPACK_IMPORTED_MODULE_9__.FOREST_TILES.FOREST_TOWER:
+              // select target? 
+              break;
+
+            case _map_constants__WEBPACK_IMPORTED_MODULE_9__.FOREST_TILES.FOREST_WARRIORS_HUT:
+              _this.sendWarriorToTile(destination);
+
+              break;
+          }
+        }
       }
+    });
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_7___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2___default()(_this), "clearSelection", function () {
+      mage_engine__WEBPACK_IMPORTED_MODULE_8__.store.dispatch((0,_ui_actions_player__WEBPACK_IMPORTED_MODULE_12__.changeSelectionOption)(false));
+    });
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_7___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2___default()(_this), "canSelectTile", function (tile) {
+      return !tile.isObstacle() && (tile.isWarriorsHut() || tile.isTower() || tile.isBuildersHut() || tile.isStartingTile());
     });
 
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_7___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2___default()(_this), "handleMouseIntersection", function () {
       var intersections = mage_engine__WEBPACK_IMPORTED_MODULE_8__.Input.mouse.getIntersections(true, 'tile');
 
+      var selectorScript = _this.selector.getScript('Selector');
+
       if (intersections.length) {
-        var destinationIndex = intersections[0].element.getData('index');
-        var position = intersections[0].element.getPosition();
-
-        _this.selector.getScript('Selector').appearAt(position, destinationIndex);
-
-        _this.selector.getScript('Selector').markEnabled(_this.canMouseInteract(destinationIndex));
+        var element = intersections[0].element;
+        var destinationIndex = element.getData('index');
+        var position = element.getPosition();
+        selectorScript.appearAt(position, destinationIndex);
+        selectorScript.markEnabled(_this.canMouseInteract(destinationIndex));
       } else {
-        _this.selector.getScript('Selector').disappear();
+        selectorScript.disappear();
       }
     });
 
@@ -8766,22 +8963,101 @@ var Nature = /*#__PURE__*/function (_Player) {
       _map_TileMap__WEBPACK_IMPORTED_MODULE_10__.default.changeTile(this.initialPosition, _map_constants__WEBPACK_IMPORTED_MODULE_9__.TILES_TYPES.FOREST, {
         startingTile: true
       });
-      setInterval(this.handleMouseIntersection, 250);
+      setInterval(this.handleMouseIntersection, 100);
       this.selector = mage_engine__WEBPACK_IMPORTED_MODULE_8__.Models.getModel('selector');
       this.selector.addScript('Selector', {
         position: position
-      }); // this.sendBuilderToTile(TileMap.getTileAt({ x: 8, z: 8 }));
+      });
     }
   }, {
-    key: "getUnitScriptName",
-    value: function getUnitScriptName() {
-      return 'DuckBehaviour';
+    key: "buildBaseTile",
+    value: function buildBaseTile(destination, startingPosition) {
+      var _this2 = this;
+
+      _babel_runtime_helpers_get__WEBPACK_IMPORTED_MODULE_3___default()(_babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_6___default()(Nature.prototype), "buildBaseTile", this).call(this, destination, startingPosition).then(function () {
+        mage_engine__WEBPACK_IMPORTED_MODULE_8__.store.dispatch((0,_ui_actions_player__WEBPACK_IMPORTED_MODULE_12__.updateEnergyLevel)(_this2.energy));
+        mage_engine__WEBPACK_IMPORTED_MODULE_8__.store.dispatch((0,_ui_actions_player__WEBPACK_IMPORTED_MODULE_12__.changeSelectionOption)(false));
+      });
+    }
+  }, {
+    key: "build",
+    value: function build(option, startingPosition, destination) {
+      switch (option) {
+        case _map_constants__WEBPACK_IMPORTED_MODULE_9__.FOREST_OPTIONS.BASE_TILE:
+          this.buildBaseTile(destination, startingPosition);
+          break;
+
+        case _map_constants__WEBPACK_IMPORTED_MODULE_9__.FOREST_OPTIONS.BUILDERS_HUT_TILE:
+          this.buildBuildersHut(destination, startingPosition).then(this.clearSelection);
+          break;
+
+        case _map_constants__WEBPACK_IMPORTED_MODULE_9__.FOREST_OPTIONS.WARRIORS_HUT_TILE:
+          this.buildWarriorsHut(destination, startingPosition).then(this.clearSelection);
+          break;
+
+        case _map_constants__WEBPACK_IMPORTED_MODULE_9__.FOREST_OPTIONS.TOWER_TILE:
+          this.buildTower(destination, startingPosition).then(this.clearSelection);
+          break;
+      }
+    }
+  }, {
+    key: "selectTile",
+    value: function selectTile(tile) {
+      mage_engine__WEBPACK_IMPORTED_MODULE_8__.store.dispatch((0,_ui_actions_player__WEBPACK_IMPORTED_MODULE_12__.changeSelection)({
+        type: tile.isStartingTile() ? tile.getType() : tile.getVariation(),
+        index: tile.getIndex()
+      }));
+    }
+  }, {
+    key: "getSelectionType",
+    value: function getSelectionType() {
+      var _store$getState = mage_engine__WEBPACK_IMPORTED_MODULE_8__.store.getState(),
+          _store$getState$playe = _store$getState.player,
+          selection = _store$getState$playe.selection,
+          option = _store$getState$playe.option;
+
+      return {
+        selection: selection,
+        option: option
+      };
+    }
+  }, {
+    key: "canBuildOnTile",
+    value: function canBuildOnTile(tile) {
+      return _map_TileMap__WEBPACK_IMPORTED_MODULE_10__.default.isTileAdjacentToType(tile.getIndex(), _map_constants__WEBPACK_IMPORTED_MODULE_9__.TILES_TYPES.FOREST) && !tile.isForest() && !tile.isObstacle();
+    }
+  }, {
+    key: "canAttackTile",
+    value: function canAttackTile(tile) {
+      return true;
     }
   }, {
     key: "canMouseInteract",
     value: function canMouseInteract(destination) {
       var destinationTile = _map_TileMap__WEBPACK_IMPORTED_MODULE_10__.default.getTileAt(destination);
-      return _map_TileMap__WEBPACK_IMPORTED_MODULE_10__.default.isTileAdjacentToType(destination, _map_constants__WEBPACK_IMPORTED_MODULE_9__.TILES_TYPES.FOREST) && !destinationTile.isForest() && !destinationTile.isObstacle();
+
+      var _this$getSelectionTyp3 = this.getSelectionType(),
+          selection = _this$getSelectionTyp3.selection,
+          option = _this$getSelectionTyp3.option;
+
+      var type = selection.type;
+
+      if (!option) {
+        return this.canSelectTile(destinationTile);
+      }
+
+      switch (type) {
+        case _map_constants__WEBPACK_IMPORTED_MODULE_9__.TILES_TYPES.FOREST:
+        case _map_constants__WEBPACK_IMPORTED_MODULE_9__.FOREST_TILES.FOREST_BUILDERS_HUT:
+          return this.canBuildOnTile(destinationTile);
+
+        case _map_constants__WEBPACK_IMPORTED_MODULE_9__.FOREST_TILES.FOREST_TOWER:
+          // select target? 
+          break;
+
+        case _map_constants__WEBPACK_IMPORTED_MODULE_9__.FOREST_TILES.FOREST_WARRIORS_HUT:
+          return this.canAttackTile(destinationTile);
+      }
     }
   }]);
 
@@ -9078,6 +9354,42 @@ var updateTileMapStats = function updateTileMapStats() {
 
 /***/ }),
 
+/***/ "./src/ui/actions/player.js":
+/*!**********************************!*\
+  !*** ./src/ui/actions/player.js ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "updateEnergyLevel": () => (/* binding */ updateEnergyLevel),
+/* harmony export */   "changeSelection": () => (/* binding */ changeSelection),
+/* harmony export */   "changeSelectionOption": () => (/* binding */ changeSelectionOption)
+/* harmony export */ });
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./types */ "./src/ui/actions/types.js");
+
+var updateEnergyLevel = function updateEnergyLevel(energy) {
+  return {
+    type: _types__WEBPACK_IMPORTED_MODULE_0__.NATURE_ENERGY_CHANGE,
+    energy: energy
+  };
+};
+var changeSelection = function changeSelection(selection) {
+  return {
+    type: _types__WEBPACK_IMPORTED_MODULE_0__.NATURE_SELECTION_CHANGE,
+    selection: selection
+  };
+};
+var changeSelectionOption = function changeSelectionOption(option) {
+  return {
+    type: _types__WEBPACK_IMPORTED_MODULE_0__.NATURE_SELECTION_OPTION_CHANGE,
+    option: option
+  };
+};
+
+/***/ }),
+
 /***/ "./src/ui/actions/types.js":
 /*!*********************************!*\
   !*** ./src/ui/actions/types.js ***!
@@ -9087,9 +9399,274 @@ var updateTileMapStats = function updateTileMapStats() {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TILE_MAP_STATS_CHANGE": () => (/* binding */ TILE_MAP_STATS_CHANGE)
+/* harmony export */   "TILE_MAP_STATS_CHANGE": () => (/* binding */ TILE_MAP_STATS_CHANGE),
+/* harmony export */   "NATURE_ENERGY_CHANGE": () => (/* binding */ NATURE_ENERGY_CHANGE),
+/* harmony export */   "NATURE_SELECTION_CHANGE": () => (/* binding */ NATURE_SELECTION_CHANGE),
+/* harmony export */   "NATURE_SELECTION_OPTION_CHANGE": () => (/* binding */ NATURE_SELECTION_OPTION_CHANGE)
 /* harmony export */ });
 var TILE_MAP_STATS_CHANGE = 'MAP_STATS_CHANGE';
+var NATURE_ENERGY_CHANGE = 'NATURE_ENERGY_CHANGE';
+var NATURE_SELECTION_CHANGE = 'NATURE_SELECTION_CHANGE';
+var NATURE_SELECTION_OPTION_CHANGE = 'NATURE_SELECTION_OPTION_CHANGE';
+
+/***/ }),
+
+/***/ "./src/ui/gameui/Canvas.js":
+/*!*********************************!*\
+  !*** ./src/ui/gameui/Canvas.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ InfernoCanvasComponent)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/objectWithoutProperties */ "./node_modules/@babel/runtime/helpers/objectWithoutProperties.js");
+/* harmony import */ var _babel_runtime_helpers_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/classCallCheck.js");
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/assertThisInitialized */ "./node_modules/@babel/runtime/helpers/assertThisInitialized.js");
+/* harmony import */ var _babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js");
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/inherits */ "./node_modules/@babel/runtime/helpers/inherits.js");
+/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js");
+/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/getPrototypeOf.js");
+/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! xferno */ "./node_modules/xferno/dist/xferno.js");
+/* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(xferno__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var inferno__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! inferno */ "./node_modules/inferno/index.esm.js");
+
+
+
+
+
+
+
+
+
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_7___default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_6___default()(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_6___default()(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_5___default()(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+
+
+var InfernoCanvasComponent = /*#__PURE__*/function (_Component) {
+  _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4___default()(InfernoCanvasComponent, _Component);
+
+  var _super = _createSuper(InfernoCanvasComponent);
+
+  _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3___default()(InfernoCanvasComponent, [{
+    key: "getChildContext",
+    value: function getChildContext() {
+      var context = this.context,
+          props = this.props,
+          canvasElement = this.canvasElement;
+      var ctx = context && context.ctx || canvasElement && canvasElement.getContext('2d');
+      var realtime = context && context.realtime || props.realtime;
+      return {
+        ctx: ctx,
+        realtime: realtime
+      };
+    }
+  }]);
+
+  function InfernoCanvasComponent(props) {
+    var _this;
+
+    _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1___default()(this, InfernoCanvasComponent);
+
+    _this = _super.call(this, props);
+    _this.refDOM = _this.refDOM.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2___default()(_this));
+    _this.requestAnimationFrameCallback = _this.requestAnimationFrameCallback.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2___default()(_this));
+    return _this;
+  }
+
+  _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3___default()(InfernoCanvasComponent, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.forceUpdate();
+      requestAnimationFrame(this.requestAnimationFrameCallback);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var props = this.props,
+          context = this.context;
+
+      var draw = props.draw,
+          realtime = props.realtime,
+          top = props.top,
+          left = props.left,
+          other = _babel_runtime_helpers_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_0___default()(props, ["draw", "realtime", "top", "left"]); // eslint-disable-line no-unused-vars
+
+
+      requestAnimationFrame(this.requestAnimationFrameCallback);
+
+      if (context.ctx) {
+        return (0,xferno__WEBPACK_IMPORTED_MODULE_8__.normalizeProps)((0,xferno__WEBPACK_IMPORTED_MODULE_8__.createVNode)(1, "div", null, props.children, 0, _objectSpread({}, other), "canvas"));
+      }
+
+      return (0,xferno__WEBPACK_IMPORTED_MODULE_8__.normalizeProps)((0,xferno__WEBPACK_IMPORTED_MODULE_8__.createVNode)(1, "canvas", null, props.children, 0, _objectSpread({}, other), "canvas", this.refDOM));
+    }
+  }, {
+    key: "refDOM",
+    value: function refDOM(element) {
+      this.canvasElement = element;
+    }
+  }, {
+    key: "requestAnimationFrameCallback",
+    value: function requestAnimationFrameCallback(time) {
+      if (this.previousFrameTime !== time) {
+        var props = this.props,
+            context = this.context,
+            canvasElement = this.canvasElement;
+        var draw = props.draw,
+            top = props.top,
+            left = props.left;
+        var ctx = context && context.ctx || canvasElement && canvasElement.getContext('2d');
+        var realtime = context && context.realtime || props.realtime;
+        var delta = 0;
+
+        if (!draw || !ctx) {
+          return;
+        }
+
+        if (realtime) {
+          requestAnimationFrame(this.requestAnimationFrameCallback);
+
+          if (this.previousFrameTime) {
+            delta = time - this.previousFrameTime;
+          } else {
+            this.previousFrameTime = time;
+          }
+
+          this.previousFrameTime = time;
+        }
+
+        if (top || left) {
+          ctx.translate(left, top);
+        }
+
+        draw({
+          time: time,
+          delta: delta,
+          ctx: ctx
+        });
+
+        if (top || left) {
+          ctx.translate(-1 * left, -1 * top); // eslint-disable-line no-magic-numbers
+        }
+      }
+    }
+  }]);
+
+  return InfernoCanvasComponent;
+}(inferno__WEBPACK_IMPORTED_MODULE_9__.Component);
+
+_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_7___default()(InfernoCanvasComponent, "defaultProps", {
+  draw: function draw() {},
+  // eslint-disable-line no-empty-function
+  realtime: false,
+  top: 0,
+  left: 0
+});
+
+
+
+/***/ }),
+
+/***/ "./src/ui/gameui/Map.js":
+/*!******************************!*\
+  !*** ./src/ui/gameui/Map.js ***!
+  \******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! xferno */ "./node_modules/xferno/dist/xferno.js");
+/* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(xferno__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _levels_test_map_TileMap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../levels/test/map/TileMap */ "./src/levels/test/map/TileMap.js");
+/* harmony import */ var _Canvas__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Canvas */ "./src/ui/gameui/Canvas.js");
+
+
+
+
+var mapTileToColor = function mapTileToColor(tile) {
+  if (tile.isWater()) return '#34ace0';
+  if (tile.isEmpty()) return 'transparent';
+  if (tile.isDesert()) return '#ffda79';
+  if (tile.isHuman()) return '#40407a';
+  if (tile.isForest()) return '#33d9b2';
+}; // const drawFlag = (ctx, path, { x, z }, { width, height }) => {
+//     const image = new Image(width, height);
+//     image.src = path;
+//     image.onload = function() {
+//         ctx.drawImage(this, x, z, width, height);
+//     };
+// };
+
+
+var draw = function draw(_ref) {
+  var ctx = _ref.ctx;
+  var _ctx$canvas = ctx.canvas,
+      width = _ctx$canvas.width,
+      height = _ctx$canvas.height;
+  var size = _levels_test_map_TileMap__WEBPACK_IMPORTED_MODULE_1__.default.getSize();
+  var tileHeight = height / size;
+  var tileWidth = width / size;
+  ctx.clearRect(0, 0, width, height);
+
+  for (var _x = 0; _x < size; _x++) {
+    for (var _z = 0; _z < size; _z++) {
+      var tile = _levels_test_map_TileMap__WEBPACK_IMPORTED_MODULE_1__.default.getTileAt({
+        x: _x,
+        z: _z
+      });
+
+      var _tile$getPosition = tile.getPosition(),
+          x = _tile$getPosition.x,
+          z = _tile$getPosition.z; // const drawingPosition = {
+      //     x: x * tileWidth,
+      //     z: z * tileHeight
+      // };
+      // const size = {
+      //     width: tileWidth,
+      //     height: tileHeight
+      // };
+
+
+      ctx.fillStyle = mapTileToColor(tile);
+      ctx.fillRect(x * tileWidth, z * tileHeight, tileWidth, tileHeight); // if (tile.isStartingTile()) {
+      //     let flagPath = `/img/${tile.isHuman() ? 'human' : 'forest'}_flag.png`;
+      //     drawFlag(ctx, flagPath, drawingPosition, size);
+      // }
+    }
+  }
+};
+
+var Map = function Map() {
+  return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'map widget', (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _Canvas__WEBPACK_IMPORTED_MODULE_2__.default, {
+    "draw": draw,
+    "width": 160,
+    "height": 160
+  }), 2);
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Map);
 
 /***/ }),
 
@@ -9124,16 +9701,147 @@ var TileControlBar = function TileControlBar(_ref) {
     return "width: ".concat(getRatio(value), "%;");
   };
 
-  return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'tile-control-bar-container widget', (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'tile-control-bar', [(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'human tile-control-bar-item', null, 1, {
+  return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'tile-control-bar-container bar-container widget', (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'bar', [(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'human bar-section', null, 1, {
     "style": getStyleString(human)
-  }), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'desert tile-control-bar-item', null, 1, {
+  }), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'desert bar-section', null, 1, {
     "style": getStyleString(desert)
-  }), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'nature tile-control-bar-item', null, 1, {
+  }), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'nature bar-section', null, 1, {
     "style": getStyleString(nature)
   })], 4), 2);
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (TileControlBar);
+
+/***/ }),
+
+/***/ "./src/ui/gameui/controls/EnergyMeter.js":
+/*!***********************************************!*\
+  !*** ./src/ui/gameui/controls/EnergyMeter.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! xferno */ "./node_modules/xferno/dist/xferno.js");
+/* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(xferno__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var EnergyMeter = function EnergyMeter(_ref) {
+  var _ref$energy = _ref.energy,
+      energy = _ref$energy === void 0 ? 52 : _ref$energy;
+  return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'EnergyMeter bar-container widget', [(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "span", "material-icons icon", "bolt", 16), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'bar', [(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'bar-loader', null, 1, {
+    "style": "width: ".concat(energy, "%;")
+  }), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "span", 'value', [energy, (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("%")], 0)], 4), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "ul", 'marker-list', [(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'marker'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'marker'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'marker'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'marker'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'marker'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'marker'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'marker'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'marker'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'marker'), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "li", 'marker')], 4)], 4);
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (EnergyMeter);
+
+/***/ }),
+
+/***/ "./src/ui/gameui/controls/SelectionWidget.js":
+/*!***************************************************!*\
+  !*** ./src/ui/gameui/controls/SelectionWidget.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! xferno */ "./node_modules/xferno/dist/xferno.js");
+/* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(xferno__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../levels/test/map/constants */ "./src/levels/test/map/constants.js");
+
+
+var _IMAGES_MAP, _LABELS_MAP;
+
+
+
+var IMAGES_MAP = (_IMAGES_MAP = {}, _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_IMAGES_MAP, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.BASE_TILE, '/img/forestBase.png'), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_IMAGES_MAP, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.BUILDERS_HUT_TILE, '/img/forestBuildersHut.png'), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_IMAGES_MAP, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.WARRIORS_HUT_TILE, '/img/forestWarriorsHut.png'), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_IMAGES_MAP, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.TOWER_TILE, '/img/forestTower.png'), _IMAGES_MAP);
+var LABELS_MAP = (_LABELS_MAP = {}, _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_LABELS_MAP, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.BASE_TILE, 'forest'), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_LABELS_MAP, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.BUILDERS_HUT_TILE, 'builders'), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_LABELS_MAP, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.WARRIORS_HUT_TILE, 'warriors'), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_LABELS_MAP, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.TOWER_TILE, 'tower'), _LABELS_MAP);
+
+var getSingleItem = function getSingleItem(optionName, option, _onClick) {
+  return (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "li", "item ".concat(option === optionName ? 'selected' : ''), [(0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "img", null, null, 1, {
+    "src": IMAGES_MAP[optionName]
+  }), (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "span", "label", LABELS_MAP[optionName], 0)], 4, {
+    "onClick": function onClick() {
+      return _onClick(optionName);
+    }
+  });
+};
+
+var mapSelectionTypeToOptions = function mapSelectionTypeToOptions(selectionType, option, onClick) {
+  var _TILES_TYPES$FOREST$F;
+
+  return (_TILES_TYPES$FOREST$F = {}, _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILES_TYPES$FOREST$F, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.TILES_TYPES.FOREST, [getSingleItem(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.BASE_TILE, option, onClick), getSingleItem(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.BUILDERS_HUT_TILE, option, onClick), getSingleItem(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.WARRIORS_HUT_TILE, option, onClick), getSingleItem(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.TOWER_TILE, option, onClick)]), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILES_TYPES$FOREST$F, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_TILES.FOREST_BUILDERS_HUT, [getSingleItem(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.BASE_TILE, option, onClick), getSingleItem(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.BUILDERS_HUT_TILE, option, onClick), getSingleItem(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.WARRIORS_HUT_TILE, option, onClick), getSingleItem(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.TOWER_TILE, option, onClick)]), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILES_TYPES$FOREST$F, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_TILES.FOREST_TOWER, []), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILES_TYPES$FOREST$F, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_TILES.FOREST_WARRIORS_HUT, [getSingleItem(_levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_OPTIONS.ATTACK, option, onClick),,]), _TILES_TYPES$FOREST$F)[selectionType];
+};
+
+var mapSelectionTypeToImage = function mapSelectionTypeToImage(selectionType) {
+  var _TILES_TYPES$FOREST$F2;
+
+  return (_TILES_TYPES$FOREST$F2 = {}, _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILES_TYPES$FOREST$F2, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.TILES_TYPES.FOREST, (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "img", null, null, 1, {
+    "src": '/img/forestBase.png'
+  })), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILES_TYPES$FOREST$F2, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_TILES.FOREST_BUILDERS_HUT, (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "img", null, null, 1, {
+    "src": '/img/forestBuildersHut.png'
+  })), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILES_TYPES$FOREST$F2, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_TILES.FOREST_TOWER, (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "img", null, null, 1, {
+    "src": '/img/forestTower.png'
+  })), _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(_TILES_TYPES$FOREST$F2, _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_2__.FOREST_TILES.FOREST_WARRIORS_HUT, (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "img", null, null, 1, {
+    "src": '/img/forestWarriorsHut.png'
+  })), _TILES_TYPES$FOREST$F2)[selectionType];
+};
+
+var SelectionWidget = function SelectionWidget(_ref) {
+  var type = _ref.selection.type,
+      option = _ref.option,
+      onOptionClick = _ref.onOptionClick;
+  console.log(type, option);
+  return (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "div", 'row', (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "div", 'selection widget', [(0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "div", 'box', mapSelectionTypeToImage(type), 0), (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createVNode)(1, "ul", 'selection-list', mapSelectionTypeToOptions(type, option, onOptionClick), 0)], 4), 2);
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SelectionWidget);
+
+/***/ }),
+
+/***/ "./src/ui/gameui/controls/index.js":
+/*!*****************************************!*\
+  !*** ./src/ui/gameui/controls/index.js ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! xferno */ "./node_modules/xferno/dist/xferno.js");
+/* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(xferno__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _EnergyMeter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EnergyMeter */ "./src/ui/gameui/controls/EnergyMeter.js");
+/* harmony import */ var _SelectionWidget__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SelectionWidget */ "./src/ui/gameui/controls/SelectionWidget.js");
+
+
+
+
+var Controls = function Controls(_ref) {
+  var energy = _ref.energy,
+      selection = _ref.selection,
+      option = _ref.option,
+      onOptionClick = _ref.onOptionClick;
+  return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createVNode)(1, "div", 'controls-container', [(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _EnergyMeter__WEBPACK_IMPORTED_MODULE_1__.default, {
+    "energy": energy
+  }), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _SelectionWidget__WEBPACK_IMPORTED_MODULE_2__.default, {
+    "option": option,
+    "selection": selection,
+    "onOptionClick": onOptionClick
+  })], 4);
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Controls);
 
 /***/ }),
 
@@ -9150,15 +9858,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! xferno */ "./node_modules/xferno/dist/xferno.js");
 /* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(xferno__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _TileControlBar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TileControlBar */ "./src/ui/gameui/TileControlBar.js");
+/* harmony import */ var _controls__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./controls */ "./src/ui/gameui/controls/index.js");
+/* harmony import */ var _controls_EnergyMeter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./controls/EnergyMeter */ "./src/ui/gameui/controls/EnergyMeter.js");
+/* harmony import */ var _Map__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Map */ "./src/ui/gameui/Map.js");
+/* harmony import */ var _TileControlBar__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./TileControlBar */ "./src/ui/gameui/TileControlBar.js");
+
+
+
 
 
 
 var Game = function Game(_ref) {
-  var tileStats = _ref.tileStats;
-  return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _TileControlBar__WEBPACK_IMPORTED_MODULE_1__.default, {
-    "tileStats": tileStats
-  });
+  var option = _ref.option,
+      energy = _ref.energy,
+      selection = _ref.selection,
+      onOptionClick = _ref.onOptionClick;
+  return (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createFragment)([(0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _controls__WEBPACK_IMPORTED_MODULE_1__.default, {
+    "option": option,
+    "energy": energy,
+    "selection": selection,
+    "onOptionClick": onOptionClick
+  }), (0,xferno__WEBPACK_IMPORTED_MODULE_0__.createComponentVNode)(2, _Map__WEBPACK_IMPORTED_MODULE_3__.default)], 0);
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Game);
@@ -9228,9 +9948,73 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./game */ "./src/ui/reducers/game.js");
+/* harmony import */ var _player__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./player */ "./src/ui/reducers/player.js");
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  game: _game__WEBPACK_IMPORTED_MODULE_0__.default
+  game: _game__WEBPACK_IMPORTED_MODULE_0__.default,
+  player: _player__WEBPACK_IMPORTED_MODULE_1__.default
+});
+
+/***/ }),
+
+/***/ "./src/ui/reducers/player.js":
+/*!***********************************!*\
+  !*** ./src/ui/reducers/player.js ***!
+  \***********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../levels/test/map/constants */ "./src/levels/test/map/constants.js");
+/* harmony import */ var _actions_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../actions/types */ "./src/ui/actions/types.js");
+
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+
+
+var DEFAULT_STATE = {
+  energy: 0,
+  selection: {
+    type: _levels_test_map_constants__WEBPACK_IMPORTED_MODULE_1__.TILES_TYPES.FOREST,
+    index: {
+      x: 2,
+      z: 2
+    }
+  },
+  option: false
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function () {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : DEFAULT_STATE;
+  var action = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+  switch (action.type) {
+    case _actions_types__WEBPACK_IMPORTED_MODULE_2__.NATURE_ENERGY_CHANGE:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        energy: action.energy
+      });
+
+    case _actions_types__WEBPACK_IMPORTED_MODULE_2__.NATURE_SELECTION_CHANGE:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        selection: action.selection
+      });
+
+    case _actions_types__WEBPACK_IMPORTED_MODULE_2__.NATURE_SELECTION_OPTION_CHANGE:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        option: action.option
+      });
+
+    default:
+      return state;
+  }
 });
 
 /***/ }),
@@ -9251,8 +10035,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! xferno */ "./node_modules/xferno/dist/xferno.js");
 /* harmony import */ var xferno__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(xferno__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var mage_engine__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! mage-engine */ "../Mage/dist/mage.js");
-/* harmony import */ var _gameui__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./gameui */ "./src/ui/gameui/index.js");
-/* harmony import */ var _LoadingScreen__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./LoadingScreen */ "./src/ui/LoadingScreen.js");
+/* harmony import */ var _actions_player__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./actions/player */ "./src/ui/actions/player.js");
+/* harmony import */ var _gameui__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./gameui */ "./src/ui/gameui/index.js");
+/* harmony import */ var _LoadingScreen__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./LoadingScreen */ "./src/ui/LoadingScreen.js");
 
 
 
@@ -9264,24 +10049,38 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 
 
+
 var Root = function Root(_ref) {
   var loadingScreenVisible = _ref.loadingScreenVisible,
-      tileStats = _ref.tileStats;
-  return loadingScreenVisible ? (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createComponentVNode)(2, _LoadingScreen__WEBPACK_IMPORTED_MODULE_4__.default) : (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createComponentVNode)(2, _gameui__WEBPACK_IMPORTED_MODULE_3__.default, {
-    "tileStats": tileStats
+      tileStats = _ref.tileStats,
+      energy = _ref.energy,
+      selection = _ref.selection,
+      option = _ref.option,
+      onOptionClick = _ref.onOptionClick;
+  return loadingScreenVisible ? (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createComponentVNode)(2, _LoadingScreen__WEBPACK_IMPORTED_MODULE_5__.default) : (0,xferno__WEBPACK_IMPORTED_MODULE_1__.createComponentVNode)(2, _gameui__WEBPACK_IMPORTED_MODULE_4__.default, {
+    "option": option,
+    "tileStats": tileStats,
+    "energy": energy,
+    "selection": selection,
+    "onOptionClick": onOptionClick
   });
 };
 
 var mapStateToProps = function mapStateToProps(_ref2) {
   var ui = _ref2.ui,
-      game = _ref2.game;
-  return _objectSpread({
+      game = _ref2.game,
+      player = _ref2.player;
+  return _objectSpread(_objectSpread({
     loadingScreenVisible: ui.loadingScreenVisible
-  }, game);
+  }, game), player);
 };
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-  return {};
+  return {
+    onOptionClick: function onOptionClick(option) {
+      return dispatch((0,_actions_player__WEBPACK_IMPORTED_MODULE_3__.changeSelectionOption)(option));
+    }
+  };
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,mage_engine__WEBPACK_IMPORTED_MODULE_2__.connect)(mapStateToProps, mapDispatchToProps)(Root));
@@ -11732,7 +12531,7 @@ var config = {
   },
   lights: {
     shadows: true,
-    shadowType: SHADOW_TYPES.SOFT,
+    shadowType: SHADOW_TYPES.HARD,
     textureAnisotropy: 1
   },
   physics: {

@@ -35,7 +35,7 @@ export const BACKGROUND = 0xdff9fb;//0xddf3f5;
 
 const DOF_OPTIONS = {
     focus: 1.0,
-    aperture: 0.0002,//0.0001,
+    aperture: .001,//0.0002,//0.0001,
     maxblur: 0.01//0.01
 };
 
@@ -57,13 +57,13 @@ export default class Test extends Level {
             intensity: 1
         });
 
-        this.sunLight = new SunLight({ color: 0xff9f43, intensity: 1, far: 20 });
+        this.sunLight = new SunLight({ color: 0xffffff, intensity: 1, far: 20, mapSize: 2048 });
         this.sunLight.setPosition({ y: 4, z: -3, x: -3 });
     }
 
     addSky() {
         this.sky = new Sky({});
-        this.azimuth = .01;
+        this.azimuth = .1;
         this.sky.setSun(30, this.azimuth, 100);
         window.sky = this.sky;
     }
@@ -85,7 +85,7 @@ export default class Test extends Level {
         Scene.setBackground(0xff9f43);
         Scene.setRendererOutputEncoding(THREE.sRGBEncoding);
         PostProcessing.add(EFFECTS.HUE_SATURATION, SATURATION_OPTIONS);
-        // PostProcessing.add(EFFECTS.DEPTH_OF_FIELD, DOF_OPTIONS);
+        PostProcessing.add(EFFECTS.DEPTH_OF_FIELD, DOF_OPTIONS);
     }
 
     createWorld() {
@@ -101,12 +101,13 @@ export default class Test extends Level {
         window.tm = TileMap;
     }
 
-    onUpdate = (dt) => {
-        this.azimuth += 0.001 * dt;
-        if (this.sky) {
-            this.sky.setSun(30, this.azimuth, 100);
-        }
-    }
+    // onUpdate = (dt) => {
+    //     this.azimuth += 0.001 * dt;
+    //     if (this.sky) {
+    //         console.log(this.azimuth);
+    //         this.sky.setSun(30, this.azimuth, 100);
+    //     }
+    // }
 
     onCreate() {
         Scripts.create('WormBlock', WormBlock);

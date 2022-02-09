@@ -1,0 +1,78 @@
+.EnergyMeter {
+    width: calc(100% - 16px);
+
+    &.bar-container {
+        height: 16px;
+        line-height: 16px;
+        margin: 8px 0px;
+        display: flex;
+        padding: 2px;
+        flex: 0 1 auto;
+        flex-direction: row;
+        position: relative;
+        margin-bottom: 0;
+        
+        & .icon {
+            color: #2c2c54;
+            text-shadow: 1px 1px 1px #ffb142;
+            line-height: 11px;
+            font-size: 1.5rem;
+            padding: 4px;
+        }
+        
+        & .bar {
+            border-radius: 4px;
+            padding: 0;
+            line-height: inherit;
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: row;
+            background: rgba(255, 255, 255, .4);
+        }
+
+        .bar-loader {
+            background: #34ace0;
+            height: 16px;
+            border-radius: 4px;
+            box-shadow: inset -1px -3px #227093;
+            transition: width 5s ease-in;
+        }
+          
+        .value {
+            color: #666;
+            display: inline-block;
+            margin: 0px 8px;
+            font-weight: bold;
+            flex: 1 1 auto;
+            letter-spacing: 1px;
+            text-align: right;
+            line-height: 17px;
+            font-size: .7rem;
+        }
+          
+        .marker-list {
+            padding: 2px 0px;
+            position: absolute;
+            height: 12px;
+            display: none;
+            flex-direction: row;
+            width: calc(100% - 130px);
+            left: 56px;
+            margin: 0;
+            flex-wrap: nowrap;
+            justify-content: space-evenly;
+            align-content: stretch;
+            
+            & .marker {
+                list-style: none;
+                flex: 1 1 auto;
+                border-right: 4px solid rgba(0, 0, 0, .7);
+                // box-shadow: 2px 0px black;
+                
+                &:last-child {
+                    border-right: none;
+                }
+            }
+        }
+    }
+}

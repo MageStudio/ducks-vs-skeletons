@@ -174,16 +174,19 @@ export default class UnitBehaviour extends BaseScript {
     }
 
     buildAtPosition(tile, variation) {
-        if (!this.isBuilder()) return;
+        if (!this.isBuilder()) return Promise.resolve();
 
-        this.unit.playAnimation(UNIT_ANIMATIONS.BUILD);
-        setTimeout(() => {
-            this.unit.playAnimation(UNIT_ANIMATIONS.IDLE);
-            if (!this.isFriendlyTile(tile)) {
-                TileMap.changeTile(tile.getIndex(), this.getFriendlyTileType(), { variation });
-                this.die();
-            }
-        }, 3000)
+        return new Promise(resolve => {
+            this.unit.playAnimation(UNIT_ANIMATIONS.BUILD);
+            setTimeout(() => {
+                this.unit.playAnimation(UNIT_ANIMATIONS.IDLE);
+                if (!this.isFriendlyTile(tile)) {
+                    TileMap.changeTile(tile.getIndex(), this.getFriendlyTileType(), { variation });
+                    this.die();
+                }
+                resolve();
+            }, 3000)
+        })
     }
 
     goTo(startingPosition, tile) {

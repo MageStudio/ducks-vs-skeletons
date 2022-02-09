@@ -13,7 +13,9 @@ import {
     TILE_DETAILS_RELATIVE_POSITION,
     WATER_TILE_COLOR,
     WATER_TILE_OPACITY,
-    TILE_BASE_VARIATIONS_MAP
+    TILE_BASE_VARIATIONS_MAP,
+    FOREST_TILES,
+    HUMAN_TILES
 } from './constants';
 
 const { Vector3 } = THREE;
@@ -34,10 +36,8 @@ const TILE_CRITICAL_DAMAGE_PERCENTAGE = .4;
 const getDetailsListFromTileType = (tileType) =>  (TILES_DETAILS_MAP[tileType]) || DESERT_DETAILS;
 const getRandomDetailForTile = (tileType) => math.pickRandom(getDetailsListFromTileType(tileType));
 const shouldRenderDetailsForTiletype = (tileType) => Math.random() > TILES_RANDOMNESS_MAP[tileType];
-const getRandomVariationForTile = tileType => {
-    const variations = TILE_BASE_VARIATIONS_MAP[tileType] || [tileType] 
-    return math.pickRandom(variations);
-}
+const getVariationsForTyleTipe = tileType => TILE_BASE_VARIATIONS_MAP[tileType] || [tileType];
+const getRandomVariationForTile = tileType => math.pickRandom(getVariationsForTyleTipe(tileType));
 
 const convertTileTypeToHeight = (tileType) => ({
     [TILES_TYPES.WATER]: -.05, 
@@ -62,6 +62,7 @@ export default class Tile {
         
         this.tileType = tileType;
         this.variation = variation;
+        this.baseTile = getVariationsForTyleTipe(tileType).includes(variation);
         
         this.index = position;
         this.position = {
@@ -99,10 +100,17 @@ export default class Tile {
     isHuman = () => this.tileType === TILES_TYPES.HUMAN;
     isWater = () => this.tileType === TILES_TYPES.WATER;
     isEmpty = () => this.tileType === TILES_TYPES.EMPTY;
+    isWarriorsHut = () => this.variation === FOREST_TILES.FOREST_WARRIORS_HUT || this.variation === HUMAN_TILES.HUMAN_WARRIORS_HUT;
+    isBuildersHut = () => this.variation === FOREST_TILES.FOREST_BUILDERS_HUT || this.variation === HUMAN_TILES.HUMAN_BUILDERS_HUT;
+    isTower = () => this.variation === FOREST_TILES.FOREST_TOWER || this.variation === HUMAN_TILES.HUMAN_TOWER;
 
+    isBaseTile = () => Boolean(this.baseTile);
+    isStartingTile = () => Boolean(this.startingTile);
     isObstacle = () => this.isWater() || this.isEmpty();
 
     isType = tileType => this.tileType === tileType;
+    getType = () => this.tileType;
+    getVariation = () => this.variation;
 
     setState = state => this.state = state;
     getState = () => this.state;

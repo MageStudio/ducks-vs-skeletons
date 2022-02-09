@@ -1,5 +1,8 @@
 @import 'style/M.css';
-@import 'style/ui.css';
+// @import 'style/ui.css';
 
 @import './ui/gameui/gameui.scss';
 @import './ui/gameui/tilecontrolbar.scss';
+@import './ui/gameui/controls/controls.scss';
+@import './ui/gameui/controls/energymeter.scss';
+@import './ui/gameui/map.scss';

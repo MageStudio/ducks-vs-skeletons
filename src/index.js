@@ -80,7 +80,7 @@ const config = {
 
     lights: {
         shadows: true,
-        shadowType: SHADOW_TYPES.SOFT,
+        shadowType: SHADOW_TYPES.HARD,
         textureAnisotropy: 1
     },
 

@@ -1,0 +1,17 @@
+ 
+.map {
+    position: absolute;
+    height: 164px;
+    width: 160px;
+    top: calc(100vh - 196px);
+    left: calc(100vw - 195px);
+    background: #c1c1c1e8;
+    padding: 10px;
+    border-radius: 4px;
+    border: 2px solid #2c2c54;
+    box-shadow: 3px 4px 0px #2c2c54;
+
+    & canvas {
+        position: relative;
+    }
+}
