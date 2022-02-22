@@ -1,4 +1,5 @@
-import { BaseScript, constants, PALETTES } from 'mage-engine';
+import { BaseScript, constants, Models, PALETTES } from 'mage-engine';
+import { FOREST_OPTIONS, FOREST_TILES, TILES_TYPES, TILE_SCALE } from '../../map/constants';
 
 const CURSOR_HEIGHT = .25;
 const CURSOR_SCALE = {
@@ -39,6 +40,9 @@ export default class Selector extends BaseScript {
         this.selector.setMaterialFromName(MATERIALS.STANDARD, CURSOR_MATERIAL_PROPERTIES);
         this.selector.setScale(CURSOR_SCALE);
         this.selector.setOpacity(0);
+
+        this.previewModel = undefined;
+        this.previewOption = undefined;
     }
 
     appearAt({ x, z }, destination) {
@@ -60,5 +64,39 @@ export default class Selector extends BaseScript {
             .then(() => this.selector.setVisible(false));
         this.visible = false;
         this.destination = CURSOR_DEFAULT_DESTINATION;
+    }
+
+    showPreview(option) {
+        if (this.previewOption === option) return;
+        this.previewOption = option;
+
+        if (this.previewModel) {
+           this.removePreview();
+        }
+
+        const requiredModel = ({
+            [FOREST_OPTIONS.BASE_TILE]: TILES_TYPES.FOREST,
+            [FOREST_OPTIONS.BUILDERS_HUT_TILE]: FOREST_TILES.FOREST_WARRIORS_HUT,
+            [FOREST_OPTIONS.WARRIORS_HUT_TILE]: FOREST_TILES.FOREST_BUILDERS_HUT,
+            [FOREST_OPTIONS.TOWER_TILE]: FOREST_TILES.FOREST_TOWER
+        })[option];
+
+        console.log('requiredModel', requiredModel);
+
+        this.previewModel = Models.getModel(requiredModel, { name: `preview_forest_${requiredModel}` });
+        this.selector.add(this.previewModel);
+        this.previewModel.setPosition({ y: .5 });
+        this.previewModel.setScale({ x: 1.8, y: 1.8, z: 1.8});
+        this.previewModel.setOpacity(.6);
+        this.previewModel.toggleShadows(false);
+    }
+
+    removePreview() {
+        if (this.previewModel) {
+            this.selector.remove(this.previewModel);
+            this.previewModel.dispose();
+            this.previewModel = null;
+            this.previewOption = undefined;
+        }
     }
 }

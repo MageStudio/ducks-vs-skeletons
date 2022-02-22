@@ -1,3 +1,7 @@
+import {
+    THREE
+} from 'mage-engine';
+
 export const HUMAN_STARTING_POSITION = {
     x: 0,
     z: 0
@@ -142,6 +146,14 @@ export const TILE_MATERIAL_PROPERTIES = {
     metalness: 0.2,
     roughness: 1.0
 };
+
+export const TILE_MATERIAL_PONG_PROPERTIES = {
+    shininess: 0,
+    reflectivity: 2.5,
+    color: new THREE.Color()
+        .setHSL(0, 0.5, 0.1)
+        .multiplyScalar(1)
+}
 
 export const TILE_COLLECTIBLE_SCALE = {
     x: .3,
