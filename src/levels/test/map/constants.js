@@ -1,3 +1,5 @@
+import { THREE } from "mage-engine";
+
 export const HUMAN_STARTING_POSITION = {
     x: 0,
     z: 0
@@ -117,15 +119,18 @@ export const TILES_RANDOMNESS_MAP = {
 };
 
 export const TILE_SCALE = {
-    x: .97,
-    z: 1.12,
-    y: 1
+    // x: .97,
+    // z: 1.12,
+    // y: 1
+    x: .50,
+    y: .52,
+    z: .56
 };
 
 export const TILE_LARGE_DETAILS_SCALE = {
-    x: .2,
-    y: .2,
-    z: .2
+    x: .8,
+    y: .8,
+    z: .8
 };
 
 export const TILE_DETAILS_SCALE = {
@@ -138,9 +143,14 @@ export const TILE_DETAILS_RELATIVE_POSITION = {
     y: .2
 };
 
+// export const TILE_MATERIAL_PROPERTIES = {
+//     metalness: 0.2,
+//     roughness: 1.0
+// };
+
 export const TILE_MATERIAL_PROPERTIES = {
-    metalness: 0.2,
-    roughness: 1.0
+    roughness: .5,
+    metalness: 0
 };
 
 export const TILE_COLLECTIBLE_SCALE = {

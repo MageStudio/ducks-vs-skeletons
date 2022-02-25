@@ -40,18 +40,18 @@ const getVariationsForTyleTipe = tileType => TILE_BASE_VARIATIONS_MAP[tileType] 
 const getRandomVariationForTile = tileType => math.pickRandom(getVariationsForTyleTipe(tileType));
 
 const convertTileTypeToHeight = (tileType) => ({
-    [TILES_TYPES.WATER]: -.05, 
-    [TILES_TYPES.DESERT]: 0,
-    [TILES_TYPES.HUMAN]: 0,
-    [TILES_TYPES.FOREST]: 0
-})[tileType] || 0;
+    [TILES_TYPES.WATER]: -.5, 
+    [TILES_TYPES.DESERT]: -.4,
+    [TILES_TYPES.HUMAN]: -.4,
+    [TILES_TYPES.FOREST]: -.4
+})[tileType] || -.4;
 
 const calculatePosition = ({ x, z }) => ({
     x: z % 2 === 0 ? x + .5 : x,
     z
 })
 
-export default class Tile {
+export default class Tile { 
 
     constructor(tileType, options = {}) {
         const {
@@ -64,6 +64,8 @@ export default class Tile {
         this.variation = variation;
         this.baseTile = getVariationsForTyleTipe(tileType).includes(variation);
         
+        console.log(this.tileType);
+
         this.index = position;
         this.position = {
             ...calculatePosition(position),
@@ -122,6 +124,7 @@ export default class Tile {
 
         this.tile = Models.getModel(this.variation, { name: `tile_${this.index.x}_${this.index.z}`});
         this.tile.setData('index', this.index);
+        console.log('position', this.position);
         this.tile.setPosition(this.position);
         this.tile.setScale(TILE_SCALE);
         this.tile.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
@@ -141,7 +144,7 @@ export default class Tile {
     applyWaterTileStyle() {
         this.tile.setOpacity(WATER_TILE_OPACITY);
         this.tile.setColor(WATER_TILE_COLOR);
-        this.tile.addScript('Bobbing', { angleOffset: this.position.x  });
+        this.tile.addScript('Bobbing', { angleOffset: this.position.x, offset: this.position.y  });
     }
 
     isDetailATreeOrLargeBuilding(detailName) {
@@ -155,7 +158,7 @@ export default class Tile {
         this.tile.add(startingDetail);
         startingDetail.setScale(TILE_LARGE_DETAILS_SCALE);
 
-        startingDetail.setPosition({ y: .2 });
+        startingDetail.setPosition({ y: 1 });
     }
 
     addRandomDetail() {
