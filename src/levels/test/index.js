@@ -36,8 +36,8 @@ export const BACKGROUND = 0xdff9fb;//0xddf3f5;
 
 const DOF_OPTIONS = {
     focus: 1.0,
-    aperture: .001,//0.0002,//0.0001,
-    maxblur: 0.01//0.01
+    aperture: .0003,//0.0002,//0.0001,
+    maxblur: 0.006//0.01
 };
 
 const SATURATION_OPTIONS = {
@@ -108,14 +108,6 @@ export default class Test extends Level {
         window.n = Nature;
         window.tm = TileMap;
     }
-
-    // onUpdate = (dt) => {
-    //     this.azimuth += 0.001 * dt;
-    //     if (this.sky) {
-    //         console.log(this.azimuth);
-    //         this.sky.setSun(30, this.azimuth, 100);
-    //     }
-    // }
 
     onCreate() {
         Scripts.create('WormBlock', WormBlock);

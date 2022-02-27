@@ -1,4 +1,4 @@
-import { Input, Models, INPUT_EVENTS, store } from "mage-engine";
+import { Input, functions, INPUT_EVENTS, store, Models } from "mage-engine";
 import { FOREST_OPTIONS, FOREST_TILES, TILES_TYPES } from "../../map/constants";
 import TileMap from "../../map/TileMap";
 import Player from "../Player";
@@ -20,11 +20,13 @@ class Nature extends Player {
 
         Input.enable();
         Input.addEventListener(INPUT_EVENTS.MOUSE_DOWN, this.handleMouseClick);
+        Input.addEventListener(INPUT_EVENTS.MOUSE_MOVE, this.handleMouseMove);
         TileMap.changeTile(this.initialPosition, TILES_TYPES.FOREST, { startingTile: true });
-        setInterval(this.handleMouseIntersection, 100)
+        // setInterval(this.handleMouseIntersection, 100)
 
         this.selector = Models.getModel('selector');
         this.selector.addScript('Selector', { position });
+        this.selector.getScript('Selector').disappear();
     }
 
     getUnitScriptName = () => 'DuckBehaviour';
@@ -35,10 +37,7 @@ class Nature extends Player {
     
     buildBaseTile(destination, startingPosition) {
         super.buildBaseTile(destination, startingPosition)
-            .then(() => {
-                store.dispatch(updateEnergyLevel(this.energy));
-                store.dispatch(changeSelectionOption(false));
-            });
+            .then(() => store.dispatch(updateEnergyLevel(this.energy)));
     }
 
     build(option, startingPosition, destination) {
@@ -48,27 +47,41 @@ class Nature extends Player {
                 break;
             case FOREST_OPTIONS.BUILDERS_HUT_TILE:
                 this.buildBuildersHut(destination, startingPosition)
-                    .then(this.clearSelection);
                 break;
             case FOREST_OPTIONS.WARRIORS_HUT_TILE:
                 this.buildWarriorsHut(destination, startingPosition)
-                    .then(this.clearSelection);
                 break;
             case FOREST_OPTIONS.TOWER_TILE:
                 this.buildTower(destination, startingPosition)
-                    .then(this.clearSelection);
                 break;
         }
     }
 
-    handleMouseClick = () => {
-        const { visible, destination } = this.selector.getScript('Selector');
+    handleMouseMove = () => {
+        const { index: destination, position } = this.getInterectingTileData();
         const { selection: { type, index }, option } = this.getSelectionType();
+        const selectorScript = this.selector.getScript('Selector');
 
-        if (visible && this.canMouseInteract(destination)) {
-            if (!option) {
-                this.selectTile(TileMap.getTileAt(destination));
+        if (destination && position) {
+            selectorScript.appearAt(position, destination);
+            if (option) {
+                selectorScript.showPreview(option);
             } else {
+                selectorScript.removePreview();
+            }
+            selectorScript.markEnabled(this.canMouseInteract(destination));
+        }
+    }
+
+    handleMouseClick = () => {
+        const { index: destination } = this.getInterectingTileData();
+        const { selection: { type, index }, option } = this.getSelectionType();
+        const selectorScript = this.selector.getScript('Selector');
+
+        if (this.canMouseInteract(destination)) {
+            if (selectorScript.visible && !option) {
+                this.selectTile(TileMap.getTileAt(destination));
+            } else if (option) {
                 switch(type) {
                     case TILES_TYPES.FOREST:
                     case FOREST_TILES.FOREST_BUILDERS_HUT:
@@ -83,6 +96,10 @@ class Nature extends Player {
                 }
             }
         }
+
+        selectorScript.removePreview();
+        selectorScript.disappear();
+        store.dispatch(changeSelectionOption(false));
     }
 
     clearSelection = () => {
@@ -107,13 +124,14 @@ class Nature extends Player {
             !tile.isObstacle();
     }
 
-    canSelectTile = (tile) =>
+    canSelectTile = (tile) => (
         !tile.isObstacle() && (
-        tile.isWarriorsHut() ||
-        tile.isTower() ||
-        tile.isBuildersHut() ||
-        tile.isStartingTile()
-    ); 
+            tile.isWarriorsHut() ||
+            tile.isTower() ||
+            tile.isBuildersHut() ||
+            tile.isStartingTile()
+        )
+    ) 
 
     canAttackTile(tile) {
         return true;
@@ -138,6 +156,20 @@ class Nature extends Player {
             case FOREST_TILES.FOREST_WARRIORS_HUT:
                 return this.canAttackTile(destinationTile);
         }
+    }
+
+    getInterectingTileData() {
+        const intersections = Input.mouse.getIntersections(true, 'tile');
+
+        if (intersections.length) {
+            const { element } = intersections[0];
+            const index = element.getData('index');
+            const position = element.getPosition();
+
+            return { index, position };
+        }
+
+        return { };
     }
 
     handleMouseIntersection = () => {

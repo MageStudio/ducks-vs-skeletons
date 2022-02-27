@@ -221,6 +221,14 @@ export const TILE_MATERIAL_PROPERTIES = {
     metalness: 0
 };
 
+export const TILE_MATERIAL_PONG_PROPERTIES = {
+    shininess: 0,
+    reflectivity: 2.5,
+    color: new THREE.Color()
+        .setHSL(0, 0.5, 0.1)
+        .multiplyScalar(1)
+}
+
 export const TILE_COLLECTIBLE_SCALE = {
     x: .3,
     y: .3,
