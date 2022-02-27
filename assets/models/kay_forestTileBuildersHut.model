@@ -1,0 +1,17 @@
+# Made using Asset Forge (2.1.1)
+
+:materials
+
+[name:Green;color:RGBA(0.065, 0.501, 0.266, 1.000);scale:(1.0, 1.0);shader:Default;valueA:0.5;valueB:0;]
+[name:BrownDark;color:RGBA(0.327, 0.102, 0.059, 1.000);scale:(1.0, 1.0);shader:Default;valueA:0.5;valueB:0;]
+[name:Yellow;color:RGBA(1.000, 0.505, 0.018, 1.000);scale:(1.0, 1.0);shader:Default;valueA:0.5;valueB:0;]
+[name:Brown;color:RGBA(0.578, 0.233, 0.115, 1.000);scale:(1.0, 1.0);shader:Default;valueA:0.5;valueB:0;]
+[name:Beige;color:RGBA(0.703, 0.425, 0.207, 1.000);scale:(1.0, 1.0);shader:Default;valueA:0.5;valueB:0;]
+[name:Stone;color:RGBA(0.192, 0.228, 0.246, 1.000);scale:(1.0, 1.0);shader:Default;valueA:0.5;valueB:0;]
+[name:White;color:RGBA(0.799, 0.799, 0.799, 1.000);scale:(1.0, 1.0);shader:Default;valueA:0.5;valueB:0;]
+[name:Metal;color:RGBA(0.401, 0.478, 0.517, 1.000);scale:(1.0, 1.0);shader:Default;valueA:0.5;valueB:0;]
+
+:models
+
+[name:;collection:kaykit_medieval;type:hex_forest_detail;position:(0.0000, 1.0000, 0.0000);rotation:(0.0000, 0.0000, 0.0000);scale:(1.0000, 1.0000, 1.0000);group:;locked:False;hidden:False;materials:Green+BrownDark;]
+[name:;collection:kaykit_medieval;type:market;position:(0.0000, 2.0000, 0.0000);rotation:(0.0000, 0.0000, 0.0000);scale:(1.0000, 1.0000, 1.0000);group:;locked:False;hidden:False;materials:Beige+Stone+White+BrownDark+Brown;]

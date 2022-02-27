@@ -45,6 +45,74 @@ export const TILES_TYPES = {
     HUMAN: 'humanTile'
 };
 
+export const TILES_VARIATIONS_TYPES = {
+    BASE: 'BASE',
+    BUILDERS: 'BUILDERS',
+    WARRIORS: 'WARRIORS',
+    TOWER: 'TOWER'
+};
+
+export const TILES_TYPES_VARIATIONS_MAP = {
+    [TILES_TYPES.HUMAN]: {
+        [TILES_VARIATIONS_TYPES.BASE]: {
+            tile: TILES_TYPES.HUMAN,
+            detail: false
+        },
+        [TILES_VARIATIONS_TYPES.BUILDERS]: {
+            tile: TILES_TYPES.HUMAN,
+            detail: 'house'
+        },
+        [TILES_VARIATIONS_TYPES.WARRIORS]: {
+            tile: TILES_TYPES.HUMAN,
+            detail: 'barracks'
+        },
+        [TILES_VARIATIONS_TYPES.TOWER]: {
+            tile: TILES_TYPES.HUMAN,
+            detail: 'watchtower'
+        },
+    },
+    [TILES_TYPES.FOREST]: {
+        [TILES_VARIATIONS_TYPES.BASE]: {
+            tile: TILES_TYPES.FOREST,
+            detail: [
+                'hill',
+                'forest',
+                false,
+                false
+            ]
+        },
+        [TILES_VARIATIONS_TYPES.BUILDERS]: {
+            tile: TILES_TYPES.FOREST,
+            detail: 'market'
+        },
+        [TILES_VARIATIONS_TYPES.WARRIORS]: {
+            tile: TILES_TYPES.FOREST,
+            detail: 'farmplot'
+        },
+        [TILES_VARIATIONS_TYPES.TOWER]: {
+            tile: TILES_TYPES.FOREST,
+            detail: 'lumbermill'
+        },
+    },
+    [TILES_TYPES.DESERT]: {
+        [TILES_VARIATIONS_TYPES.BASE]: {
+            tile: TILES_TYPES.DESERT,
+            detail: [
+                'details_rocks',
+                false,
+                false,
+                false
+            ]
+        }
+    },
+    [TILES_TYPES.WATER]: {
+        [TILES_VARIATIONS_TYPES.BASE]: {
+            tile: TILES_TYPES.WATER,
+            detail: false
+        }
+    }
+}
+
 export const HUMAN_TILES = {
     [TILES_TYPES.HUMAN]: TILES_TYPES.HUMAN,
     HUMAN_TOWER: 'humanTileTower',
@@ -134,13 +202,13 @@ export const TILE_LARGE_DETAILS_SCALE = {
 };
 
 export const TILE_DETAILS_SCALE = {
-    x: .3,
-    y: .3,
-    z: .3
+    x: .9,
+    y: .9,
+    z: .9
 };
 
 export const TILE_DETAILS_RELATIVE_POSITION = {
-    y: .2
+    y: 1
 };
 
 // export const TILE_MATERIAL_PROPERTIES = {

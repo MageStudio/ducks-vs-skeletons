@@ -1,5 +1,5 @@
 import { Models, ENTITY_EVENTS, math } from "mage-engine";
-import { HUMAN_TILES, TILES_STATES, TILES_TYPES } from "../map/constants";
+import { HUMAN_TILES, TILES_STATES, TILES_TYPES, TILES_VARIATIONS_TYPES } from "../map/constants";
 import TileMap from "../map/TileMap";
 import { DEATH_REASONS } from '../constants';
 
@@ -52,11 +52,11 @@ export default class Player {
 
     buildBaseTile(destination, startingPosition) {
         this.updateEnergy();
-        return this.sendBuilderToTile(TileMap.getTileAt(destination), this.getBaseTileType(), startingPosition);
+        return this.sendBuilderToTile(TileMap.getTileAt(destination), TILES_VARIATIONS_TYPES.BASE, startingPosition);
     }
-    buildWarriorsHut = (destination, startingPosition) => this.sendBuilderToTile(TileMap.getTileAt(destination), this.getWarriorsHutVariation(), startingPosition);
-    buildBuildersHut = (destination, startingPosition) => this.sendBuilderToTile(TileMap.getTileAt(destination), this.getBuildersHutVariation(), startingPosition);
-    buildTower = (destination, startingPosition) => this.sendBuilderToTile(TileMap.getTileAt(destination), this.getTowerVariation(), startingPosition);
+    buildWarriorsHut = (destination, startingPosition) => this.sendBuilderToTile(TileMap.getTileAt(destination), TILES_VARIATIONS_TYPES.WARRIORS, startingPosition);
+    buildBuildersHut = (destination, startingPosition) => this.sendBuilderToTile(TileMap.getTileAt(destination), TILES_VARIATIONS_TYPES.BUILDERS, startingPosition);
+    buildTower = (destination, startingPosition) => this.sendBuilderToTile(TileMap.getTileAt(destination), TILES_VARIATIONS_TYPES.TOWER, startingPosition);
 
     sendBuilderToTile(tile, variation, position = this.initialPosition) {
         const unit = Models.getModel(this.type, { name: `${this.type}_builder_${Math.random()}`});

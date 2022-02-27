@@ -1,7 +1,7 @@
 
 import { math } from 'mage-engine';
 import TileMap from '../../map/TileMap';
-import { HUMAN_TILES, TILES_TYPES } from '../../map/constants';
+import { HUMAN_TILES, TILES_TYPES, TILES_VARIATIONS_TYPES } from '../../map/constants';
 import Player from '../Player';
 
 const MAX_BUILDERS = 2;
@@ -15,7 +15,10 @@ class Humans extends Player {
     start(initialPosition) {
         super.start(initialPosition);
 
-        TileMap.changeTile(initialPosition, TILES_TYPES.HUMAN, { startingTile: true });
+        TileMap.changeTile(initialPosition, TILES_TYPES.HUMAN, {
+            variation: TILES_VARIATIONS_TYPES.BASE,
+            startingTile: true
+        });
         this.initialPosition = initialPosition;
 
         setInterval(this.expand, 1000);
@@ -46,7 +49,7 @@ class Humans extends Player {
 
         //  TODO: needs to decide which tile to build based on algo?
         // this.sendBuilderToTile(nextTile, HUMAN_TILES.HUMAN_BUILDERS_HUT);
-        this.buildBaseTile(nextTile.getIndex());
+        this.buildBuildersHut(nextTile.getIndex());
     }
 
 }
