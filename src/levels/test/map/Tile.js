@@ -15,7 +15,9 @@ import {
     WATER_TILE_OPACITY,
     TILE_BASE_VARIATIONS_MAP,
     FOREST_TILES,
-    HUMAN_TILES
+    HUMAN_TILES,
+    TILES_VARIATIONS_TYPES,
+    TILES_TYPES_VARIATIONS_MAP
 } from './constants';
 
 const { Vector3 } = THREE;
@@ -40,30 +42,31 @@ const getVariationsForTyleTipe = tileType => TILE_BASE_VARIATIONS_MAP[tileType] 
 const getRandomVariationForTile = tileType => math.pickRandom(getVariationsForTyleTipe(tileType));
 
 const convertTileTypeToHeight = (tileType) => ({
-    [TILES_TYPES.WATER]: -.05, 
-    [TILES_TYPES.DESERT]: 0,
-    [TILES_TYPES.HUMAN]: 0,
-    [TILES_TYPES.FOREST]: 0
-})[tileType] || 0;
+    [TILES_TYPES.WATER]: -.5, 
+    [TILES_TYPES.DESERT]: -.4,
+    [TILES_TYPES.HUMAN]: -.4,
+    [TILES_TYPES.FOREST]: -.4
+})[tileType] || -.4;
 
 const calculatePosition = ({ x, z }) => ({
     x: z % 2 === 0 ? x + .5 : x,
     z
-})
+});
 
-export default class Tile {
+export default class Tile { 
 
     constructor(tileType, options = {}) {
         const {
-            variation = getRandomVariationForTile(tileType),
+            variation = TILES_VARIATIONS_TYPES.BASE,
             startingTile = false,
             position
         } = options;
         
         this.tileType = tileType;
         this.variation = variation;
-        this.baseTile = getVariationsForTyleTipe(tileType).includes(variation);
-        
+
+        console.log(this.tileType);
+
         this.index = position;
         this.position = {
             ...calculatePosition(position),
@@ -104,7 +107,7 @@ export default class Tile {
     isBuildersHut = () => this.variation === FOREST_TILES.FOREST_BUILDERS_HUT || this.variation === HUMAN_TILES.HUMAN_BUILDERS_HUT;
     isTower = () => this.variation === FOREST_TILES.FOREST_TOWER || this.variation === HUMAN_TILES.HUMAN_TOWER;
 
-    isBaseTile = () => Boolean(this.baseTile);
+    isBaseTile = () => this.variation === TILES_VARIATIONS_TYPES.BASE;
     isStartingTile = () => Boolean(this.startingTile);
     isObstacle = () => this.isWater() || this.isEmpty();
 
@@ -117,11 +120,23 @@ export default class Tile {
 
     isBuilding = () => this.state === TILES_STATES.BUILDING;
 
+    getModelNameFromVariationAndTileType = () => {
+        const { tile, detail } = TILES_TYPES_VARIATIONS_MAP[this.tileType][this.variation];
+
+        return {
+            tile,
+            detail: Array.isArray(detail) ? math.pickRandom(detail) : detail
+        };
+    }
+
     create() {
         if (this.isEmpty()) return;
 
-        this.tile = Models.getModel(this.variation, { name: `tile_${this.index.x}_${this.index.z}`});
+        const { tile, detail } = this.getModelNameFromVariationAndTileType();
+
+        this.tile = Models.getModel(tile, { name: `tile_${this.index.x}_${this.index.z}`});
         this.tile.setData('index', this.index);
+        console.log('position', this.position);
         this.tile.setPosition(this.position);
         this.tile.setScale(TILE_SCALE);
         this.tile.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
@@ -129,8 +144,8 @@ export default class Tile {
 
         if (this.startingTile) {
             this.addStartingDetail();
-        } else {
-            // this.addRandomDetail();
+        } else if (detail) {
+            this.addDetail(detail);
         }
 
         if (this.isWater()) {
@@ -138,10 +153,12 @@ export default class Tile {
         }
     }
 
+    getTile() { return this.tile; }
+
     applyWaterTileStyle() {
         this.tile.setOpacity(WATER_TILE_OPACITY);
         this.tile.setColor(WATER_TILE_COLOR);
-        this.tile.addScript('Bobbing', { angleOffset: this.position.x  });
+        this.tile.addScript('Bobbing', { angleOffset: this.position.x, offset: this.position.y  });
     }
 
     isDetailATreeOrLargeBuilding(detailName) {
@@ -155,20 +172,18 @@ export default class Tile {
         this.tile.add(startingDetail);
         startingDetail.setScale(TILE_LARGE_DETAILS_SCALE);
 
-        startingDetail.setPosition({ y: .2 });
+        startingDetail.setPosition({ y: 1 });
     }
 
-    addRandomDetail() {
-        if (shouldRenderDetailsForTiletype(this.tileType)) {
-            const detailName = getRandomDetailForTile(this.tileType);
-            const details = Models.getModel(detailName, { name: `tile_detail_${Math.random()}` });
+    addDetail(detail) {
+        const details = Models.getModel(detail, { name: `tile_detail_${Math.random()}` });
+        console.log(detail);
 
-            details.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
-            this.tile.add(details);
+        details.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
+        this.tile.add(details);
 
-            details.setScale(this.isDetailATreeOrLargeBuilding(detailName) ? TILE_LARGE_DETAILS_SCALE : TILE_DETAILS_SCALE);
-            details.setPosition(TILE_DETAILS_RELATIVE_POSITION);
-        }
+        details.setScale(TILE_DETAILS_SCALE);
+        details.setPosition(TILE_DETAILS_RELATIVE_POSITION);
     }
 
     startBurning() {

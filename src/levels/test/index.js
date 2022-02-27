@@ -12,6 +12,7 @@ import {
     SunLight,
     Universe,
     PostProcessing,
+    PALETTES,
     Sky
 } from 'mage-engine';
 
@@ -48,24 +49,31 @@ const { EFFECTS } = constants;
 export default class Test extends Level {
 
     addSunLight() {
+        const ambientLight = new AmbientLight({
+            color: PALETTES.FRENCH_PALETTE.SPRAY,
+            intensity: .5
+        });
 
         this.hemisphereLight = new HemisphereLight({
             color: {
-                sky: 0xff9f43,
-                ground: GROUND
+                sky: PALETTES.FRENCH_PALETTE.SQUASH_BLOSSOM,
+                ground: PALETTES.FRENCH_PALETTE.REEF_ENCOUNTER
             },
-            intensity: 1
+            intensity: .5
         });
-
-        this.sunLight = new SunLight({ color: 0xffffff, intensity: 1, far: 20, mapSize: 2048 });
-        this.sunLight.setPosition({ y: 4, z: -3, x: -3 });
+    
+        const sunLight = new SunLight({
+            color: PALETTES.FRENCH_PALETTE.MELON_MELODY,
+            intensity: 1,
+            far: 20,
+            mapSize: 2048
+        });
+        sunLight.setPosition({ y: 4, z: -3, x: -3 });
     }
 
     addSky() {
         this.sky = new Sky({});
-        this.azimuth = .1;
-        this.sky.setSun(30, this.azimuth, 100);
-        window.sky = this.sky;
+        this.sky.setSun(.1, .1, 100);
     }
 
     prepareCamera() {
@@ -84,8 +92,8 @@ export default class Test extends Level {
         Scene.setClearColor(0xff9f43);
         Scene.setBackground(0xff9f43);
         Scene.setRendererOutputEncoding(THREE.sRGBEncoding);
-        PostProcessing.add(EFFECTS.HUE_SATURATION, SATURATION_OPTIONS);
-        PostProcessing.add(EFFECTS.DEPTH_OF_FIELD, DOF_OPTIONS);
+        // PostProcessing.add(EFFECTS.HUE_SATURATION, SATURATION_OPTIONS);
+        // PostProcessing.add(EFFECTS.DEPTH_OF_FIELD, DOF_OPTIONS);
     }
 
     createWorld() {
@@ -109,8 +117,6 @@ export default class Test extends Level {
         Scripts.create('DuckBehaviour', DuckBehaviour);
         Scripts.create('Selector', Selector);
         Scripts.create('Bobbing', Bobbing);
-
-        this.azimuth = .01;
 
         this.createWorld();
         this.prepareCamera();

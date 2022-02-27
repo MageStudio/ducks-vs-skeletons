@@ -13,53 +13,30 @@ const assets = {
             'human': 'assets/models/human.fbx',
             'nature': 'assets/models/duck.fbx',
             
-            'forestTile': 'assets/models/forestTile.glb',
-            'forestTileA': 'assets/models/forestTile_variation_A.glb',
-            'forestTileB': 'assets/models/forestTile_variation_B.glb',
-            'forestTileBuildersHut': 'assets/models/forestTileBuildersHut.glb',
-            'forestTileTower': 'assets/models/forestTileTower.glb',
-            'forestTileWarriorsHut': 'assets/models/forestTileWarriorsHut.glb',
-            
-            'desertTile': 'assets/models/desertTile.glb',
-            'desertTileA': 'assets/models/desertTile_variation_A.glb',
-            // 'forestTile': 'assets/models/tileLow_forest.gltf.glb',
-            // 'desertTile': 'assets/models/tileLow_desert.gltf.glb',
-            // 'humanTile': 'assets/models/tileLow_teamBlue.gltf.glb',
-            // 'humanTile': 'assets/models/building_village.glb',
-            'humanTile': 'assets/models/humanTile.glb',
-            'humanTileTower': 'assets/models/humanTileTower.glb',
-            'humanTileWarriorsHut': 'assets/models/humanTileWarriorsHut.glb',
-            'humanTileBuildersHut': 'assets/models/humanTileBuildersHut.glb',
-            
-            'waterTile': 'assets/models/waterTile.glb',
+            'forestTile': 'assets/models/hex_forest_detail.gltf.glb',//'assets/models/forestTile.glb',
+            'lumbermill': 'assets/models/lumbermill.gltf.glb',
+            'farmplot': 'assets/models/farm_plot.gltf.glb',
+            'market': 'assets/models/market.gltf.glb',
+            'hill': 'assets/models/detail_hill.gltf.glb',
+            'forest': 'assets/models/forest.gltf.glb',
 
-            'humanStart': 'assets/models/skyscraperD.glb',
-            'forestStart': 'assets/models/tree.glb',
+            'desertTile': 'assets/models/hex_sand_detail.gltf.glb',//'assets/models/desertTile.glb',
+            'details_rocks': 'assets/models/detail_rocks.gltf.glb',
+
+            'humanTile': 'assets/models/hex_rock_detail.gltf.glb', //'assets/models/humanTile.glb',
+            'watchtower': 'assets/models/watchtower.gltf.glb',
+            'house': 'assets/models/house.gltf.glb',
+            'barracks': 'assets/models/barracks.gltf.glb',
+
+            
+            'waterTile': 'assets/models/hex_water.gltf.glb',//'assets/models/waterTile.glb',
+
+            'humanStart': 'assets/models/castle.gltf.glb',//'assets/models/skyscraperD.glb',
+            'forestStart': 'assets/models/mill.gltf.glb',//'assets/models/tree.glb',
 
             'star': 'assets/models/star.gltf.glb',
 
-            'shotgun': 'assets/models/shotgun.glb',
-            
-            'desertDetail': 'assets/models/detail_desert.gltf.glb',
-            'desertRockA': 'assets/models/rocksA_desert.gltf.glb',
-            'desertRockB': 'assets/models/rocksB_desert.gltf.glb',
-            'desertPlantA': 'assets/models/plantA_desert.gltf.glb',
-            'desertPlantB': 'assets/models/plantB_desert.gltf.glb',
-            'desertTree': 'assets/models/tree_desert.gltf.glb',
-
-            'forestDetail': 'assets/models/detail_forest.gltf.glb',
-            'forestRockA': 'assets/models/rocksA_forest.gltf.glb',
-            'forestRockB': 'assets/models/rocksB_forest.gltf.glb',
-            'forestPlantA': 'assets/models/plantA_forest.gltf.glb',
-            'forestPlantB': 'assets/models/plantB_forest.gltf.glb',
-            'forestTree': 'assets/models/tree.glb',
-
-            'largeBuildingA': 'assets/models/large_buildingA.glb',
-            'largeBuildingB': 'assets/models/large_buildingB.glb',
-            'largeBuildingC': 'assets/models/large_buildingC.glb',
-            'largeBuildingD': 'assets/models/large_buildingD.glb',
-            'largeBuildingE': 'assets/models/large_buildingE.glb',
-            'largeBuildingG': 'assets/models/large_buildingG.glb',
+            'shotgun': 'assets/models/shotgun.glb'
         },
         textures: {
             'zombie': 'assets/textures/zombieA.png',

@@ -1,6 +1,4 @@
-import {
-    THREE
-} from 'mage-engine';
+import { THREE } from "mage-engine";
 
 export const HUMAN_STARTING_POSITION = {
     x: 0,
@@ -46,6 +44,74 @@ export const TILES_TYPES = {
     FOREST: 'forestTile',
     HUMAN: 'humanTile'
 };
+
+export const TILES_VARIATIONS_TYPES = {
+    BASE: 'BASE',
+    BUILDERS: 'BUILDERS',
+    WARRIORS: 'WARRIORS',
+    TOWER: 'TOWER'
+};
+
+export const TILES_TYPES_VARIATIONS_MAP = {
+    [TILES_TYPES.HUMAN]: {
+        [TILES_VARIATIONS_TYPES.BASE]: {
+            tile: TILES_TYPES.HUMAN,
+            detail: false
+        },
+        [TILES_VARIATIONS_TYPES.BUILDERS]: {
+            tile: TILES_TYPES.HUMAN,
+            detail: 'house'
+        },
+        [TILES_VARIATIONS_TYPES.WARRIORS]: {
+            tile: TILES_TYPES.HUMAN,
+            detail: 'barracks'
+        },
+        [TILES_VARIATIONS_TYPES.TOWER]: {
+            tile: TILES_TYPES.HUMAN,
+            detail: 'watchtower'
+        },
+    },
+    [TILES_TYPES.FOREST]: {
+        [TILES_VARIATIONS_TYPES.BASE]: {
+            tile: TILES_TYPES.FOREST,
+            detail: [
+                'hill',
+                'forest',
+                false,
+                false
+            ]
+        },
+        [TILES_VARIATIONS_TYPES.BUILDERS]: {
+            tile: TILES_TYPES.FOREST,
+            detail: 'market'
+        },
+        [TILES_VARIATIONS_TYPES.WARRIORS]: {
+            tile: TILES_TYPES.FOREST,
+            detail: 'farmplot'
+        },
+        [TILES_VARIATIONS_TYPES.TOWER]: {
+            tile: TILES_TYPES.FOREST,
+            detail: 'lumbermill'
+        },
+    },
+    [TILES_TYPES.DESERT]: {
+        [TILES_VARIATIONS_TYPES.BASE]: {
+            tile: TILES_TYPES.DESERT,
+            detail: [
+                'details_rocks',
+                false,
+                false,
+                false
+            ]
+        }
+    },
+    [TILES_TYPES.WATER]: {
+        [TILES_VARIATIONS_TYPES.BASE]: {
+            tile: TILES_TYPES.WATER,
+            detail: false
+        }
+    }
+}
 
 export const HUMAN_TILES = {
     [TILES_TYPES.HUMAN]: TILES_TYPES.HUMAN,
@@ -121,30 +187,38 @@ export const TILES_RANDOMNESS_MAP = {
 };
 
 export const TILE_SCALE = {
-    x: .97,
-    z: 1.12,
-    y: 1
+    // x: .97,
+    // z: 1.12,
+    // y: 1
+    x: .50,
+    y: .52,
+    z: .56
 };
 
 export const TILE_LARGE_DETAILS_SCALE = {
-    x: .2,
-    y: .2,
-    z: .2
+    x: .8,
+    y: .8,
+    z: .8
 };
 
 export const TILE_DETAILS_SCALE = {
-    x: .3,
-    y: .3,
-    z: .3
+    x: .9,
+    y: .9,
+    z: .9
 };
 
 export const TILE_DETAILS_RELATIVE_POSITION = {
-    y: .2
+    y: 1
 };
 
+// export const TILE_MATERIAL_PROPERTIES = {
+//     metalness: 0.2,
+//     roughness: 1.0
+// };
+
 export const TILE_MATERIAL_PROPERTIES = {
-    metalness: 0.2,
-    roughness: 1.0
+    roughness: .5,
+    metalness: 0
 };
 
 export const TILE_MATERIAL_PONG_PROPERTIES = {
