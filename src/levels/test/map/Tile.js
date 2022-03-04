@@ -65,8 +65,6 @@ export default class Tile {
         this.tileType = tileType;
         this.variation = variation;
 
-        console.log(this.tileType);
-
         this.index = position;
         this.position = {
             ...calculatePosition(position),
@@ -103,9 +101,9 @@ export default class Tile {
     isHuman = () => this.tileType === TILES_TYPES.HUMAN;
     isWater = () => this.tileType === TILES_TYPES.WATER;
     isEmpty = () => this.tileType === TILES_TYPES.EMPTY;
-    isWarriorsHut = () => this.variation === FOREST_TILES.FOREST_WARRIORS_HUT || this.variation === HUMAN_TILES.HUMAN_WARRIORS_HUT;
-    isBuildersHut = () => this.variation === FOREST_TILES.FOREST_BUILDERS_HUT || this.variation === HUMAN_TILES.HUMAN_BUILDERS_HUT;
-    isTower = () => this.variation === FOREST_TILES.FOREST_TOWER || this.variation === HUMAN_TILES.HUMAN_TOWER;
+    isWarriorsHut = () => this.variation === TILES_VARIATIONS_TYPES.WARRIORS;
+    isBuildersHut = () => this.variation === TILES_VARIATIONS_TYPES.BUILDERS;
+    isTower = () => this.variation === TILES_VARIATIONS_TYPES.TOWER;
 
     isBaseTile = () => this.variation === TILES_VARIATIONS_TYPES.BASE;
     isStartingTile = () => Boolean(this.startingTile);
@@ -136,7 +134,6 @@ export default class Tile {
 
         this.tile = Models.getModel(tile, { name: `tile_${this.index.x}_${this.index.z}`});
         this.tile.setData('index', this.index);
-        console.log('position', this.position);
         this.tile.setPosition(this.position);
         this.tile.setScale(TILE_SCALE);
         this.tile.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
@@ -177,7 +174,6 @@ export default class Tile {
 
     addDetail(detail) {
         const details = Models.getModel(detail, { name: `tile_detail_${Math.random()}` });
-        console.log(detail);
 
         details.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
         this.tile.add(details);

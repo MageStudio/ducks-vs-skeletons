@@ -53,9 +53,7 @@ const mapSelectionTypeToImage = (selectionType) => ({
     [FOREST_TILES.FOREST_WARRIORS_HUT]: <img src='/img/forestWarriorsHut.png' />
 }[selectionType])
 
-const SelectionWidget = ({ selection: { type }, option, onOptionClick }) => {
-console.log(type, option);
-return (
+const SelectionWidget = ({ selection: { type }, option, onOptionClick }) => (
     <div className='row'>
         <div class='selection widget'>
             <div class='box'>
@@ -68,5 +66,5 @@ return (
         </div>
     </div>
 );
-}
+
 export default SelectionWidget;

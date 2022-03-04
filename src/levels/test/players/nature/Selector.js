@@ -76,9 +76,9 @@ export default class Selector extends BaseScript {
 
         const requiredModel = ({
             [FOREST_OPTIONS.BASE_TILE]: TILES_TYPES.FOREST,
-            [FOREST_OPTIONS.BUILDERS_HUT_TILE]: FOREST_TILES.FOREST_WARRIORS_HUT,
-            [FOREST_OPTIONS.WARRIORS_HUT_TILE]: FOREST_TILES.FOREST_BUILDERS_HUT,
-            [FOREST_OPTIONS.TOWER_TILE]: FOREST_TILES.FOREST_TOWER
+            [FOREST_OPTIONS.BUILDERS_HUT_TILE]: 'market',
+            [FOREST_OPTIONS.WARRIORS_HUT_TILE]: 'farmplot',
+            [FOREST_OPTIONS.TOWER_TILE]: 'lumbermill'
         })[option];
 
         console.log('requiredModel', requiredModel);
@@ -86,7 +86,6 @@ export default class Selector extends BaseScript {
         this.previewModel = Models.getModel(requiredModel, { name: `preview_forest_${requiredModel}` });
         this.selector.add(this.previewModel);
         this.previewModel.setPosition({ y: .5 });
-        this.previewModel.setScale({ x: 1.8, y: 1.8, z: 1.8});
         this.previewModel.setOpacity(.6);
         this.previewModel.toggleShadows(false);
     }

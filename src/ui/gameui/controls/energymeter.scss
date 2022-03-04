@@ -31,11 +31,24 @@
         }
 
         .bar-loader {
-            background: #34ace0;
             height: 16px;
             border-radius: 4px;
-            box-shadow: inset -1px -3px #227093;
-            transition: width 5s ease-in;
+            transition: width 1s ease-in;
+
+            &.low {
+                background: #e55039;
+                box-shadow: inset -1px -3px #b71540;
+            }
+
+            &.average {
+                background: #f6b93b;
+                box-shadow: inset -1px -3px #e58e26;
+            }
+
+            &.ok {
+                background: #34ace0;
+                box-shadow: inset -1px -3px #227093;
+            }
         }
           
         .value {
@@ -48,31 +61,6 @@
             text-align: right;
             line-height: 17px;
             font-size: .7rem;
-        }
-          
-        .marker-list {
-            padding: 2px 0px;
-            position: absolute;
-            height: 12px;
-            display: none;
-            flex-direction: row;
-            width: calc(100% - 130px);
-            left: 56px;
-            margin: 0;
-            flex-wrap: nowrap;
-            justify-content: space-evenly;
-            align-content: stretch;
-            
-            & .marker {
-                list-style: none;
-                flex: 1 1 auto;
-                border-right: 4px solid rgba(0, 0, 0, .7);
-                // box-shadow: 2px 0px black;
-                
-                &:last-child {
-                    border-right: none;
-                }
-            }
         }
     }
 }

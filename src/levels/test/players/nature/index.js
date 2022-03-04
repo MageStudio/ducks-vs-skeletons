@@ -22,7 +22,6 @@ class Nature extends Player {
         Input.addEventListener(INPUT_EVENTS.MOUSE_DOWN, this.handleMouseClick);
         Input.addEventListener(INPUT_EVENTS.MOUSE_MOVE, this.handleMouseMove);
         TileMap.changeTile(this.initialPosition, TILES_TYPES.FOREST, { startingTile: true });
-        // setInterval(this.handleMouseIntersection, 100)
 
         this.selector = Models.getModel('selector');
         this.selector.addScript('Selector', { position });
@@ -37,7 +36,16 @@ class Nature extends Player {
     
     buildBaseTile(destination, startingPosition) {
         super.buildBaseTile(destination, startingPosition)
-            .then(() => store.dispatch(updateEnergyLevel(this.energy)));
+            .then(this.dispatchCurrentEnergyLevel);
+    }
+
+    updateEnergy() {
+        super.updateEnergy();
+        this.dispatchCurrentEnergyLevel();
+    }
+
+    dispatchCurrentEnergyLevel = () => {
+        store.dispatch(updateEnergyLevel(this.energy));
     }
 
     build(option, startingPosition, destination) {
@@ -47,12 +55,15 @@ class Nature extends Player {
                 break;
             case FOREST_OPTIONS.BUILDERS_HUT_TILE:
                 this.buildBuildersHut(destination, startingPosition)
+                    .then(this.dispatchCurrentEnergyLevel)
                 break;
             case FOREST_OPTIONS.WARRIORS_HUT_TILE:
                 this.buildWarriorsHut(destination, startingPosition)
+                    .then(this.dispatchCurrentEnergyLevel)
                 break;
             case FOREST_OPTIONS.TOWER_TILE:
                 this.buildTower(destination, startingPosition)
+                    .then(this.dispatchCurrentEnergyLevel)
                 break;
         }
     }
