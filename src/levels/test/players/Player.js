@@ -1,9 +1,10 @@
-import { Models, ENTITY_EVENTS, math } from "mage-engine";
-import { HUMAN_TILES, TILES_STATES, TILES_TYPES, TILES_VARIATIONS_TYPES } from "../map/constants";
+import { Models, ENTITY_EVENTS, math, Scripts } from "mage-engine";
+import { TILES_STATES, TILES_TYPES, TILES_VARIATIONS_TYPES } from "../map/constants";
 import TileMap from "../map/TileMap";
 import { DEATH_REASONS } from '../constants';
+import { getEnergyRequirementForTileVariation } from "./energy";
 
-export const BASE_TILE_ENERGY_INCREASE = 5;
+export const BASE_TILE_ENERGY_INCREASE = .2;
 const MIN_ENERGY = 0;
 const MAX_ENERGY = 100;
 
@@ -19,18 +20,23 @@ export default class Player {
     }
 
     updateEnergy() {
-        const energy = (TileMap
+        const increase =  (TileMap
             .getTilesByType(this.getBaseTileType())
             .filter(t => t.isBaseTile())
             .length || 0) * BASE_TILE_ENERGY_INCREASE;
 
-        this.energy = math.clamp(energy, MIN_ENERGY, MAX_ENERGY);
+        console.log(this.energy, increase);
+        
+        this.energy += increase;
+    }
 
-        return this.energy;
+    removeEnergyForVariationBuild(variation) {
+        this.energy -= getEnergyRequirementForTileVariation(variation);
     }
 
     start(position) {
         this.initialPosition = position;
+        this.energyUpdateTimer = setInterval(this.updateEnergy.bind(this), 2000);
     }
 
     handleUnitDeath = (reason) => ({ target }) => {
@@ -44,28 +50,51 @@ export default class Player {
     }
 
     getBaseTileType = () => TILES_TYPES.HUMAN;
-    getWarriorsHutVariation = () => HUMAN_TILES.HUMAN_WARRIORS_HUT;
-    getBuildersHutVariation = () => HUMAN_TILES.HUMAN_BUILDERS_HUT;
-    getTowerVariation = () => HUMAN_TILES.HUMAN_TOWER;
+    getWarriorsHutVariation = () => TILES_VARIATIONS_TYPES.WARRIORS;
+    getBuildersHutVariation = () => TILES_VARIATIONS_TYPES.BUILDERS;
+    getTowerVariation = () => TILES_VARIATIONS_TYPES.TOWER;
     
-    getUnitScriptName = () =>'UnitBehaviour';
+    getUnitScriptName = () => 'UnitBehaviour';
+
+    canBuildVariation(variation) {
+        return this.energy >= getEnergyRequirementForTileVariation(variation);
+    }
 
     buildBaseTile(destination, startingPosition) {
         this.updateEnergy();
         return this.sendBuilderToTile(TileMap.getTileAt(destination), TILES_VARIATIONS_TYPES.BASE, startingPosition);
-    }
-    buildWarriorsHut = (destination, startingPosition) => this.sendBuilderToTile(TileMap.getTileAt(destination), TILES_VARIATIONS_TYPES.WARRIORS, startingPosition);
-    buildBuildersHut = (destination, startingPosition) => this.sendBuilderToTile(TileMap.getTileAt(destination), TILES_VARIATIONS_TYPES.BUILDERS, startingPosition);
-    buildTower = (destination, startingPosition) => this.sendBuilderToTile(TileMap.getTileAt(destination), TILES_VARIATIONS_TYPES.TOWER, startingPosition);
+    };
+
+    buildWarriorsHut = (destination, startingPosition) => (
+        this.canBuildVariation(TILES_VARIATIONS_TYPES.WARRIORS) ?
+            this.sendBuilderToTile(TileMap.getTileAt(destination), TILES_VARIATIONS_TYPES.WARRIORS, startingPosition) :
+            Promise.resolve()
+    );
+
+    buildBuildersHut = (destination, startingPosition) => (
+        this.canBuildVariation(TILES_VARIATIONS_TYPES.BUILDERS) ?
+            this.sendBuilderToTile(TileMap.getTileAt(destination), TILES_VARIATIONS_TYPES.BUILDERS, startingPosition) :
+            Promise.resolve()
+    );
+
+    buildTower = (destination, startingPosition) => (
+        this.canBuildVariation(TILES_VARIATIONS_TYPES.TOWER) ?
+            this.sendBuilderToTile(TileMap.getTileAt(destination), TILES_VARIATIONS_TYPES.TOWER, startingPosition) :
+            Promise.resolve()
+    );
 
     sendBuilderToTile(tile, variation, position = this.initialPosition) {
         const unit = Models.getModel(this.type, { name: `${this.type}_builder_${Math.random()}`});
         const behaviour = unit.addScript(this.getUnitScriptName(), { position, builder: true });
 
+        console.log(behaviour);
+
         TileMap.setTileState(tile, TILES_STATES.BUILDING);
         unit.addEventListener(ENTITY_EVENTS.DISPOSE, this.handleUnitDeath(DEATH_REASONS.BUILDING));
 
         this.builders[unit.uuid()] = unit;
+
+        this.removeEnergyForVariationBuild(variation);
 
         return new Promise(resolve => {
             behaviour

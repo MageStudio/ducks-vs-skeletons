@@ -1,4 +1,4 @@
-import { TILES_TYPES } from "../../levels/test/map/constants";
+import { TILES_TYPES, TILES_VARIATIONS_TYPES } from "../../levels/test/map/constants";
 import {
     NATURE_ENERGY_CHANGE,
     NATURE_SELECTION_CHANGE,
@@ -8,7 +8,7 @@ import {
 const DEFAULT_STATE = {
     energy: 0,
     selection: {
-        type: TILES_TYPES.FOREST,
+        type: TILES_VARIATIONS_TYPES.BASE,
         index: {
             x: 2,
             z: 2

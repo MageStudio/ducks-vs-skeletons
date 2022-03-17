@@ -1,4 +1,5 @@
-import { Models, constants, math, Particles, PARTICLES, THREE } from 'mage-engine';
+import { Models, constants, math, Particles, PARTICLES, THREE, Scripts } from 'mage-engine';
+import EnergyParticleSystem from '../players/nature/EnergyParticleSystem';
 import {
     TILES_DETAILS_MAP,
     TILES_TYPES,
@@ -14,8 +15,6 @@ import {
     WATER_TILE_COLOR,
     WATER_TILE_OPACITY,
     TILE_BASE_VARIATIONS_MAP,
-    FOREST_TILES,
-    HUMAN_TILES,
     TILES_VARIATIONS_TYPES,
     TILES_TYPES_VARIATIONS_MAP
 } from './constants';
@@ -65,8 +64,6 @@ export default class Tile {
         this.tileType = tileType;
         this.variation = variation;
 
-        console.log(this.tileType);
-
         this.index = position;
         this.position = {
             ...calculatePosition(position),
@@ -103,9 +100,9 @@ export default class Tile {
     isHuman = () => this.tileType === TILES_TYPES.HUMAN;
     isWater = () => this.tileType === TILES_TYPES.WATER;
     isEmpty = () => this.tileType === TILES_TYPES.EMPTY;
-    isWarriorsHut = () => this.variation === FOREST_TILES.FOREST_WARRIORS_HUT || this.variation === HUMAN_TILES.HUMAN_WARRIORS_HUT;
-    isBuildersHut = () => this.variation === FOREST_TILES.FOREST_BUILDERS_HUT || this.variation === HUMAN_TILES.HUMAN_BUILDERS_HUT;
-    isTower = () => this.variation === FOREST_TILES.FOREST_TOWER || this.variation === HUMAN_TILES.HUMAN_TOWER;
+    isWarriorsHut = () => this.variation === TILES_VARIATIONS_TYPES.WARRIORS;
+    isBuildersHut = () => this.variation === TILES_VARIATIONS_TYPES.BUILDERS;
+    isTower = () => this.variation === TILES_VARIATIONS_TYPES.TOWER;
 
     isBaseTile = () => this.variation === TILES_VARIATIONS_TYPES.BASE;
     isStartingTile = () => Boolean(this.startingTile);
@@ -136,7 +133,6 @@ export default class Tile {
 
         this.tile = Models.getModel(tile, { name: `tile_${this.index.x}_${this.index.z}`});
         this.tile.setData('index', this.index);
-        console.log('position', this.position);
         this.tile.setPosition(this.position);
         this.tile.setScale(TILE_SCALE);
         this.tile.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
@@ -177,13 +173,25 @@ export default class Tile {
 
     addDetail(detail) {
         const details = Models.getModel(detail, { name: `tile_detail_${Math.random()}` });
-        console.log(detail);
 
         details.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
         this.tile.add(details);
 
         details.setScale(TILE_DETAILS_SCALE);
         details.setPosition(TILE_DETAILS_RELATIVE_POSITION);
+    }
+
+    addEnergyParticleEmitter() {
+        const particles = Particles.addParticleEmitter(new EnergyParticleSystem({
+            texture: 'greenEnergy',
+            strength: 1,
+            size: .2,
+            radius: .5,
+            direction: new Vector3( 0, 1, 0)
+        }));
+
+        particles.emit(Infinity);
+        this.tile.add(particles);
     }
 
     startBurning() {

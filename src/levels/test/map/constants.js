@@ -1,4 +1,5 @@
 import { THREE } from "mage-engine";
+import EnergyParticleSystem from "../players/nature/EnergyParticleSystem";
 
 export const HUMAN_STARTING_POSITION = {
     x: 0,
@@ -111,21 +112,25 @@ export const TILES_TYPES_VARIATIONS_MAP = {
             detail: false
         }
     }
-}
-
-export const HUMAN_TILES = {
-    [TILES_TYPES.HUMAN]: TILES_TYPES.HUMAN,
-    HUMAN_TOWER: 'humanTileTower',
-    HUMAN_WARRIORS_HUT: 'humanTileWarriorsHut',
-    HUMAN_BUILDERS_HUT: 'humanTileBuildersHut'
-}
-
-export const FOREST_TILES = {
-    [TILES_TYPES.FOREST]: TILES_TYPES.FOREST,
-    FOREST_TOWER: 'forestTileTower',
-    FOREST_WARRIORS_HUT: 'forestTileWarriorsHut',
-    FOREST_BUILDERS_HUT: 'forestTileBuildersHut',
 };
+
+export const TILE_PARTICLES = {
+    [TILES_VARIATIONS_TYPES.BASE]: EnergyParticleSystem
+};
+
+// export const HUMAN_TILES = {
+//     [TILES_TYPES.HUMAN]: TILES_TYPES.HUMAN,
+//     HUMAN_TOWER: 'humanTileTower',
+//     HUMAN_WARRIORS_HUT: 'humanTileWarriorsHut',
+//     HUMAN_BUILDERS_HUT: 'humanTileBuildersHut'
+// }
+
+// export const FOREST_TILES = {
+//     [TILES_TYPES.FOREST]: TILES_TYPES.FOREST,
+//     FOREST_TOWER: 'forestTileTower',
+//     FOREST_WARRIORS_HUT: 'forestTileWarriorsHut',
+//     FOREST_BUILDERS_HUT: 'forestTileBuildersHut',
+// };
 
 export const FOREST_OPTIONS = {
     BASE_TILE: 'BASE_TILE',
