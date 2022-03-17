@@ -18,8 +18,6 @@ import {
 
 import TileMap, { HUMAN_DETAILS } from './map/TileMap';
 import SlowRotation from './collectibles/slowRotation';
-import Worm from './worm';
-import WormBlock from './worm/wormBlock';
 import HumanBehaviour from './players/humans/HumanBehaviour';
 import Humans from './players/humans';
 import Nature from './players/nature';
@@ -110,13 +108,12 @@ export default class Test extends Level {
     }
 
     onCreate() {
-        Scripts.create('WormBlock', WormBlock);
-        Scripts.create('slowRotation', SlowRotation);
-        Scripts.create('HumanBehaviour', HumanBehaviour);
-        Scripts.create('BulletBehaviour', BulletBehaviour);
-        Scripts.create('DuckBehaviour', DuckBehaviour);
-        Scripts.create('Selector', Selector);
-        Scripts.create('Bobbing', Bobbing);
+        Scripts.register('slowRotation', SlowRotation);
+        Scripts.register('HumanBehaviour', HumanBehaviour);
+        Scripts.register('BulletBehaviour', BulletBehaviour);
+        Scripts.register('DuckBehaviour', DuckBehaviour);
+        Scripts.register('Selector', Selector);
+        Scripts.register('Bobbing', Bobbing);
 
         this.createWorld();
         this.prepareCamera();

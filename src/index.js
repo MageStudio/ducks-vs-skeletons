@@ -41,7 +41,8 @@ const assets = {
         textures: {
             'zombie': 'assets/textures/zombieA.png',
             'fire': 'assets/textures/fire.png',
-            'waterNormal': 'assets/textures/waterNormals.jpg'
+            'waterNormal': 'assets/textures/waterNormals.jpg',
+            'greenEnergy': 'assets/textures/green_energy.png'
         }
     }
 }

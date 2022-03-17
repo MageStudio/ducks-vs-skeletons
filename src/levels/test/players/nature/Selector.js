@@ -1,5 +1,5 @@
 import { BaseScript, constants, Models, PALETTES } from 'mage-engine';
-import { FOREST_OPTIONS, FOREST_TILES, TILES_TYPES, TILE_SCALE } from '../../map/constants';
+import { FOREST_OPTIONS, TILES_TYPES, TILE_SCALE } from '../../map/constants';
 
 const CURSOR_HEIGHT = .25;
 const CURSOR_SCALE = {

@@ -1,5 +1,5 @@
-import { Input, functions, INPUT_EVENTS, store, Models } from "mage-engine";
-import { FOREST_OPTIONS, FOREST_TILES, TILES_TYPES } from "../../map/constants";
+import { Input, functions, INPUT_EVENTS, store, Models, Scripts } from "mage-engine";
+import { FOREST_OPTIONS, TILES_TYPES, TILES_VARIATIONS_TYPES } from "../../map/constants";
 import TileMap from "../../map/TileMap";
 import Player from "../Player";
 import {
@@ -30,13 +30,11 @@ class Nature extends Player {
 
     getUnitScriptName = () => 'DuckBehaviour';
     getBaseTileType = () => TILES_TYPES.FOREST;
-    getWarriorsHutVariation = () => FOREST_TILES.FOREST_WARRIORS_HUT;
-    getBuildersHutVariation = () => FOREST_TILES.FOREST_BUILDERS_HUT;
-    getTowerVariation = () => FOREST_TILES.FOREST_TOWER;
     
     buildBaseTile(destination, startingPosition) {
         super.buildBaseTile(destination, startingPosition)
-            .then(this.dispatchCurrentEnergyLevel);
+            .then(this.dispatchCurrentEnergyLevel)
+            .then(() => TileMap.addEnergyParticlesToTile(destination))
     }
 
     updateEnergy() {
@@ -94,14 +92,14 @@ class Nature extends Player {
                 this.selectTile(TileMap.getTileAt(destination));
             } else if (option) {
                 switch(type) {
-                    case TILES_TYPES.FOREST:
-                    case FOREST_TILES.FOREST_BUILDERS_HUT:
+                    case TILES_VARIATIONS_TYPES.BASE:
+                    case TILES_VARIATIONS_TYPES.BUILDERS:
                         this.build(option, index, destination);
                         break;
-                    case FOREST_TILES.FOREST_TOWER:
+                    case TILES_VARIATIONS_TYPES.TOWER:
                         // select target? 
                         break;
-                    case FOREST_TILES.FOREST_WARRIORS_HUT:
+                    case TILES_VARIATIONS_TYPES.WARRIORS:
                         this.sendWarriorToTile(destination);
                         break;
                 }
@@ -119,7 +117,7 @@ class Nature extends Player {
 
     selectTile(tile) {
         store.dispatch(changeSelection({
-            type: tile.isStartingTile() ? tile.getType() : tile.getVariation(),
+            type: tile.getVariation(),//tile.isStartingTile() ? tile.getType() : tile.getVariation(),
             index: tile.getIndex()
         }));
     }
@@ -158,13 +156,13 @@ class Nature extends Player {
         }
 
         switch(type) {
-            case TILES_TYPES.FOREST:
-            case FOREST_TILES.FOREST_BUILDERS_HUT:
+            case TILES_VARIATIONS_TYPES.BASE:
+            case TILES_VARIATIONS_TYPES.BUILDERS:
                 return this.canBuildOnTile(destinationTile);
-            case FOREST_TILES.FOREST_TOWER:
+            case TILES_VARIATIONS_TYPES.TOWER:
                 // select target? 
                 break;
-            case FOREST_TILES.FOREST_WARRIORS_HUT:
+            case TILES_VARIATIONS_TYPES.WARRIORS:
                 return this.canAttackTile(destinationTile);
         }
     }

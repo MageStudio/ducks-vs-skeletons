@@ -1,4 +1,4 @@
-import { BaseScript, THREE, BUILTIN } from "mage-engine";
+import { BaseScript, THREE, BUILTIN, Scripts } from "mage-engine";
 
 
 const { Vector3 } = THREE;

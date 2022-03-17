@@ -1,4 +1,5 @@
-import { Models, constants, math, Particles, PARTICLES, THREE } from 'mage-engine';
+import { Models, constants, math, Particles, PARTICLES, THREE, Scripts } from 'mage-engine';
+import EnergyParticleSystem from '../players/nature/EnergyParticleSystem';
 import {
     TILES_DETAILS_MAP,
     TILES_TYPES,
@@ -14,8 +15,6 @@ import {
     WATER_TILE_COLOR,
     WATER_TILE_OPACITY,
     TILE_BASE_VARIATIONS_MAP,
-    FOREST_TILES,
-    HUMAN_TILES,
     TILES_VARIATIONS_TYPES,
     TILES_TYPES_VARIATIONS_MAP
 } from './constants';
@@ -180,6 +179,19 @@ export default class Tile {
 
         details.setScale(TILE_DETAILS_SCALE);
         details.setPosition(TILE_DETAILS_RELATIVE_POSITION);
+    }
+
+    addEnergyParticleEmitter() {
+        const particles = Particles.addParticleEmitter(new EnergyParticleSystem({
+            texture: 'greenEnergy',
+            strength: 1,
+            size: .2,
+            radius: .5,
+            direction: new Vector3( 0, 1, 0)
+        }));
+
+        particles.emit(Infinity);
+        this.tile.add(particles);
     }
 
     startBurning() {

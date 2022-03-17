@@ -1,7 +1,6 @@
 import {
-    TILES_TYPES,
-    FOREST_TILES,
-    FOREST_OPTIONS
+    FOREST_OPTIONS,
+    TILES_VARIATIONS_TYPES
 } from "../../../levels/test/map/constants";
 
 const IMAGES_MAP = {
@@ -26,31 +25,31 @@ const getSingleItem = (optionName, option, onClick) => (
 );
 
 const mapSelectionTypeToOptions = (selectionType, option, onClick) => ({
-    [TILES_TYPES.FOREST]: [
+    [TILES_VARIATIONS_TYPES.BASE]: [
         getSingleItem(FOREST_OPTIONS.BASE_TILE, option, onClick),
         getSingleItem(FOREST_OPTIONS.BUILDERS_HUT_TILE, option, onClick),
         getSingleItem(FOREST_OPTIONS.WARRIORS_HUT_TILE, option, onClick),
         getSingleItem(FOREST_OPTIONS.TOWER_TILE, option, onClick),
     ],
-    [FOREST_TILES.FOREST_BUILDERS_HUT]: [
+    [TILES_VARIATIONS_TYPES.BUILDERS]: [
         getSingleItem(FOREST_OPTIONS.BASE_TILE, option, onClick),
         getSingleItem(FOREST_OPTIONS.BUILDERS_HUT_TILE, option, onClick),
         getSingleItem(FOREST_OPTIONS.WARRIORS_HUT_TILE, option, onClick),
         getSingleItem(FOREST_OPTIONS.TOWER_TILE, option, onClick),
     ],
-    [FOREST_TILES.FOREST_TOWER]: [
+    [TILES_VARIATIONS_TYPES.TOWER]: [
 
     ],
-    [FOREST_TILES.FOREST_WARRIORS_HUT]: [
+    [TILES_VARIATIONS_TYPES.WARRIORS]: [
         getSingleItem(FOREST_OPTIONS.ATTACK, option, onClick),,
     ]
 }[selectionType])
 
 const mapSelectionTypeToImage = (selectionType) => ({
-    [TILES_TYPES.FOREST]: <img src='/img/forestBase.png' />,
-    [FOREST_TILES.FOREST_BUILDERS_HUT]: <img src='/img/forestBuildersHut.png' />,
-    [FOREST_TILES.FOREST_TOWER]: <img src='/img/forestTower.png' />,
-    [FOREST_TILES.FOREST_WARRIORS_HUT]: <img src='/img/forestWarriorsHut.png' />
+    [TILES_VARIATIONS_TYPES.BASE]: <img src='/img/forestBase.png' />,
+    [TILES_VARIATIONS_TYPES.BUILDERS]: <img src='/img/forestBuildersHut.png' />,
+    [TILES_VARIATIONS_TYPES.TOWER]: <img src='/img/forestTower.png' />,
+    [TILES_VARIATIONS_TYPES.WARRIORS]: <img src='/img/forestWarriorsHut.png' />
 }[selectionType])
 
 const SelectionWidget = ({ selection: { type }, option, onOptionClick }) => (

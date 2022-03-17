@@ -1,5 +1,5 @@
-import { Models, ENTITY_EVENTS, math } from "mage-engine";
-import { HUMAN_TILES, TILES_STATES, TILES_TYPES, TILES_VARIATIONS_TYPES } from "../map/constants";
+import { Models, ENTITY_EVENTS, math, Scripts } from "mage-engine";
+import { TILES_STATES, TILES_TYPES, TILES_VARIATIONS_TYPES } from "../map/constants";
 import TileMap from "../map/TileMap";
 import { DEATH_REASONS } from '../constants';
 import { getEnergyRequirementForTileVariation } from "./energy";
@@ -20,10 +20,14 @@ export default class Player {
     }
 
     updateEnergy() {
-        this.energy += (TileMap
+        const increase =  (TileMap
             .getTilesByType(this.getBaseTileType())
             .filter(t => t.isBaseTile())
             .length || 0) * BASE_TILE_ENERGY_INCREASE;
+
+        console.log(this.energy, increase);
+        
+        this.energy += increase;
     }
 
     removeEnergyForVariationBuild(variation) {
@@ -46,11 +50,11 @@ export default class Player {
     }
 
     getBaseTileType = () => TILES_TYPES.HUMAN;
-    getWarriorsHutVariation = () => HUMAN_TILES.HUMAN_WARRIORS_HUT;
-    getBuildersHutVariation = () => HUMAN_TILES.HUMAN_BUILDERS_HUT;
-    getTowerVariation = () => HUMAN_TILES.HUMAN_TOWER;
+    getWarriorsHutVariation = () => TILES_VARIATIONS_TYPES.WARRIORS;
+    getBuildersHutVariation = () => TILES_VARIATIONS_TYPES.BUILDERS;
+    getTowerVariation = () => TILES_VARIATIONS_TYPES.TOWER;
     
-    getUnitScriptName = () =>'UnitBehaviour';
+    getUnitScriptName = () => 'UnitBehaviour';
 
     canBuildVariation(variation) {
         return this.energy >= getEnergyRequirementForTileVariation(variation);
@@ -82,6 +86,8 @@ export default class Player {
     sendBuilderToTile(tile, variation, position = this.initialPosition) {
         const unit = Models.getModel(this.type, { name: `${this.type}_builder_${Math.random()}`});
         const behaviour = unit.addScript(this.getUnitScriptName(), { position, builder: true });
+
+        console.log(behaviour);
 
         TileMap.setTileState(tile, TILES_STATES.BUILDING);
         unit.addEventListener(ENTITY_EVENTS.DISPOSE, this.handleUnitDeath(DEATH_REASONS.BUILDING));
