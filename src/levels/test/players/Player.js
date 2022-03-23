@@ -24,10 +24,8 @@ export default class Player {
             .getTilesByType(this.getBaseTileType())
             .filter(t => t.isBaseTile())
             .length || 0) * BASE_TILE_ENERGY_INCREASE;
-
-        console.log(this.energy, increase);
         
-        this.energy += increase;
+        this.energy = math.clamp(this.energy + increase, MIN_ENERGY, MAX_ENERGY);
     }
 
     removeEnergyForVariationBuild(variation) {
@@ -86,8 +84,6 @@ export default class Player {
     sendBuilderToTile(tile, variation, position = this.initialPosition) {
         const unit = Models.getModel(this.type, { name: `${this.type}_builder_${Math.random()}`});
         const behaviour = unit.addScript(this.getUnitScriptName(), { position, builder: true });
-
-        console.log(behaviour);
 
         TileMap.setTileState(tile, TILES_STATES.BUILDING);
         unit.addEventListener(ENTITY_EVENTS.DISPOSE, this.handleUnitDeath(DEATH_REASONS.BUILDING));
