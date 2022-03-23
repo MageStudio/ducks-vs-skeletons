@@ -4,11 +4,11 @@ import SelectionWidget from "./SelectionWidget";
 const Controls = ({ energy, selection, option, onOptionClick }) => {
     return (
         <div className='controls-container'>
-            <EnergyMeter energy={energy} />
             <SelectionWidget
                 option={option}
                 selection={selection}
                 onOptionClick={onOptionClick}/>
+            <EnergyMeter energy={energy} />
         </div>
     )
 };

@@ -18,10 +18,11 @@ const LABELS_MAP = {
 };
 
 const getSingleItem = (optionName, option, onClick) => (
-    <li class={`item ${option === optionName ? 'selected' : ''}`}  onClick={() => onClick(optionName)} >
-        <img src={IMAGES_MAP[optionName]} />
+    <div
+        class={`option ${option === optionName ? 'selected' : ''}`}
+        onClick={() => onClick(optionName)} >
         <span className="label">{LABELS_MAP[optionName]}</span>
-    </li>
+    </div>
 );
 
 const mapSelectionTypeToOptions = (selectionType, option, onClick) => ({
@@ -53,17 +54,22 @@ const mapSelectionTypeToImage = (selectionType) => ({
 }[selectionType])
 
 const SelectionWidget = ({ selection: { type }, option, onOptionClick }) => (
-    <div className='row'>
-        <div class='selection widget'>
-            <div class='box'>
-                { mapSelectionTypeToImage(type) }
+        <div class='widget'>
+            <h1 class='title'>{ type }</h1>
+            <div class='content'>
+                { mapSelectionTypeToOptions(type, option, onOptionClick) }
             </div>
-            <ul class='selection-list'>
-                { mapSelectionTypeToOptions(type, option, onOptionClick)}
-            </ul>
-
         </div>
-    </div>
 );
+
+// {/* <div class='selection widget'>
+//             <div class='box'>
+//                 { mapSelectionTypeToImage(type) }
+//             </div>
+//             <ul class='selection-list'>
+//                 { mapSelectionTypeToOptions(type, option, onOptionClick)}
+//             </ul>
+
+//         </div> */}
 
 export default SelectionWidget;
