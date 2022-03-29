@@ -7,11 +7,8 @@ import {
     Controls,
     constants,
     THREE,
-    Cube,
     Scripts,
     SunLight,
-    Universe,
-    PostProcessing,
     PALETTES,
     Sky
 } from 'mage-engine';
@@ -25,6 +22,7 @@ import Selector from './players/nature/Selector';
 import BulletBehaviour from './players/humans/BulletBehaviour';
 import DuckBehaviour from './players/nature/DuckBehaviour';
 import Bobbing from './map/Bobbing';
+import { TILE_MATERIAL_PROPERTIES } from './map/constants';
 
 export const WHITE = 0xffffff;
 export const SUNLIGHT = 0xffeaa7;
@@ -42,7 +40,7 @@ const SATURATION_OPTIONS = {
     saturation: 0.4
 };
 
-const { EFFECTS } = constants;
+const { EFFECTS, MATERIALS, TEXTURES } = constants;
 
 export default class Test extends Level {
 
@@ -74,14 +72,33 @@ export default class Test extends Level {
         this.sky.setSun(.1, .1, 100);
     }
 
+    addBox() {
+        this.box = Models.getModel('box');
+        this.box.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
+        this.box.setScale({ x: .6, y: .6, z: .6 });
+        this.box.setPosition({ x: 6.5, y: -.3, z: 6.5});
+    }
+    
+    addDice() {
+        const die_1 = Models.getModel('die', { name: 'die:1' });
+        const die_2 = Models.getModel('die', { name: 'die:2' });
+
+        die_1.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
+        die_2.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
+
+        die_1.setPosition({ z: 5.5, x: -1 });
+        die_2.setPosition({ z: 6.3, x: -.7 });
+        die_1.setRotation({ y: 0.3, z: Math.PI / 2 })
+    }
+
     prepareCamera() {
         Scene.getCamera().setPosition({x: 2, y: 4, z: 0 });
         const orbit = Controls.setOrbitControl();
 
-        orbit.setTarget({ x: 5, y: 0, z: 5 });
+        orbit.setTarget({ x: 6.5, y: 0, z: 6.5 });
         orbit.setMinPolarAngle(0);
         orbit.setMaxPolarAngle(Math.PI/2.5);
-        orbit.setMaxDistance(10);
+        orbit.setMaxDistance(15);
 
         window.camera = Scene.getCamera();
     }
@@ -97,6 +114,8 @@ export default class Test extends Level {
     createWorld() {
         this.addSunLight();
         this.addSky();
+        this.addBox();
+        this.addDice();
         this.prepareSceneEffects();
 
         const { human, nature } = TileMap.generate(0);
