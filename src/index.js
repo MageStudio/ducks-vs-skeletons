@@ -8,6 +8,8 @@ const { SHADOW_TYPES } = constants;
 const assets = {
     '/test': {
         models: {
+            'box': 'assets/models/box.glb',
+            'die': 'assets/models/die.glb',
             'selector': 'assets/models/selector.glb',
             
             'human': 'assets/models/human.fbx',
@@ -42,7 +44,13 @@ const assets = {
             'zombie': 'assets/textures/zombieA.png',
             'fire': 'assets/textures/fire.png',
             'waterNormal': 'assets/textures/waterNormals.jpg',
-            'greenEnergy': 'assets/textures/green_energy.png'
+            'greenEnergy': 'assets/textures/green_energy.png',
+
+            'woodMap': 'assets/textures/Wood_025_basecolor.jpg',
+            'woodAO': 'assets/textures/Wood_025_ambientOcclusion.jpg',
+            'woodBump': 'assets/textures/Wood_025_height.png',
+            'woodNormal': 'assets/textures/Wood_025_normal.jpg',
+            'woodRoughness': 'assets/textures/Wood_025_roughness.jpg',
         }
     }
 }
