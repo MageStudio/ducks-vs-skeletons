@@ -1,4 +1,4 @@
-import { Input, functions, INPUT_EVENTS, store, Models, Scripts } from "mage-engine";
+import { Input, functions, INPUT_EVENTS, store, Models, Scripts, PostProcessing, constants, Element, THREE } from "mage-engine";
 import { FOREST_OPTIONS, TILES_TYPES, TILES_VARIATIONS_TYPES } from "../../map/constants";
 import TileMap from "../../map/TileMap";
 import Player from "../Player";
@@ -23,7 +23,10 @@ class Nature extends Player {
         Input.addEventListener(INPUT_EVENTS.MOUSE_MOVE, this.handleMouseMove);
         TileMap.changeTile(this.initialPosition, TILES_TYPES.FOREST, { startingTile: true });
 
-        this.selector = Models.getModel('selector');
+        this.outline = PostProcessing.add(constants.EFFECTS.SELECTIVE_OUTLINE);
+        this.outline.setSelectedObjects([TileMap.getTileAt(position).getTile()]);
+
+        this.selector = new Element({ body: new THREE.Object3D() });
         this.selector.addScript('Selector', { position });
         this.selector.getScript('Selector').disappear();
     }
@@ -75,10 +78,10 @@ class Nature extends Player {
             selectorScript.appearAt(position, destination);
             if (option) {
                 selectorScript.showPreview(option);
+                selectorScript.markEnabled(this.canMouseInteract(destination));
             } else {
                 selectorScript.removePreview();
             }
-            selectorScript.markEnabled(this.canMouseInteract(destination));
         }
     }
 
@@ -88,7 +91,7 @@ class Nature extends Player {
         const selectorScript = this.selector.getScript('Selector');
 
         if (this.canMouseInteract(destination)) {
-            if (selectorScript.visible && !option) {
+            if (!option) {
                 this.selectTile(TileMap.getTileAt(destination));
             } else if (option) {
                 switch(type) {
@@ -116,6 +119,7 @@ class Nature extends Player {
     }
 
     selectTile(tile) {
+        this.outline.setSelectedObjects([tile.getTile()]);
         store.dispatch(changeSelection({
             type: tile.getVariation(),//tile.isStartingTile() ? tile.getType() : tile.getVariation(),
             index: tile.getIndex()
@@ -134,13 +138,9 @@ class Nature extends Player {
     }
 
     canSelectTile = (tile) => (
-        !tile.isObstacle() && (
-            tile.isWarriorsHut() ||
-            tile.isTower() ||
-            tile.isBuildersHut() ||
-            tile.isStartingTile()
-        )
-    ) 
+        tile.isForest() &&
+        !tile.isObstacle()
+    ) ;
 
     canAttackTile(tile) {
         return true;
@@ -179,22 +179,6 @@ class Nature extends Player {
         }
 
         return { };
-    }
-
-    handleMouseIntersection = () => {
-        const intersections = Input.mouse.getIntersections(true, 'tile');
-        const selectorScript = this.selector.getScript('Selector');
-
-        if (intersections.length) {
-            const { element } = intersections[0];
-            const destinationIndex = element.getData('index');
-            const position = element.getPosition();
-
-            selectorScript.appearAt(position, destinationIndex);
-            selectorScript.markEnabled(this.canMouseInteract(destinationIndex))
-        } else {
-            selectorScript.disappear();
-        }
     }
 }
 

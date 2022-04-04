@@ -10,7 +10,9 @@ import {
     Scripts,
     SunLight,
     PALETTES,
-    Sky
+    Sky,
+    Stats,
+    PostProcessing
 } from 'mage-engine';
 
 import TileMap, { HUMAN_DETAILS } from './map/TileMap';
@@ -37,7 +39,7 @@ const DOF_OPTIONS = {
 };
 
 const SATURATION_OPTIONS = {
-    saturation: 0.4
+    saturation: 0.2
 };
 
 const { EFFECTS, MATERIALS, TEXTURES } = constants;
@@ -104,16 +106,16 @@ export default class Test extends Level {
     }
 
     prepareSceneEffects() {
-        Scene.setClearColor(0xff9f43);
-        Scene.setBackground(0xff9f43);
+        Scene.setClearColor(PALETTES.FRENCH_PALETTE.MELON_MELODY);
+        Scene.setBackground(PALETTES.FRENCH_PALETTE.MELON_MELODY);
         Scene.setRendererOutputEncoding(THREE.sRGBEncoding);
-        // PostProcessing.add(EFFECTS.HUE_SATURATION, SATURATION_OPTIONS);
+        PostProcessing.add(EFFECTS.HUE_SATURATION, SATURATION_OPTIONS);
         // PostProcessing.add(EFFECTS.DEPTH_OF_FIELD, DOF_OPTIONS);
     }
 
     createWorld() {
         this.addSunLight();
-        this.addSky();
+        // this.addSky();
         this.addBox();
         this.addDice();
         this.prepareSceneEffects();
@@ -136,5 +138,11 @@ export default class Test extends Level {
 
         this.createWorld();
         this.prepareCamera();
+
+        const txt = document.querySelector('#txt');
+        const changeFPS = (fps) => {
+            txt.innerText = Math.floor(fps);
+        };
+        Stats.subscribe(changeFPS);
     }
 }
