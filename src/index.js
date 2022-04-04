@@ -60,8 +60,12 @@ const config = {
         h: window ? window.innerHeight : 800,
         w: window ? window.innerWidth : 600,
         ratio: window ? window.innerWidth / window.innerHeight : 600 / 800,
-        frameRate: 60,
+        frameRate: 120,
         alpha: true,
+    },
+
+    postprocessing: {
+        enabled: true
     },
 
     lights: {

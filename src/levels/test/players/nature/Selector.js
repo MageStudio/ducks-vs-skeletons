@@ -31,13 +31,10 @@ export default class Selector extends BaseScript {
         this.enabled = false;
         this.destination = CURSOR_DEFAULT_DESTINATION;
 
-        this.initialColor = this.selector.getColor();
-
         this.selector.setPosition({
             ...position,
             y: CURSOR_HEIGHT
         });
-        this.selector.setMaterialFromName(MATERIALS.STANDARD, CURSOR_MATERIAL_PROPERTIES);
         this.selector.setScale(CURSOR_SCALE);
         this.selector.setOpacity(0);
 
@@ -47,21 +44,21 @@ export default class Selector extends BaseScript {
 
     appearAt({ x, z }, destination) {
         this.destination = destination;
-        this.selector.goTo({ x, y: CURSOR_HEIGHT, z }, 75);
+        this.selector.setPosition({ x, y: CURSOR_HEIGHT, z });
         this.selector.setVisible(true);
-        this.selector.fadeTo(1, 125);
         this.visible = true;
     }
 
     markEnabled = flag => {
-        const color = flag ? this.initialColor : PALETTES.FRENCH_PALETTE.MANDARIN_RED;
+        const opacity = flag ? 1 : 0.2 ;
         this.enabled = flag;
-        this.selector.setColor(color);
+        if (this.previewModel) {
+            this.previewModel.setOpacity(opacity);
+        }
     }
 
     disappear() {
-        this.selector.fadeTo(0, 125)
-            .then(() => this.selector.setVisible(false));
+        this.selector.setVisible(false);
         this.visible = false;
         this.destination = CURSOR_DEFAULT_DESTINATION;
     }
@@ -84,6 +81,7 @@ export default class Selector extends BaseScript {
         this.previewModel = Models.getModel(requiredModel, { name: `preview_forest_${requiredModel}` });
         this.selector.add(this.previewModel);
         this.previewModel.setPosition({ y: .5 });
+        this.previewModel.setScale({ x: .7, y: .7, z: .7 });
         this.previewModel.setOpacity(.6);
         this.previewModel.toggleShadows(false);
     }

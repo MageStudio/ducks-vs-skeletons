@@ -154,6 +154,7 @@ export default class Tile {
     applyWaterTileStyle() {
         this.tile.setOpacity(WATER_TILE_OPACITY);
         this.tile.setColor(WATER_TILE_COLOR);
+        this.tile.toggleShadows(false);
         this.tile.addScript('Bobbing', { angleOffset: this.position.x, offset: this.position.y  });
     }
 
