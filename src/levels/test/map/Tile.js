@@ -79,6 +79,18 @@ export default class Tile {
         this.create(variation);
     }
 
+    distanceToTile(tile) {
+        const { x, z } = tile.getIndex();
+        const { x: _x, z: _z } = this.getIndex();
+
+        return (
+            Math.sqrt(
+                Math.pow((_x - x), 2) +
+                Math.pow((_z - z), 2)
+            )
+        );
+    }
+
     setLife() {
         let factor = this.startingTile ? STARTING_TILE_LIFE_FACTOR : TILE_LIFE_FACTOR;
         const life = TILE_LIFE * factor;

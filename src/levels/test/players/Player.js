@@ -8,6 +8,11 @@ export const BASE_TILE_ENERGY_INCREASE = .2;
 const MIN_ENERGY = 0;
 const MAX_ENERGY = 100;
 
+export const UNIT_TYPES = {
+    BUILDER: 'UNIT.BUILDER',
+    WARRIOR: 'UNIT.WARRIOR'
+};
+
 export default class Player {
 
     constructor(type) {
@@ -24,7 +29,7 @@ export default class Player {
             .getTilesByType(this.getBaseTileType())
             .filter(t => t.isBaseTile())
             .length || 0) * BASE_TILE_ENERGY_INCREASE;
-        
+
         this.energy = math.clamp(this.energy + increase, MIN_ENERGY, MAX_ENERGY);
     }
 
@@ -100,19 +105,21 @@ export default class Player {
         });
     }
 
-    sendWarriorToTile = tile => {
+    sendWarriorToTile = (destination, position = this.initialPosition) => {
         const unit = Models.getModel(this.type, { name: `${this.type}_warrior_${Math.random()}`});
-        const behaviour = unit.addScript(this.getUnitScriptName(), { position: this.initialPosition, warrior: true });
+        const behaviour = unit.addScript(this.getUnitScriptName(), { position, warrior: true });
+        const tile = TileMap.getTileAt(destination);
 
-        behaviour
-            .goTo(start, tile)
-            .then(() => behaviour.scanForTargets(tile));
-
-        // TileMap.setTileState(tile, TILES_STATES.FIGHTING);
+        
         unit.addEventListener(ENTITY_EVENTS.DISPOSE, this.handleUnitDeath(DEATH_REASONS.KILLED));
-
+        
         this.warriors[unit.uuid()] = unit;
-
-        return unit;
+        
+        return new Promise(resolve => {
+            behaviour
+                .goTo(position, tile)
+                .then(() => behaviour.scanForTargets(tile))
+                .then(resolve);
+        });
     }
 }
