@@ -15,8 +15,9 @@ const assets = {
             'selector': `${ASSETS_MODELS_BASE_PATH}/selector.glb`,
             'flag': `${ASSETS_MODELS_BASE_PATH}/flag_teamRed.gltf.glb`,
             
-            'human': `${ASSETS_MODELS_BASE_PATH}/human.fbx`,
-            'nature': `${ASSETS_MODELS_BASE_PATH}/duck.fbx`,
+            'human': `${ASSETS_MODELS_BASE_PATH}/skeleton_animation.fbx`,
+            'nature': `${ASSETS_MODELS_BASE_PATH}/duck_animation.fbx`,
+            'duck_animated': `${ASSETS_MODELS_BASE_PATH}/animated.fbx`,
             
             'forestTile': `${ASSETS_MODELS_BASE_PATH}/hex_forest_detail.gltf.glb`, //${ASSETS_MODELS_BASE_PATH}/forestTile.glb,
             'lumbermill': `${ASSETS_MODELS_BASE_PATH}/lumbermill.gltf.glb`,

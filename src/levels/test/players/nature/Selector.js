@@ -87,7 +87,7 @@ export default class Selector extends BaseScript {
             [FOREST_OPTIONS.ATTACK]: 0
         })[option];
 
-        this.previewModel = Models.getModel(requiredModel, { name: `preview_forest_${requiredModel}` });
+        this.previewModel = Models.get(requiredModel, { name: `preview_forest_${requiredModel}` });
         this.selector.add(this.previewModel);
         this.previewModel.setMaterialFromName(MATERIALS.STANDARD, PREVIEW_MATERIAL_PROPERTIES)
         this.previewModel.setPosition({ y: previewHeightOffset });

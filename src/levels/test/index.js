@@ -16,7 +16,6 @@ import {
 } from 'mage-engine';
 
 import TileMap, { HUMAN_DETAILS } from './map/TileMap';
-import SlowRotation from './collectibles/slowRotation';
 import HumanBehaviour from './players/humans/HumanBehaviour';
 import Humans from './players/humans';
 import Nature from './players/nature';
@@ -24,7 +23,8 @@ import Selector from './players/nature/Selector';
 import BulletBehaviour from './players/humans/BulletBehaviour';
 import DuckBehaviour from './players/nature/DuckBehaviour';
 import Bobbing from './map/Bobbing';
-import { TILE_MATERIAL_PROPERTIES } from './map/constants';
+import { TILES_TYPES, TILE_MATERIAL_PROPERTIES } from './map/constants';
+import TargetBehaviour from './TargetBehaviour';
 
 export const WHITE = 0xffffff;
 export const SUNLIGHT = 0xffeaa7;
@@ -75,15 +75,15 @@ export default class Test extends Level {
     }
 
     addBox() {
-        this.box = Models.getModel('box');
+        this.box = Models.get('box');
         this.box.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
         this.box.setScale({ x: .6, y: .6, z: .6 });
         this.box.setPosition({ x: 6.5, y: -.3, z: 6.5});
     }
     
     addDice() {
-        const die_1 = Models.getModel('die', { name: 'die:1' });
-        const die_2 = Models.getModel('die', { name: 'die:2' });
+        const die_1 = Models.get('die', { name: 'die:1' });
+        const die_2 = Models.get('die', { name: 'die:2' });
 
         die_1.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
         die_2.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
@@ -121,6 +121,11 @@ export default class Test extends Level {
         this.prepareSceneEffects();
 
         const { human, nature } = TileMap.generate(0);
+        this.players = {
+            [TILES_TYPES.FOREST]: Nature,
+            [TILES_TYPES.HUMAN]: Humans
+        };
+
         Humans.start(human);
         Nature.start(nature);
 
@@ -128,8 +133,13 @@ export default class Test extends Level {
         window.tm = TileMap;
     }
 
+    getUnitsByType(type) {
+        console.log(type, this.players);
+        return this.players[type].getUnits();
+    }
+
     onCreate() {
-        Scripts.register('slowRotation', SlowRotation);
+        Scripts.register('TargetBehaviour', TargetBehaviour);
         Scripts.register('HumanBehaviour', HumanBehaviour);
         Scripts.register('BulletBehaviour', BulletBehaviour);
         Scripts.register('DuckBehaviour', DuckBehaviour);

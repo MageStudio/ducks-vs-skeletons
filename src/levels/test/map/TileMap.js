@@ -20,19 +20,19 @@ class TileMap {
         this.tiles = [];
     }
 
-    createCollectible() {
-        const position = {
-            x: Math.floor(Math.random() * this.size),
-            z: Math.floor(Math.random() * this.size),
-            y: 1.5
-        }
-        const collectible = Models.getModel('star', { name: `star_${Math.random()}`});
+    // createCollectible() {
+    //     const position = {
+    //         x: Math.floor(Math.random() * this.size),
+    //         z: Math.floor(Math.random() * this.size),
+    //         y: 1.5
+    //     }
+    //     const collectible = Models.get('star', { name: `star_${Math.random()}`});
 
-        collectible.setScale(TILE_COLLECTIBLE_SCALE);
-        collectible.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
-        collectible.setColor(0xffffff);
-        collectible.addScript('slowRotation', { position, offset: 1 });
-    }
+    //     collectible.setScale(TILE_COLLECTIBLE_SCALE);
+    //     collectible.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
+    //     collectible.setColor(0xffffff);
+    //     collectible.addScript('slowRotation', { position, offset: 1 });
+    // }
 
     generate(level) {
         const {

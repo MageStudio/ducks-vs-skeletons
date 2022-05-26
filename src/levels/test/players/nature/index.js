@@ -8,7 +8,7 @@ import {
     changeSelectionOption
 } from '../../../../ui/actions/player';
 
-const MAX_ATTACK_TARGET_DISTANCE = 4;
+const MAX_ATTACK_TARGET_DISTANCE = 20;
 
 class Nature extends Player {
 

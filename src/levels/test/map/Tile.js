@@ -1,5 +1,6 @@
 import { Models, constants, math, Particles, PARTICLES, THREE, Scripts } from 'mage-engine';
 import EnergyParticleSystem from '../players/nature/EnergyParticleSystem';
+import { TARGET_DEAD_EVENT_TYPE, TARGET_HEALTH_MAP, TARGET_HIT_EVENT_TYPE } from '../TargetBehaviour';
 import {
     TILES_DETAILS_MAP,
     TILES_TYPES,
@@ -18,15 +19,24 @@ import {
     TILES_VARIATIONS_TYPES,
     TILES_TYPES_VARIATIONS_MAP
 } from './constants';
+import TileMap from './TileMap';
 
 const { Vector3 } = THREE;
 const { MATERIALS } = constants;
 
 const FIRE_OPTIONS = {
     texture: 'fire',
-    size: .15,
-    strength: 2 ,
-    direction: { x: 0, y: 1, z: 0 }
+    size: .1,
+    strength: 1.5 ,
+    direction: new Vector3( 0, 1, 0)
+};
+
+const ENERGY_PARTICLES_OPTIONS = {
+    texture: 'greenEnergy',
+    strength: 1,
+    size: .2,
+    radius: .5,
+    direction: new Vector3( 0, 1, 0)
 };
 
 const TILE_LIFE = 20;
@@ -75,7 +85,7 @@ export default class Tile {
         this.startingTile = startingTile;
         this.burning = false;
 
-        this.setLife();
+        // this.setLife();
         this.create(variation);
     }
 
@@ -91,21 +101,17 @@ export default class Tile {
         );
     }
 
-    setLife() {
-        let factor = this.startingTile ? STARTING_TILE_LIFE_FACTOR : TILE_LIFE_FACTOR;
-        const life = TILE_LIFE * factor;
-
-        this.life = life;
-        this.maxLife = life;
+    getHealth() {
+        return TILE_LIFE * (this.startingTile ? STARTING_TILE_LIFE_FACTOR : TILE_LIFE_FACTOR);
     }
 
-    repair(amount) {
-        this.life = math.clamp(this.life + amount, 0, this.maxLife);
-    }
+    // repair(amount) {
+    //     this.life = math.clamp(this.life + amount, 0, this.maxLife);
+    // }
 
-    damage(amount) {
-        this.life = math.clamp(this.life - amount, 0, this.maxLife);
-    }
+    // takeDamage(amount) {
+    //     this.life = math.clamp(this.life - amount, 0, this.maxLife);
+    // }
 
     isDesert = () => this.tileType === TILES_TYPES.DESERT;
     isForest = () => this.tileType === TILES_TYPES.FOREST;
@@ -143,7 +149,7 @@ export default class Tile {
 
         const { tile, detail } = this.getModelNameFromVariationAndTileType();
 
-        this.tile = Models.getModel(tile, { name: `tile_${this.index.x}_${this.index.z}`});
+        this.tile = Models.get(tile, { name: `tile_${this.index.x}_${this.index.z}`});
         this.tile.setData('index', this.index);
         this.tile.setPosition(this.position);
         this.tile.setScale(TILE_SCALE);
@@ -159,6 +165,21 @@ export default class Tile {
         if (this.isWater()) {
             this.applyWaterTileStyle();
         }
+
+        if (this.isHuman() || this.isForest()) {
+            this.setUpTargetBehaviour();
+        }
+    }
+
+    postDestruction = () => {
+        this.stopBurning();
+        TileMap.changeTile(this.getIndex(), TILES_TYPES.DESERT);
+    }
+
+    setUpTargetBehaviour() {
+        this.tile.addScript('TargetBehaviour', { health: this.getHealth() });
+        this.tile.addEventListener(TARGET_DEAD_EVENT_TYPE, this.postDestruction);
+        this.tile.addEventListener(TARGET_HIT_EVENT_TYPE, this.startBurning);
     }
 
     getTile() { return this.tile; }
@@ -175,7 +196,7 @@ export default class Tile {
     }
 
     addStartingDetail() {
-        const startingDetail = Models.getModel(STARTING_TILE_DETAILS_MAP[this.tileType], { name: `tile_detail_${Math.random()}` });
+        const startingDetail = Models.get(STARTING_TILE_DETAILS_MAP[this.tileType], { name: `tile_detail_${Math.random()}` });
         startingDetail.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
         
         this.tile.add(startingDetail);
@@ -185,7 +206,7 @@ export default class Tile {
     }
 
     addDetail(detail) {
-        const details = Models.getModel(detail, { name: `tile_detail_${Math.random()}` });
+        const details = Models.get(detail, { name: `tile_detail_${Math.random()}` });
 
         details.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
         this.tile.add(details);
@@ -195,32 +216,24 @@ export default class Tile {
     }
 
     addEnergyParticleEmitter() {
-        const particles = Particles.addParticleEmitter(new EnergyParticleSystem({
-            texture: 'greenEnergy',
-            strength: 1,
-            size: .2,
-            radius: .5,
-            direction: new Vector3( 0, 1, 0)
-        }));
+        const particles = Particles.addParticleEmitter(new EnergyParticleSystem(ENERGY_PARTICLES_OPTIONS));
 
         particles.emit(Infinity);
         this.tile.add(particles);
     }
 
-    startBurning() {
+    startBurning = () => {
         if (!this.burning) {
             this.burning = true;
             this.fire = Particles.addParticleEmitter(PARTICLES.FIRE, FIRE_OPTIONS);
-            this.fire.start(Infinity);
-            this.fire.setPosition({ ...this.getPosition(), y: .5 });
+            this.fire.emit(Infinity);
+            this.tile.add(this.fire);
         }
     }
 
-    processHit(damage) {
-        this.damage(damage);
-
-        if (this.life/this.maxLife >= TILE_CRITICAL_DAMAGE_PERCENTAGE) {
-            this.startBurning();
+    stopBurning() {
+        if (this.burning) {
+            this.fire.stop();
         }
     }
 
@@ -233,6 +246,8 @@ export default class Tile {
     getIndex() { return this.index; }
 
     dispose() {
+        this.tile.removeEventListener(TARGET_DEAD_EVENT_TYPE, this.postDestruction);
+        this.tile.removeEventListener(TARGET_HIT_EVENT_TYPE, this.startBurning);
         this.tile.dispose();
     }
 }
