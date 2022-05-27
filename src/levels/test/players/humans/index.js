@@ -21,8 +21,7 @@ class Humans extends Player {
         });
         this.initialPosition = initialPosition;
 
-        setInterval(this.expand, 1000);
-        // this.sendWarriorToTile(TileMap.getTileAt({ x: 7, z: 7 }));
+        setInterval(this.expand, 7000);
     }
 
     getUnitScriptName = () => 'HumanBehaviour';
@@ -49,7 +48,9 @@ class Humans extends Player {
 
         //  TODO: needs to decide which tile to build based on algo?
         // this.sendBuilderToTile(nextTile, HUMAN_TILES.HUMAN_BUILDERS_HUT);
-        this.buildBuildersHut(nextTile.getIndex());
+        if (nextTile) {
+            this.buildBuildersHut(nextTile.getIndex());
+        }
     }
 
 }

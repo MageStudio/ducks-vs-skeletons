@@ -4,6 +4,7 @@ import {
     Particles,
     THREE
 } from "mage-engine";
+import { TARGET_DEAD_EVENT_TYPE } from "../../TargetBehaviour";
 
 const { Vector3 } = THREE;
 const BULLET_HEIGHT = 0.4;
@@ -24,20 +25,23 @@ export default class BulletBehaviour extends BaseScript {
             y: BULLET_HEIGHT
         });
 
-        this.addTrail();
+        this.target.addEventListener(TARGET_DEAD_EVENT_TYPE, this.destroyBullet);
     }
 
-    addTrail() {
-        const trail = Particles.add(PARTICLES.TRAIL, { texture: 'fire', size: 0.1 });
-        trail.emit(Infinity);
-        this.bullet.add(trail);
+    destroyBullet = () => {
+        this.bullet.dispose();
     }
 
     handleBulletCollision = () => {
         this.target
             .getScript('TargetBehaviour')
             .processHit(BULLET_DAMAGE);
-        this.bullet.dispose();
+
+        this.destroyBullet();
+    }
+
+    onDispose() {
+        this.target.removeEventListener(TARGET_DEAD_EVENT_TYPE, this.destroyBullet);
     }
 
     shoot = () => {

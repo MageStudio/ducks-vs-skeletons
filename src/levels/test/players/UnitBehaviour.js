@@ -181,6 +181,7 @@ export default class UnitBehaviour extends BaseScript {
         ]);
 
         if (target) {
+            this.target = target;
             this.startShootingAt(target);
         } else {
             this.targetsScanTimeoutId = setTimeout(this.scanForTargets, TARGETS_SCAN_INTERVAL);
@@ -196,7 +197,6 @@ export default class UnitBehaviour extends BaseScript {
     startShootingAt(target) {
         if (!this.isWarrior()) return;
 
-        this.target = target;
         this.lookAtTarget(target);
 
         this.target.addEventListener(TARGET_DEAD_EVENT_TYPE, () => this.stopShooting());

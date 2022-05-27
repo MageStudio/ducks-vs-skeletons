@@ -216,7 +216,7 @@ export default class Tile {
     }
 
     addEnergyParticleEmitter() {
-        const particles = Particles.addParticleEmitter(new EnergyParticleSystem(ENERGY_PARTICLES_OPTIONS));
+        const particles = Particles.add(new EnergyParticleSystem(ENERGY_PARTICLES_OPTIONS));
 
         particles.emit(Infinity);
         this.tile.add(particles);
@@ -225,7 +225,7 @@ export default class Tile {
     startBurning = () => {
         if (!this.burning) {
             this.burning = true;
-            this.fire = Particles.addParticleEmitter(PARTICLES.FIRE, FIRE_OPTIONS);
+            this.fire = Particles.add(PARTICLES.FIRE, FIRE_OPTIONS);
             this.fire.emit(Infinity);
             this.tile.add(this.fire);
         }
