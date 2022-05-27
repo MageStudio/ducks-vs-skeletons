@@ -13,7 +13,7 @@ const CURSOR_DEFAULT_DESTINATION = {
     z: Infinity
 }
 
-const CURSOR_MATERIAL_PROPERTIES = {
+const PREVIEW_MATERIAL_PROPERTIES = {
     metalness: 0.2,
     roughness: 1.0
 };
@@ -75,12 +75,22 @@ export default class Selector extends BaseScript {
             [FOREST_OPTIONS.BASE_TILE]: TILES_TYPES.FOREST,
             [FOREST_OPTIONS.BUILDERS_HUT_TILE]: 'market',
             [FOREST_OPTIONS.WARRIORS_HUT_TILE]: 'farmplot',
-            [FOREST_OPTIONS.TOWER_TILE]: 'lumbermill'
+            [FOREST_OPTIONS.TOWER_TILE]: 'lumbermill',
+            [FOREST_OPTIONS.ATTACK]: 'flag'
         })[option];
 
-        this.previewModel = Models.getModel(requiredModel, { name: `preview_forest_${requiredModel}` });
+        const previewHeightOffset = ({
+            [FOREST_OPTIONS.BASE_TILE]: .5,
+            [FOREST_OPTIONS.BUILDERS_HUT_TILE]: .5,
+            [FOREST_OPTIONS.WARRIORS_HUT_TILE]: .5,
+            [FOREST_OPTIONS.TOWER_TILE]: .5,
+            [FOREST_OPTIONS.ATTACK]: 0
+        })[option];
+
+        this.previewModel = Models.get(requiredModel, { name: `preview_forest_${requiredModel}` });
         this.selector.add(this.previewModel);
-        this.previewModel.setPosition({ y: .5 });
+        this.previewModel.setMaterialFromName(MATERIALS.STANDARD, PREVIEW_MATERIAL_PROPERTIES)
+        this.previewModel.setPosition({ y: previewHeightOffset });
         this.previewModel.setScale({ x: .7, y: .7, z: .7 });
         this.previewModel.setOpacity(.6);
         this.previewModel.toggleShadows(false);

@@ -1,5 +1,5 @@
 import { Input, functions, INPUT_EVENTS, store, Models, Scripts, PostProcessing, constants, Element, THREE } from "mage-engine";
-import { FOREST_OPTIONS, TILES_TYPES, TILES_VARIATIONS_TYPES } from "../../map/constants";
+import { FOREST_OPTIONS, TILES_TYPES, TILES_VARIATIONS_TYPES, TILE_SCALE } from "../../map/constants";
 import TileMap from "../../map/TileMap";
 import Player from "../Player";
 import {
@@ -8,11 +8,14 @@ import {
     changeSelectionOption
 } from '../../../../ui/actions/player';
 
+const MAX_ATTACK_TARGET_DISTANCE = 20;
+
 class Nature extends Player {
 
     constructor() {
         super('nature');
         this.selector = null;
+        this.energy = 100;
     }
 
     start(position) {
@@ -103,7 +106,7 @@ class Nature extends Player {
                         // select target? 
                         break;
                     case TILES_VARIATIONS_TYPES.WARRIORS:
-                        this.sendWarriorToTile(destination);
+                        this.sendWarriorToTile(destination, index);
                         break;
                 }
             }
@@ -142,8 +145,15 @@ class Nature extends Player {
         !tile.isObstacle()
     ) ;
 
-    canAttackTile(tile) {
-        return true;
+    canAttackTile = tile => {
+        const { selection: { index } } = this.getSelectionType();
+        const currentTile = TileMap.getTileAt(index);
+
+        return (
+            !tile.isForest() &&
+            !tile.isObstacle() &&
+            !(currentTile.distanceToTile(tile) > MAX_ATTACK_TARGET_DISTANCE)
+        )
     }
 
     canMouseInteract(destination) {

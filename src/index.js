@@ -4,53 +4,57 @@ import Root from './ui/root';
 import reducers from './ui/reducers';
 
 const { SHADOW_TYPES } = constants;
+const ASSETS_MODELS_BASE_PATH = 'assets/models';
+const ASSETS_TEXTURES_BASE_PATH = 'assets/textures';
 
 const assets = {
-    '/test': {
+    '/': {
         models: {
-            'box': 'assets/models/box.glb',
-            'die': 'assets/models/die.glb',
-            'selector': 'assets/models/selector.glb',
+            'box': `${ASSETS_MODELS_BASE_PATH}/box.glb`,
+            'die': `${ASSETS_MODELS_BASE_PATH}/die.glb`,
+            'selector': `${ASSETS_MODELS_BASE_PATH}/selector.glb`,
+            'flag': `${ASSETS_MODELS_BASE_PATH}/flag_teamRed.gltf.glb`,
             
-            'human': 'assets/models/human.fbx',
-            'nature': 'assets/models/duck.fbx',
+            'human': `${ASSETS_MODELS_BASE_PATH}/skeleton_animation.fbx`,
+            'nature': `${ASSETS_MODELS_BASE_PATH}/duck_animation.fbx`,
+            'duck_animated': `${ASSETS_MODELS_BASE_PATH}/animated.fbx`,
             
-            'forestTile': 'assets/models/hex_forest_detail.gltf.glb',//'assets/models/forestTile.glb',
-            'lumbermill': 'assets/models/lumbermill.gltf.glb',
-            'farmplot': 'assets/models/farm_plot.gltf.glb',
-            'market': 'assets/models/market.gltf.glb',
-            'hill': 'assets/models/detail_hill.gltf.glb',
-            'forest': 'assets/models/forest.gltf.glb',
+            'forestTile': `${ASSETS_MODELS_BASE_PATH}/hex_forest_detail.gltf.glb`, //${ASSETS_MODELS_BASE_PATH}/forestTile.glb,
+            'lumbermill': `${ASSETS_MODELS_BASE_PATH}/lumbermill.gltf.glb`,
+            'farmplot': `${ASSETS_MODELS_BASE_PATH}/farm_plot.gltf.glb`,
+            'market': `${ASSETS_MODELS_BASE_PATH}/market.gltf.glb`,
+            'hill': `${ASSETS_MODELS_BASE_PATH}/detail_hill.gltf.glb`,
+            'forest': `${ASSETS_MODELS_BASE_PATH}/forest.gltf.glb`,
 
-            'desertTile': 'assets/models/hex_sand_detail.gltf.glb',//'assets/models/desertTile.glb',
-            'details_rocks': 'assets/models/detail_rocks.gltf.glb',
+            'desertTile': `${ASSETS_MODELS_BASE_PATH}/hex_sand_detail.gltf.glb`, //${ASSETS_MODELS_BASE_PATH}/desertTile.glb,
+            'details_rocks': `${ASSETS_MODELS_BASE_PATH}/detail_rocks.gltf.glb`,
 
-            'humanTile': 'assets/models/hex_rock_detail.gltf.glb', //'assets/models/humanTile.glb',
-            'watchtower': 'assets/models/watchtower.gltf.glb',
-            'house': 'assets/models/house.gltf.glb',
-            'barracks': 'assets/models/barracks.gltf.glb',
+            'humanTile': `${ASSETS_MODELS_BASE_PATH}/hex_rock_detail.gltf.glb`, //${ASSETS_MODELS_BASE_PATH}/humanTile.glb,
+            'watchtower': `${ASSETS_MODELS_BASE_PATH}/watchtower.gltf.glb`,
+            'house': `${ASSETS_MODELS_BASE_PATH}/house.gltf.glb`,
+            'barracks': `${ASSETS_MODELS_BASE_PATH}/barracks.gltf.glb`,
 
             
-            'waterTile': 'assets/models/hex_water.gltf.glb',//'assets/models/waterTile.glb',
+            'waterTile': `${ASSETS_MODELS_BASE_PATH}/hex_water.gltf.glb`, //${ASSETS_MODELS_BASE_PATH}/waterTile.glb,
 
-            'humanStart': 'assets/models/castle.gltf.glb',//'assets/models/skyscraperD.glb',
-            'forestStart': 'assets/models/mill.gltf.glb',//'assets/models/tree.glb',
+            'humanStart': `${ASSETS_MODELS_BASE_PATH}/castle.gltf.glb`, //${ASSETS_MODELS_BASE_PATH}/skyscraperD.glb,
+            'forestStart': `${ASSETS_MODELS_BASE_PATH}/mill.gltf.glb`, //${ASSETS_MODELS_BASE_PATH}/tree.glb,
 
-            'star': 'assets/models/star.gltf.glb',
+            'star': `${ASSETS_MODELS_BASE_PATH}/star.gltf.glb`,
 
-            'shotgun': 'assets/models/shotgun.glb'
+            'shotgun': `${ASSETS_MODELS_BASE_PATH}/shotgun.glb`
         },
         textures: {
-            'zombie': 'assets/textures/zombieA.png',
-            'fire': 'assets/textures/fire.png',
-            'waterNormal': 'assets/textures/waterNormals.jpg',
-            'greenEnergy': 'assets/textures/green_energy.png',
+            'zombie': `${ASSETS_TEXTURES_BASE_PATH}/zombieA.png`,
+            'fire': `${ASSETS_TEXTURES_BASE_PATH}/fire.png`,
+            'waterNormal': `${ASSETS_TEXTURES_BASE_PATH}/waterNormals.jpg`,
+            'greenEnergy': `${ASSETS_TEXTURES_BASE_PATH}/green_energy.png`,
 
-            'woodMap': 'assets/textures/Wood_025_basecolor.jpg',
-            'woodAO': 'assets/textures/Wood_025_ambientOcclusion.jpg',
-            'woodBump': 'assets/textures/Wood_025_height.png',
-            'woodNormal': 'assets/textures/Wood_025_normal.jpg',
-            'woodRoughness': 'assets/textures/Wood_025_roughness.jpg',
+            'woodMap': `${ASSETS_TEXTURES_BASE_PATH}/Wood_025_basecolor.jpg`,
+            'woodAO': `${ASSETS_TEXTURES_BASE_PATH}/Wood_025_ambientOcclusion.jpg`,
+            'woodBump': `${ASSETS_TEXTURES_BASE_PATH}/Wood_025_height.png`,
+            'woodNormal': `${ASSETS_TEXTURES_BASE_PATH}/Wood_025_normal.jpg`,
+            'woodRoughness': `${ASSETS_TEXTURES_BASE_PATH}/Wood_025_roughness.jpg`,
         }
     }
 }
@@ -101,6 +105,6 @@ const config = {
 window.addEventListener('load', () => {
     store.createStore(reducers, {}, true);
 
-    Router.on('/test', Test);
+    Router.on('/', Test);
     Router.start(config, assets);
 });

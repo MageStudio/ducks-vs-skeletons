@@ -6,10 +6,12 @@ import {
     Sphere,
     ENTITY_EVENTS,
     PALETTES,
-    Models
+    Models,
+    GameRunner
 } from "mage-engine";
 import { TILES_TYPES } from "../map/constants";
 import TileMap from "../map/TileMap";
+import { TARGET_DEAD_EVENT_TYPE } from "../TargetBehaviour";
 
 const { MATERIALS } = constants;
 const { LoopOnce, Vector3 } = THREE;
@@ -20,17 +22,23 @@ const UNIT_MATERIAL_PROPERTIES = {
 };
 
 const DEFAULT_UNIT_SCALE = {
-    x: 0.0008,
-    y: 0.0008,
-    z: 0.0008
+    x: 0.002,
+    y: 0.002,
+    z: 0.002
 };
 
 const UNIT_ANIMATIONS = {
     IDLE: 'Root|Idle',
     RUN: 'Root|Run',
     SHOOT: 'Root|Shoot',
-    DEATH: 'Root|Death',
-    BUILD: 'Root|CrouchIdle'
+    THROW: 'Root|Throw',
+    DEATH: 'Root|Defeat',
+    BUILD: 'Root|Interact'
+};
+
+export const UNIT_TYPES = {
+    WARRIOR: 'WARRIOR',
+    BUILDER: 'BUILDER'
 };
 
 const MINIMUM_HEIGHT = .2;
@@ -38,9 +46,11 @@ const SPEEDS = {
     BUILDER: 0.5,
     WARRIOR: 0.8
 }
-const MAXIMUM_SHOOTING_DISTANCE = 4;
-const BULLET_INTERVAL = 250;
+const MAXIMUM_SHOOTING_DISTANCE = 10;
+const BULLET_INTERVAL = 100;
 const BULLET_SIZE = 0.01;
+const TARGETS_SCAN_INTERVAL = 3000;
+
 
 export default class UnitBehaviour extends BaseScript {
 
@@ -48,17 +58,18 @@ export default class UnitBehaviour extends BaseScript {
         super(name);
     }
 
-    start(unit, { position = {}, builder = false, warrior = false }) {
+    start(unit, { position = {}, unitType, builder = false, warrior = false }) {
         this.unit = unit;
         this.position = {
             ...position,
             y: MINIMUM_HEIGHT
         };
 
+        this.unitType = unitType;
         this.builder = builder;
         this.warrior = warrior;
 
-        window.unit = unit;
+        this.targetsScanTimeoutId = null;
 
         this.unit.setMaterialFromName(MATERIALS.STANDARD, UNIT_MATERIAL_PROPERTIES);
         this.unit.setScale(this.getUnitScale());
@@ -96,25 +107,31 @@ export default class UnitBehaviour extends BaseScript {
         }
     }
     
-    addWeapon() {
-        if (this.isWarrior()) {
-            const weapon = Models.getModel('shotgun')
-            weapon.setMaterialFromName(MATERIALS.STANDARD, UNIT_MATERIAL_PROPERTIES);
-            this.unit.add(weapon);
-            weapon.setPosition(this.getUnitWeaponRelativePosition());
-            weapon.setScale(this.getUnitWeaponScale());
-            weapon.setScale(this.getUnitWeaponRelativeRotation());
-        }
-    }
+    // addWeapon() {
+    //     if (this.isWarrior()) {
+    //         const weapon = Models.get('shotgun');
+    //         weapon.setMaterialFromName(MATERIALS.STANDARD, UNIT_MATERIAL_PROPERTIES);
+    //         this.unit.add(weapon);
+    //         weapon.setPosition(this.getUnitWeaponRelativePosition());
+    //         weapon.setScale(this.getUnitWeaponScale());
+    //         weapon.setScale(this.getUnitWeaponRelativeRotation());
+    //     }
+    // }
 
-    isBuilder() { return this.builder; }
-    isWarrior() { return this.warrior; }
+    hasTarget() { return !!this.target }
+
+    isBuilder() { return this.unitType === UNIT_TYPES.BUILDER; }
+    isWarrior() { return this.unitType === UNIT_TYPES.WARRIOR; }
     getSpeed() { return this.isBuilder() ? SPEEDS.BUILDER : SPEEDS.WARRIOR; }
+
+    disappear() {
+        this.unit.fadeTo(0, 1000)
+            .then(() => this.unit.dispose());
+    }
 
     die() {
         this.unit.playAnimation(UNIT_ANIMATIONS.DEATH, { loop: LoopOnce });
-        this.unit.fadeTo(0, 1000)
-            .then(() => this.unit.dispose());
+        this.disappear();
     }
 
     lookAtTarget(target) {
@@ -130,39 +147,77 @@ export default class UnitBehaviour extends BaseScript {
         return TILES_TYPES.FOREST;
     }
 
-    scanForTargets = () => {
-        this.unit.playAnimation(UNIT_ANIMATIONS.IDLE);
-        // get all enemy tiles
-        const { tile } = math.pickRandom(
-                TileMap.getTilesByType(this.getEnemyTileType())
-                    .map(tile => ({ tile, distance: this.unit.getPosition().distanceTo(tile.getPosition()) }))
-                    .filter(({ distance }) => distance <= MAXIMUM_SHOOTING_DISTANCE)
+    isTargetWithinShootingDistance = (target) => (
+        this.unit.getPosition().distanceTo(target.getPosition()) <= MAXIMUM_SHOOTING_DISTANCE
+    )
+
+    getRandomEnemyUnit = () => (
+        math.pickRandom(
+            GameRunner
+                .getCurrentLevel()
+                .getUnitsByType(this.getEnemyTileType())
+                .filter(this.isTargetWithinShootingDistance) || []
         )
+    )
+
+    getRandomEnemyTile = () => {
+        const tile = math.pickRandom(
+            TileMap 
+                .getTilesByType(this.getEnemyTileType())
+                .filter(this.isTargetWithinShootingDistance) || []
+        );
 
         if (tile) {
-            this.shootAt(tile);
+            return tile.getTile();
         }
     }
 
-    spawnBullet = () => {
-        setTimeout(() => {
-            new Sphere(BULLET_SIZE, PALETTES.BASE.BLACK)
-                .addScript('BulletBehaviour', { position: this.unit.getPosition(), target: this.target })
-                .shoot()
-        }, BULLET_INTERVAL);
+    scanForTargets = () => {
+        if (this.hasTarget()) return;
+
+        const target = math.pickRandom([
+            this.getRandomEnemyTile(),
+            this.getRandomEnemyUnit()
+        ]);
+
+        if (target) {
+            this.target = target;
+            this.startShootingAt(target);
+        } else {
+            this.targetsScanTimeoutId = setTimeout(this.scanForTargets, TARGETS_SCAN_INTERVAL);
+        }
     }
 
-    shootAt(target) {
+    spawnBullet = () => (
+        new Sphere(BULLET_SIZE, PALETTES.BASE.BLACK)
+            .addScript('BulletBehaviour', { position: this.unit.getPosition(), target: this.target })
+            .shoot()
+    )
+
+    startShootingAt(target) {
         if (!this.isWarrior()) return;
 
-        this.target = target;
         this.lookAtTarget(target);
+
+        this.target.addEventListener(TARGET_DEAD_EVENT_TYPE, () => this.stopShooting());
         
         if (this.unit.getPosition().distanceTo(target.getPosition()) <= MAXIMUM_SHOOTING_DISTANCE) {
-            this.unit.playAnimation(UNIT_ANIMATIONS.SHOOT);
+            this.unit.playAnimation(UNIT_ANIMATIONS.THROW);
             this.unit.addEventListener(ENTITY_EVENTS.ANIMATION.LOOP, this.spawnBullet)
             this.spawnBullet();
         }
+    }
+
+    stopShooting() {
+        this.unit.removeEventListener(ENTITY_EVENTS.ANIMATION.LOOP, this.spawnBullet);
+        this.unit.playAnimation(UNIT_ANIMATIONS.IDLE);
+        this.target = null;
+        this.scanForTargets();
+    }
+
+    onDispose() {
+        this.unit.removeEventListener(ENTITY_EVENTS.ANIMATION.LOOP, this.spawnBullet);
+        clearTimeout(this.targetsScanTimeoutId);
     }
 
     isFriendlyTile(tile) {
@@ -182,18 +237,22 @@ export default class UnitBehaviour extends BaseScript {
                 this.unit.playAnimation(UNIT_ANIMATIONS.IDLE);
                 if (!this.isFriendlyTile(tile)) {
                     TileMap.changeTile(tile.getIndex(), this.getFriendlyTileType(), { variation });
-                    this.die();
+                    this.disappear();
                 }
                 resolve();
-            }, 3000)
+            }, 3000) // BUILDING TIME SHOULD CHANGE DEPENDING ON TYPE OF BUILD
         })
     }
 
-    goTo(startingPosition, tile) {
+    goTo(startingPosition, destinationTile) {
         return new Promise(resolve => {
-            const path = TileMap.getPathToTile(TileMap.getTileAt(startingPosition), tile);
-            const move = () => {
-                if (!path.length) return resolve();
+            const startingTile = TileMap.getTileAt(startingPosition);
+            const path = TileMap.getPathToTile(startingTile, destinationTile);
+            const moveTowardsTarget = () => {
+                if (!path.length) {
+                    this.unit.playAnimation(UNIT_ANIMATIONS.IDLE);
+                    return resolve();
+                }
 
                 const tile = path.shift();
 
@@ -203,10 +262,12 @@ export default class UnitBehaviour extends BaseScript {
 
                 this.unit.lookAt(targetPosition);
                 this.unit.playAnimation(UNIT_ANIMATIONS.RUN);
-                this.unit.goTo(targetPosition, time).then(() => move());
+                this.unit
+                    .goTo(targetPosition, time)
+                    .then(moveTowardsTarget);
             }
 
-            move();
+            moveTowardsTarget();
         });
     }
 

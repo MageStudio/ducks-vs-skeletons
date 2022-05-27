@@ -3,6 +3,8 @@ import { TILES_STATES, TILES_TYPES, TILES_VARIATIONS_TYPES } from "../map/consta
 import TileMap from "../map/TileMap";
 import { DEATH_REASONS } from '../constants';
 import { getEnergyRequirementForTileVariation } from "./energy";
+import { UNIT_TYPES } from "./UnitBehaviour";
+import { TARGET_DEAD_EVENT_TYPE, TARGET_HEALTH_MAP } from "../TargetBehaviour";
 
 export const BASE_TILE_ENERGY_INCREASE = .2;
 const MIN_ENERGY = 0;
@@ -11,12 +13,19 @@ const MAX_ENERGY = 100;
 export default class Player {
 
     constructor(type) {
-        this.builders = [];
-        this.warriors = [];
+        this.builders = {};
+        this.warriors = {};
 
-        this.energy = 0;
+        this.energy = 100;
 
         this.type = type;
+    }
+
+    getUnits() {
+        return [
+            ...Object.values(this.builders),
+            ...Object.values(this.warriors)
+        ]
     }
 
     updateEnergy() {
@@ -24,7 +33,7 @@ export default class Player {
             .getTilesByType(this.getBaseTileType())
             .filter(t => t.isBaseTile())
             .length || 0) * BASE_TILE_ENERGY_INCREASE;
-        
+
         this.energy = math.clamp(this.energy + increase, MIN_ENERGY, MAX_ENERGY);
     }
 
@@ -82,10 +91,11 @@ export default class Player {
     );
 
     sendBuilderToTile(tile, variation, position = this.initialPosition) {
-        const unit = Models.getModel(this.type, { name: `${this.type}_builder_${Math.random()}`});
-        const behaviour = unit.addScript(this.getUnitScriptName(), { position, builder: true });
+        const unit = Models.get(this.type, { name: `${this.type}_builder_${Math.random()}`});
+        const behaviour = unit.addScript(this.getUnitScriptName(), { position, unitType: UNIT_TYPES.BUILDER });
 
         TileMap.setTileState(tile, TILES_STATES.BUILDING);
+        this.setUpUnitTargetBehaviour(unit, TARGET_HEALTH_MAP.UNITS.BUILDERS);
         unit.addEventListener(ENTITY_EVENTS.DISPOSE, this.handleUnitDeath(DEATH_REASONS.BUILDING));
 
         this.builders[unit.uuid()] = unit;
@@ -100,19 +110,29 @@ export default class Player {
         });
     }
 
-    sendWarriorToTile = tile => {
-        const unit = Models.getModel(this.type, { name: `${this.type}_warrior_${Math.random()}`});
-        const behaviour = unit.addScript(this.getUnitScriptName(), { position: this.initialPosition, warrior: true });
+    setUpUnitTargetBehaviour(unit, health) {
+        unit.addScript('TargetBehaviour', { health });
+        unit.addEventListener(TARGET_DEAD_EVENT_TYPE, () => {
+            unit.dispose();
+        });
+    }
 
-        behaviour
-            .goTo(start, tile)
-            .then(() => behaviour.scanForTargets(tile));
+    sendWarriorToTile = (destination, position = this.initialPosition) => {
+        const unit = Models.get(this.type, { name: `${this.type}_warrior_${Math.random()}`});
+        const behaviour = unit.addScript(this.getUnitScriptName(), { position, unitType: UNIT_TYPES.WARRIOR });
+        const tile = TileMap.getTileAt(destination);
 
-        // TileMap.setTileState(tile, TILES_STATES.FIGHTING);
+        this.setUpUnitTargetBehaviour(unit, TARGET_HEALTH_MAP.UNITS.WARRIORS);
+
         unit.addEventListener(ENTITY_EVENTS.DISPOSE, this.handleUnitDeath(DEATH_REASONS.KILLED));
-
+        
         this.warriors[unit.uuid()] = unit;
-
-        return unit;
+        
+        return new Promise(resolve => {
+            behaviour
+                .goTo(position, tile)
+                .then(() => behaviour.scanForTargets(tile))
+                .then(resolve);
+        });
     }
 }
