@@ -130,12 +130,18 @@ export default class Test extends Level {
         Nature.start(nature);
 
         window.n = Nature;
+        window.h = Humans;
         window.tm = TileMap;
     }
 
+    getPlayerByType(type) {
+        return this.players[type];
+    }
+
     getUnitsByType(type) {
-        console.log(type, this.players);
-        return this.players[type].getUnits();
+        return this
+            .getPlayerByType(type)
+            .getUnits();
     }
 
     onCreate() {

@@ -124,6 +124,8 @@ class TileMap {
         this.tiles[_x][_z] = new Tile(tileType, { variation, position: { x: _x, z: _z }, startingTile });
 
         store.dispatch(updateTileMapStats());
+
+        return this.tiles[_x][_z];
     }
 
     isTileType({ x, z }, tileType) {

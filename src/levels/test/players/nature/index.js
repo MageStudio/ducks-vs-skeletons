@@ -15,7 +15,6 @@ class Nature extends Player {
     constructor() {
         super('nature');
         this.selector = null;
-        this.energy = 100;
     }
 
     start(position) {
@@ -24,7 +23,9 @@ class Nature extends Player {
         Input.enable();
         Input.addEventListener(INPUT_EVENTS.MOUSE_DOWN, this.handleMouseClick);
         Input.addEventListener(INPUT_EVENTS.MOUSE_MOVE, this.handleMouseMove);
-        TileMap.changeTile(this.initialPosition, TILES_TYPES.FOREST, { startingTile: true });
+        const initialTile = TileMap.changeTile(this.initialPosition, TILES_TYPES.FOREST, { startingTile: true });
+
+        this.saveTile(initialTile);
 
         this.outline = PostProcessing.add(constants.EFFECTS.SELECTIVE_OUTLINE);
         this.outline.setSelectedObjects([TileMap.getTileAt(position).getTile()]);
@@ -36,6 +37,7 @@ class Nature extends Player {
 
     getUnitScriptName = () => 'DuckBehaviour';
     getBaseTileType = () => TILES_TYPES.FOREST;
+    getEnemyType = () => TILES_TYPES.HUMAN;
     
     buildBaseTile(destination, startingPosition) {
         super.buildBaseTile(destination, startingPosition)

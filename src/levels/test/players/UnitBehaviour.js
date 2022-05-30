@@ -46,9 +46,9 @@ const SPEEDS = {
     BUILDER: 0.5,
     WARRIOR: 0.8
 }
-const MAXIMUM_SHOOTING_DISTANCE = 10;
+const MAXIMUM_SHOOTING_DISTANCE = 3;
 const BULLET_INTERVAL = 100;
-const BULLET_SIZE = 0.01;
+const BULLET_SIZE = 0.05;
 const TARGETS_SCAN_INTERVAL = 3000;
 
 
@@ -182,6 +182,10 @@ export default class UnitBehaviour extends BaseScript {
 
         if (target) {
             this.target = target;
+            GameRunner
+                .getCurrentLevel()
+                .getPlayerByType(this.getEnemyTileType())
+                .setUnderAttack(true);
             this.startShootingAt(target);
         } else {
             this.targetsScanTimeoutId = setTimeout(this.scanForTargets, TARGETS_SCAN_INTERVAL);
@@ -236,10 +240,14 @@ export default class UnitBehaviour extends BaseScript {
             setTimeout(() => {
                 this.unit.playAnimation(UNIT_ANIMATIONS.IDLE);
                 if (!this.isFriendlyTile(tile)) {
-                    TileMap.changeTile(tile.getIndex(), this.getFriendlyTileType(), { variation });
+                    if (!this.unit.isDisposed()) {
+                        const newTile = TileMap.changeTile(tile.getIndex(), this.getFriendlyTileType(), { variation });
+
+                        resolve(newTile);
+                    }
                     this.disappear();
                 }
-                resolve();
+                resolve(null);
             }, 3000) // BUILDING TIME SHOULD CHANGE DEPENDING ON TYPE OF BUILD
         })
     }
