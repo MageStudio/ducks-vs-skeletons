@@ -42,7 +42,7 @@ class Humans extends Player {
             .distanceTo(TileMap.getTileAt(this.getEnemyPlayer().initialPosition)) < ENEMY_PROXIMITY
     )
 
-    expand = () => {
+    expand = async () => {
         if (this.hasTooManyBuildersOnMap()) return;
 
         if (this.isGameOver()) {
@@ -64,14 +64,13 @@ class Humans extends Player {
                 .pop()
         );
 
-        //  TODO: needs to decide which tile to build based on algo?
-        // this.sendBuilderToTile(nextTile, HUMAN_TILES.HUMAN_BUILDERS_HUT);
         if (nextTile) {
             if (this.isUnderAttack() || this.isTileCloseToEnemy(nextTile)) {
                 // tries to send warriors somewhere
                 if (this.getWarriorsTiles().length && this.canSendWarrior()) { 
                     const warriorTile = math.pickRandom(this.getWarriorsTiles());
-                    this.sendWarriorToTile({ x: 5, z: 5}, warriorTile.getIndex());
+                    console.log('choosing warriorTile', warriorTile);
+                    this.sendWarriorToTile(nextTile.getIndex(), warriorTile.getIndex());
                 } else {
                     if (this.canBuildVariation(TILES_VARIATIONS_TYPES.TOWER)) {
                         this.buildTower(nextTile.getIndex());

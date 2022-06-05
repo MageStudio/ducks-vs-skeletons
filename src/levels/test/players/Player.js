@@ -121,9 +121,10 @@ export default class Player {
         return this.energy >= getEnergyRequirementForTileVariation(variation);
     }
 
-    canSendWarrior() {
-        return this.energy >= ENERGY_UNIT_REQUIREMENTS[UNIT_TYPES.WARRIOR];
-    }
+    canSendWarrior = () => (
+        this.energy >= ENERGY_UNIT_REQUIREMENTS[UNIT_TYPES.WARRIOR] &&
+        this.buildings[TILES_VARIATIONS_TYPES.WARRIORS].length > 0
+    )
 
     buildBaseTile(destination, startingPosition) {
         this.updateEnergy();
@@ -165,10 +166,12 @@ export default class Player {
                 .goTo(position, tile)
                 .then(() => !targetBehaviour.isDead() && behaviour.buildAtPosition(tile, variation))
                 .then(tile => {
-                    this.saveTile(tile);
-                    tile
-                        .getTile()
-                        .addEventListener(TARGET_DEAD_EVENT_TYPE, this.handleTileDeath);
+                    if (tile) {
+                        this.saveTile(tile);
+                        tile
+                            .getTile()
+                            .addEventListener(TARGET_DEAD_EVENT_TYPE, this.handleTileDeath);
+                    }
                 })
                 .then(resolve);
         });
