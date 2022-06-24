@@ -1,4 +1,4 @@
-import { TILES_TYPES, TILES_VARIATIONS_TYPES } from "../../levels/test/map/constants";
+import { TILES_TYPES, TILES_VARIATIONS_TYPES } from "../../levels/Main/map/constants";
 import {
     NATURE_ENERGY_CHANGE,
     NATURE_SELECTION_CHANGE,

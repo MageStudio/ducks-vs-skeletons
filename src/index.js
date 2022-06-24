@@ -1,7 +1,8 @@
 import { Router, store, constants } from 'mage-engine';
-import Test from './levels/test';
+import Main from './levels/Main';
 import Root from './ui/root';
 import reducers from './ui/reducers';
+import Testing from './levels/testing';
 
 const { SHADOW_TYPES } = constants;
 const ASSETS_MODELS_BASE_PATH = 'assets/models';
@@ -56,6 +57,13 @@ const assets = {
             'woodNormal': `${ASSETS_TEXTURES_BASE_PATH}/Wood_025_normal.jpg`,
             'woodRoughness': `${ASSETS_TEXTURES_BASE_PATH}/Wood_025_roughness.jpg`,
         }
+    },
+    '/testing': {
+        models: {
+            'human': `${ASSETS_MODELS_BASE_PATH}/skeleton_animation.fbx`,
+            'nature': `${ASSETS_MODELS_BASE_PATH}/duck_animation.fbx`,
+            'duck_animated': `${ASSETS_MODELS_BASE_PATH}/animated.fbx`,
+        }
     }
 }
 
@@ -105,6 +113,7 @@ const config = {
 window.addEventListener('load', () => {
     store.createStore(reducers, {}, true);
 
-    Router.on('/', Test);
+    Router.on('/', Main);
+    Router.on('/test', Testing);
     Router.start(config, assets);
 });
