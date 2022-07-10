@@ -1,6 +1,6 @@
 import { Models, constants, math, Particles, PARTICLES, THREE, Scripts } from 'mage-engine';
 import EnergyParticleSystem from '../players/nature/EnergyParticleSystem';
-import { TARGET_DEAD_EVENT_TYPE, TARGET_HEALTH_MAP, TARGET_HIT_EVENT_TYPE } from '../TargetBehaviour';
+import { TARGET_DEAD_EVENT_TYPE, TARGET_HEALTH_MAP, TARGET_HIT_EVENT_TYPE } from '../players/TargetBehaviour';
 import {
     TILES_DETAILS_MAP,
     TILES_TYPES,

@@ -20,11 +20,11 @@ import HumanBehaviour from './players/humans/HumanBehaviour';
 import Humans from './players/humans';
 import Nature from './players/nature';
 import Selector from './players/nature/Selector';
-import BulletBehaviour from './players/humans/BulletBehaviour';
+import BulletBehaviour from './players/BulletBehaviour';
 import DuckBehaviour from './players/nature/DuckBehaviour';
 import Bobbing from './map/Bobbing';
 import { TILES_TYPES, TILE_MATERIAL_PROPERTIES } from './map/constants';
-import TargetBehaviour from './TargetBehaviour';
+import TargetBehaviour from './players/TargetBehaviour';
 
 export const WHITE = 0xffffff;
 export const SUNLIGHT = 0xffeaa7;

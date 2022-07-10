@@ -1,3 +1,4 @@
+import { Label } from "mage-engine";
 import {
     BaseScript,
     constants,
@@ -7,11 +8,15 @@ import {
     ENTITY_EVENTS,
     PALETTES,
     Models,
-    GameRunner
+    GameRunner,
+    rxjs
 } from "mage-engine";
+import WarriorLabel from "../../../ui/labels/WarriorLabel";
 import { TILES_TYPES } from "../map/constants";
 import TileMap from "../map/TileMap";
-import { TARGET_DEAD_EVENT_TYPE } from "../TargetBehaviour";
+import { TARGET_DEAD_EVENT_TYPE } from "../players/TargetBehaviour";
+
+const { BehaviorSubject } = rxjs;
 
 const { MATERIALS } = constants;
 const { LoopOnce, Vector3 } = THREE;
@@ -58,7 +63,7 @@ export default class UnitBehaviour extends BaseScript {
         super(name);
     }
 
-    start(unit, { position = {}, unitType, builder = false, warrior = false }) {
+    start(unit, { position = {}, unitType, builder = false, warrior = false, script }) {
         this.unit = unit;
         this.position = {
             ...position,
@@ -69,10 +74,17 @@ export default class UnitBehaviour extends BaseScript {
         this.builder = builder;
         this.warrior = warrior;
 
-        this.ammoSize = 3;
+        this._ammo = 3;
+        this.ammo = new BehaviorSubject(this._ammo);
         this.initialPosition = position;
 
         this.targetsScanTimeoutId = null;
+
+        if (this.isWarrior()) {
+            const warriorLabel = new Label({ Component: WarriorLabel, width: 5, height: 1.5, unit, script });
+            this.unit.add(warriorLabel, unit.getBodyByName('Head'), { waitForBody: 200, waitForBodyMaxRetries: 5 })
+                    .then(() => warriorLabel.setPosition({ y: 2 }));
+        }
 
         this.unit.setMaterialFromName(MATERIALS.STANDARD, UNIT_MATERIAL_PROPERTIES);
         this.unit.setScale(this.getUnitScale());
@@ -207,10 +219,11 @@ export default class UnitBehaviour extends BaseScript {
     }
 
     spawnBullet = () => {
-        this.ammoSize = this.ammoSize - 1;
-        if (this.ammoSize < 0) {
+        this._ammo = this._ammo - 1;
+        if (this._ammo < 0) {
             this.handleNoAmmo();
         } else {
+            this.ammo.next(this._ammo);
             return new Sphere(BULLET_SIZE, PALETTES.BASE.BLACK)
                 .addScript('BulletBehaviour', { position: this.unit.getPosition(), target: this.target })
                 .shoot()
@@ -226,7 +239,7 @@ export default class UnitBehaviour extends BaseScript {
         
         if (this.unit.getPosition().distanceTo(target.getPosition()) <= MAXIMUM_SHOOTING_DISTANCE) {
             this.unit.playAnimation(UNIT_ANIMATIONS.THROW);
-            this.unit.addEventListener(ENTITY_EVENTS.ANIMATION.LOOP, this.spawnBullet)
+            this.unit.addEventListener(ENTITY_EVENTS.ANIMATION.LOOP, this.spawnBullet);
             this.spawnBullet();
         }
     }

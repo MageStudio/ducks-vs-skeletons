@@ -4,7 +4,9 @@ import TileMap from "../map/TileMap";
 import { DEATH_REASONS } from '../constants';
 import { ENERGY_UNIT_REQUIREMENTS, getEnergyRequirementForTileVariation } from "./energy";
 import { UNIT_ANIMATIONS, UNIT_TYPES } from "./UnitBehaviour";
-import { TARGET_DEAD_EVENT_TYPE, TARGET_HEALTH_MAP } from "../TargetBehaviour";
+import { TARGET_DEAD_EVENT_TYPE, TARGET_HEALTH_MAP } from "./TargetBehaviour";
+import { Label } from "mage-engine";
+import WarriorLabel from "../../../ui/labels/WarriorLabel";
 
 export const BASE_TILE_ENERGY_INCREASE = .2;
 const MIN_ENERGY = 0;
@@ -187,11 +189,15 @@ export default class Player {
     }
 
     sendWarriorToTile = (destination, position = this.initialPosition) => {
+        const script = this.getUnitScriptName();
         const unit = Models.get(this.type, { name: `${this.type}_warrior_${Math.random()}`});
-        const behaviour = unit.addScript(this.getUnitScriptName(), { position, unitType: UNIT_TYPES.WARRIOR });
+        const behaviour = unit.addScript(script, { position, unitType: UNIT_TYPES.WARRIOR, script });
         const tile = TileMap.getTileAt(destination);
         const targetBehaviour = this.setUpUnitTargetBehaviour(unit, TARGET_HEALTH_MAP.UNITS.WARRIORS);
 
+        // window.unit = unit;
+        // window.label = warriorLabel;
+        
         unit.addEventListener(ENTITY_EVENTS.DISPOSE, this.handleUnitDeath(DEATH_REASONS.KILLED));
         
         this.warriors[unit.uuid()] = unit;

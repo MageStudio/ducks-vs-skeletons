@@ -1,5 +1,5 @@
 import { BaseScript, math } from "mage-engine";
-import { TILES_VARIATIONS_TYPES } from "./map/constants";
+import { TILES_VARIATIONS_TYPES } from "../map/constants";
 
 export const TARGET_DEAD_EVENT_TYPE = 'TARGET.DEAD';
 export const TARGET_HIT_EVENT_TYPE = 'TARGET.HIT';

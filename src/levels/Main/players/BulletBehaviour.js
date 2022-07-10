@@ -4,7 +4,7 @@ import {
     Particles,
     THREE
 } from "mage-engine";
-import { TARGET_DEAD_EVENT_TYPE } from "../../TargetBehaviour";
+import { TARGET_DEAD_EVENT_TYPE } from "./TargetBehaviour";
 
 const { Vector3 } = THREE;
 const BULLET_HEIGHT = 0.4;
