@@ -4,7 +4,7 @@ export default class WarriorLabel extends LabelComponent {
 
     constructor(props) {
         super(props);
-        this.state = { ammo: [1,2,3] };
+        this.state = { ammo: 0 };
     }
 
     componentDidMount() {
@@ -15,20 +15,15 @@ export default class WarriorLabel extends LabelComponent {
             .ammo
             .subscribe((ammo) => {
                 console.log('setting state here', ammo);
-                this.setState({ ammo: Array(ammo).fill(1) })
+                this.setState({ ammo })
             });
     }
 
     render() {
-        const elements =  this.state.ammo.map(() => <li className="ammo"></li>);
-        console.log(elements)
         return (
-            <div
-                className='warriorlabel'
-                ref={this.element}>
-                <ul>
-                    { elements }
-                </ul>
+            <div ref={this.element} class='ammo'>
+                <h4>AMMO left</h4>
+                <span>{ this.state.ammo }</span>
             </div>
         )
     }

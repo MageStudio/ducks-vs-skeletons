@@ -81,9 +81,10 @@ export default class UnitBehaviour extends BaseScript {
         this.targetsScanTimeoutId = null;
 
         if (this.isWarrior()) {
-            const warriorLabel = new Label({ Component: WarriorLabel, width: 5, height: 1.5, unit, script });
+            const warriorLabel = new Label({ Component: WarriorLabel, width: 1, height: 1.1, unit, script });
+            window.warriorLabel = warriorLabel;
             this.unit.add(warriorLabel, unit.getBodyByName('Head'), { waitForBody: 200, waitForBodyMaxRetries: 5 })
-                    .then(() => warriorLabel.setPosition({ y: 2 }));
+                    .then(() => warriorLabel.setPosition({ x: -1, y: 1.5 }));
         }
 
         this.unit.setMaterialFromName(MATERIALS.STANDARD, UNIT_MATERIAL_PROPERTIES);
