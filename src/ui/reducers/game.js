@@ -1,4 +1,4 @@
-import TileMap from '../../levels/test/map/TileMap';
+import TileMap from '../../levels/Main/map/TileMap';
 import { TILE_MAP_STATS_CHANGE } from '../actions/types';
 
 const DEFAULT_STATE = {

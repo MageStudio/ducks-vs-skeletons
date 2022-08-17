@@ -19,7 +19,7 @@ const EnergyMeter = ({ energy = 0 }) => {
     return (
         <div class='energy'>
             <span class={`energy-level ${getClassnameFromEnergyLevel(energy)}`} style={getStyleFromEnergyLevel(energy)}></span>
-            <span class="material-icons energy-icon">bolt</span>
+            <span class="material-icons material-symbols-outlined energy-icon">bolt</span>
         </div>
     );
 }

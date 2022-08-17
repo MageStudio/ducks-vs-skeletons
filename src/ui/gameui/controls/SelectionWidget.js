@@ -1,7 +1,7 @@
 import {
     FOREST_OPTIONS,
     TILES_VARIATIONS_TYPES
-} from "../../../levels/test/map/constants";
+} from "../../../levels/Main/map/constants";
 
 const IMAGES_MAP = {
     [FOREST_OPTIONS.BASE_TILE]: '/img/forestBase.png',
