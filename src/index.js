@@ -7,9 +7,18 @@ import Testing from './levels/testing';
 const { SHADOW_TYPES } = constants;
 const ASSETS_MODELS_BASE_PATH = 'assets/models';
 const ASSETS_TEXTURES_BASE_PATH = 'assets/textures';
+const ASSETS_AUDIO_BASE_PATH = 'assets/audio';
 
 const assets = {
     '/': {
+        audio: {
+            click: `${ASSETS_AUDIO_BASE_PATH}/button.mp3`,
+            hammer: `${ASSETS_AUDIO_BASE_PATH}/hammer.wav`,
+            saw: `${ASSETS_AUDIO_BASE_PATH}/saw.wav`,
+            hammerLight: `${ASSETS_AUDIO_BASE_PATH}/hammer_light.wav`,
+            buildingFinished: `${ASSETS_AUDIO_BASE_PATH}/buiding_finished.wav`,
+            buildingFinishedA: `${ASSETS_AUDIO_BASE_PATH}/building_finished_1.wav`,
+        },
         models: {
             'box': `${ASSETS_MODELS_BASE_PATH}/box.glb`,
             'die': `${ASSETS_MODELS_BASE_PATH}/die.glb`,
