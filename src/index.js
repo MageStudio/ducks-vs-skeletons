@@ -16,7 +16,7 @@ const assets = {
             hammer: `${ASSETS_AUDIO_BASE_PATH}/hammer.wav`,
             saw: `${ASSETS_AUDIO_BASE_PATH}/saw.wav`,
             hammerLight: `${ASSETS_AUDIO_BASE_PATH}/hammer_light.wav`,
-            buildingFinished: `${ASSETS_AUDIO_BASE_PATH}/buiding_finished.wav`,
+            buildingFinished: `${ASSETS_AUDIO_BASE_PATH}/building_finished.wav`,
             buildingFinishedA: `${ASSETS_AUDIO_BASE_PATH}/building_finished_1.wav`,
         },
         models: {

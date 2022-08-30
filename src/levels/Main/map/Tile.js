@@ -1,4 +1,6 @@
+import { AUDIO_RAMPS } from 'mage-engine';
 import { Models, constants, math, Particles, PARTICLES, THREE, Scripts } from 'mage-engine';
+import { getBuildingFinishedSound, getHammerSound, getSawSound, VOLUMES } from '../../../sounds';
 import EnergyParticleSystem from '../players/nature/EnergyParticleSystem';
 import { TARGET_DEAD_EVENT_TYPE, TARGET_HEALTH_MAP, TARGET_HIT_EVENT_TYPE } from '../players/TargetBehaviour';
 import {
@@ -136,6 +138,24 @@ export default class Tile {
     getState = () => this.state;
 
     isBuilding = () => this.state === TILES_STATES.BUILDING;
+
+    playBuildingSound = (buildingTime) => {
+        const saw = getSawSound({ loop: true })
+            .play(VOLUMES.SAW)
+            .stop(buildingTime);
+        const hammer = getHammerSound({ loop: true })
+            .play(VOLUMES.HAMMER)
+            .stop(buildingTime + 1000);
+
+        saw.setPosition(this.getPosition());
+        hammer.setPosition(this.getPosition());
+
+        setTimeout(() => 
+            getBuildingFinishedSound()
+                .play(VOLUMES.BUILDING.FINISHED)
+                .stop(2000), buildingTime)
+    }
+
 
     getModelNameFromVariationAndTileType = () => {
         const { tile, detail } = TILES_TYPES_VARIATIONS_MAP[this.tileType][this.variation];

@@ -25,10 +25,19 @@ const SOUNDS = {
             'buildingFinishedA'
         ]
     }
+};
+
+export const VOLUMES = {
+    CLICK: 0.5,
+    HAMMER: 0.5,
+    SAW: 0.5,
+    BUILDING: {
+        FINISHED: 0.5
+    }
 }
 
 export const getClickSound = singleton(() => new AmbientSound(SOUNDS.CLICK));
 
-export const getHammerSound = () => new DirectionalSound(math.pickRandom(SOUNDS.HAMMER));
-export const getSawSound = () => new DirectionalSound(SOUNDS.SAW);
-export const getBuildingFinishedSound = () => new DirectionalSound(math.pickRandom(SOUNDS.BUILDING.FINISHED));
+export const getHammerSound = singleton((options = {}) => new DirectionalSound(math.pickRandom(SOUNDS.HAMMER), options));
+export const getSawSound = singleton((options = {}) => new DirectionalSound(SOUNDS.SAW, options));
+export const getBuildingFinishedSound = singleton((options = {}) => new DirectionalSound(math.pickRandom(SOUNDS.BUILDING.FINISHED), options));

@@ -136,6 +136,8 @@ export default class UnitBehaviour extends BaseScript {
 
     hasTarget() { return !!this.target }
 
+    isFriendly() { return false; }
+
     isBuilder() { return this.unitType === UNIT_TYPES.BUILDER; }
     isWarrior() { return this.unitType === UNIT_TYPES.WARRIOR; }
     getSpeed() { return this.isBuilder() ? SPEEDS.BUILDER : SPEEDS.WARRIOR; }
@@ -269,6 +271,13 @@ export default class UnitBehaviour extends BaseScript {
 
     buildAtPosition(tile, variation) {
         if (!this.isBuilder()) return Promise.resolve();
+
+        if (this.isFriendly()) {
+            console.log('playing sounds on tile');
+            tile.playBuildingSound(3000);
+        } else {
+            console.log('this unit is not friendly, not playing');
+        }
 
         return new Promise(resolve => {
             this.unit.playAnimation(UNIT_ANIMATIONS.BUILD);
