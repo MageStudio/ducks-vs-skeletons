@@ -18,7 +18,12 @@ const assets = {
             hammerLight: `${ASSETS_AUDIO_BASE_PATH}/hammer_light.wav`,
             buildingFinished: `${ASSETS_AUDIO_BASE_PATH}/building_finished.wav`,
             buildingFinishedA: `${ASSETS_AUDIO_BASE_PATH}/building_finished_1.wav`,
-            buildingPlaced: `${ASSETS_AUDIO_BASE_PATH}/placement.aac`
+            buildingPlaced: `${ASSETS_AUDIO_BASE_PATH}/placement.aac`,
+            unitAttack: `${ASSETS_AUDIO_BASE_PATH}/attack.wav`,
+
+            natureBackground: `${ASSETS_AUDIO_BASE_PATH}/nature_background.aac`,
+            desertBackground: `${ASSETS_AUDIO_BASE_PATH}/desert_background.aac`,
+            humansBackground: `${ASSETS_AUDIO_BASE_PATH}/dungeon_background.aac`,
         },
         models: {
             'box': `${ASSETS_MODELS_BASE_PATH}/box.glb`,

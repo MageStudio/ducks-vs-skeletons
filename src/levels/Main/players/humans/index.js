@@ -23,7 +23,11 @@ class Humans extends Player {
         });
 
         this.saveTile(initialTile);
-        // this.expansionIntervalId = setInterval(this.expand, HUMAN_EXPANSION_INTERVAL);
+        this.startExpansion();
+    }
+    
+    startExpansion() {
+        this.expansionIntervalId = setInterval(this.expand, HUMAN_EXPANSION_INTERVAL);
     }
 
     getUnitScriptName = () => 'HumanBehaviour';

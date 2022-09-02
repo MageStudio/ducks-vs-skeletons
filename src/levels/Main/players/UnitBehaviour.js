@@ -11,7 +11,7 @@ import {
     GameRunner,
     rxjs
 } from "mage-engine";
-import { playBuildingSound } from "../../../sounds";
+import { getUnitAttackSound, playBuildingSound, VOLUMES } from "../../../sounds";
 import WarriorLabel from "../../../ui/labels/WarriorLabel";
 import { TILES_TYPES } from "../map/constants";
 import TileMap from "../map/TileMap";
@@ -92,6 +92,9 @@ export default class UnitBehaviour extends BaseScript {
         this.unit.setScale(this.getUnitScale());
         this.unit.playAnimation(UNIT_ANIMATIONS.IDLE);
         this.unit.setPosition(this.position);
+
+        this.attackSound = getUnitAttackSound();
+        this.unit.add(this.attackSound);
     }
 
     getUnitScale() {
@@ -227,6 +230,7 @@ export default class UnitBehaviour extends BaseScript {
         if (this._ammo < 0) {
             this.handleNoAmmo();
         } else {
+            this.attackSound.play(VOLUMES.UNIT.ATTACK);
             this.ammo.next(this._ammo);
             return new Sphere(BULLET_SIZE, PALETTES.BASE.BLACK)
                 .addScript('BulletBehaviour', { position: this.unit.getPosition(), target: this.target })
@@ -275,9 +279,9 @@ export default class UnitBehaviour extends BaseScript {
 
         const buildingTime = 3000; // needs calculation for right amount of time.
 
-        if (this.isFriendly()) {
-            playBuildingSound(tile.getPosition(), buildingTime);
-        }
+        // if (this.isFriendly()) {
+        playBuildingSound(tile.getPosition(), buildingTime);
+        // }
 
         return new Promise(resolve => {
             this.unit.playAnimation(UNIT_ANIMATIONS.BUILD);

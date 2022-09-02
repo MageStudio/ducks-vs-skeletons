@@ -25,6 +25,14 @@ const SOUNDS = {
             'buildingFinishedA'
         ],
         PLACED: 'buildingPlaced'
+    },
+    UNIT: {
+        ATTACK: 'unitAttack'
+    },
+    BACKGROUND: {
+        DESERT: 'desertBackground',
+        NATURE: 'natureBackground',
+        HUMANS: 'humansBackground'
     }
 };
 
@@ -35,7 +43,11 @@ export const VOLUMES = {
     BUILDING: {
         FINISHED: 1,
         PLACED: 1.5
-    }
+    },
+    UNIT: {
+        ATTACK: .2
+    },
+    BACKGROUND: 0.02
 }
 
 export const getClickSound = singleton(() => new AmbientSound(SOUNDS.CLICK));
@@ -44,6 +56,8 @@ export const getBuildingPlacedSound = singleton(() => new DirectionalSound(SOUND
 export const getHammerSound = (options = {}) => new DirectionalSound(math.pickRandom(SOUNDS.HAMMER), options);
 export const getSawSound = (options = {}) => new DirectionalSound(SOUNDS.SAW, options);
 export const getBuildingFinishedSound = (options = {}) => new DirectionalSound(math.pickRandom(SOUNDS.BUILDING.FINISHED), options);
+
+export const getUnitAttackSound = (options = {}) => new DirectionalSound(SOUNDS.UNIT.ATTACK, options);
 
 export const playBuildingPlacedSound = position => {
     const sound = getBuildingPlacedSound();
@@ -66,4 +80,12 @@ export const playBuildingSound = (position, buildingTime) => {
         getBuildingFinishedSound()
             .play(VOLUMES.BUILDING.FINISHED)
             .stop(2000), buildingTime)
-}
+};
+
+export const playBackgroundSound = (background = SOUNDS.BACKGROUND.DESERT) => (
+    AmbientSound
+        .create(background, { loop: true })
+        .play(VOLUMES.BACKGROUND)
+);
+
+window.playBackground = playBackgroundSound;
