@@ -1,5 +1,5 @@
 import { connect } from 'mage-engine';
-import { getClickSound, playClickSound } from '../sounds';
+import { getClickSound, playClickSound, VOLUMES } from '../sounds';
 import { changeSelectionOption } from './actions/player';
 import Game from './gameui';
 import LoadingScreen from './LoadingScreen';
@@ -7,7 +7,7 @@ import LoadingScreen from './LoadingScreen';
 const Root = ({ loadingScreenVisible, tileStats, energy, selection, option, onOptionClick }) => {
 
     const onClick = (option) => {
-        getClickSound().play();
+        getClickSound().play(VOLUMES.CLICK);
         onOptionClick(option);
     };
 

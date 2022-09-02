@@ -139,9 +139,8 @@ class TileMap {
         return calculatePath(start, end, []);
     }
 
-    addEnergyParticlesToTile(destination) {
-        this.getTileAt(destination)
-            .addEnergyParticleEmitter();
+    addEnergyParticlesToTile(tile) {
+        tile.addEnergyParticleEmitter();
     }
 
     getStats() {

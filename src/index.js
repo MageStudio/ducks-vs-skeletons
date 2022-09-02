@@ -18,6 +18,7 @@ const assets = {
             hammerLight: `${ASSETS_AUDIO_BASE_PATH}/hammer_light.wav`,
             buildingFinished: `${ASSETS_AUDIO_BASE_PATH}/building_finished.wav`,
             buildingFinishedA: `${ASSETS_AUDIO_BASE_PATH}/building_finished_1.wav`,
+            buildingPlaced: `${ASSETS_AUDIO_BASE_PATH}/placement.aac`
         },
         models: {
             'box': `${ASSETS_MODELS_BASE_PATH}/box.glb`,
@@ -50,21 +51,11 @@ const assets = {
             'humanStart': `${ASSETS_MODELS_BASE_PATH}/castle.gltf.glb`, //${ASSETS_MODELS_BASE_PATH}/skyscraperD.glb,
             'forestStart': `${ASSETS_MODELS_BASE_PATH}/mill.gltf.glb`, //${ASSETS_MODELS_BASE_PATH}/tree.glb,
 
-            'star': `${ASSETS_MODELS_BASE_PATH}/star.gltf.glb`,
-
             'shotgun': `${ASSETS_MODELS_BASE_PATH}/shotgun.glb`
         },
         textures: {
-            'zombie': `${ASSETS_TEXTURES_BASE_PATH}/zombieA.png`,
             'fire': `${ASSETS_TEXTURES_BASE_PATH}/fire.png`,
-            'waterNormal': `${ASSETS_TEXTURES_BASE_PATH}/waterNormals.jpg`,
             'greenEnergy': `${ASSETS_TEXTURES_BASE_PATH}/green_energy.png`,
-
-            'woodMap': `${ASSETS_TEXTURES_BASE_PATH}/Wood_025_basecolor.jpg`,
-            'woodAO': `${ASSETS_TEXTURES_BASE_PATH}/Wood_025_ambientOcclusion.jpg`,
-            'woodBump': `${ASSETS_TEXTURES_BASE_PATH}/Wood_025_height.png`,
-            'woodNormal': `${ASSETS_TEXTURES_BASE_PATH}/Wood_025_normal.jpg`,
-            'woodRoughness': `${ASSETS_TEXTURES_BASE_PATH}/Wood_025_roughness.jpg`,
         }
     },
     '/testing': {

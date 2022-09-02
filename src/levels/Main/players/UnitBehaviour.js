@@ -11,6 +11,7 @@ import {
     GameRunner,
     rxjs
 } from "mage-engine";
+import { playBuildingSound } from "../../../sounds";
 import WarriorLabel from "../../../ui/labels/WarriorLabel";
 import { TILES_TYPES } from "../map/constants";
 import TileMap from "../map/TileMap";
@@ -272,11 +273,10 @@ export default class UnitBehaviour extends BaseScript {
     buildAtPosition(tile, variation) {
         if (!this.isBuilder()) return Promise.resolve();
 
+        const buildingTime = 3000; // needs calculation for right amount of time.
+
         if (this.isFriendly()) {
-            console.log('playing sounds on tile');
-            tile.playBuildingSound(3000);
-        } else {
-            console.log('this unit is not friendly, not playing');
+            playBuildingSound(tile.getPosition(), buildingTime);
         }
 
         return new Promise(resolve => {
@@ -292,8 +292,8 @@ export default class UnitBehaviour extends BaseScript {
                     this.goBackHome();
                 }
                 resolve(null);
-            }, 3000) // BUILDING TIME SHOULD CHANGE DEPENDING ON TYPE OF BUILD
-        })
+            }, buildingTime);
+        });
     }
 
     goTo(startingPosition, destinationTile) {

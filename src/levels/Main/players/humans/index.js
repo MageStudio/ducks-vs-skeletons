@@ -77,27 +77,27 @@ class Humans extends Player {
                     this.sendWarriorToTile(nextTile.getIndex(), warriorTile.getIndex());
                 } else {
                     if (this.canBuildVariation(TILES_VARIATIONS_TYPES.TOWER)) {
-                        this.buildTower(nextTile.getIndex());
+                        this.buildTower(nextTile);
                         return;
                     } else if (this.canBuildVariation(TILES_VARIATIONS_TYPES.WARRIORS)) {
-                        this.buildWarriorsHut(nextTile.getIndex());
+                        this.buildWarriorsHut(nextTile);
                         return;
                     }
                 }
 
             } else {
                 if (this.canBuildVariation(TILES_VARIATIONS_TYPES.TOWER)) {
-                    this.buildTower(nextTile.getIndex());
+                    this.buildTower(nextTile);
                     return;
                 } else if (this.canBuildVariation(TILES_VARIATIONS_TYPES.WARRIORS)) {
-                    this.buildWarriorsHut(nextTile.getIndex());
+                    this.buildWarriorsHut(nextTile);
                     return;
                 } else if (this.canBuildVariation(TILES_VARIATIONS_TYPES.BUILDERS)) {
-                    this.buildBuildersHut(nextTile.getIndex());
+                    this.buildBuildersHut(nextTile);
                     return;
                 }
             }
-            this.buildBaseTile(nextTile.getIndex())
+            this.buildBaseTile(nextTile)
         }
     }
 
