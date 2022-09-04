@@ -43,6 +43,8 @@ class Nature extends Player {
         this.selector.getScript('Selector').disappear();
     }
 
+    isFriendly() { return true; } // we are friendly
+
     getUnitScriptName = () => 'DuckBehaviour';
     getBaseTileType = () => TILES_TYPES.FOREST;
     getEnemyType = () => TILES_TYPES.HUMAN;

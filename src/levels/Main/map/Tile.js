@@ -1,6 +1,6 @@
 import { AUDIO_RAMPS } from 'mage-engine';
 import { Models, constants, math, Particles, PARTICLES, THREE, Scripts } from 'mage-engine';
-import { getBuildingFinishedSound, getHammerSound, getSawSound, VOLUMES } from '../../../sounds';
+import { getBuildingFinishedSound, getFireSound, getHammerSound, getSawSound, VOLUMES } from '../../../sounds';
 import EnergyParticleSystem from '../players/nature/EnergyParticleSystem';
 import { TARGET_DEAD_EVENT_TYPE, TARGET_HEALTH_MAP, TARGET_HIT_EVENT_TYPE } from '../players/TargetBehaviour';
 import {
@@ -251,6 +251,10 @@ export default class Tile {
             this.fire.emit(Infinity);
             this.tile.add(this.fire);
 
+            this.fireSound = getFireSound();
+            this.fireSound.setPosition(this.getPosition());
+            this.fireSound.play(VOLUMES.FIRE);
+
             this.burningDamageInterval = setInterval(() => this.tile
                 .getScript('TargetBehaviour')
                 .processHit(FIRE_DAMAGE)
@@ -261,6 +265,7 @@ export default class Tile {
     stopBurning() {
         if (this.burning) {
             this.fire.stop();
+            this.fireSound.stop();
         }
     }
 

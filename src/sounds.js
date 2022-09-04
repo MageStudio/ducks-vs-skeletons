@@ -33,7 +33,8 @@ const SOUNDS = {
         DESERT: 'desertBackground',
         NATURE: 'natureBackground',
         HUMANS: 'humansBackground'
-    }
+    },
+    FIRE: 'fire'
 };
 
 export const VOLUMES = {
@@ -44,6 +45,7 @@ export const VOLUMES = {
         FINISHED: 1,
         PLACED: 1.5
     },
+    FIRE: 2,
     UNIT: {
         ATTACK: .2
     },
@@ -56,6 +58,8 @@ export const getBuildingPlacedSound = singleton(() => new DirectionalSound(SOUND
 export const getHammerSound = (options = {}) => new DirectionalSound(math.pickRandom(SOUNDS.HAMMER), options);
 export const getSawSound = (options = {}) => new DirectionalSound(SOUNDS.SAW, options);
 export const getBuildingFinishedSound = (options = {}) => new DirectionalSound(math.pickRandom(SOUNDS.BUILDING.FINISHED), options);
+
+export const getFireSound = (options = {}) => new DirectionalSound(SOUNDS.FIRE, options); 
 
 export const getUnitAttackSound = (options = {}) => new DirectionalSound(SOUNDS.UNIT.ATTACK, options);
 

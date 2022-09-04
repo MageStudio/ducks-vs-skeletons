@@ -279,9 +279,9 @@ export default class UnitBehaviour extends BaseScript {
 
         const buildingTime = 3000; // needs calculation for right amount of time.
 
-        // if (this.isFriendly()) {
-        playBuildingSound(tile.getPosition(), buildingTime);
-        // }
+        if (this.isFriendly()) {
+            playBuildingSound(tile.getPosition(), buildingTime);
+        }
 
         return new Promise(resolve => {
             this.unit.playAnimation(UNIT_ANIMATIONS.BUILD);

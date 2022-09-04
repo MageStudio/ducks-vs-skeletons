@@ -21,6 +21,8 @@ const assets = {
             buildingPlaced: `${ASSETS_AUDIO_BASE_PATH}/placement.aac`,
             unitAttack: `${ASSETS_AUDIO_BASE_PATH}/attack.wav`,
 
+            fire: `${ASSETS_AUDIO_BASE_PATH}/fire.mp3`,
+            
             natureBackground: `${ASSETS_AUDIO_BASE_PATH}/nature_background.aac`,
             desertBackground: `${ASSETS_AUDIO_BASE_PATH}/desert_background.aac`,
             humansBackground: `${ASSETS_AUDIO_BASE_PATH}/dungeon_background.aac`,

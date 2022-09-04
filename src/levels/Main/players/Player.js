@@ -30,6 +30,8 @@ export default class Player {
         this.type = type;
     }
 
+    isFriendly() { return false; } // by default, skeletons are not friendly.
+
     isUnderAttack() {
         return this.underAttack;
     }
@@ -128,26 +130,26 @@ export default class Player {
 
     buildBaseTile(tile, startingPosition) {
         this.updateEnergy();
-        playBuildingPlacedSound(tile.getPosition());
+        this.isFriendly() && playBuildingPlacedSound(tile.getPosition());
         return this.sendBuilderToTile(tile, TILES_VARIATIONS_TYPES.BASE, startingPosition);
     };
 
     buildWarriorsHut = (tile, startingPosition) => {
-        playBuildingPlacedSound(tile.getPosition());
+        this.isFriendly() && playBuildingPlacedSound(tile.getPosition());
         return this.canBuildVariation(TILES_VARIATIONS_TYPES.WARRIORS) ?
             this.sendBuilderToTile(tile, TILES_VARIATIONS_TYPES.WARRIORS, startingPosition) :
             Promise.resolve(false);
     }
 
     buildBuildersHut = (tile, startingPosition) => {
-        playBuildingPlacedSound(tile.getPosition());
+        this.isFriendly() && playBuildingPlacedSound(tile.getPosition());
         return this.canBuildVariation(TILES_VARIATIONS_TYPES.BUILDERS) ?
             this.sendBuilderToTile(tile, TILES_VARIATIONS_TYPES.BUILDERS, startingPosition) :
             Promise.resolve(false);
     }
 
     buildTower = (tile, startingPosition) => {
-        playBuildingPlacedSound(tile.getPosition());
+        this.isFriendly() &&  playBuildingPlacedSound(tile.getPosition());
         return this.canBuildVariation(TILES_VARIATIONS_TYPES.TOWER) ?
             this.sendBuilderToTile(tile, TILES_VARIATIONS_TYPES.TOWER, startingPosition) :
             Promise.resolve(false)
