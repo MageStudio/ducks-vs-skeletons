@@ -21,7 +21,7 @@ const getSingleItem = (optionName, option, onClick) => (
     <div
         class={`option ${option === optionName ? 'selected' : ''}`}
         onClick={() => onClick(optionName)} >
-        <span className="label">{LABELS_MAP[optionName]}</span>
+            <span className="label">{LABELS_MAP[optionName]}</span>
     </div>
 );
 

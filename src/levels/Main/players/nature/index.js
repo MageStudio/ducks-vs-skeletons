@@ -43,14 +43,16 @@ class Nature extends Player {
         this.selector.getScript('Selector').disappear();
     }
 
+    isFriendly() { return true; } // we are friendly
+
     getUnitScriptName = () => 'DuckBehaviour';
     getBaseTileType = () => TILES_TYPES.FOREST;
     getEnemyType = () => TILES_TYPES.HUMAN;
     
-    buildBaseTile(destination, startingPosition) {
-        super.buildBaseTile(destination, startingPosition)
+    buildBaseTile(tile, startingPosition) {
+        super.buildBaseTile(tile, startingPosition)
             .then(this.dispatchCurrentEnergyLevel)
-            .then(() => TileMap.addEnergyParticlesToTile(destination))
+            .then(() => TileMap.addEnergyParticlesToTile(tile))
     }
 
     updateEnergy() {
@@ -63,20 +65,21 @@ class Nature extends Player {
     }
 
     build(option, startingPosition, destination) {
+        const tile = TileMap.getTileAt(destination);
         switch(option) {
             case FOREST_OPTIONS.BASE_TILE:
-                this.buildBaseTile(destination, startingPosition);
+                this.buildBaseTile(tile, startingPosition);
                 break;
             case FOREST_OPTIONS.BUILDERS_HUT_TILE:
-                this.buildBuildersHut(destination, startingPosition)
+                this.buildBuildersHut(tile, startingPosition)
                     .then(this.dispatchCurrentEnergyLevel)
                 break;
             case FOREST_OPTIONS.WARRIORS_HUT_TILE:
-                this.buildWarriorsHut(destination, startingPosition)
+                this.buildWarriorsHut(tile, startingPosition)
                     .then(this.dispatchCurrentEnergyLevel)
                 break;
             case FOREST_OPTIONS.TOWER_TILE:
-                this.buildTower(destination, startingPosition)
+                this.buildTower(tile, startingPosition)
                     .then(this.dispatchCurrentEnergyLevel)
                 break;
         }

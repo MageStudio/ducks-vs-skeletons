@@ -5,8 +5,7 @@ import { DEATH_REASONS } from '../constants';
 import { ENERGY_UNIT_REQUIREMENTS, getEnergyRequirementForTileVariation } from "./energy";
 import { UNIT_ANIMATIONS, UNIT_TYPES } from "./UnitBehaviour";
 import { TARGET_DEAD_EVENT_TYPE, TARGET_HEALTH_MAP } from "./TargetBehaviour";
-import { Label } from "mage-engine";
-import WarriorLabel from "../../../ui/labels/WarriorLabel";
+import { playBuildingPlacedSound, VOLUMES } from "../../../sounds";
 
 export const BASE_TILE_ENERGY_INCREASE = .2;
 const MIN_ENERGY = 0;
@@ -30,6 +29,8 @@ export default class Player {
 
         this.type = type;
     }
+
+    isFriendly() { return false; } // by default, skeletons are not friendly.
 
     isUnderAttack() {
         return this.underAttack;
@@ -127,28 +128,32 @@ export default class Player {
         this.buildings[TILES_VARIATIONS_TYPES.WARRIORS].length > 0
     )
 
-    buildBaseTile(destination, startingPosition) {
+    buildBaseTile(tile, startingPosition) {
         this.updateEnergy();
-        return this.sendBuilderToTile(TileMap.getTileAt(destination), TILES_VARIATIONS_TYPES.BASE, startingPosition);
+        this.isFriendly() && playBuildingPlacedSound(tile.getPosition());
+        return this.sendBuilderToTile(tile, TILES_VARIATIONS_TYPES.BASE, startingPosition);
     };
 
-    buildWarriorsHut = (destination, startingPosition) => (
-        this.canBuildVariation(TILES_VARIATIONS_TYPES.WARRIORS) ?
-            this.sendBuilderToTile(TileMap.getTileAt(destination), TILES_VARIATIONS_TYPES.WARRIORS, startingPosition) :
-            Promise.resolve(false)
-    );
+    buildWarriorsHut = (tile, startingPosition) => {
+        this.isFriendly() && playBuildingPlacedSound(tile.getPosition());
+        return this.canBuildVariation(TILES_VARIATIONS_TYPES.WARRIORS) ?
+            this.sendBuilderToTile(tile, TILES_VARIATIONS_TYPES.WARRIORS, startingPosition) :
+            Promise.resolve(false);
+    }
 
-    buildBuildersHut = (destination, startingPosition) => (
-        this.canBuildVariation(TILES_VARIATIONS_TYPES.BUILDERS) ?
-            this.sendBuilderToTile(TileMap.getTileAt(destination), TILES_VARIATIONS_TYPES.BUILDERS, startingPosition) :
-            Promise.resolve(false)
-    );
+    buildBuildersHut = (tile, startingPosition) => {
+        this.isFriendly() && playBuildingPlacedSound(tile.getPosition());
+        return this.canBuildVariation(TILES_VARIATIONS_TYPES.BUILDERS) ?
+            this.sendBuilderToTile(tile, TILES_VARIATIONS_TYPES.BUILDERS, startingPosition) :
+            Promise.resolve(false);
+    }
 
-    buildTower = (destination, startingPosition) => (
-        this.canBuildVariation(TILES_VARIATIONS_TYPES.TOWER) ?
-            this.sendBuilderToTile(TileMap.getTileAt(destination), TILES_VARIATIONS_TYPES.TOWER, startingPosition) :
+    buildTower = (tile, startingPosition) => {
+        this.isFriendly() &&  playBuildingPlacedSound(tile.getPosition());
+        return this.canBuildVariation(TILES_VARIATIONS_TYPES.TOWER) ?
+            this.sendBuilderToTile(tile, TILES_VARIATIONS_TYPES.TOWER, startingPosition) :
             Promise.resolve(false)
-    );
+    };
 
     sendBuilderToTile(tile, variation, position = this.initialPosition) {
         const unit = Models.get(this.type, { name: `${this.type}_builder_${Math.random()}`});

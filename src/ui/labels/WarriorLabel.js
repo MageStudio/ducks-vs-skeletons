@@ -14,7 +14,6 @@ export default class WarriorLabel extends LabelComponent {
             .getScript(script)
             .ammo
             .subscribe((ammo) => {
-                console.log('setting state here', ammo);
                 this.setState({ ammo })
             });
     }

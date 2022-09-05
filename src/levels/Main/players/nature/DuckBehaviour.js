@@ -16,6 +16,10 @@ export default class DuckBehaviour extends UnitBehaviour {
         this.angleDampening = 150;
     }
 
+    isFriendly() {
+        return true;
+    }
+
     getEnemyTileType() {
         return TILES_TYPES.HUMAN;
     }
