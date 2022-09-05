@@ -28,10 +28,6 @@ class Nature extends Player {
         const initialTile = TileMap.changeTile(this.initialPosition, TILES_TYPES.FOREST, { startingTile: true });
         console.log(initialTile);
 
-        // initialTile.tile.add(new Label({ Component: WarriorLabel }));
-
-        // const label = new Label({ Component: WarriorLabel, width: 5, height: 5 });
-        // window.label = label;
 
         this.saveTile(initialTile);
 

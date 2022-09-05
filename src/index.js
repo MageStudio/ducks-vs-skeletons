@@ -36,6 +36,8 @@ const assets = {
             'human': `${ASSETS_MODELS_BASE_PATH}/skeleton_animation.fbx`,
             'nature': `${ASSETS_MODELS_BASE_PATH}/duck_animation.fbx`,
             'duck_animated': `${ASSETS_MODELS_BASE_PATH}/animated.fbx`,
+
+            'scaffolding': `${ASSETS_MODELS_BASE_PATH}/scaffolding.obj`,
             
             'forestTile': `${ASSETS_MODELS_BASE_PATH}/hex_forest_detail.gltf.glb`, //${ASSETS_MODELS_BASE_PATH}/forestTile.glb,
             'lumbermill': `${ASSETS_MODELS_BASE_PATH}/lumbermill.gltf.glb`,
@@ -89,7 +91,7 @@ const config = {
 
     lights: {
         shadows: true,
-        shadowType: SHADOW_TYPES.HARD,
+        shadowType: SHADOW_TYPES.SOFT,
         textureAnisotropy: 1
     },
 

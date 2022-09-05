@@ -1,6 +1,6 @@
 import { AUDIO_RAMPS } from 'mage-engine';
 import { Models, constants, math, Particles, PARTICLES, THREE, Scripts } from 'mage-engine';
-import { getBuildingFinishedSound, getFireSound, getHammerSound, getSawSound, VOLUMES } from '../../../sounds';
+import { getBuildingFinishedSound, getFireSound, getHammerSound, getSawSound, playBuildingSound, VOLUMES } from '../../../sounds';
 import EnergyParticleSystem from '../players/nature/EnergyParticleSystem';
 import { TARGET_DEAD_EVENT_TYPE, TARGET_HEALTH_MAP, TARGET_HIT_EVENT_TYPE } from '../players/TargetBehaviour';
 import {
@@ -47,6 +47,7 @@ const TILE_LIFE = 20;
 const STARTING_TILE_LIFE_FACTOR = 4;
 const TILE_LIFE_FACTOR = 1;
 const TILE_CRITICAL_DAMAGE_PERCENTAGE = .4;
+const TILE_DETAILS_OPACITY = .3;
 
 const getDetailsListFromTileType = (tileType) =>  (TILES_DETAILS_MAP[tileType]) || DESERT_DETAILS;
 const getRandomDetailForTile = (tileType) => math.pickRandom(getDetailsListFromTileType(tileType));
@@ -139,24 +140,6 @@ export default class Tile {
 
     isBuilding = () => this.state === TILES_STATES.BUILDING;
 
-    playBuildingSound = (buildingTime) => {
-        const saw = getSawSound({ loop: true })
-            .play(VOLUMES.SAW)
-            .stop(buildingTime);
-        const hammer = getHammerSound({ loop: true })
-            .play(VOLUMES.HAMMER)
-            .stop(buildingTime + 1000);
-
-        saw.setPosition(this.getPosition());
-        hammer.setPosition(this.getPosition());
-
-        setTimeout(() => 
-            getBuildingFinishedSound()
-                .play(VOLUMES.BUILDING.FINISHED)
-                .stop(2000), buildingTime)
-    }
-
-
     getModelNameFromVariationAndTileType = () => {
         const { tile, detail } = TILES_TYPES_VARIATIONS_MAP[this.tileType][this.variation];
 
@@ -225,6 +208,7 @@ export default class Tile {
         startingDetail.setScale(TILE_LARGE_DETAILS_SCALE);
 
         startingDetail.setPosition({ y: 1 });
+        this.details = startingDetail;
     }
 
     addDetail(detail) {
@@ -235,13 +219,16 @@ export default class Tile {
 
         details.setScale(TILE_DETAILS_SCALE);
         details.setPosition(TILE_DETAILS_RELATIVE_POSITION);
+        if (!this.isDesert()) details.setOpacity(TILE_DETAILS_OPACITY);
+
+        this.details = details;
     }
 
     addEnergyParticleEmitter() {
-        const particles = Particles.add(new EnergyParticleSystem(ENERGY_PARTICLES_OPTIONS));
+        this.energyParticles = Particles.add(new EnergyParticleSystem(ENERGY_PARTICLES_OPTIONS));
 
-        particles.emit(Infinity);
-        this.tile.add(particles);
+        this.energyParticles.emit(Infinity);
+        this.tile.add(this.energyParticles);
     }
 
     startBurning = () => {
@@ -266,6 +253,34 @@ export default class Tile {
         if (this.burning) {
             this.fire.stop();
             this.fireSound.stop();
+        }
+    }
+
+    startBuilding(buildingTime, friendly) {
+        if (friendly) playBuildingSound(this.getPosition(), buildingTime);
+        this.showScaffolding();
+        if (this.details) this.details.fadeTo(1, buildingTime);
+    }
+
+    stopBuilding() {
+        this.hideScaffolding();
+    }
+
+    showScaffolding() {
+        this.scaffolding = Models.get('scaffolding');
+
+        this.scaffolding.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
+        this.tile.add(this.scaffolding);
+
+        this.scaffolding.setScale(TILE_DETAILS_SCALE);
+        this.scaffolding.setPosition(TILE_DETAILS_RELATIVE_POSITION);
+    }
+
+    hideScaffolding() {
+        if (this.scaffolding) {
+            this.scaffolding.fadeTo(0, 1000);
+            this.scaffolding.toggleShadows(false);
+            setTimeout(() => this.tile.remove(this.scaffolding), 1200);
         }
     }
 
