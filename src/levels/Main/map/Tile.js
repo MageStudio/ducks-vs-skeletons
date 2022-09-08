@@ -1,8 +1,7 @@
-import { AUDIO_RAMPS } from 'mage-engine';
-import { Models, constants, math, Particles, PARTICLES, THREE, Scripts } from 'mage-engine';
-import { getBuildingFinishedSound, getFireSound, getHammerSound, getSawSound, playBuildingSound, VOLUMES } from '../../../sounds';
-import EnergyParticleSystem from '../players/nature/EnergyParticleSystem';
-import { TARGET_DEAD_EVENT_TYPE, TARGET_HEALTH_MAP, TARGET_HIT_EVENT_TYPE } from '../players/TargetBehaviour';
+import { Models, constants, math, Particles, PARTICLES, THREE } from 'mage-engine';
+import { getFireSound, playBuildingSound, VOLUMES } from '../../../sounds';
+import TileParticleSystem from '../players/nature/TileParticleSystem';
+import { TARGET_DEAD_EVENT_TYPE, TARGET_HIT_EVENT_TYPE } from '../players/TargetBehaviour';
 import {
     TILES_DETAILS_MAP,
     TILES_TYPES,
@@ -29,7 +28,7 @@ const { MATERIALS } = constants;
 const FIRE_OPTIONS = {
     texture: 'fire',
     size: .1,
-    strength: 1.5 ,
+    strength: 1.5,
     direction: new Vector3( 0, 1, 0)
 };
 const FIRE_DAMAGE = .2;
@@ -42,6 +41,18 @@ const ENERGY_PARTICLES_OPTIONS = {
     radius: .5,
     direction: new Vector3( 0, 1, 0)
 };
+
+const SMOKE_PARTICLES_OPTIONS = {
+    direction: new Vector3( 0, 1, 0),
+    texture: 'fire',
+    size: 1,
+    radius: .5,
+    life: 4,
+    color: [ 0xffffff, [ 0x555555, 0x000000] ],
+    rate: 100,
+    frequency: 0,
+    strength: .1
+}
 
 const TILE_LIFE = 20;
 const STARTING_TILE_LIFE_FACTOR = 4;
@@ -140,8 +151,8 @@ export default class Tile {
 
     isBuilding = () => this.state === TILES_STATES.BUILDING;
 
-    getModelNameFromVariationAndTileType = () => {
-        const { tile, detail } = TILES_TYPES_VARIATIONS_MAP[this.tileType][this.variation];
+    getModelNameFromVariationAndTileType = (variation = this.variation, tileType = this.tileType) => {
+        const { tile, detail } = TILES_TYPES_VARIATIONS_MAP[tileType][variation];
 
         return {
             tile,
@@ -225,7 +236,7 @@ export default class Tile {
     }
 
     addEnergyParticleEmitter() {
-        this.energyParticles = Particles.add(new EnergyParticleSystem(ENERGY_PARTICLES_OPTIONS));
+        this.energyParticles = Particles.add(new TileParticleSystem(ENERGY_PARTICLES_OPTIONS));
 
         this.energyParticles.emit(Infinity);
         this.tile.add(this.energyParticles);
@@ -252,18 +263,60 @@ export default class Tile {
     stopBurning() {
         if (this.burning) {
             this.fire.stop();
-            this.fireSound.stop();
+            this.fireSound
+                .stop()
+                .then(() => this.fireSound.dispose());
+            this.tile.remove(this.fire);
+        }
+    }
+
+    startSmoking() {
+        this.smoke = Particles.add(new TileParticleSystem(SMOKE_PARTICLES_OPTIONS));
+        this.smoke.emit(Infinity);
+        this.tile.add(this.smoke);
+        this.smoking = true;
+    }
+
+    stopSmoking() {
+        if (this.smoking) {
+            this.smoke.stop();
+        }
+    }
+
+    showBuildingPreview(variation, futureTileType) {
+        const { detail } = this.getModelNameFromVariationAndTileType(variation, futureTileType);
+        if (detail) {
+            const buildingPreview = Models.get(detail, { name: `tile_building_preview_${Math.random()}` });
+    
+            buildingPreview.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
+            this.tile.add(buildingPreview);
+    
+            buildingPreview.setScale(TILE_DETAILS_SCALE);
+            buildingPreview.setPosition(TILE_DETAILS_RELATIVE_POSITION);
+            buildingPreview.setOpacity(TILE_DETAILS_OPACITY);
+    
+            this.buildingPreview = buildingPreview;
+        }
+    }
+
+    removeBuildingPreview() {
+        if (this.buildingPreview) {
+            this.tile.remove(this.buildingPreview);
+            this.buildingPreview.dispose();
         }
     }
 
     startBuilding(buildingTime, friendly) {
         if (friendly) playBuildingSound(this.getPosition(), buildingTime);
+        this.removeBuildingPreview();
         this.showScaffolding();
+        this.startSmoking();
         if (this.details) this.details.fadeTo(1, buildingTime);
     }
 
     stopBuilding() {
         this.hideScaffolding();
+        this.stopSmoking();
     }
 
     showScaffolding() {

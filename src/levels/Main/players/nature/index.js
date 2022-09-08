@@ -28,7 +28,6 @@ class Nature extends Player {
         const initialTile = TileMap.changeTile(this.initialPosition, TILES_TYPES.FOREST, { startingTile: true });
         console.log(initialTile);
 
-
         this.saveTile(initialTile);
 
         this.outline = PostProcessing.add(constants.EFFECTS.SELECTIVE_OUTLINE);

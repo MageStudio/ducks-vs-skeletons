@@ -59,7 +59,7 @@ export const getHammerSound = (options = {}) => new DirectionalSound(math.pickRa
 export const getSawSound = (options = {}) => new DirectionalSound(SOUNDS.SAW, options);
 export const getBuildingFinishedSound = (options = {}) => new DirectionalSound(math.pickRandom(SOUNDS.BUILDING.FINISHED), options);
 
-export const getFireSound = (options = {}) => new DirectionalSound(SOUNDS.FIRE, options); 
+export const getFireSound = singleton((options = {}) => new DirectionalSound(SOUNDS.FIRE, options)); 
 
 export const getUnitAttackSound = (options = {}) => new DirectionalSound(SOUNDS.UNIT.ATTACK, options);
 

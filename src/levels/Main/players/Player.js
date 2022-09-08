@@ -158,9 +158,11 @@ export default class Player {
     sendBuilderToTile(tile, variation, position = this.initialPosition) {
         const unit = Models.get(this.type, { name: `${this.type}_builder_${Math.random()}`});
         const behaviour = unit.addScript(this.getUnitScriptName(), { position, unitType: UNIT_TYPES.BUILDER });
+        const targetBehaviour = this.setUpUnitTargetBehaviour(unit, TARGET_HEALTH_MAP.UNITS.BUILDERS);
+
+        tile.showBuildingPreview(variation, this.getBaseTileType());
 
         TileMap.setTileState(tile, TILES_STATES.BUILDING);
-        const targetBehaviour = this.setUpUnitTargetBehaviour(unit, TARGET_HEALTH_MAP.UNITS.BUILDERS);
         unit.addEventListener(ENTITY_EVENTS.DISPOSE, this.handleUnitDeath(DEATH_REASONS.BUILDING));
 
         this.builders[unit.uuid()] = unit;

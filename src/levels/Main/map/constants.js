@@ -1,5 +1,5 @@
 import { THREE } from "mage-engine";
-import EnergyParticleSystem from "../players/nature/EnergyParticleSystem";
+import TileParticleSystem from "../players/nature/TileParticleSystem";
 
 export const HUMAN_STARTING_POSITION = {
     x: 0,
@@ -77,9 +77,7 @@ export const TILES_TYPES_VARIATIONS_MAP = {
             tile: TILES_TYPES.FOREST,
             detail: [
                 'hill',
-                'forest',
-                false,
-                false
+                'forest'
             ]
         },
         [TILES_VARIATIONS_TYPES.BUILDERS]: {
@@ -115,7 +113,7 @@ export const TILES_TYPES_VARIATIONS_MAP = {
 };
 
 export const TILE_PARTICLES = {
-    [TILES_VARIATIONS_TYPES.BASE]: EnergyParticleSystem
+    [TILES_VARIATIONS_TYPES.BASE]: TileParticleSystem
 };
 
 // export const HUMAN_TILES = {
