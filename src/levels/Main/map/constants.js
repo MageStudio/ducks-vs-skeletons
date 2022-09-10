@@ -86,11 +86,11 @@ export const TILES_TYPES_VARIATIONS_MAP = {
         },
         [TILES_VARIATIONS_TYPES.WARRIORS]: {
             tile: TILES_TYPES.FOREST,
-            detail: 'farmplot'
+            detail: 'lumbermill'
         },
         [TILES_VARIATIONS_TYPES.TOWER]: {
             tile: TILES_TYPES.FOREST,
-            detail: 'lumbermill'
+            detail: 'natureTower'
         },
     },
     [TILES_TYPES.DESERT]: {

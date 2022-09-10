@@ -7,8 +7,6 @@ import {
     changeSelection,
     changeSelectionOption
 } from '../../../../ui/actions/player';
-import { Label } from "mage-engine";
-import WarriorLabel from "../../../../ui/labels/WarriorLabel";
 
 const MAX_ATTACK_TARGET_DISTANCE = 20;
 
@@ -25,9 +23,8 @@ class Nature extends Player {
         Input.enable();
         Input.addEventListener(INPUT_EVENTS.MOUSE_DOWN, this.handleMouseClick);
         Input.addEventListener(INPUT_EVENTS.MOUSE_MOVE, this.handleMouseMove);
-        const initialTile = TileMap.changeTile(this.initialPosition, TILES_TYPES.FOREST, { startingTile: true });
-        console.log(initialTile);
 
+        const initialTile = TileMap.changeTile(this.initialPosition, TILES_TYPES.FOREST, { startingTile: true });
         this.saveTile(initialTile);
 
         this.outline = PostProcessing.add(constants.EFFECTS.SELECTIVE_OUTLINE);

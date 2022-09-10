@@ -40,6 +40,7 @@ const assets = {
             'scaffolding': `${ASSETS_MODELS_BASE_PATH}/scaffolding.obj`,
             
             'forestTile': `${ASSETS_MODELS_BASE_PATH}/hex_forest_detail.gltf.glb`, //${ASSETS_MODELS_BASE_PATH}/forestTile.glb,
+            'natureTower': `${ASSETS_MODELS_BASE_PATH}/nature_tower.obj`,
             'lumbermill': `${ASSETS_MODELS_BASE_PATH}/lumbermill.gltf.glb`,
             'farmplot': `${ASSETS_MODELS_BASE_PATH}/farm_plot.gltf.glb`,
             'market': `${ASSETS_MODELS_BASE_PATH}/market.gltf.glb`,

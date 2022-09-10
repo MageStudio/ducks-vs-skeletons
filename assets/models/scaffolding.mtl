@@ -1,8 +1,5 @@
 # Created by Kenney (www.kenney.nl)
 
-newmtl Green(Clone)
-Kd 0.065 0.501 0.266
-
 newmtl WoodDark(Clone)
 Kd 0.154 0.117 0.106
 
