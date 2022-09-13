@@ -35,38 +35,46 @@ export const BACKGROUND = 0xdff9fb;//0xddf3f5;
 const DOF_OPTIONS = {
     focus: 1.0,
     aperture: .0003,//0.0002,//0.0001,
-    maxblur: 0.006//0.01
+    maxblur: 0.01//0.01
 };
 
 const SATURATION_OPTIONS = {
     saturation: 0.2
 };
 
+const AMBIENT_LIGHTS_OPTIONS = {
+    color: PALETTES.FRENCH_PALETTE.SPRAY,
+    intensity: .5
+};
+
+const HEMISPHERELIGHT_OPTIONS = {
+    color: {
+        sky: PALETTES.FRENCH_PALETTE.SQUASH_BLOSSOM,
+        ground: PALETTES.FRENCH_PALETTE.REEF_ENCOUNTER
+    },
+    intensity: .5
+};
+
+const SUNLIGHT_OPTIONS = {
+    color: PALETTES.FRENCH_PALETTE.MELON_MELODY,
+    intensity: 1,
+    far: 20,
+    mapSize: 2048
+};
+
+const SUNLIGHT_POSITION = { y: 4, z: -3, x: -3 };
+
 const { EFFECTS, MATERIALS, TEXTURES } = constants;
 
-export default class Test extends Level {
+export default class Main extends Level {
 
-    addSunLight() {
-        const ambientLight = new AmbientLight({
-            color: PALETTES.FRENCH_PALETTE.SPRAY,
-            intensity: .5
-        });
-
-        this.hemisphereLight = new HemisphereLight({
-            color: {
-                sky: PALETTES.FRENCH_PALETTE.SQUASH_BLOSSOM,
-                ground: PALETTES.FRENCH_PALETTE.REEF_ENCOUNTER
-            },
-            intensity: .5
-        });
+    addLights() {
+        AmbientLight.create(AMBIENT_LIGHTS_OPTIONS);
+        HemisphereLight.create(HEMISPHERELIGHT_OPTIONS);
     
-        const sunLight = new SunLight({
-            color: PALETTES.FRENCH_PALETTE.MELON_MELODY,
-            intensity: 1,
-            far: 20,
-            mapSize: 2048
-        });
-        sunLight.setPosition({ y: 4, z: -3, x: -3 });
+        SunLight
+            .create(SUNLIGHT_OPTIONS)
+            .setPosition(SUNLIGHT_POSITION);
     }
 
     addSky() {
@@ -103,6 +111,7 @@ export default class Test extends Level {
         orbit.setMaxDistance(15);
 
         window.camera = Scene.getCamera();
+        window.orbit = orbit;
     }
 
     prepareSceneEffects() {
@@ -110,28 +119,40 @@ export default class Test extends Level {
         Scene.setBackground(PALETTES.FRENCH_PALETTE.MELON_MELODY);
         Scene.setRendererOutputEncoding(THREE.sRGBEncoding);
         PostProcessing.add(EFFECTS.HUE_SATURATION, SATURATION_OPTIONS);
-        // PostProcessing.add(EFFECTS.DEPTH_OF_FIELD, DOF_OPTIONS);
+        PostProcessing.add(EFFECTS.DEPTH_OF_FIELD, DOF_OPTIONS);
     }
 
     createWorld() {
-        this.addSunLight();
-        // this.addSky();
+        this.addLights();
         this.addBox();
         this.addDice();
         this.prepareSceneEffects();
 
-        const { human, nature } = TileMap.generate(0);
+        window.n = Nature;
+        window.h = Humans;
+        window.tm = TileMap;
+    }
+
+    startGame() {
+        this.storePlayers();
+        this.startPlayers();
+    }
+
+    startPlayers() {
+        const {
+            humanStartingPosition,
+            natureStartingPosition
+        } = TileMap.generate(0);
+
+        Humans.start(humanStartingPosition);
+        Nature.start(natureStartingPosition);
+    }
+
+    storePlayers() {
         this.players = {
             [TILES_TYPES.FOREST]: Nature,
             [TILES_TYPES.HUMAN]: Humans
         };
-
-        Humans.start(human);
-        Nature.start(nature);
-
-        window.n = Nature;
-        window.h = Humans;
-        window.tm = TileMap;
     }
 
     getPlayerByType(type) {
@@ -153,6 +174,7 @@ export default class Test extends Level {
         Scripts.register('Bobbing', Bobbing);
 
         this.createWorld();
+        this.startGame();
         this.prepareCamera();
 
         const txt = document.querySelector('#txt');

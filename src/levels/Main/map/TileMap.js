@@ -42,8 +42,8 @@ class TileMap {
         }
 
         return {
-            human: HUMAN_STARTING_POSITION,
-            nature: NATURE_STARTING_POSITION
+            humanStartingPosition: HUMAN_STARTING_POSITION,
+            natureStartingPosition: NATURE_STARTING_POSITION
         };
     }
 
