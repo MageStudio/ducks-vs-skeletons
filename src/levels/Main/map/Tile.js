@@ -43,16 +43,18 @@ const ENERGY_PARTICLES_OPTIONS = {
 };
 
 const SMOKE_PARTICLES_OPTIONS = {
-    direction: new Vector3( 0, 1, 0),
+    direction: new Vector3(0, 1, 0),
     texture: 'fire',
-    size: 1,
-    radius: .5,
+    size: 0.4,
+    radius: 0.5,
     life: 4,
-    color: [ 0xffffff, [ 0x555555, 0x000000] ],
-    rate: 100,
+    color: [0xffffff, [0x555555, 0x000000]],
+    rate: 10,
     frequency: 0,
-    strength: .1
-}
+    strength: 0.1,
+    initialVelocity: false,
+    useRepulsion: true,
+};
 
 const TILE_LIFE = 20;
 const STARTING_TILE_LIFE_FACTOR = 4;
@@ -274,6 +276,7 @@ export default class Tile {
         this.smoke = Particles.add(new TileParticleSystem(SMOKE_PARTICLES_OPTIONS));
         this.smoke.emit(Infinity);
         this.tile.add(this.smoke);
+        this.smoke.setPosition({ y: 1 });
         this.smoking = true;
     }
 

@@ -4,12 +4,11 @@ const { Vector3 } = THREE;
 
 const getRate = (rate = 3, frequency = 2) => new Proton.Rate(new Proton.Span(1, rate), new Proton.Span(frequency, frequency + .1));
 
-const getInitializers = (direction, strength, size, radius, life) => ([
+const getInitializers = (size, radius, life) => ([
     new Proton.Mass(1),
     new Proton.Life(life, life * 1.2),
     new Proton.Radius(size, size / 1.5, 'center'),
-    new Proton.Position(new Proton.SphereZone(radius)),
-    new Proton.V(new Proton.Span(strength / 2, strength), new Proton.Vector3D(direction.x, direction.y, direction.z), 5), //new Proton.Span(200, 500)
+    new Proton.Position(new Proton.SphereZone(radius))
 ]);
 
 const getBehaviours = (color) => ([
@@ -29,14 +28,27 @@ export default class TileParticleSystem extends ProtonParticleEmitter {
             strength = 100,
             life = 2,
             color = ['#FF0026', ['#ffff00', '#ffff11'] ],
-            rate
+            rate,
+            frequency,
+            initialVelocity = true,
+            useRepulsion = false
         } = options;
 
+        const initializers = [
+            ...getInitializers(size, radius, life),
+            ...( initialVelocity ? [new Proton.V(new Proton.Span(strength / 2, strength), new Proton.Vector3D(direction.x, direction.y, direction.z), 5)] : [] )
+        ];
+
+        const behaviours = [
+            ...getBehaviours(color),
+            ...( useRepulsion ? [new Proton.Repulsion(new Proton.Vector3D(), .1, 1)] : [] )
+        ];
+
         super({
-            rate: getRate(rate),
+            rate: getRate(rate, frequency),
             texture,
-            initializers: getInitializers(direction, strength, size, radius, life),
-            behaviours: getBehaviours(color)
+            initializers,
+            behaviours
         });
     }
 }

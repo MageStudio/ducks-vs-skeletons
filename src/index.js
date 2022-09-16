@@ -68,11 +68,14 @@ const assets = {
             'greenEnergy': `${ASSETS_TEXTURES_BASE_PATH}/green_energy.png`,
         }
     },
-    '/testing': {
+    '/test': {
         models: {
             'human': `${ASSETS_MODELS_BASE_PATH}/skeleton_animation.fbx`,
             'nature': `${ASSETS_MODELS_BASE_PATH}/duck_animation.fbx`,
             'duck_animated': `${ASSETS_MODELS_BASE_PATH}/animated.fbx`,
+        },
+        textures: {
+            'fire': `${ASSETS_TEXTURES_BASE_PATH}/fire.png`
         }
     }
 }
