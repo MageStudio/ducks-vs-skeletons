@@ -266,6 +266,10 @@ export default class UnitBehaviour extends BaseScript {
         clearTimeout(this.targetsScanTimeoutId);
     }
 
+    canIBuildOnTile(tile) {
+        return tile.isDesert();
+    }
+
     isFriendlyTile(tile) {
         return tile.isHuman();
     }
@@ -276,26 +280,25 @@ export default class UnitBehaviour extends BaseScript {
 
     buildAtPosition(tile, variation) {
         if (!this.isBuilder()) return Promise.resolve();
+        if (!this.canIBuildOnTile(tile)) {
+            this.goBackHome();
+            return Promise.resolve(null);
+        }
 
         const buildingTime = 3000; // needs calculation for right amount of time.
+        const newTile = TileMap.changeTile(tile.getIndex(), this.getFriendlyTileType(), { variation });
 
-        if (this.isFriendly()) {
-            playBuildingSound(tile.getPosition(), buildingTime);
-        }
+        newTile.startBuilding(buildingTime, this.isFriendly());
 
         return new Promise(resolve => {
             this.unit.playAnimation(UNIT_ANIMATIONS.BUILD);
             setTimeout(() => {
                 this.unit.playAnimation(UNIT_ANIMATIONS.IDLE);
-                if (!this.isFriendlyTile(tile)) {
-                    if (!this.unit.isDisposed()) {
-                        const newTile = TileMap.changeTile(tile.getIndex(), this.getFriendlyTileType(), { variation });
-
-                        resolve(newTile);
-                    }
-                    this.goBackHome();
+                if (!this.unit.isDisposed()) {
+                    newTile.stopBuilding();
+                    resolve(newTile);
                 }
-                resolve(null);
+                this.goBackHome();
             }, buildingTime);
         });
     }

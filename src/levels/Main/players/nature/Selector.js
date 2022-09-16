@@ -74,8 +74,8 @@ export default class Selector extends BaseScript {
         const requiredModel = ({
             [FOREST_OPTIONS.BASE_TILE]: TILES_TYPES.FOREST,
             [FOREST_OPTIONS.BUILDERS_HUT_TILE]: 'market',
-            [FOREST_OPTIONS.WARRIORS_HUT_TILE]: 'farmplot',
-            [FOREST_OPTIONS.TOWER_TILE]: 'lumbermill',
+            [FOREST_OPTIONS.WARRIORS_HUT_TILE]: 'lumbermill',
+            [FOREST_OPTIONS.TOWER_TILE]: 'natureTower',
             [FOREST_OPTIONS.ATTACK]: 'flag'
         })[option];
 

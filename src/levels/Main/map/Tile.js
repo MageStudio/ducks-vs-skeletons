@@ -1,8 +1,7 @@
-import { AUDIO_RAMPS } from 'mage-engine';
-import { Models, constants, math, Particles, PARTICLES, THREE, Scripts } from 'mage-engine';
-import { getBuildingFinishedSound, getFireSound, getHammerSound, getSawSound, VOLUMES } from '../../../sounds';
-import EnergyParticleSystem from '../players/nature/EnergyParticleSystem';
-import { TARGET_DEAD_EVENT_TYPE, TARGET_HEALTH_MAP, TARGET_HIT_EVENT_TYPE } from '../players/TargetBehaviour';
+import { Models, constants, math, Particles, PARTICLES, THREE } from 'mage-engine';
+import { getFireSound, playBuildingSound, VOLUMES } from '../../../sounds';
+import TileParticleSystem from '../players/nature/TileParticleSystem';
+import { TARGET_DEAD_EVENT_TYPE, TARGET_HIT_EVENT_TYPE } from '../players/TargetBehaviour';
 import {
     TILES_DETAILS_MAP,
     TILES_TYPES,
@@ -29,7 +28,7 @@ const { MATERIALS } = constants;
 const FIRE_OPTIONS = {
     texture: 'fire',
     size: .1,
-    strength: 1.5 ,
+    strength: 1.5,
     direction: new Vector3( 0, 1, 0)
 };
 const FIRE_DAMAGE = .2;
@@ -43,10 +42,25 @@ const ENERGY_PARTICLES_OPTIONS = {
     direction: new Vector3( 0, 1, 0)
 };
 
+const SMOKE_PARTICLES_OPTIONS = {
+    direction: new Vector3(0, 1, 0),
+    texture: 'fire',
+    size: 0.4,
+    radius: 0.5,
+    life: 4,
+    color: [0xffffff, [0x555555, 0x000000]],
+    rate: 10,
+    frequency: 0,
+    strength: 0.1,
+    initialVelocity: false,
+    useRepulsion: true,
+};
+
 const TILE_LIFE = 20;
 const STARTING_TILE_LIFE_FACTOR = 4;
 const TILE_LIFE_FACTOR = 1;
 const TILE_CRITICAL_DAMAGE_PERCENTAGE = .4;
+const TILE_DETAILS_OPACITY = .3;
 
 const getDetailsListFromTileType = (tileType) =>  (TILES_DETAILS_MAP[tileType]) || DESERT_DETAILS;
 const getRandomDetailForTile = (tileType) => math.pickRandom(getDetailsListFromTileType(tileType));
@@ -139,26 +153,8 @@ export default class Tile {
 
     isBuilding = () => this.state === TILES_STATES.BUILDING;
 
-    playBuildingSound = (buildingTime) => {
-        const saw = getSawSound({ loop: true })
-            .play(VOLUMES.SAW)
-            .stop(buildingTime);
-        const hammer = getHammerSound({ loop: true })
-            .play(VOLUMES.HAMMER)
-            .stop(buildingTime + 1000);
-
-        saw.setPosition(this.getPosition());
-        hammer.setPosition(this.getPosition());
-
-        setTimeout(() => 
-            getBuildingFinishedSound()
-                .play(VOLUMES.BUILDING.FINISHED)
-                .stop(2000), buildingTime)
-    }
-
-
-    getModelNameFromVariationAndTileType = () => {
-        const { tile, detail } = TILES_TYPES_VARIATIONS_MAP[this.tileType][this.variation];
+    getModelNameFromVariationAndTileType = (variation = this.variation, tileType = this.tileType) => {
+        const { tile, detail } = TILES_TYPES_VARIATIONS_MAP[tileType][variation];
 
         return {
             tile,
@@ -225,6 +221,7 @@ export default class Tile {
         startingDetail.setScale(TILE_LARGE_DETAILS_SCALE);
 
         startingDetail.setPosition({ y: 1 });
+        this.details = startingDetail;
     }
 
     addDetail(detail) {
@@ -235,13 +232,16 @@ export default class Tile {
 
         details.setScale(TILE_DETAILS_SCALE);
         details.setPosition(TILE_DETAILS_RELATIVE_POSITION);
+        if (!this.isDesert()) details.setOpacity(TILE_DETAILS_OPACITY);
+
+        this.details = details;
     }
 
     addEnergyParticleEmitter() {
-        const particles = Particles.add(new EnergyParticleSystem(ENERGY_PARTICLES_OPTIONS));
+        this.energyParticles = Particles.add(new TileParticleSystem(ENERGY_PARTICLES_OPTIONS));
 
-        particles.emit(Infinity);
-        this.tile.add(particles);
+        this.energyParticles.emit(Infinity);
+        this.tile.add(this.energyParticles);
     }
 
     startBurning = () => {
@@ -265,7 +265,78 @@ export default class Tile {
     stopBurning() {
         if (this.burning) {
             this.fire.stop();
-            this.fireSound.stop();
+            this.fireSound
+                .stop()
+                .then(() => this.fireSound.dispose());
+            this.tile.remove(this.fire);
+        }
+    }
+
+    startSmoking() {
+        this.smoke = Particles.add(new TileParticleSystem(SMOKE_PARTICLES_OPTIONS));
+        this.smoke.emit(Infinity);
+        this.tile.add(this.smoke);
+        this.smoke.setPosition({ y: 1 });
+        this.smoking = true;
+    }
+
+    stopSmoking() {
+        if (this.smoking) {
+            this.smoke.stop();
+        }
+    }
+
+    showBuildingPreview(variation, futureTileType) {
+        const { detail } = this.getModelNameFromVariationAndTileType(variation, futureTileType);
+        if (detail) {
+            const buildingPreview = Models.get(detail, { name: `tile_building_preview_${Math.random()}` });
+    
+            buildingPreview.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
+            this.tile.add(buildingPreview);
+    
+            buildingPreview.setScale(TILE_DETAILS_SCALE);
+            buildingPreview.setPosition(TILE_DETAILS_RELATIVE_POSITION);
+            buildingPreview.setOpacity(TILE_DETAILS_OPACITY);
+    
+            this.buildingPreview = buildingPreview;
+        }
+    }
+
+    removeBuildingPreview() {
+        if (this.buildingPreview) {
+            this.tile.remove(this.buildingPreview);
+            this.buildingPreview.dispose();
+        }
+    }
+
+    startBuilding(buildingTime, friendly) {
+        if (friendly) playBuildingSound(this.getPosition(), buildingTime);
+        this.removeBuildingPreview();
+        this.showScaffolding();
+        this.startSmoking();
+        if (this.details) this.details.fadeTo(1, buildingTime);
+    }
+
+    stopBuilding() {
+        this.hideScaffolding();
+        this.stopSmoking();
+    }
+
+    showScaffolding() {
+        this.scaffolding = Models.get('scaffolding');
+
+        this.scaffolding.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
+        this.tile.add(this.scaffolding);
+
+        this.scaffolding.setScale(TILE_DETAILS_SCALE);
+        this.scaffolding.setPosition(TILE_DETAILS_RELATIVE_POSITION);
+    }
+
+    hideScaffolding() {
+        if (this.scaffolding) {
+            this.scaffolding.fadeTo(0, 1000);
+            this.scaffolding.toggleShadows(false);
+            setTimeout(() => this.tile.remove(this.scaffolding), 1200);
         }
     }
 
