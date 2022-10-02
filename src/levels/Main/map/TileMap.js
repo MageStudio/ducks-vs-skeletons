@@ -47,7 +47,7 @@ class TileMap {
         };
     }
 
-    isValidTile = ({ x, z }) => {
+    isValidTile = ({ x, z } = {}) => {
         return (x >= 0 && x < this.size) && (z >= 0 && z < this.size);
     }
 

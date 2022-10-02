@@ -305,17 +305,20 @@ export default class UnitBehaviour extends BaseScript {
 
     goTo(startingPosition, destinationTile) {
         this.destinationTile = destinationTile;
+        // storing this for future movements
+        this.unit.setData('tile:start:index', destinationTile.getIndex());
 
         return new Promise(resolve => {
             const startingTile = TileMap.getTileAt(startingPosition);
             const path = TileMap.getPathToTile(startingTile, destinationTile);
-            const moveTowardsTarget = () => {
-                if (!path.length) {
+
+            const moveTowardsTarget = (currentPath) => {
+                if (!currentPath.length) {
                     this.unit.playAnimation(UNIT_ANIMATIONS.IDLE);
                     return resolve();
                 }
 
-                const tile = path.shift();
+                const tile = currentPath.shift();
 
                 const { x, z } = tile.getPosition();
                 const targetPosition = new Vector3(x, MINIMUM_HEIGHT, z);
@@ -325,10 +328,10 @@ export default class UnitBehaviour extends BaseScript {
                 this.unit.playAnimation(UNIT_ANIMATIONS.RUN);
                 this.unit
                     .goTo(targetPosition, time)
-                    .then(moveTowardsTarget);
+                    .then(() => moveTowardsTarget(currentPath));
             }
 
-            moveTowardsTarget();
+            moveTowardsTarget(path);
         });
     }
 

@@ -1,7 +1,9 @@
 import { Models, constants, math, Particles, PARTICLES, THREE } from 'mage-engine';
 import { getFireSound, playBuildingSound, VOLUMES } from '../../../sounds';
+import { SELECTABLE_TAG } from '../constants';
 import TileParticleSystem from '../players/nature/TileParticleSystem';
 import { TARGET_DEAD_EVENT_TYPE, TARGET_HIT_EVENT_TYPE } from '../players/TargetBehaviour';
+import { distance } from '../utils';
 import {
     TILES_DETAILS_MAP,
     TILES_TYPES,
@@ -108,15 +110,7 @@ export default class Tile {
     }
 
     distanceToTile(tile) {
-        const { x, z } = tile.getIndex();
-        const { x: _x, z: _z } = this.getIndex();
-
-        return (
-            Math.sqrt(
-                Math.pow((_x - x), 2) +
-                Math.pow((_z - z), 2)
-            )
-        );
+        return distance(this.getIndex(), tile.getIndex());
     }
 
     getHealth() {
@@ -169,10 +163,11 @@ export default class Tile {
 
         this.tile = Models.get(tile, { name: `tile_${this.index.x}_${this.index.z}`});
         this.tile.setData('index', this.index);
+        this.tile.setData('target', 'tile');
         this.tile.setPosition(this.position);
         this.tile.setScale(TILE_SCALE);
         this.tile.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
-        this.tile.addTag('tile');
+        this.tile.addTag(SELECTABLE_TAG);
 
         if (this.startingTile) {
             this.addStartingDetail();
@@ -265,9 +260,8 @@ export default class Tile {
     stopBurning() {
         if (this.burning) {
             this.fire.stop();
-            this.fireSound
-                .stop()
-                .then(() => this.fireSound.dispose());
+            this.fireSound.stop();
+            setTimeout(() => this.fireSound.dispose(), 500);
             this.tile.remove(this.fire);
         }
     }
@@ -347,6 +341,8 @@ export default class Tile {
     getPosition() { return new Vector3(this.position.x, this.position.y, this.position.z); }
 
     getIndex() { return this.index; }
+
+    uuid() { return this.getTile().uuid(); }
 
     dispose() {
         this.tile.removeEventListener(TARGET_DEAD_EVENT_TYPE, this.postDestruction);

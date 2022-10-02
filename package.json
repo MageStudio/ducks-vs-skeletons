@@ -1,7 +1,7 @@
 {
     "name": "ducks_vs_skeletons",
     "version": "1.0.0",
-    "description": "A car driving around",
+    "description": "What happens when ducks fight skeletons?",
     "main": "index.js",
     "scripts": {
         "dev": "NODE_ENV=dev npm run build && npm run start",
@@ -9,7 +9,7 @@
         "build": "webpack --config webpack.config.js",
         "start": "http-server ./public -p 8085"
     },
-    "author": "",
+    "author": "Marco Stagni < marco@mage.studio >",
     "license": "ISC",
     "devDependencies": {
         "@babel/core": "^7.9.6",
@@ -36,7 +36,6 @@
         "inferno": "^7.4.2",
         "inferno-canvas-component": "^0.1.4",
         "mage-engine": "3.21.0",
-        "socket.io-client": "4.0.1",
         "xferno": "0.0.7"
     }
 }
