@@ -2,6 +2,7 @@ import {
     FOREST_OPTIONS,
     TILES_VARIATIONS_TYPES
 } from "../../../levels/Main/map/constants";
+import { UNIT_TYPES } from "../../../levels/Main/players/UnitBehaviour";
 
 const IMAGES_MAP = {
     [FOREST_OPTIONS.BASE_TILE]: '/img/forestBase.png',
@@ -42,7 +43,10 @@ const mapSelectionTypeToOptions = (selectionType, option, onClick) => ({
 
     ],
     [TILES_VARIATIONS_TYPES.WARRIORS]: [
-        getSingleItem(FOREST_OPTIONS.ATTACK, option, onClick),,
+        getSingleItem(FOREST_OPTIONS.ATTACK, option, onClick),
+    ],
+    [UNIT_TYPES.WARRIOR]: [
+        getSingleItem(FOREST_OPTIONS.ATTACK, option, onClick),
     ]
 }[selectionType])
 

@@ -2,3 +2,5 @@ export const DEATH_REASONS = {
     KILLED: 'KILLED',
     BUILDING: 'BUILDING'
 };
+
+export const SELECTABLE_TAG = 'SELECTABLE';

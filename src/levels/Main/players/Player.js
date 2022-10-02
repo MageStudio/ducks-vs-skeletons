@@ -10,6 +10,7 @@ import { playBuildingPlacedSound, VOLUMES } from "../../../sounds";
 export const BASE_TILE_ENERGY_INCREASE = .2;
 const MIN_ENERGY = 0;
 const MAX_ENERGY = 100;
+const INITIAL_ENERGY = MIN_ENERGY;
 
 export default class Player {
 
@@ -24,7 +25,7 @@ export default class Player {
             [TILES_VARIATIONS_TYPES.WARRIORS]: []
         };
 
-        this.energy = 100;
+        this.energy = INITIAL_ENERGY;
         this.underAttack = false;
 
         this.type = type;
@@ -65,6 +66,12 @@ export default class Player {
             ...Object.values(this.builders),
             ...Object.values(this.warriors)
         ]
+    }
+
+    getUnit(uuid) {
+        return this.getUnits()
+            .filter(unit => unit.uuid() === uuid)
+            .pop();
     }
 
     getEnemyPlayer() {
@@ -215,5 +222,17 @@ export default class Player {
                 .then(() => !targetBehaviour.isDead() && behaviour.scanForTargets(tile))
                 .then(resolve);
         });
+    }
+
+    sendUnitToTile = (destination, unit) => {
+        const behaviour = unit.getScript(this.getUnitScriptName());
+        const targetBehaviour = unit.getScript('TargetBehaviour');
+        // this is on the assumption we can only select a unit after it initially moved to a tile.
+        const position = unit.getData('tile:start:index');
+        const tile = TileMap.getTileAt(destination);
+
+        return behaviour
+            .goTo(position, tile)
+            .then(() => !targetBehaviour.isDead() && behaviour.scanForTargets(tile))
     }
 }

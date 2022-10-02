@@ -1,5 +1,5 @@
-import { Input, functions, INPUT_EVENTS, store, Models, Scripts, PostProcessing, constants, Element, THREE } from "mage-engine";
-import { FOREST_OPTIONS, TILES_TYPES, TILES_VARIATIONS_TYPES, TILE_SCALE } from "../../map/constants";
+import { Input, INPUT_EVENTS, store, PostProcessing, constants, Element, THREE } from "mage-engine";
+import { FOREST_OPTIONS, TILES_TYPES, TILES_VARIATIONS_TYPES } from "../../map/constants";
 import TileMap from "../../map/TileMap";
 import Player from "../Player";
 import {
@@ -7,8 +7,12 @@ import {
     changeSelection,
     changeSelectionOption
 } from '../../../../ui/actions/player';
+import { SELECTABLE_TAG } from "../../constants";
+import { UNIT_TYPES } from "../UnitBehaviour";
+import { distance } from "../../utils";
 
-const MAX_ATTACK_TARGET_DISTANCE = 20;
+const MAX_ATTACK_TARGET_DISTANCE = 4;
+const MAX_UNIT_MOVEMENT_DISTANCE = MAX_ATTACK_TARGET_DISTANCE / 2;
 
 class Nature extends Player {
 
@@ -78,15 +82,19 @@ class Nature extends Player {
     }
 
     handleMouseMove = () => {
-        const { index: destination, position } = this.getInterectingTileData();
-        const { selection: { type, index }, option } = this.getSelectionType();
+        const intersection = this.getIntersectingData();
+        const { option } = this.getSelectionType();
         const selectorScript = this.selector.getScript('Selector');
+        const {
+            index: destination,
+            position
+        } = intersection;
 
         if (destination && position) {
             selectorScript.appearAt(position, destination);
             if (option) {
                 selectorScript.showPreview(option);
-                selectorScript.markEnabled(this.canMouseInteract(destination));
+                selectorScript.markEnabled(this.canMouseInteract(intersection));
             } else {
                 selectorScript.removePreview();
             }
@@ -94,13 +102,18 @@ class Nature extends Player {
     }
 
     handleMouseClick = () => {
-        const { index: destination } = this.getInterectingTileData();
-        const { selection: { type, index }, option } = this.getSelectionType();
+        const intersection = this.getIntersectingData();
+        const { selection: { type, index, uuid: selectionUuid }, option } = this.getSelectionType();
         const selectorScript = this.selector.getScript('Selector');
+        const { index: destination, target, uuid } = intersection;
 
-        if (this.canMouseInteract(destination)) {
+        if (this.canMouseInteract(intersection)) {
             if (!option) {
-                this.selectTile(TileMap.getTileAt(destination));
+                const selection = target === 'unit' ?
+                    this.getUnit(uuid) :
+                    TileMap.getTileAt(destination);
+
+                this.select(selection, target);
             } else if (option) {
                 switch(type) {
                     case TILES_VARIATIONS_TYPES.BASE:
@@ -112,6 +125,10 @@ class Nature extends Player {
                         break;
                     case TILES_VARIATIONS_TYPES.WARRIORS:
                         this.sendWarriorToTile(destination, index);
+                        break;
+                    case UNIT_TYPES.WARRIOR:
+                        const unit = this.getUnit(selectionUuid);
+                        this.sendUnitToTile(destination, unit);
                         break;
                 }
             }
@@ -126,11 +143,14 @@ class Nature extends Player {
         store.dispatch(changeSelectionOption(false));
     }
 
-    selectTile(tile) {
-        this.outline.setSelectedObjects([tile.getTile()]);
+    select(selection, target) {
+        const isTile = target === 'tile';
+        this.outline.setSelectedObjects([isTile ? selection.getTile() : selection]);
+
         store.dispatch(changeSelection({
-            type: tile.getVariation(),//tile.isStartingTile() ? tile.getType() : tile.getVariation(),
-            index: tile.getIndex()
+            type: isTile ? selection.getVariation() : UNIT_TYPES.WARRIOR,
+            index: isTile && selection.getIndex(),
+            uuid: selection.uuid()
         }));
     }
 
@@ -161,12 +181,16 @@ class Nature extends Player {
         )
     }
 
-    canMouseInteract(destination) {
+    canMoveUnitToTile(tile, unit) {
+        return distance(tile.getIndex(), unit.getPosition()) < MAX_UNIT_MOVEMENT_DISTANCE;
+    }
+
+    checkTileInteraction({ index: destination }) {
         if (!TileMap.isValidTile(destination)) return false;
 
         const destinationTile = TileMap.getTileAt(destination);
         const { selection, option } = this.getSelectionType();
-        const { type } = selection;
+        const { type, uuid } = selection;
 
         if (!option) {
             return this.canSelectTile(destinationTile);
@@ -181,18 +205,31 @@ class Nature extends Player {
                 break;
             case TILES_VARIATIONS_TYPES.WARRIORS:
                 return this.canAttackTile(destinationTile);
+            case UNIT_TYPES.WARRIOR:
+                return this.canMoveUnitToTile(destinationTile, this.getUnit(uuid));
         }
     }
 
-    getInterectingTileData() {
-        const intersections = Input.mouse.getIntersections(true, 'tile');
+    checkUnitInteraction() {
+        // we can always select a unit
+        return true;
+    }
+
+    canMouseInteract = (intersection) => intersection.target === 'unit' ? 
+        this.checkUnitInteraction() :
+        this.checkTileInteraction(intersection);
+
+    getIntersectingData() {
+        const intersections = Input.mouse.getIntersections(true, SELECTABLE_TAG);
 
         if (intersections.length) {
             const { element } = intersections[0];
             const index = element.getData('index');
+            const target = element.getData('target');
             const position = element.getPosition();
+            const uuid = element.uuid();
 
-            return { index, position };
+            return { index, position, target, uuid };
         }
 
         return { };
