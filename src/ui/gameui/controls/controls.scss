@@ -147,6 +147,14 @@ body {
   margin: 24px 16px;
   flex: 0 0 auto;
   align-self: center;
+
+  & img {
+    height: 90px;
+    display: flex;
+    align-self: center;
+    margin-top: 15px;
+    margin-left: -20px;
+  }
   
   &.selected {
     border: 4px solid white;

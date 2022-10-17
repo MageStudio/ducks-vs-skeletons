@@ -7,6 +7,7 @@ import Testing from './levels/testing';
 const { SHADOW_TYPES } = constants;
 const ASSETS_MODELS_BASE_PATH = 'assets/models';
 const ASSETS_TEXTURES_BASE_PATH = 'assets/textures';
+const ASSETS_IMAGES_BASE_PATH = 'assets/images';
 const ASSETS_AUDIO_BASE_PATH = 'assets/audio';
 
 const assets = {
