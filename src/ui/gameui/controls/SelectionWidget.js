@@ -4,13 +4,6 @@ import {
 } from "../../../levels/Main/map/constants";
 import { UNIT_TYPES } from "../../../levels/Main/players/UnitBehaviour";
 
-const IMAGES_MAP = {
-    [FOREST_OPTIONS.BASE_TILE]: '/img/forestBase.png',
-    [FOREST_OPTIONS.BUILDERS_HUT_TILE]: '/img/forestBuildersHut.png',
-    [FOREST_OPTIONS.WARRIORS_HUT_TILE]: '/img/forestWarriorsHut.png',
-    [FOREST_OPTIONS.TOWER_TILE]: '/img/forestTower.png'
-};
-
 const LABELS_MAP = {
     [FOREST_OPTIONS.BASE_TILE]: 'forest',
     [FOREST_OPTIONS.BUILDERS_HUT_TILE]: 'builders',
@@ -22,6 +15,7 @@ const getSingleItem = (optionName, option, onClick) => (
     <div
         class={`option ${option === optionName ? 'selected' : ''}`}
         onClick={() => onClick(optionName)} >
+            { mapSelectionTypeToImage(optionName) }
             <span className="label">{LABELS_MAP[optionName]}</span>
     </div>
 );
@@ -51,10 +45,10 @@ const mapSelectionTypeToOptions = (selectionType, option, onClick) => ({
 }[selectionType])
 
 const mapSelectionTypeToImage = (selectionType) => ({
-    [TILES_VARIATIONS_TYPES.BASE]: <img src='/img/forestBase.png' />,
-    [TILES_VARIATIONS_TYPES.BUILDERS]: <img src='/img/forestBuildersHut.png' />,
-    [TILES_VARIATIONS_TYPES.TOWER]: <img src='/img/forestTower.png' />,
-    [TILES_VARIATIONS_TYPES.WARRIORS]: <img src='/img/forestWarriorsHut.png' />
+    [FOREST_OPTIONS.BASE_TILE]: <img src='/img/forest.png' />,
+    [FOREST_OPTIONS.BUILDERS_HUT_TILE]: <img src='/img/builders.png' />,
+    [FOREST_OPTIONS.TOWER_TILE]: <img src='/img/tower.png' />,
+    [FOREST_OPTIONS.WARRIORS_HUT_TILE]: <img src='/img/warriors.png' />
 }[selectionType])
 
 const SelectionWidget = ({ selection: { type }, option, onOptionClick }) => (
