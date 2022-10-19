@@ -52,22 +52,12 @@ const mapSelectionTypeToImage = (selectionType) => ({
 }[selectionType])
 
 const SelectionWidget = ({ selection: { type }, option, onOptionClick }) => (
-        <div class='widget'>
-            <h1 class='title'>{ type }</h1>
-            <div class='content'>
-                { mapSelectionTypeToOptions(type, option, onOptionClick) }
-            </div>
+    <div class='widget'>
+        <h1 class='title'>{ type }</h1>
+        <div class='content'>
+            { mapSelectionTypeToOptions(type, option, onOptionClick) }
         </div>
+    </div>
 );
-
-// {/* <div class='selection widget'>
-//             <div class='box'>
-//                 { mapSelectionTypeToImage(type) }
-//             </div>
-//             <ul class='selection-list'>
-//                 { mapSelectionTypeToOptions(type, option, onOptionClick)}
-//             </ul>
-
-//         </div> */}
 
 export default SelectionWidget;

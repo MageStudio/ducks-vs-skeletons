@@ -8,6 +8,7 @@ import {
 
 import MAP_DESCRIPTIONS from './descriptions';
 import { updateTileMapStats } from "../../../ui/actions/game";
+import { distance } from "../utils";
 
 const { MATERIALS } = constants;
 
@@ -141,6 +142,24 @@ class TileMap {
 
     addEnergyParticlesToTile(tile) {
         tile.addEnergyParticleEmitter();
+    }
+
+    getTilesWithinRadius(tile, radius) {
+        return this.tiles
+            .flat()
+            .filter(t => t.distanceToTile(tile) < radius)
+    }
+
+    getTilesWithinRadiusFromPosition(position, radius) {
+        return this.tiles
+            .flat()
+            .filter(t => distance(t.getPosition(), position) < radius);
+    }
+
+    removeOverlays() {
+        this.tiles
+            .flat()
+            .forEach(t => t.hideOverlay())
     }
 
     getStats() {

@@ -1,4 +1,4 @@
-import { THREE } from "mage-engine";
+import { PALETTES, THREE } from "mage-engine";
 import TileParticleSystem from "../players/nature/TileParticleSystem";
 
 export const HUMAN_STARTING_POSITION = {
@@ -240,3 +240,20 @@ export const TILE_COLLECTIBLE_SCALE = {
 
 export const WATER_TILE_OPACITY = .3;
 export const WATER_TILE_COLOR = 0x00a8ff;
+
+export const HEXAGONAL_SHAPE =  new THREE.Shape()
+    .moveTo(-0.5, 0.865 )
+    .lineTo( 0.5, .865 )
+    .lineTo( 1, 0 )
+    .lineTo( .5, -.865 )
+    .lineTo( -.5, -.865)
+    .lineTo( -1, 0 )
+    .lineTo( -.5, .865 );
+
+export const TILE_OVERLAY_MATERIAL_PROPERTIES = {
+    ...TILE_MATERIAL_PROPERTIES,
+    color: PALETTES.FRENCH.AURORA_GREEN
+};
+
+export const TILE_OVERLAY_ROTATION = { x: -(Math.PI / 2 ), z: Math.PI / 2 };
+export const TILE_OVERLAY_OPACITY = .6;
