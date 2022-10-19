@@ -1,4 +1,5 @@
 import { connect } from 'mage-engine';
+import Nature from '../levels/Main/players/nature';
 import { getClickSound, playClickSound, VOLUMES } from '../sounds';
 import { changeSelectionOption } from './actions/player';
 import Game from './gameui';
@@ -8,6 +9,7 @@ const Root = ({ loadingScreenVisible, tileStats, energy, selection, option, onOp
 
     const onClick = (option) => {
         getClickSound().play(VOLUMES.CLICK);
+        Nature.showAllowedTilesForOption(option);
         onOptionClick(option);
     };
 

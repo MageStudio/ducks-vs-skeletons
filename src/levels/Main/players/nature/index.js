@@ -1,5 +1,5 @@
 import { Input, INPUT_EVENTS, store, PostProcessing, constants, Element, THREE } from "mage-engine";
-import { FOREST_OPTIONS, TILES_TYPES, TILES_VARIATIONS_TYPES } from "../../map/constants";
+import { FOREST_OPTIONS, TILES_TYPES, TILES_VARIATIONS_TYPES, TILE_MATERIAL_PROPERTIES } from "../../map/constants";
 import TileMap from "../../map/TileMap";
 import Player from "../Player";
 import {
@@ -11,7 +11,7 @@ import { SELECTABLE_TAG } from "../../constants";
 import { UNIT_TYPES } from "../UnitBehaviour";
 import { distance } from "../../utils";
 
-const MAX_ATTACK_TARGET_DISTANCE = 4;
+const MAX_ATTACK_TARGET_DISTANCE = 3;
 const MAX_UNIT_MOVEMENT_DISTANCE = MAX_ATTACK_TARGET_DISTANCE / 2;
 
 class Nature extends Player {
@@ -37,6 +37,42 @@ class Nature extends Player {
         this.selector = new Element({ body: new THREE.Object3D() });
         this.selector.addScript('Selector', { position });
         this.selector.getScript('Selector').disappear();
+    }
+
+    getBuildableTiles() {
+        return TileMap
+            .getTilesByType(TILES_TYPES.DESERT)
+            .filter(this.canBuildOnTile)
+    }
+
+    showAllowedTilesForOption(option) {
+        const { selection: { type, index, uuid } } = this.getSelectionType();
+        let tile;
+        if (type !== UNIT_TYPES.WARRIOR) {
+            tile = TileMap.getTileAt(index)
+        }
+
+        switch(type) {
+            case TILES_VARIATIONS_TYPES.BASE:
+            case TILES_VARIATIONS_TYPES.BUILDERS:
+                this.getBuildableTiles()
+                    .forEach(t => t.showOverlay());
+                break;
+            case TILES_VARIATIONS_TYPES.TOWER:
+                break;
+            case TILES_VARIATIONS_TYPES.WARRIORS:
+                TileMap
+                    .getTilesWithinRadius(tile, MAX_ATTACK_TARGET_DISTANCE)
+                    .filter(t => !t.isForest())
+                    .forEach(t => t.showOverlay());
+                break;
+            case UNIT_TYPES.WARRIOR:
+                TileMap
+                    .getTilesWithinRadiusFromPosition(this.getUnit(uuid).getPosition(), MAX_UNIT_MOVEMENT_DISTANCE)
+                    .filter(t => !t.isForest())
+                    .forEach(t => t.showOverlay());
+                break;
+        }
     }
 
     isFriendly() { return true; } // we are friendly
@@ -136,10 +172,11 @@ class Nature extends Player {
 
         selectorScript.removePreview();
         selectorScript.disappear();
-        store.dispatch(changeSelectionOption(false));
+        this.clearSelection();
     }
 
     clearSelection = () => {
+        TileMap.removeOverlays();
         store.dispatch(changeSelectionOption(false));
     }
 

@@ -1,4 +1,4 @@
-import { Models, constants, math, Particles, PARTICLES, THREE } from 'mage-engine';
+import { Models, constants, math, Particles, PARTICLES, THREE, Element, PALETTES, easing } from 'mage-engine';
 import { getFireSound, playBuildingSound, VOLUMES } from '../../../sounds';
 import { SELECTABLE_TAG } from '../constants';
 import TileParticleSystem from '../players/nature/TileParticleSystem';
@@ -20,7 +20,11 @@ import {
     WATER_TILE_OPACITY,
     TILE_BASE_VARIATIONS_MAP,
     TILES_VARIATIONS_TYPES,
-    TILES_TYPES_VARIATIONS_MAP
+    TILES_TYPES_VARIATIONS_MAP,
+    HEXAGONAL_SHAPE,
+    TILE_OVERLAY_MATERIAL_PROPERTIES,
+    TILE_OVERLAY_ROTATION,
+    TILE_OVERLAY_OPACITY
 } from './constants';
 import TileMap from './TileMap';
 
@@ -64,6 +68,8 @@ const TILE_LIFE_FACTOR = 1;
 const TILE_CRITICAL_DAMAGE_PERCENTAGE = .4;
 const TILE_DETAILS_OPACITY = .3;
 
+const OVERLAY_ANIMATION_TIME = 300;
+
 const getDetailsListFromTileType = (tileType) =>  (TILES_DETAILS_MAP[tileType]) || DESERT_DETAILS;
 const getRandomDetailForTile = (tileType) => math.pickRandom(getDetailsListFromTileType(tileType));
 const shouldRenderDetailsForTiletype = (tileType) => Math.random() > TILES_RANDOMNESS_MAP[tileType];
@@ -104,8 +110,8 @@ export default class Tile {
 
         this.startingTile = startingTile;
         this.burning = false;
+        this.showingOverlay = false;
 
-        // this.setLife();
         this.create(variation);
     }
 
@@ -117,13 +123,30 @@ export default class Tile {
         return TILE_LIFE * (this.startingTile ? STARTING_TILE_LIFE_FACTOR : TILE_LIFE_FACTOR);
     }
 
-    // repair(amount) {
-    //     this.life = math.clamp(this.life + amount, 0, this.maxLife);
-    // }
+    showOverlay() {
+        if (this.showingOverlay || this.isObstacle()) return;
 
-    // takeDamage(amount) {
-    //     this.life = math.clamp(this.life - amount, 0, this.maxLife);
-    // }
+        const geometry = new THREE.ShapeGeometry(HEXAGONAL_SHAPE.clone());
+        const material = new THREE.MeshStandardMaterial(TILE_OVERLAY_MATERIAL_PROPERTIES);
+
+        this.overlay = new Element({ geometry, material });
+        this.getTile().add(this.overlay);
+
+        this.overlay.setRotation(TILE_OVERLAY_ROTATION);
+        this.overlay.goTo({ y: 1.1 }, OVERLAY_ANIMATION_TIME, { easing: easing.FUNCTIONS.Cubic.InOut })
+        this.overlay.fadeTo(TILE_OVERLAY_OPACITY, OVERLAY_ANIMATION_TIME);
+
+        this.showingOverlay = true;
+    }
+
+    hideOverlay() {
+        if (!this.showingOverlay) return;
+        this.overlay
+            .goTo({ y: 0 }, OVERLAY_ANIMATION_TIME, { easing: easing.FUNCTIONS.Cubic.InOut })
+            .then(() => this.getTile().remove(this.overlay))
+        
+        this.showingOverlay = false;
+    }
 
     isDesert = () => this.tileType === TILES_TYPES.DESERT;
     isForest = () => this.tileType === TILES_TYPES.FOREST;
