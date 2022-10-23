@@ -335,7 +335,6 @@ export default class UnitBehaviour extends BaseScript {
 
             const moveTowardsTarget = (currentPath) => {
                 if (!currentPath.length) {
-                    // this.unit.playAnimation(UNIT_ANIMATIONS.IDLE);
                     return resolve();
                 }
 
@@ -346,7 +345,6 @@ export default class UnitBehaviour extends BaseScript {
                 const time = this.unit.getPosition().distanceTo(targetPosition) / this.getSpeed() * 1000;
 
                 this.unit.lookAt(targetPosition);
-                // this.unit.playAnimation(UNIT_ANIMATIONS.RUN);
 
                 this.jumpTo(targetPosition, time)
                     .then(() => moveTowardsTarget(currentPath));
