@@ -22,6 +22,8 @@ class Humans extends Player {
             startingTile: true
         });
 
+        this.initialTilePosition = initialTile.getPosition();
+
         this.saveTile(initialTile);
         this.startExpansion();
     }

@@ -1,4 +1,4 @@
-import { Label } from "mage-engine";
+import { easing, Label } from "mage-engine";
 import {
     BaseScript,
     constants,
@@ -28,9 +28,9 @@ const UNIT_MATERIAL_PROPERTIES = {
 };
 
 const DEFAULT_UNIT_SCALE = {
-    x: 0.002,
-    y: 0.002,
-    z: 0.002
+    x: 0.005,
+    y: 0.005,
+    z: 0.005
 };
 
 export const UNIT_ANIMATIONS = {
@@ -49,8 +49,8 @@ export const UNIT_TYPES = {
 
 const MINIMUM_HEIGHT = .2;
 const SPEEDS = {
-    BUILDER: 0.5,
-    WARRIOR: 0.8
+    BUILDER: 2.5,
+    WARRIOR: 4
 }
 const MAXIMUM_SHOOTING_DISTANCE = 3;
 const BULLET_INTERVAL = 100;
@@ -303,6 +303,27 @@ export default class UnitBehaviour extends BaseScript {
         });
     }
 
+    jumpTo({ x, z }, time) {
+        const { x: _x, z: _z } = this.unit.getPosition();
+
+        easing.tweenTo(0, .5, {
+            onUpdate: (v) => this.unit.getBody().position.setY(v),
+            time: time/2,
+            loop: easing.LOOPING.BOUNCE,
+            easing: easing.FUNCTIONS.Quadratic.InOut,
+            repeat: 2,
+        });
+
+        return easing.tweenTo({ x: _x, z: _z }, { x, z }, {
+            onUpdate: ({ x, z }) => {
+                this.unit.getBody().position.setX(x);
+                this.unit.getBody().position.setZ(z);
+            },
+            time,
+            easing: easing.FUNCTIONS.Quadratic.InOut
+        })
+    }
+
     goTo(startingPosition, destinationTile) {
         this.destinationTile = destinationTile;
         // storing this for future movements
@@ -314,7 +335,6 @@ export default class UnitBehaviour extends BaseScript {
 
             const moveTowardsTarget = (currentPath) => {
                 if (!currentPath.length) {
-                    this.unit.playAnimation(UNIT_ANIMATIONS.IDLE);
                     return resolve();
                 }
 
@@ -325,9 +345,8 @@ export default class UnitBehaviour extends BaseScript {
                 const time = this.unit.getPosition().distanceTo(targetPosition) / this.getSpeed() * 1000;
 
                 this.unit.lookAt(targetPosition);
-                this.unit.playAnimation(UNIT_ANIMATIONS.RUN);
-                this.unit
-                    .goTo(targetPosition, time)
+
+                this.jumpTo(targetPosition, time)
                     .then(() => moveTowardsTarget(currentPath));
             }
 
