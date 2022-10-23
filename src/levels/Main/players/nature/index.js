@@ -31,6 +31,8 @@ class Nature extends Player {
         const initialTile = TileMap.changeTile(this.initialPosition, TILES_TYPES.FOREST, { startingTile: true });
         this.saveTile(initialTile);
 
+        this.initialTilePosition = initialTile.getPosition();
+
         this.outline = PostProcessing.add(constants.EFFECTS.SELECTIVE_OUTLINE);
         this.outline.setSelectedObjects([TileMap.getTileAt(position).getTile()]);
 

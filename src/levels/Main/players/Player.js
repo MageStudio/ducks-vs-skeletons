@@ -162,7 +162,7 @@ export default class Player {
             Promise.resolve(false)
     };
 
-    sendBuilderToTile(tile, variation, position = this.initialPosition) {
+    sendBuilderToTile(tile, variation, position = this.initialTilePosition) {
         const unit = Models.get(this.type, { name: `${this.type}_builder_${Math.random()}`});
         const behaviour = unit.addScript(this.getUnitScriptName(), { position, unitType: UNIT_TYPES.BUILDER });
         const targetBehaviour = this.setUpUnitTargetBehaviour(unit, TARGET_HEALTH_MAP.UNITS.BUILDERS);
@@ -202,7 +202,7 @@ export default class Player {
         return targetBehaviour;
     }
 
-    sendWarriorToTile = (destination, position = this.initialPosition) => {
+    sendWarriorToTile = (destination, position = this.initialTilePosition) => {
         const script = this.getUnitScriptName();
         const unit = Models.get(this.type, { name: `${this.type}_warrior_${Math.random()}`});
         const behaviour = unit.addScript(script, { position, unitType: UNIT_TYPES.WARRIOR, script });
