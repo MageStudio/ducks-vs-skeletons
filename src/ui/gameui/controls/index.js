@@ -1,7 +1,9 @@
 import EnergyMeter from "./EnergyMeter"
 import SelectionWidget from "./SelectionWidget";
+import UnitCount from './UnitCount';
 
-const Controls = ({ energy, selection, option, onOptionClick }) => {
+const Controls = ({ energy, selection, option, units, onOptionClick }) => {
+    console.log('controls', units);
     return (
         <div className='controls-container'>
             <SelectionWidget
@@ -9,6 +11,10 @@ const Controls = ({ energy, selection, option, onOptionClick }) => {
                 selection={selection}
                 onOptionClick={onOptionClick}/>
             <EnergyMeter energy={energy} />
+            <div className="count-column">
+                <UnitCount count={units.builders} type='builders' />
+                <UnitCount count={units.warriors} type='warriors' />
+            </div>
         </div>
     )
 };

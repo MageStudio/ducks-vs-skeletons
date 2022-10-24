@@ -5,8 +5,9 @@ import { changeSelectionOption } from './actions/player';
 import Game from './gameui';
 import LoadingScreen from './LoadingScreen';
 
-const Root = ({ loadingScreenVisible, tileStats, energy, selection, option, onOptionClick }) => {
+const Root = ({ loadingScreenVisible, tileStats, energy, selection, option, units, onOptionClick }) => {
 
+    console.log(units);
     const onClick = (option) => {
         getClickSound().play(VOLUMES.CLICK);
         Nature.showAllowedTilesForOption(option);
@@ -21,10 +22,10 @@ const Root = ({ loadingScreenVisible, tileStats, energy, selection, option, onOp
                 tileStats={tileStats}
                 energy={energy}
                 selection={selection}
+                units={units}
                 onOptionClick={onClick}/>
     );
 }
-
 
 
 const mapStateToProps = ({ ui, game, player }) => ({

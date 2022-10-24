@@ -14,3 +14,11 @@ export const changeSelectionOption = option => ({
     type: NATURE_SELECTION_OPTION_CHANGE,
     option
 });
+
+export const addNewUnit = (type) => ({
+    type
+});
+
+export const removeUnit = type => ({
+    type
+});
