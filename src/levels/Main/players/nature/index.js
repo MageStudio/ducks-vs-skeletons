@@ -1,12 +1,17 @@
 import { Input, INPUT_EVENTS, store, PostProcessing, constants, Element, THREE } from "mage-engine";
-import { FOREST_OPTIONS, TILES_TYPES, TILES_VARIATIONS_TYPES, TILE_MATERIAL_PROPERTIES } from "../../map/constants";
+import { FOREST_OPTIONS, TILES_TYPES, TILES_VARIATIONS_TYPES } from "../../map/constants";
 import TileMap from "../../map/TileMap";
 import Player from "../Player";
 import {
     updateEnergyLevel,
     changeSelection,
-    changeSelectionOption
+    changeSelectionOption,
+    addNewUnit
 } from '../../../../ui/actions/player';
+import {
+    NATURE_NEW_UNIT_WARRIORS,
+    NATURE_NEW_UNIT_BUILDERS
+} from '../../../../ui/actions/types';
 import { SELECTABLE_TAG } from "../../constants";
 import { UNIT_TYPES } from "../UnitBehaviour";
 import { distance } from "../../utils";
@@ -39,6 +44,8 @@ class Nature extends Player {
         this.selector = new Element({ body: new THREE.Object3D() });
         this.selector.addScript('Selector', { position });
         this.selector.getScript('Selector').disappear();
+
+        this.energy = 100;
     }
 
     getBuildableTiles() {
@@ -119,6 +126,17 @@ class Nature extends Player {
         }
     }
 
+    sendBuilderToTile(tile, variation, position = this.initialTilePosition) {
+        store.dispatch(addNewUnit(NATURE_NEW_UNIT_BUILDERS))
+        return super.sendBuilderToTile(tile, variation, position);
+    }
+
+    sendWarriorToTile(destination, position = this.initialTilePosition) {
+        console.log('sending warrior');
+        store.dispatch(addNewUnit(NATURE_NEW_UNIT_WARRIORS));
+        return super.sendWarriorToTile(destination, position);
+    }
+
     handleMouseMove = () => {
         const intersection = this.getIntersectingData();
         const { option } = this.getSelectionType();
@@ -162,6 +180,7 @@ class Nature extends Player {
                         // select target? 
                         break;
                     case TILES_VARIATIONS_TYPES.WARRIORS:
+                        console.log('sending warriors');
                         this.sendWarriorToTile(destination, index);
                         break;
                     case UNIT_TYPES.WARRIOR:

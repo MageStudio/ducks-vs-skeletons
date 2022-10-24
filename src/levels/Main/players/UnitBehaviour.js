@@ -217,7 +217,7 @@ export default class UnitBehaviour extends BaseScript {
 
     goBackHome() {
         this.goTo(this.destinationTile.getIndex(), TileMap.getTileAt(this.initialPosition))
-            .then(() => this.unit.dispose());
+            .then(() => this.unit.dispose())
     }
 
     handleNoAmmo() {

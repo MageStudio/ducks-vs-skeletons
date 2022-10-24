@@ -1,4 +1,4 @@
-import { Models, ENTITY_EVENTS, math, Scripts, GameRunner } from "mage-engine";
+import { Models, ENTITY_EVENTS, math, Scripts, GameRunner, store } from "mage-engine";
 import { TILES_STATES, TILES_TYPES, TILES_VARIATIONS_TYPES } from "../map/constants";
 import TileMap from "../map/TileMap";
 import { DEATH_REASONS } from '../constants';
@@ -202,7 +202,8 @@ export default class Player {
         return targetBehaviour;
     }
 
-    sendWarriorToTile = (destination, position = this.initialTilePosition) => {
+    sendWarriorToTile(destination, position = this.initialTilePosition) {
+        console.log('inside player sendwarrior');
         const script = this.getUnitScriptName();
         const unit = Models.get(this.type, { name: `${this.type}_warrior_${Math.random()}`});
         const behaviour = unit.addScript(script, { position, unitType: UNIT_TYPES.WARRIOR, script });
