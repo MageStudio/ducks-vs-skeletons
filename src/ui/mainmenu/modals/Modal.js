@@ -1,6 +1,6 @@
 import { getClickSound, VOLUMES } from "../../../sounds";
 
-const Modal = ({ children, title, visible, onConfirm, onCancel, onClose, cancelLabel, confirmLabel }) => {
+const Modal = ({ children, title, visible, onConfirm, onCancel, onClose, cancelLabel, confirmLabel, extraFooterContent }) => {
     const showCancel = onCancel && cancelLabel;
     const showConfirm = onConfirm && confirmLabel;
 
@@ -32,6 +32,7 @@ const Modal = ({ children, title, visible, onConfirm, onCancel, onClose, cancelL
                 { children }
                 </div>
                 <div class='modal-footer'>
+                    { extraFooterContent }
                     { showCancel && <button class='modal-btn cancel' onClick={onCancelClick}>{ cancelLabel }</button> }
                     { showConfirm && <button class='modal-btn confirm' onClick={onConfirmClick}>{ confirmLabel }</button> }
                 </div>
