@@ -5,7 +5,7 @@ import UnitCount from './UnitCount';
 const Controls = ({ energy, selection, option, units, onOptionClick }) => {
     console.log('controls', units);
     return (
-        <div className='controls-container'>
+        <div className='controls'>
             <SelectionWidget
                 option={option}
                 selection={selection}

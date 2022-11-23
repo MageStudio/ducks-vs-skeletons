@@ -1,5 +1,5 @@
 import TileMap from '../../levels/Main/map/TileMap';
-import { TILE_MAP_STATS_CHANGE } from '../actions/types';
+import { GAME_STARTED, TILE_MAP_STATS_CHANGE } from '../actions/types';
 
 const DEFAULT_STATE = {
     tileStats: {
@@ -7,7 +7,8 @@ const DEFAULT_STATE = {
         human: 0,
         desert: 0,
         total: 100
-    }
+    },
+    started: false
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -20,6 +21,11 @@ export default (state = DEFAULT_STATE, action) => {
                 tileStats
             }
         }
+        case GAME_STARTED:
+            return {
+                ...state,
+                started: true
+            }
         default:
             return state;
     }
