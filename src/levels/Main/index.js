@@ -22,6 +22,7 @@ import Nature from './players/nature';
 import Selector from './players/nature/Selector';
 import BulletBehaviour from './players/BulletBehaviour';
 import DuckBehaviour from './players/nature/DuckBehaviour';
+import CameraBehaviour from './cameraBehaviour';
 import Bobbing from './map/Bobbing';
 import { TILES_TYPES, TILE_MATERIAL_PROPERTIES } from './map/constants';
 import TargetBehaviour from './players/TargetBehaviour';
@@ -101,18 +102,17 @@ export default class Main extends Level {
         die_1.setRotation({ y: 0.3, z: Math.PI / 2 })
     }
 
-    prepareCamera() {
-        Scene.getCamera().setPosition({x: 2, y: 4, z: 0 });
-        const orbit = Controls.setOrbitControl();
+    // prepareCamera() {
+    //     // Scene.getCamera().removeScript('CameraBehaviour');
+    //     Scene.getCamera().getScript("CameraBehaviour").disable()
+    //     Scene.getCamera().goTo({x: 2, y: 4, z: 0 }, 5000);
+    //     const orbit = Controls.setOrbitControl();
 
-        orbit.setTarget({ x: 6.5, y: 0, z: 6.5 });
-        orbit.setMinPolarAngle(0);
-        orbit.setMaxPolarAngle(Math.PI/2.5);
-        orbit.setMaxDistance(15);
-
-        window.camera = Scene.getCamera();
-        window.orbit = orbit;
-    }
+    //     orbit.setTarget(CAMERA_TARGET);
+    //     orbit.setMinPolarAngle(0);
+    //     orbit.setMaxPolarAngle(Math.PI/2.5);
+    //     orbit.setMaxDistance(15);
+    // }
 
     prepareSceneEffects() {
         Scene.setClearColor(PALETTES.FRENCH_PALETTE.MELON_MELODY);
@@ -128,22 +128,31 @@ export default class Main extends Level {
         this.addDice();
         this.prepareSceneEffects();
 
-        window.n = Nature;
-        window.h = Humans;
-        window.tm = TileMap;
-    }
-
-    startGame() {
-        this.storePlayers();
-        this.startPlayers();
-    }
-
-    startPlayers() {
         const {
             humanStartingPosition,
             natureStartingPosition
         } = TileMap.generate(0);
 
+        window.n = Nature;
+        window.h = Humans;
+        window.tm = TileMap;
+
+        return {
+            humanStartingPosition,
+            natureStartingPosition
+        }
+    }
+
+    startGame() {
+        Scene
+            .getCamera()
+            .getScript('CameraBehaviour')
+            .transitionToGameState();
+        this.storePlayers();
+        this.startPlayers(this.playerPositions);
+    }
+
+    startPlayers({ humanStartingPosition, natureStartingPosition }) {
         Humans.start(humanStartingPosition);
         Nature.start(natureStartingPosition);
     }
@@ -172,15 +181,12 @@ export default class Main extends Level {
         Scripts.register('DuckBehaviour', DuckBehaviour);
         Scripts.register('Selector', Selector);
         Scripts.register('Bobbing', Bobbing);
+        Scripts.register('CameraBehaviour', CameraBehaviour);
 
-        this.createWorld();
-        this.startGame();
-        this.prepareCamera();
+        this.playerPositions = this.createWorld();
 
-        const txt = document.querySelector('#txt');
-        const changeFPS = (fps) => {
-            txt.innerText = Math.floor(fps);
-        };
-        Stats.subscribe(changeFPS);
+        Scene
+            .getCamera()
+            .addScript('CameraBehaviour', { distance: 7, height: 6 });
     }
 }

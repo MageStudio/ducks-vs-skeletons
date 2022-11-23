@@ -401,7 +401,7 @@ canvas {
     background: #16a085;
 }
 
-.modal-backdrop {
+/* .modal-backdrop {
     position: absolute;
     background: rgba(0, 0, 0, .75);
     top: 0;
@@ -415,14 +415,12 @@ canvas {
     margin: auto;
     position: relative;
     top: 200px;
-    /* background: white; */
     border-radius: 8px;
     animation: fadeIn 1s, slideIn .8s linear;
 }
 
 .modal-head {
     height: 42px;
-    /* border-bottom: 2px solid #bdc3c7; */
     border-top-right-radius: 8px;
     border-top-left-radius: 8px;
 }
@@ -459,8 +457,6 @@ canvas {
     font-size: 1em;
     width: 24px;
     height: 24px;
-    /* float: right; */
-    /* font-family: Arial; */
     background: #e74c3c;
     color: white !important;
     border-radius: 100%;
@@ -490,4 +486,4 @@ canvas {
 .modal-footer .button {
     float: right;
     margin: 10px 16px;
-}
+} */

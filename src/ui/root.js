@@ -1,7 +1,8 @@
 import { Component } from 'inferno';
-import { connect } from 'mage-engine';
+import { connect, GameRunner } from 'mage-engine';
 import Nature from '../levels/Main/players/nature';
 import { getClickSound, playClickSound, VOLUMES } from '../sounds';
+import { gameStarted } from './actions/game';
 import { changeSelectionOption } from './actions/player';
 import Game from './gameui';
 import LoadingScreen from './LoadingScreen';
@@ -17,6 +18,7 @@ class Root extends Component {
         };
 
         this.onClick = this.onClick.bind(this);
+        this.onStartClick = this.onStartClick.bind(this);
     }
 
     componentDidUpdate(prevProps) {
@@ -40,13 +42,21 @@ class Root extends Component {
         onOptionClick(option);
     };
 
+    onStartClick() {
+        const { onStartClick } = this.props;
+        GameRunner.getCurrentLevel().startGame();
+        onStartClick();
+    }
+
     render() {
-        const { tileStats, energy, selection, option, units } = this.props;
+        const { tileStats, energy, selection, option, units, started } = this.props;
         const { loading, fading } = this.state;
         return (
             <>
                 { loading && <LoadingScreen fading={fading}/> }
                 <Game
+                    onStartClick={this.onStartClick}
+                    started={started}
                     option={option}
                     tileStats={tileStats}
                     energy={energy}
@@ -66,7 +76,8 @@ const mapStateToProps = ({ ui, game, player }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    onOptionClick: option => dispatch(changeSelectionOption(option))
+    onOptionClick: option => dispatch(changeSelectionOption(option)),
+    onStartClick: () => dispatch(gameStarted())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Root);
