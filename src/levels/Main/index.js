@@ -12,7 +12,8 @@ import {
     PALETTES,
     Sky,
     Stats,
-    PostProcessing
+    PostProcessing,
+    Sprite
 } from 'mage-engine';
 
 import TileMap, { HUMAN_DETAILS } from './map/TileMap';
@@ -22,10 +23,11 @@ import Nature from './players/nature';
 import Selector from './players/nature/Selector';
 import BulletBehaviour from './players/BulletBehaviour';
 import DuckBehaviour from './players/nature/DuckBehaviour';
-import CameraBehaviour from './cameraBehaviour';
+import CameraBehaviour from './worldScripts/cameraBehaviour';
 import Bobbing from './map/Bobbing';
 import { TILES_TYPES, TILE_MATERIAL_PROPERTIES } from './map/constants';
 import TargetBehaviour from './players/TargetBehaviour';
+import CloudBehaviour from './worldScripts/CloudBehaviour';
 
 export const WHITE = 0xffffff;
 export const SUNLIGHT = 0xffeaa7;
@@ -65,7 +67,12 @@ const SUNLIGHT_OPTIONS = {
 
 const SUNLIGHT_POSITION = { y: 4, z: -3, x: -3 };
 
-const { EFFECTS, MATERIALS, TEXTURES } = constants;
+const { EFFECTS, MATERIALS } = constants;
+const CLOUDS = [
+    { name: 'cloud1', height: 1.37, width: 2.64, ratio: 1.92 },
+    { name: 'cloud2', height: 1.06, width: 2.7, ratio: 2.54 },
+    { name: 'cloud3', height: 1.215, width: 2.495, ratio: 2.05 },
+]
 
 export default class Main extends Level {
 
@@ -102,17 +109,36 @@ export default class Main extends Level {
         die_1.setRotation({ y: 0.3, z: Math.PI / 2 })
     }
 
-    // prepareCamera() {
-    //     // Scene.getCamera().removeScript('CameraBehaviour');
-    //     Scene.getCamera().getScript("CameraBehaviour").disable()
-    //     Scene.getCamera().goTo({x: 2, y: 4, z: 0 }, 5000);
-    //     const orbit = Controls.setOrbitControl();
+    pickRandomCloud = () => CLOUDS[Math.floor(Math.random() * CLOUDS.length)];
 
-    //     orbit.setTarget(CAMERA_TARGET);
-    //     orbit.setMinPolarAngle(0);
-    //     orbit.setMaxPolarAngle(Math.PI/2.5);
-    //     orbit.setMaxDistance(15);
-    // }
+    addClouds() {
+        this.clouds = Array(30).fill(0).map(() => {
+            const { height, width, name, ratio } = this.pickRandomCloud();
+            const cloud = new Sprite(width, height, name, {
+                depthWrite: false
+            });
+            const randomScale = Math.random() * 2 + .5;
+
+            cloud.addScript('CloudBehaviour', {
+                height: (Math.random() * 2) + 2,
+                distance: (Math.random() * 5) + 4,
+                angle: Math.random()* Math.PI * 2,
+                speed:  Math.random() * 0.01,
+                scale: { x: randomScale, y: randomScale / ratio }
+            });
+            return cloud;
+        })
+
+        window.clouds = this.clouds;
+    }
+
+    turnCloudsDark() {
+        this.clouds.forEach(c => c.getScript('CloudBehaviour').turnDark());
+    }
+
+    turnCloudsWhite() {
+        this.clouds.forEach(c => c.getScript('CloudBehaviour').turnWhite());
+    }
 
     prepareSceneEffects() {
         Scene.setClearColor(PALETTES.FRENCH_PALETTE.MELON_MELODY);
@@ -126,6 +152,7 @@ export default class Main extends Level {
         this.addLights();
         this.addBox();
         this.addDice();
+        this.addClouds();
         this.prepareSceneEffects();
 
         const {
@@ -182,11 +209,14 @@ export default class Main extends Level {
         Scripts.register('Selector', Selector);
         Scripts.register('Bobbing', Bobbing);
         Scripts.register('CameraBehaviour', CameraBehaviour);
+        Scripts.register('CloudBehaviour', CloudBehaviour);
 
         this.playerPositions = this.createWorld();
 
         Scene
             .getCamera()
             .addScript('CameraBehaviour', { distance: 7, height: 6 });
+
+        window.level = this;
     }
 }

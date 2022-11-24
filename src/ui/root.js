@@ -27,11 +27,11 @@ class Root extends Component {
                 this.setState({
                     fading: true
                 })
-            },  10000);
+            },  5000);
 
             setTimeout(() => {
                 this.setState({ fading: false, loading: false })
-            }, 11200);
+            }, 7500);
         }
     }
 

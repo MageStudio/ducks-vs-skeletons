@@ -12,6 +12,9 @@ const ASSETS_AUDIO_BASE_PATH = 'assets/audio';
 
 const assets = {
     '/': {
+        textures: {
+            
+        },
         audio: {
             click: `${ASSETS_AUDIO_BASE_PATH}/button.mp3`,
             hammer: `${ASSETS_AUDIO_BASE_PATH}/hammer.wav`,
@@ -67,6 +70,9 @@ const assets = {
         textures: {
             'fire': `${ASSETS_TEXTURES_BASE_PATH}/fire.png`,
             'greenEnergy': `${ASSETS_TEXTURES_BASE_PATH}/green_energy.png`,
+            cloud1: `${ASSETS_TEXTURES_BASE_PATH}/cloud_1.png`,
+            cloud2: `${ASSETS_TEXTURES_BASE_PATH}/cloud_2.png`,
+            cloud3: `${ASSETS_TEXTURES_BASE_PATH}/cloud_3.png`
         }
     },
     '/test': {
