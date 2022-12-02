@@ -77,6 +77,7 @@ const assets = {
     },
     '/test': {
         models: {
+            'box': `${ASSETS_MODELS_BASE_PATH}/box.glb`,
             'human': `${ASSETS_MODELS_BASE_PATH}/skeleton_animation.fbx`,
             'nature': `${ASSETS_MODELS_BASE_PATH}/duck_animation.fbx`,
             'duck_animated': `${ASSETS_MODELS_BASE_PATH}/animated.fbx`,
@@ -124,6 +125,7 @@ const config = {
     },
 
     ui: {
+        enabled: false,
         root: Root
     },
 

@@ -4,8 +4,9 @@ const CAMERA_TARGET = { x: 6.5, y: 0, z: 6.5 };
 const OBSERVING_POSITION = {x: 2, y: 4, z: 0 };
 
 export default class CameraRotation extends BaseScript {
-    start(camera, { distance, height }) {
-        this.camera = camera;
+    start(container, { distance, height, duck }) {
+        this.container = container;
+        this.duck = duck;
         this.target = CAMERA_TARGET;
         this.distance = distance;
         this.height = height;
@@ -19,13 +20,16 @@ export default class CameraRotation extends BaseScript {
         if (this.rotating) {
             this.angle += 0.1 * dt;
     
-            this.camera.setPosition({
+            this.container.setPosition({
                 x: (Math.sin(this.angle) * this.distance) + this.origin.x,
                 y: this.height,
                 z: (Math.cos(this.angle) * this.distance) + this.origin.z
             });
         }
-        if (!this.orbitControlsEnabled) this.camera.lookAt(this.target);
+        if (!this.orbitControlsEnabled) {
+            this.container.lookAt(this.target);
+            Scene.getCamera().lookAt(this.target);
+        }
     }
 
     stopRotation() {

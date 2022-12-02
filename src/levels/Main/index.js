@@ -29,6 +29,8 @@ import { TILES_TYPES, TILE_MATERIAL_PROPERTIES } from './map/constants';
 import TargetBehaviour from './players/TargetBehaviour';
 import CloudBehaviour from './worldScripts/CloudBehaviour';
 
+import { initialDialogueStateMachine } from '../../ui/dialogue/DialogueStateMachine';
+
 export const WHITE = 0xffffff;
 export const SUNLIGHT = 0xffeaa7;
 export const DARKER_GROUND = 0X78e08f;
@@ -171,6 +173,7 @@ export default class Main extends Level {
     }
 
     startGame() {
+        // TODO; remove camera from camera container, then transition to game state
         Scene
             .getCamera()
             .getScript('CameraBehaviour')
@@ -200,6 +203,16 @@ export default class Main extends Level {
             .getPlayerByType(type)
             .getUnits();
     }
+
+    startCameraRotation() {
+        // TODO: create holder as an empty object, add camera to it
+    }
+
+    addAnimationDuck() {
+        // TODO: getting a duck and adding it to the camera container
+        const duck = Models.get('nature');
+    }
+
 
     onCreate() {
         Scripts.register('TargetBehaviour', TargetBehaviour);

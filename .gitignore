@@ -1,2 +1,4 @@
 node_modules
 .DS_Store
+# we don't need to sync the publi folder, it will be created by vercel on deploy.
+public/
