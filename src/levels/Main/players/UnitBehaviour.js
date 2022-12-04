@@ -27,7 +27,7 @@ const UNIT_MATERIAL_PROPERTIES = {
     roughness: 1.0
 };
 
-const DEFAULT_UNIT_SCALE = {
+export const DEFAULT_UNIT_SCALE = {
     x: 0.005,
     y: 0.005,
     z: 0.005
@@ -39,7 +39,8 @@ export const UNIT_ANIMATIONS = {
     SHOOT: 'Root|Shoot',
     THROW: 'Root|Throw',
     DEATH: 'Root|LayingDown',//'Root|Defeat',
-    BUILD: 'Root|Interact'
+    BUILD: 'Root|Interact',
+    JUMP: 'Root|Jump'
 };
 
 export const UNIT_TYPES = {

@@ -3,10 +3,10 @@ import { BaseScript, Scene, Controls } from "mage-engine";
 const CAMERA_TARGET = { x: 6.5, y: 0, z: 6.5 };
 const OBSERVING_POSITION = {x: 2, y: 4, z: 0 };
 
-export default class CameraRotation extends BaseScript {
-    start(container, { distance, height, duck }) {
+export default class CameraContainer extends BaseScript {
+
+    start(container, { distance, height }) {
         this.container = container;
-        this.duck = duck;
         this.target = CAMERA_TARGET;
         this.distance = distance;
         this.height = height;
@@ -26,33 +26,33 @@ export default class CameraRotation extends BaseScript {
                 z: (Math.cos(this.angle) * this.distance) + this.origin.z
             });
         }
-        if (!this.orbitControlsEnabled) {
-            this.container.lookAt(this.target);
-            Scene.getCamera().lookAt(this.target);
-        }
+        // if (!this.orbitControlsEnabled) {
+        this.container.lookAt(this.target);
+        Scene.getCamera().lookAt(this.target);
+        // }
     }
 
     stopRotation() {
         this.rotating = false;
     }
 
-    moveToFinalPosition() {
-       return this.camera.goTo(OBSERVING_POSITION, 5000);
-    }
+    // moveToFinalPosition() {
+    //    return this.camera.goTo(OBSERVING_POSITION, 5000);
+    // }
 
-    enableOrbitControls = () => {
-        const orbit = Controls.setOrbitControl();
-        this.orbitControlsEnabled = true;
-        orbit.setTarget(CAMERA_TARGET);
-        orbit.setMinPolarAngle(0);
-        orbit.setMaxPolarAngle(Math.PI/2.5);
-        orbit.setMaxDistance(15);
-    }
+    // enableOrbitControls = () => {
+    //     const orbit = Controls.setOrbitControl();
+    //     this.orbitControlsEnabled = true;
+    //     orbit.setTarget(CAMERA_TARGET);
+    //     orbit.setMinPolarAngle(0);
+    //     orbit.setMaxPolarAngle(Math.PI/2.5);
+    //     orbit.setMaxDistance(15);
+    // }
 
-    transitionToGameState() {
-        this.stopRotation();
-        this.moveToFinalPosition()
-            .then(this.enableOrbitControls);
-    }
+    // transitionToGameState() {
+    //     this.stopRotation();
+    //     this.moveToFinalPosition()
+    //         .then(this.enableOrbitControls);
+    // }
 
 }

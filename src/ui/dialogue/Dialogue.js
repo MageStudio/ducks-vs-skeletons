@@ -1,34 +1,55 @@
 import { ACTIONS } from "./DialogueStateMachine";
 import { Component } from "inferno";
+import { DIALOGUE_ACTIONS_TYPES } from "./text";
 
-// TODO: this component needs to either leave space on the left, or on the right depending on who's talking
+// TODO: dialog-box classname needs to change to either ducks or skleleton depending on who's talking
 class Dialogue extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            text: ''
+            text: '',
+            actions: []
         }
     }
 
     componentDidMount() {
         const { dialogue } = this.props;
 
-        dialogue.subject.subscribe(text => this.setState({ text }));
+        dialogue.subject.subscribe(({ text, actions }) => this.setState({ text, actions }));
         dialogue.stateMachine.start();
     }
 
     render() {
-        const { text } = this.state;
+        const { text, actions } = this.state;
+        const { dialogue } = this.props;
+
         if (!text) return null;
+
+        const onConfirm = () => {
+            dialogue.stateMachine.send(ACTIONS.NEXT);
+            this.props.onConfirm();
+        }
+        const onNext = () => dialogue.stateMachine.send(ACTIONS.NEXT);
+
+        const mapActionsToBtn = ({ type, text }) => {
+            const action = ({
+                [DIALOGUE_ACTIONS_TYPES.CONFIRM]: onConfirm,
+                [DIALOGUE_ACTIONS_TYPES.NEXT]: onNext
+            })[type] || onNext;
+
+            return (
+                <div className={`btn ${type}`} onClick={action}>{text}</div>
+            )
+        }
 
         return (
             <div key={text} class='dialog-container'>
-                <div class='dialog-box'>
+                <div class='dialog-box ducks'>
                     <div className='dialog-text-row'>
                         <span class='text ducks' style={`--n:${text.length}`}>{ text }</span>
                     </div>
                     <div className='dialog-footer'>
-                        <div className='btn' onClick={() => this.props.dialogue.stateMachine.send(ACTIONS.NEXT)}>next</div>
+                        { actions.map(mapActionsToBtn) }
                     </div>
                 </div>
             </div>

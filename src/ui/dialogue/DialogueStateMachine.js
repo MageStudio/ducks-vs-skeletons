@@ -1,5 +1,5 @@
 import { rxjs, xstate } from 'mage-engine';
-import { DIALOGUE_TEXT, INITIAL_DIALOGUE_STEPS } from './text';
+import { DIALOGUE_CONFIG, INITIAL_DIALOGUE_STEPS } from './text';
 
 const { createMachine, interpret } = xstate;
 
@@ -28,7 +28,7 @@ const INITIAL_DIALOGUE_DESCRIPTION = {
 
 const initialDialogueSubject = new rxjs.Subject();
 const initialDialogueStateMachine = interpret(createMachine(INITIAL_DIALOGUE_DESCRIPTION))
-        .onTransition(state => initialDialogueSubject.next(DIALOGUE_TEXT[state.value]))
+        .onTransition(state => initialDialogueSubject.next(DIALOGUE_CONFIG[state.value]))
 
 export const initialDialogue = {
     subject: initialDialogueSubject,

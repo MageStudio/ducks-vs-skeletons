@@ -13,7 +13,8 @@ import {
     Sky,
     Stats,
     PostProcessing,
-    Sprite
+    Sprite,
+    Element
 } from 'mage-engine';
 
 import TileMap, { HUMAN_DETAILS } from './map/TileMap';
@@ -23,13 +24,15 @@ import Nature from './players/nature';
 import Selector from './players/nature/Selector';
 import BulletBehaviour from './players/BulletBehaviour';
 import DuckBehaviour from './players/nature/DuckBehaviour';
-import CameraBehaviour from './worldScripts/cameraBehaviour';
+import CameraBehaviour from './worldScripts/CameraContainer';
 import Bobbing from './map/Bobbing';
 import { TILES_TYPES, TILE_MATERIAL_PROPERTIES } from './map/constants';
 import TargetBehaviour from './players/TargetBehaviour';
 import CloudBehaviour from './worldScripts/CloudBehaviour';
 
-import { initialDialogueStateMachine } from '../../ui/dialogue/DialogueStateMachine';
+import CameraContainer from './worldScripts/CameraContainer';
+import { DEFAULT_UNIT_SCALE } from './players/UnitBehaviour';
+import CharacterFollowingCamera from './worldScripts/CharacterFollowingCamera';
 
 export const WHITE = 0xffffff;
 export const SUNLIGHT = 0xffeaa7;
@@ -129,9 +132,7 @@ export default class Main extends Level {
                 scale: { x: randomScale, y: randomScale / ratio }
             });
             return cloud;
-        })
-
-        window.clouds = this.clouds;
+        });
     }
 
     turnCloudsDark() {
@@ -173,13 +174,15 @@ export default class Main extends Level {
     }
 
     startGame() {
-        // TODO; remove camera from camera container, then transition to game state
-        Scene
-            .getCamera()
-            .getScript('CameraBehaviour')
-            .transitionToGameState();
-        this.storePlayers();
-        this.startPlayers(this.playerPositions);
+        // if we're showing the dialogue, we need to do it here
+        this.addDuckToCameraContainer();
+
+        // Scene
+        //     .getCamera()
+        //     .getScript('CameraBehaviour')
+        //     .transitionToGameState();
+        // this.storePlayers();
+        // this.startPlayers(this.playerPositions);
     }
 
     startPlayers({ humanStartingPosition, natureStartingPosition }) {
@@ -204,15 +207,25 @@ export default class Main extends Level {
             .getUnits();
     }
 
-    startCameraRotation() {
-        // TODO: create holder as an empty object, add camera to it
+    createDuck() {
+        this.dialogueDuck = Models.get('nature', { name: "dialogue_duck" });
+        this.dialogueDuck.setScale(DEFAULT_UNIT_SCALE);
+        this.dialogueDuck.addScript('CharacterFollowingCamera');
+
+        return this.dialogueDuck;
     }
 
-    addAnimationDuck() {
-        // TODO: getting a duck and adding it to the camera container
-        const duck = Models.get('nature');
+    createCameraContainer() {
+        this.cameraContainer = new Element({ body: new THREE.Object3D() });
+        
+        this.cameraContainer.addScript('CameraContainer', { distance: 7, height: 6 });
+        this.cameraContainer.add(Scene.getCamera());
+        
     }
-
+    
+    addDuckToCameraContainer() {
+        this.cameraContainer.add(this.createDuck());
+    }
 
     onCreate() {
         Scripts.register('TargetBehaviour', TargetBehaviour);
@@ -224,12 +237,12 @@ export default class Main extends Level {
         Scripts.register('CameraBehaviour', CameraBehaviour);
         Scripts.register('CloudBehaviour', CloudBehaviour);
 
+        Scripts.register('CameraContainer', CameraContainer);
+        Scripts.register('CharacterFollowingCamera', CharacterFollowingCamera);
+
+        // TODO: get world level from props > /?level=2
         this.playerPositions = this.createWorld();
 
-        Scene
-            .getCamera()
-            .addScript('CameraBehaviour', { distance: 7, height: 6 });
-
-        window.level = this;
+        this.createCameraContainer();
     }
 }

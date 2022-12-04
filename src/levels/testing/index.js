@@ -22,7 +22,7 @@ import {
 } from 'mage-engine';
 import { TILE_MATERIAL_PROPERTIES } from '../Main/map/constants';
 import TileParticleSystem from '../Main/players/nature/TileParticleSystem';
-import CameraBehaviour from '../Main/worldScripts/cameraBehaviour';
+import CameraBehaviour from '../Main/worldScripts/CameraContainer';
 
 const { Vector3 } = THREE;
 window.ENTITY_EVENTS = ENTITY_EVENTS;
