@@ -16,6 +16,8 @@
         display: flex;
         flex-direction: row;
         justify-content: flex-end;
+        position: relative;
+        min-height: 38px;
 
         & .btn {
             background-color: #60a3bc;
@@ -41,10 +43,15 @@
                 box-shadow: none;
                 margin-top: 4px;
                 filter: brightness(.8);
+                position: absolute;
             }
             
             &:hover {
                 cursor: pointer;
+            }
+
+            &.confirm {
+                background-color: #78e08f;
             }
         }
     }
