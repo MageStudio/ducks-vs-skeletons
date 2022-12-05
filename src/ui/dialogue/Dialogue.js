@@ -15,19 +15,19 @@ class Dialogue extends Component {
     componentDidMount() {
         const { dialogue } = this.props;
 
-        dialogue.subject.subscribe(({ text, actions }) => this.setState({ text, actions }));
+        dialogue.subject.subscribe(({ text, actions } = {}) => this.setState({ text, actions }));
         dialogue.stateMachine.start();
     }
 
     render() {
         const { text, actions } = this.state;
-        const { dialogue } = this.props;
+        const { dialogue, id } = this.props;
 
         if (!text) return null;
 
         const onConfirm = () => {
             dialogue.stateMachine.send(ACTIONS.NEXT);
-            this.props.onConfirm();
+            this.props.onStopDialogue(id);
         }
         const onNext = () => dialogue.stateMachine.send(ACTIONS.NEXT);
 

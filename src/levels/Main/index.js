@@ -14,7 +14,8 @@ import {
     Stats,
     PostProcessing,
     Sprite,
-    Element
+    Element,
+    store
 } from 'mage-engine';
 
 import TileMap, { HUMAN_DETAILS } from './map/TileMap';
@@ -33,6 +34,8 @@ import CloudBehaviour from './worldScripts/CloudBehaviour';
 import CameraContainer from './worldScripts/CameraContainer';
 import { DEFAULT_UNIT_SCALE } from './players/UnitBehaviour';
 import CharacterFollowingCamera from './worldScripts/CharacterFollowingCamera';
+import { startDialogue } from '../../ui/actions/dialogue';
+import { gameStarted } from '../../ui/actions/game';
 
 export const WHITE = 0xffffff;
 export const SUNLIGHT = 0xffeaa7;
@@ -78,6 +81,9 @@ const CLOUDS = [
     { name: 'cloud2', height: 1.06, width: 2.7, ratio: 2.54 },
     { name: 'cloud3', height: 1.215, width: 2.495, ratio: 2.05 },
 ]
+
+const CAMERA_TARGET = { x: 6.5, y: 0, z: 6.5 };
+const OBSERVING_POSITION = {x: 2, y: 4, z: 0 };
 
 export default class Main extends Level {
 
@@ -173,16 +179,34 @@ export default class Main extends Level {
         }
     }
 
-    startGame() {
-        // if we're showing the dialogue, we need to do it here
+    startDialogue() {
         this.addDuckToCameraContainer();
+    }
 
-        // Scene
-        //     .getCamera()
-        //     .getScript('CameraBehaviour')
-        //     .transitionToGameState();
-        // this.storePlayers();
-        // this.startPlayers(this.playerPositions);
+    setUpOrbitControls() {
+        const orbit = Controls.setOrbitControl();
+        orbit.setTarget(CAMERA_TARGET);
+        orbit.setMinPolarAngle(0);
+        orbit.setMaxPolarAngle(Math.PI/2.5);
+        orbit.setMaxDistance(15);
+    }
+
+    cleanupCameraContainer() {
+        this.cameraContainer.remove(this.dialogueDuck);
+        this.cameraContainer.remove(Scene.getCamera());
+        this.cameraContainer.dispose();
+    }
+
+    startGame() {
+        store.dispatch(gameStarted());
+        this.cleanupCameraContainer();
+
+        Scene.getCamera().goTo(OBSERVING_POSITION, 5000);
+
+        this.setUpOrbitControls();
+
+        this.storePlayers();
+        this.startPlayers(this.playerPositions);
     }
 
     startPlayers({ humanStartingPosition, natureStartingPosition }) {
