@@ -26,7 +26,7 @@ export const DIALOGUE_CONFIG = {
     [INITIAL_DIALOGUE_STEPS.FINAL]: {
         text: "Would you like to help us?",
         actions: [
-            { type: DIALOGUE_ACTIONS_TYPES.CONFIRM, text: 'Yes' }
+            { type: DIALOGUE_ACTIONS_TYPES.CONFIRM, text: 'Yes!' }
         ]
     }
 };

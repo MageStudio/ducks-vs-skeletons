@@ -1,5 +1,3 @@
-// TODO: this is for the character in the dialogue following the camera position
-
 import { BaseScript, Config, THREE } from "mage-engine";
 import { UNIT_ANIMATIONS } from "../players/UnitBehaviour";
 
