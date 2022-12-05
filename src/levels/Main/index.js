@@ -13,7 +13,9 @@ import {
     Sky,
     Stats,
     PostProcessing,
-    Sprite
+    Sprite,
+    Element,
+    store
 } from 'mage-engine';
 
 import TileMap, { HUMAN_DETAILS } from './map/TileMap';
@@ -23,11 +25,17 @@ import Nature from './players/nature';
 import Selector from './players/nature/Selector';
 import BulletBehaviour from './players/BulletBehaviour';
 import DuckBehaviour from './players/nature/DuckBehaviour';
-import CameraBehaviour from './worldScripts/cameraBehaviour';
+import CameraBehaviour from './worldScripts/CameraContainer';
 import Bobbing from './map/Bobbing';
 import { TILES_TYPES, TILE_MATERIAL_PROPERTIES } from './map/constants';
 import TargetBehaviour from './players/TargetBehaviour';
 import CloudBehaviour from './worldScripts/CloudBehaviour';
+
+import CameraContainer from './worldScripts/CameraContainer';
+import { DEFAULT_UNIT_SCALE } from './players/UnitBehaviour';
+import CharacterFollowingCamera from './worldScripts/CharacterFollowingCamera';
+import { startDialogue } from '../../ui/actions/dialogue';
+import { gameStarted } from '../../ui/actions/game';
 
 export const WHITE = 0xffffff;
 export const SUNLIGHT = 0xffeaa7;
@@ -73,6 +81,9 @@ const CLOUDS = [
     { name: 'cloud2', height: 1.06, width: 2.7, ratio: 2.54 },
     { name: 'cloud3', height: 1.215, width: 2.495, ratio: 2.05 },
 ]
+
+const CAMERA_TARGET = { x: 6.5, y: 0, z: 6.5 };
+const OBSERVING_POSITION = {x: 2, y: 4, z: 0 };
 
 export default class Main extends Level {
 
@@ -127,9 +138,7 @@ export default class Main extends Level {
                 scale: { x: randomScale, y: randomScale / ratio }
             });
             return cloud;
-        })
-
-        window.clouds = this.clouds;
+        });
     }
 
     turnCloudsDark() {
@@ -170,11 +179,32 @@ export default class Main extends Level {
         }
     }
 
+    startDialogue() {
+        this.addDuckToCameraContainer();
+    }
+
+    setUpOrbitControls() {
+        const orbit = Controls.setOrbitControl();
+        orbit.setTarget(CAMERA_TARGET);
+        orbit.setMinPolarAngle(0);
+        orbit.setMaxPolarAngle(Math.PI/2.5);
+        orbit.setMaxDistance(15);
+    }
+
+    cleanupCameraContainer() {
+        this.cameraContainer.remove(this.dialogueDuck);
+        this.cameraContainer.remove(Scene.getCamera());
+        this.cameraContainer.dispose();
+    }
+
     startGame() {
-        Scene
-            .getCamera()
-            .getScript('CameraBehaviour')
-            .transitionToGameState();
+        store.dispatch(gameStarted());
+        this.cleanupCameraContainer();
+
+        Scene.getCamera().goTo(OBSERVING_POSITION, 5000);
+
+        this.setUpOrbitControls();
+
         this.storePlayers();
         this.startPlayers(this.playerPositions);
     }
@@ -201,6 +231,26 @@ export default class Main extends Level {
             .getUnits();
     }
 
+    createDuck() {
+        this.dialogueDuck = Models.get('nature', { name: "dialogue_duck" });
+        this.dialogueDuck.setScale(DEFAULT_UNIT_SCALE);
+        this.dialogueDuck.addScript('CharacterFollowingCamera');
+
+        return this.dialogueDuck;
+    }
+
+    createCameraContainer() {
+        this.cameraContainer = new Element({ body: new THREE.Object3D() });
+        
+        this.cameraContainer.addScript('CameraContainer', { distance: 7, height: 6 });
+        this.cameraContainer.add(Scene.getCamera());
+        
+    }
+    
+    addDuckToCameraContainer() {
+        this.cameraContainer.add(this.createDuck());
+    }
+
     onCreate() {
         Scripts.register('TargetBehaviour', TargetBehaviour);
         Scripts.register('HumanBehaviour', HumanBehaviour);
@@ -211,12 +261,12 @@ export default class Main extends Level {
         Scripts.register('CameraBehaviour', CameraBehaviour);
         Scripts.register('CloudBehaviour', CloudBehaviour);
 
+        Scripts.register('CameraContainer', CameraContainer);
+        Scripts.register('CharacterFollowingCamera', CharacterFollowingCamera);
+
+        // TODO: get world level from props > /?level=2
         this.playerPositions = this.createWorld();
 
-        Scene
-            .getCamera()
-            .addScript('CameraBehaviour', { distance: 7, height: 6 });
-
-        window.level = this;
+        this.createCameraContainer();
     }
 }

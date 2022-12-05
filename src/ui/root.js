@@ -2,7 +2,7 @@ import { Component } from 'inferno';
 import { connect, GameRunner } from 'mage-engine';
 import Nature from '../levels/Main/players/nature';
 import { getClickSound, playClickSound, VOLUMES } from '../sounds';
-import { gameStarted } from './actions/game';
+import { startDialogue, stopDialogue } from './actions/dialogue';
 import { changeSelectionOption } from './actions/player';
 import Game from './gameui';
 import LoadingScreen from './LoadingScreen';
@@ -44,21 +44,22 @@ class Root extends Component {
 
     onStartClick() {
         const { onStartClick } = this.props;
-        GameRunner.getCurrentLevel().startGame();
+        GameRunner.getCurrentLevel().startDialogue();
         onStartClick();
     }
 
     render() {
-        const { tileStats, energy, selection, option, units, started } = this.props;
+        const { energy, selection, option, units, game, onStopDialogue, dialogue } = this.props;
         const { loading, fading } = this.state;
         return (
             <>
                 { loading && <LoadingScreen fading={fading}/> }
                 <Game
+                    dialogue={dialogue}
+                    game={game}
+                    onStopDialogue={onStopDialogue}
                     onStartClick={this.onStartClick}
-                    started={started}
                     option={option}
-                    tileStats={tileStats}
                     energy={energy}
                     selection={selection}
                     units={units}
@@ -69,15 +70,17 @@ class Root extends Component {
 }
 
 
-const mapStateToProps = ({ ui, game, player }) => ({
+const mapStateToProps = ({ ui, game, player, dialogue }) => ({
     loadingScreenVisible: ui.loadingScreenVisible,
-    ...game,
-    ...player
+    ...player,
+    game,
+    dialogue
 });
 
 const mapDispatchToProps = dispatch => ({
     onOptionClick: option => dispatch(changeSelectionOption(option)),
-    onStartClick: () => dispatch(gameStarted())
+    onStartClick: () => dispatch(startDialogue('initial')),
+    onStopDialogue: (id) => dispatch(stopDialogue(id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Root);

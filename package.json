@@ -35,7 +35,7 @@
     "dependencies": {
         "inferno": "^7.4.2",
         "inferno-canvas-component": "^0.1.4",
-        "mage-engine": "3.21.0",
+        "mage-engine": "3.21.1",
         "xferno": "0.0.7"
     }
 }
