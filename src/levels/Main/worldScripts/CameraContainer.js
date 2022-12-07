@@ -24,10 +24,10 @@ export default class CameraContainer extends BaseScript {
                 y: this.height,
                 z: (Math.cos(this.angle) * this.distance) + this.origin.z
             });
+            this.container.lookAt(this.target);
+            Scene.getCamera().lookAt(this.target);
         }
 
-        this.container.lookAt(this.target);
-        Scene.getCamera().lookAt(this.target);
     }
 
     stopRotation() {

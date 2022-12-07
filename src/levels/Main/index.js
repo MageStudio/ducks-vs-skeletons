@@ -37,6 +37,14 @@ import CharacterFollowingCamera from './worldScripts/CharacterFollowingCamera';
 import { startDialogue } from '../../ui/actions/dialogue';
 import { gameStarted } from '../../ui/actions/game';
 
+// import studio from '@theatre/studio';
+import intro from '../theatrejs/intro.json';
+import { getProject, types } from '@theatre/core';
+// studio.initialize(); 
+
+const project = getProject('Ducks vs Skeletons', { state: intro });
+const sheet = project.sheet('Intro');
+
 export const WHITE = 0xffffff;
 export const SUNLIGHT = 0xffeaa7;
 export const DARKER_GROUND = 0X78e08f;
@@ -179,7 +187,15 @@ export default class Main extends Level {
         }
     }
 
+    playIntroAnimation() {
+        this.cameraContainer.getScript('CameraContainer').stopRotation();
+        this.cameraContainer.setRotation({ x: 0, y: 0, z: 0 });
+        this.cameraContainer.lookAt(this.playerPositions.humanStartingPosition);
+        sheet.sequence.play({ iterationCount: 1 })
+    }
+
     startDialogue() {
+        project.ready.then(() => this.playIntroAnimation());
         this.addDuckToCameraContainer();
     }
 
@@ -251,6 +267,28 @@ export default class Main extends Level {
         this.cameraContainer.add(this.createDuck());
     }
 
+    startTheatre() {
+        sheet
+            .object('camera', {
+                rotation: types.compound({
+                    x: types.number(this.cameraContainer.getRotation().x, { range: [-Math.PI, Math.PI] }),
+                    y: types.number(this.cameraContainer.getRotation().y, { range: [-Math.PI, Math.PI] }),
+                    z: types.number(this.cameraContainer.getRotation().z, { range: [-Math.PI, Math.PI] }),
+                }),
+                position: types.compound({
+                    x: types.number(this.cameraContainer.getPosition().x, { range: [-10, 10] }),
+                    y: types.number(this.cameraContainer.getPosition().y, { range: [-10, 10] }),
+                    z: types.number(this.cameraContainer.getPosition().z, { range: [-10, 10] }),
+                }),
+            })
+            .onValuesChange(values => {
+                const { x, y, z } = values.rotation;
+                
+                this.cameraContainer.setPosition(values.position);
+                this.cameraContainer.setRotation({ x: x * Math.PI, y: y * Math.PI, z: z * Math.PI });
+            })
+    }
+
     onCreate() {
         Scripts.register('TargetBehaviour', TargetBehaviour);
         Scripts.register('HumanBehaviour', HumanBehaviour);
@@ -268,5 +306,8 @@ export default class Main extends Level {
         this.playerPositions = this.createWorld();
 
         this.createCameraContainer();
+        this.startTheatre();
+
+        window.Level = this;
     }
 }

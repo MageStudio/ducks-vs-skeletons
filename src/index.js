@@ -125,6 +125,7 @@ const config = {
     },
 
     ui: {
+        // enabled: false,
         root: Root
     },
 
