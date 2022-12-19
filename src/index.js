@@ -32,6 +32,8 @@ const assets = {
             humansBackground: `${ASSETS_AUDIO_BASE_PATH}/dungeon_background.aac`,
         },
         models: {
+            'meteor': `${ASSETS_MODELS_BASE_PATH}/Rock_4.fbx`,
+
             'box': `${ASSETS_MODELS_BASE_PATH}/box.glb`,
             'die': `${ASSETS_MODELS_BASE_PATH}/die.glb`,
             'selector': `${ASSETS_MODELS_BASE_PATH}/selector.glb`,
@@ -81,6 +83,11 @@ const assets = {
             'human': `${ASSETS_MODELS_BASE_PATH}/skeleton_animation.fbx`,
             'nature': `${ASSETS_MODELS_BASE_PATH}/duck_animation.fbx`,
             'duck_animated': `${ASSETS_MODELS_BASE_PATH}/animated.fbx`,
+            'rock_1': `${ASSETS_MODELS_BASE_PATH}/Rock_1.fbx`,
+            'rock_2': `${ASSETS_MODELS_BASE_PATH}/Rock_2.fbx`,
+            'rock_3': `${ASSETS_MODELS_BASE_PATH}/Rock_3.fbx`,
+            'rock_4': `${ASSETS_MODELS_BASE_PATH}/Rock_4.fbx`,
+            'rock_5': `${ASSETS_MODELS_BASE_PATH}/Rock_5.fbx`,
         },
         textures: {
             'fire': `${ASSETS_TEXTURES_BASE_PATH}/fire.png`

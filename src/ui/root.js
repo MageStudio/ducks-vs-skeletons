@@ -44,7 +44,6 @@ class Root extends Component {
 
     onStartClick() {
         const { onStartClick } = this.props;
-        GameRunner.getCurrentLevel().startDialogue();
         onStartClick();
     }
 

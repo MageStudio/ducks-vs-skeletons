@@ -34,16 +34,18 @@ import CloudBehaviour from './worldScripts/CloudBehaviour';
 import CameraContainer from './worldScripts/CameraContainer';
 import { DEFAULT_UNIT_SCALE } from './players/UnitBehaviour';
 import CharacterFollowingCamera from './worldScripts/CharacterFollowingCamera';
-import { startDialogue } from '../../ui/actions/dialogue';
 import { gameStarted } from '../../ui/actions/game';
 
-// import studio from '@theatre/studio';
-import intro from '../theatrejs/intro.json';
+import studio from '@theatre/studio';
+import intro from '../theatrejs/intro4.json';
 import { getProject, types } from '@theatre/core';
-// studio.initialize(); 
+import { Meteor } from './worldScripts/Meteor';
+studio.initialize(); 
 
 const project = getProject('Ducks vs Skeletons', { state: intro });
-const sheet = project.sheet('Intro');
+const cameraSheet = project.sheet('Intro', 'camera');
+// const meteorSheet = project.sheet('Intro', 'meteor');
+// window.sheet = meteorSheet;
 
 export const WHITE = 0xffffff;
 export const SUNLIGHT = 0xffeaa7;
@@ -191,12 +193,16 @@ export default class Main extends Level {
         this.cameraContainer.getScript('CameraContainer').stopRotation();
         this.cameraContainer.setRotation({ x: 0, y: 0, z: 0 });
         this.cameraContainer.lookAt(this.playerPositions.humanStartingPosition);
-        sheet.sequence.play({ iterationCount: 1 })
+        cameraSheet.sequence.play({ iterationCount: 1 })
+        setTimeout(() => this.cameraContainer.getScript('CameraContainer').focusOnTarget(this.meteor), 1500);
+        this.meteor.getScript('Meteor').playSequence(2000).then(() => {
+        })
     }
 
     startDialogue() {
         project.ready.then(() => this.playIntroAnimation());
         this.addDuckToCameraContainer();
+        this.createMeteor();
     }
 
     setUpOrbitControls() {
@@ -214,20 +220,25 @@ export default class Main extends Level {
     }
 
     startGame() {
+        console.log('dispatghing gameStarted');
         store.dispatch(gameStarted());
+        console.log('cleanup camera container');
         this.cleanupCameraContainer();
 
+        console.log('moving camera to observing position');
         Scene.getCamera().goTo(OBSERVING_POSITION, 5000);
 
+        console.log('set up orbit controls');
         this.setUpOrbitControls();
 
         this.storePlayers();
-        this.startPlayers(this.playerPositions);
+        console.log('starting players');
+        this.startPlayers();
     }
 
-    startPlayers({ humanStartingPosition, natureStartingPosition }) {
-        Humans.start(humanStartingPosition);
-        Nature.start(natureStartingPosition);
+    startPlayers() {
+        Humans.start(this.playerPositions.humanStartingPosition);
+        Nature.start(this.playerPositions.natureStartingPosition);
     }
 
     storePlayers() {
@@ -252,6 +263,8 @@ export default class Main extends Level {
         this.dialogueDuck.setScale(DEFAULT_UNIT_SCALE);
         this.dialogueDuck.addScript('CharacterFollowingCamera');
 
+        window.duck = this.dialogueDuck;
+
         return this.dialogueDuck;
     }
 
@@ -267,8 +280,37 @@ export default class Main extends Level {
         this.cameraContainer.add(this.createDuck());
     }
 
+    createMeteor() {
+        this.meteor = Models.get('meteor');
+        this.meteor.addScript('Meteor', { project });
+        window.meteor = this.meteor;
+        // this.meteor.setScale({ x: 0.01, y:  0.01, z: 0.01 });
+
+        // meteorSheet
+        //     .object('meteor', {
+        //         rotation: types.compound({
+        //             x: types.number(this.meteor.getRotation().x, { range: [-Math.PI, Math.PI] }),
+        //             y: types.number(this.meteor.getRotation().y, { range: [-Math.PI, Math.PI] }),
+        //             z: types.number(this.meteor.getRotation().z, { range: [-Math.PI, Math.PI] }),
+        //         }),
+        //         position: types.compound({
+        //             x: types.number(this.meteor.getPosition().x, { range: [-20, 20] }),
+        //             y: types.number(this.meteor.getPosition().y, { range: [-20, 20] }),
+        //             z: types.number(this.meteor.getPosition().z, { range: [-20, 20] }),
+        //         }),
+        //     })
+        //     .onValuesChange(values => {
+        //         const { x, y, z } = values.rotation;
+                
+        //         this.meteor.setPosition(values.position);
+        //         this.meteor.setRotation({ x: x * Math.PI, y: y * Math.PI, z: z * Math.PI });
+        //     })
+        
+        // meteorSheet.
+    }
+
     startTheatre() {
-        sheet
+        cameraSheet
             .object('camera', {
                 rotation: types.compound({
                     x: types.number(this.cameraContainer.getRotation().x, { range: [-Math.PI, Math.PI] }),
@@ -286,7 +328,7 @@ export default class Main extends Level {
                 
                 this.cameraContainer.setPosition(values.position);
                 this.cameraContainer.setRotation({ x: x * Math.PI, y: y * Math.PI, z: z * Math.PI });
-            })
+            });
     }
 
     onCreate() {
@@ -298,6 +340,7 @@ export default class Main extends Level {
         Scripts.register('Bobbing', Bobbing);
         Scripts.register('CameraBehaviour', CameraBehaviour);
         Scripts.register('CloudBehaviour', CloudBehaviour);
+        Scripts.register('Meteor', Meteor);
 
         Scripts.register('CameraContainer', CameraContainer);
         Scripts.register('CharacterFollowingCamera', CharacterFollowingCamera);

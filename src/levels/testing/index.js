@@ -144,9 +144,9 @@ export default class Testing extends Level {
         // smoke.setPosition({ y: 1 });
 
         
-        // Scene.getCamera().setPosition({ x: 2, y: 4, z: 0 });
-        // Scene.getCamera().lookAt({ x: 0, y: 0, z: 0 });
-        // Controls.setOrbitControl();
+        Scene.getCamera().setPosition({ x: 2, y: 4, z: 0 });
+        Scene.getCamera().lookAt({ x: 0, y: 0, z: 0 });
+        Controls.setOrbitControl();
         // const duck = this.addDuckToCamera();
         // const container = new Element({ body: new THREE.Object3D() })
         // window.container = container;
@@ -202,7 +202,30 @@ export default class Testing extends Level {
         //     Scene.getCamera().setPosition(values.position);
         //     Scene.getCamera().setRotation({ x: x * Math.PI, y: y * Math.PI, z: z * Math.PI });
         // })
-        
+        const rock = Models.get(`rock_4`);
+
+        rock.setScale({ x: 0.01, y:  0.01, z: 0.01 });
+        rock.setPosition({ y: 10, x: 10 });
+
+        window.rock = rock;
+
+        sheet.object('rock', {
+            rotation: types.compound({
+                x: types.number(rock.getRotation().x, { range: [-Math.PI, Math.PI] }),
+                y: types.number(rock.getRotation().y, { range: [-Math.PI, Math.PI] }),
+                z: types.number(rock.getRotation().z, { range: [-Math.PI, Math.PI] }),
+            }),
+            position: types.compound({
+                x: types.number(rock.getPosition().x, { range: [-10, 10] }),
+                y: types.number(rock.getPosition().y, { range: [-10, 10] }),
+                z: types.number(rock.getPosition().z, { range: [-10, 10] }),
+            }),
+        }).onValuesChange(values => {
+            const { x, y, z } = values.rotation;
+            
+            rock.setPosition(values.position);
+            rock.setRotation({ x: x * Math.PI, y: y * Math.PI, z: z * Math.PI });
+        });
     }
 
     addBox() {
