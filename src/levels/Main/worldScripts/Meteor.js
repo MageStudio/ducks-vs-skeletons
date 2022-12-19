@@ -4,10 +4,10 @@ import { types } from '@theatre/core';
 
 export class Meteor extends BaseScript {
 
-    start(meteor, { project }) {
+    start(meteor, { project, cameraContainer }) {
         this.meteor = meteor;
-        // this.meteor.setVisible(false);
         this.sheet = project.sheet('Intro', 'meteor');
+        this.cameraContainer = cameraContainer;
 
         this.meteor.setScale({ x: 0.01, y:  0.01, z: 0.01 });
 
@@ -19,9 +19,9 @@ export class Meteor extends BaseScript {
                     z: types.number(this.meteor.getRotation().z, { range: [-Math.PI, Math.PI] }),
                 }),
                 position: types.compound({
-                    x: types.number(this.meteor.getPosition().x, { range: [-20, 20] }),
-                    y: types.number(this.meteor.getPosition().y, { range: [-20, 20] }),
-                    z: types.number(this.meteor.getPosition().z, { range: [-20, 20] }),
+                    x: types.number(this.meteor.getPosition().x, { range: [-100, 100] }),
+                    y: types.number(this.meteor.getPosition().y, { range: [-100, 100] }),
+                    z: types.number(this.meteor.getPosition().z, { range: [-100, 100] }),
                 }),
             })
             .onValuesChange(values => {
@@ -33,8 +33,10 @@ export class Meteor extends BaseScript {
     }
 
     playSequence(after = 1000) {
+        
         return new Promise(resolve => {
             setTimeout(() => {
+                this.cameraContainer.getScript('CameraContainer').focusOnTarget(this.meteor);
                 resolve(); // resolve when animation is about tos tart;
                 this.sheet.sequence.play({ iterationCount: 1 }).then(() => {
                     // this.meteor.dispose();

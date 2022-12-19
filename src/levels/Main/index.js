@@ -43,7 +43,7 @@ import { Meteor } from './worldScripts/Meteor';
 studio.initialize(); 
 
 const project = getProject('Ducks vs Skeletons', { state: intro });
-const cameraSheet = project.sheet('Intro', 'camera');
+// const cameraSheet = project.sheet('Intro', 'camera');
 // const meteorSheet = project.sheet('Intro', 'meteor');
 // window.sheet = meteorSheet;
 
@@ -190,11 +190,11 @@ export default class Main extends Level {
     }
 
     playIntroAnimation() {
-        this.cameraContainer.getScript('CameraContainer').stopRotation();
-        this.cameraContainer.setRotation({ x: 0, y: 0, z: 0 });
-        this.cameraContainer.lookAt(this.playerPositions.humanStartingPosition);
-        cameraSheet.sequence.play({ iterationCount: 1 })
-        setTimeout(() => this.cameraContainer.getScript('CameraContainer').focusOnTarget(this.meteor), 1500);
+        const cameraContainerScript = this.cameraContainer.getScript('CameraContainer');
+        cameraContainerScript.stopRotation();
+        cameraContainerScript.transitionToPreSequence(this.playerPositions.humanStartingPosition);
+        cameraContainerScript.playSequence();
+
         this.meteor.getScript('Meteor').playSequence(2000).then(() => {
         })
     }
@@ -271,7 +271,7 @@ export default class Main extends Level {
     createCameraContainer() {
         this.cameraContainer = new Element({ body: new THREE.Object3D() });
         
-        this.cameraContainer.addScript('CameraContainer', { distance: 7, height: 6 });
+        this.cameraContainer.addScript('CameraContainer', { distance: 7, height: 6, project });
         this.cameraContainer.add(Scene.getCamera());
         
     }
@@ -282,53 +282,8 @@ export default class Main extends Level {
 
     createMeteor() {
         this.meteor = Models.get('meteor');
-        this.meteor.addScript('Meteor', { project });
+        this.meteor.addScript('Meteor', { project, cameraContainer: this.cameraContainer });
         window.meteor = this.meteor;
-        // this.meteor.setScale({ x: 0.01, y:  0.01, z: 0.01 });
-
-        // meteorSheet
-        //     .object('meteor', {
-        //         rotation: types.compound({
-        //             x: types.number(this.meteor.getRotation().x, { range: [-Math.PI, Math.PI] }),
-        //             y: types.number(this.meteor.getRotation().y, { range: [-Math.PI, Math.PI] }),
-        //             z: types.number(this.meteor.getRotation().z, { range: [-Math.PI, Math.PI] }),
-        //         }),
-        //         position: types.compound({
-        //             x: types.number(this.meteor.getPosition().x, { range: [-20, 20] }),
-        //             y: types.number(this.meteor.getPosition().y, { range: [-20, 20] }),
-        //             z: types.number(this.meteor.getPosition().z, { range: [-20, 20] }),
-        //         }),
-        //     })
-        //     .onValuesChange(values => {
-        //         const { x, y, z } = values.rotation;
-                
-        //         this.meteor.setPosition(values.position);
-        //         this.meteor.setRotation({ x: x * Math.PI, y: y * Math.PI, z: z * Math.PI });
-        //     })
-        
-        // meteorSheet.
-    }
-
-    startTheatre() {
-        cameraSheet
-            .object('camera', {
-                rotation: types.compound({
-                    x: types.number(this.cameraContainer.getRotation().x, { range: [-Math.PI, Math.PI] }),
-                    y: types.number(this.cameraContainer.getRotation().y, { range: [-Math.PI, Math.PI] }),
-                    z: types.number(this.cameraContainer.getRotation().z, { range: [-Math.PI, Math.PI] }),
-                }),
-                position: types.compound({
-                    x: types.number(this.cameraContainer.getPosition().x, { range: [-10, 10] }),
-                    y: types.number(this.cameraContainer.getPosition().y, { range: [-10, 10] }),
-                    z: types.number(this.cameraContainer.getPosition().z, { range: [-10, 10] }),
-                }),
-            })
-            .onValuesChange(values => {
-                const { x, y, z } = values.rotation;
-                
-                this.cameraContainer.setPosition(values.position);
-                this.cameraContainer.setRotation({ x: x * Math.PI, y: y * Math.PI, z: z * Math.PI });
-            });
     }
 
     onCreate() {
@@ -349,7 +304,6 @@ export default class Main extends Level {
         this.playerPositions = this.createWorld();
 
         this.createCameraContainer();
-        this.startTheatre();
 
         window.Level = this;
     }
