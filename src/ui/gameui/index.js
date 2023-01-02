@@ -8,6 +8,8 @@ const Game = ({ game, option, energy, selection, units, onOptionClick, onStartCl
     const shouldShowMainMenu = !dialogue.started && !game.started;
     const shouldShowControls = !dialogue.started && game.started;
 
+    console.log('rendering Game showing?', `${shouldShowDialogue && 'dialogue'}`, `${shouldShowMainMenu && 'menu'}`, `${shouldShowControls && 'controls'}`);
+
     return (
         <>
             { shouldShowMainMenu && <MainMenu onStartClick={onStartClick}/> }

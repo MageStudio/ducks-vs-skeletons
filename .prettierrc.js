@@ -5,5 +5,16 @@ module.exports = {
   trailingComma: "all",
   arrowParens: "avoid",
   semi: true,
-  tabWidth: 2,
+  tabWidth: 4,
+
+  overrides: [
+    {
+      files: ["*.md"],
+      options: { printWidth: 120 },
+    },
+    {
+      files: [".toolsharerc"],
+      options: { parser: "yaml" },
+    },
+  ],
 };

@@ -15,138 +15,148 @@ import {
     PostProcessing,
     Sprite,
     Element,
-    store
-} from 'mage-engine';
+    store,
+} from "mage-engine";
 
-import TileMap, { HUMAN_DETAILS } from './map/TileMap';
-import HumanBehaviour from './players/humans/HumanBehaviour';
-import Humans from './players/humans';
-import Nature from './players/nature';
-import Selector from './players/nature/Selector';
-import BulletBehaviour from './players/BulletBehaviour';
-import DuckBehaviour from './players/nature/DuckBehaviour';
-import CameraBehaviour from './worldScripts/CameraContainer';
-import Bobbing from './map/Bobbing';
-import { TILES_TYPES, TILE_MATERIAL_PROPERTIES } from './map/constants';
-import TargetBehaviour from './players/TargetBehaviour';
-import CloudBehaviour from './worldScripts/CloudBehaviour';
+import TileMap, { HUMAN_DETAILS } from "./map/TileMap";
+import HumanBehaviour from "./players/humans/HumanBehaviour";
+import Humans from "./players/humans";
+import Nature from "./players/nature";
+import Selector from "./players/nature/Selector";
+import BulletBehaviour from "./players/BulletBehaviour";
+import DuckBehaviour from "./players/nature/DuckBehaviour";
+import CameraBehaviour from "./worldScripts/CameraContainer";
+import Bobbing from "./map/Bobbing";
+import { TILES_TYPES, TILE_MATERIAL_PROPERTIES } from "./map/constants";
+import TargetBehaviour from "./players/TargetBehaviour";
+import CloudBehaviour from "./worldScripts/CloudBehaviour";
 
-import CameraContainer from './worldScripts/CameraContainer';
-import { DEFAULT_UNIT_SCALE } from './players/UnitBehaviour';
-import CharacterFollowingCamera from './worldScripts/CharacterFollowingCamera';
-import { startDialogue } from '../../ui/actions/dialogue';
-import { gameStarted } from '../../ui/actions/game';
+import CameraContainer from "./worldScripts/CameraContainer";
+import { DEFAULT_UNIT_SCALE } from "./players/UnitBehaviour";
+import CharacterFollowingCamera from "./worldScripts/CharacterFollowingCamera";
+import { gameStarted } from "../../ui/actions/game";
+
+// import studio from '@theatre/studio';
+import intro from "../theatrejs/intro4.json";
+import { getProject, types } from "@theatre/core";
+import { Meteor } from "./worldScripts/Meteor";
+import { ACTIONS, initialDialogue } from "../../ui/dialogue/DialogueStateMachine";
+// studio.initialize();
+
+const project = getProject("Ducks vs Skeletons", { state: intro });
+// const cameraSheet = project.sheet('Intro', 'camera');
+// const meteorSheet = project.sheet('Intro', 'meteor');
+// window.sheet = meteorSheet;
 
 export const WHITE = 0xffffff;
 export const SUNLIGHT = 0xffeaa7;
-export const DARKER_GROUND = 0X78e08f;
+export const DARKER_GROUND = 0x78e08f;
 export const GROUND = 0xb8e994;
-export const BACKGROUND = 0xdff9fb;//0xddf3f5;
+export const BACKGROUND = 0xdff9fb; //0xddf3f5;
 
 const DOF_OPTIONS = {
     focus: 1.0,
-    aperture: .0003,//0.0002,//0.0001,
-    maxblur: 0.01//0.01
+    aperture: 0.0003, //0.0002,//0.0001,
+    maxblur: 0.01, //0.01
 };
 
 const SATURATION_OPTIONS = {
-    saturation: 0.2
+    saturation: 0.2,
 };
 
 const AMBIENT_LIGHTS_OPTIONS = {
     color: PALETTES.FRENCH_PALETTE.SPRAY,
-    intensity: .5
+    intensity: 0.5,
 };
 
 const HEMISPHERELIGHT_OPTIONS = {
     color: {
         sky: PALETTES.FRENCH_PALETTE.SQUASH_BLOSSOM,
-        ground: PALETTES.FRENCH_PALETTE.REEF_ENCOUNTER
+        ground: PALETTES.FRENCH_PALETTE.REEF_ENCOUNTER,
     },
-    intensity: .5
+    intensity: 0.5,
 };
 
 const SUNLIGHT_OPTIONS = {
     color: PALETTES.FRENCH_PALETTE.MELON_MELODY,
     intensity: 1,
     far: 20,
-    mapSize: 2048
+    mapSize: 2048,
 };
 
 const SUNLIGHT_POSITION = { y: 4, z: -3, x: -3 };
 
 const { EFFECTS, MATERIALS } = constants;
 const CLOUDS = [
-    { name: 'cloud1', height: 1.37, width: 2.64, ratio: 1.92 },
-    { name: 'cloud2', height: 1.06, width: 2.7, ratio: 2.54 },
-    { name: 'cloud3', height: 1.215, width: 2.495, ratio: 2.05 },
-]
+    { name: "cloud1", height: 1.37, width: 2.64, ratio: 1.92 },
+    { name: "cloud2", height: 1.06, width: 2.7, ratio: 2.54 },
+    { name: "cloud3", height: 1.215, width: 2.495, ratio: 2.05 },
+];
 
 const CAMERA_TARGET = { x: 6.5, y: 0, z: 6.5 };
-const OBSERVING_POSITION = {x: 2, y: 4, z: 0 };
+const OBSERVING_POSITION = { x: 2, y: 4, z: 0 };
 
 export default class Main extends Level {
-
     addLights() {
         AmbientLight.create(AMBIENT_LIGHTS_OPTIONS);
         HemisphereLight.create(HEMISPHERELIGHT_OPTIONS);
-    
-        SunLight
-            .create(SUNLIGHT_OPTIONS)
-            .setPosition(SUNLIGHT_POSITION);
+
+        SunLight.create(SUNLIGHT_OPTIONS).setPosition(SUNLIGHT_POSITION);
     }
 
     addSky() {
         this.sky = new Sky({});
-        this.sky.setSun(.1, .1, 100);
+        this.sky.setSun(0.1, 0.1, 100);
     }
 
     addBox() {
-        this.box = Models.get('box');
+        this.box = Models.get("box");
         this.box.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
-        this.box.setScale({ x: .6, y: .6, z: .6 });
-        this.box.setPosition({ x: 6.5, y: -.3, z: 6.5});
+        this.box.setScale({ x: 0.6, y: 0.6, z: 0.6 });
+        this.box.setPosition({ x: 6.5, y: -0.3, z: 6.5 });
     }
-    
+
     addDice() {
-        const die_1 = Models.get('die', { name: 'die:1' });
-        const die_2 = Models.get('die', { name: 'die:2' });
+        const die_1 = Models.get("die", { name: "die:1" });
+        const die_2 = Models.get("die", { name: "die:2" });
 
         die_1.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
         die_2.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
 
         die_1.setPosition({ z: 5.5, x: -1 });
-        die_2.setPosition({ z: 6.3, x: -.7 });
-        die_1.setRotation({ y: 0.3, z: Math.PI / 2 })
+        die_2.setPosition({ z: 6.3, x: -0.7 });
+        die_1.setRotation({ y: 0.3, z: Math.PI / 2 });
     }
 
     pickRandomCloud = () => CLOUDS[Math.floor(Math.random() * CLOUDS.length)];
 
     addClouds() {
-        this.clouds = Array(30).fill(0).map(() => {
-            const { height, width, name, ratio } = this.pickRandomCloud();
-            const cloud = new Sprite(width, height, name, {
-                depthWrite: false
-            });
-            const randomScale = Math.random() * 2 + .5;
+        this.clouds = Array(30)
+            .fill(0)
+            .map(() => {
+                const { height, width, name, ratio } = this.pickRandomCloud();
+                const cloud = new Sprite(width, height, name, {
+                    depthWrite: false,
+                });
+                const randomScale = Math.random() * 2 + 0.5;
 
-            cloud.addScript('CloudBehaviour', {
-                height: (Math.random() * 2) + 2,
-                distance: (Math.random() * 5) + 4,
-                angle: Math.random()* Math.PI * 2,
-                speed:  Math.random() * 0.01,
-                scale: { x: randomScale, y: randomScale / ratio }
+                cloud.addScript("CloudBehaviour", {
+                    height: Math.random() * 2 + 2,
+                    distance: Math.random() * 5 + 4,
+                    angle: Math.random() * Math.PI * 2,
+                    speed: Math.random() * 0.01,
+                    scale: { x: randomScale, y: randomScale / ratio },
+                });
+                return cloud;
             });
-            return cloud;
-        });
     }
 
     turnCloudsDark() {
-        this.clouds.forEach(c => c.getScript('CloudBehaviour').turnDark());
+        this.clouds.forEach(c => c.getScript("CloudBehaviour").turnDark());
     }
 
     turnCloudsWhite() {
-        this.clouds.forEach(c => c.getScript('CloudBehaviour').turnWhite());
+        this.clouds.forEach(c => c.getScript("CloudBehaviour").turnWhite());
     }
 
     prepareSceneEffects() {
@@ -164,10 +174,7 @@ export default class Main extends Level {
         this.addClouds();
         this.prepareSceneEffects();
 
-        const {
-            humanStartingPosition,
-            natureStartingPosition
-        } = TileMap.generate(0);
+        const { humanStartingPosition, natureStartingPosition } = TileMap.generate(0);
 
         window.n = Nature;
         window.h = Humans;
@@ -175,19 +182,35 @@ export default class Main extends Level {
 
         return {
             humanStartingPosition,
-            natureStartingPosition
-        }
+            natureStartingPosition,
+        };
+    }
+
+    playIntroAnimation() {
+        const cameraContainerScript = this.cameraContainer.getScript("CameraContainer");
+        cameraContainerScript.stopRotation();
+        cameraContainerScript.transitionToPreSequence(this.playerPositions.humanStartingPosition);
+        cameraContainerScript.playSequence();
+
+        this.meteor
+            .getScript("Meteor")
+            .playSequence(4000)
+            .then(() => {
+                initialDialogue.stateMachine.send(ACTIONS.NEXT);
+            });
     }
 
     startDialogue() {
+        project.ready.then(() => this.playIntroAnimation());
         this.addDuckToCameraContainer();
+        this.createMeteor();
     }
 
     setUpOrbitControls() {
         const orbit = Controls.setOrbitControl();
         orbit.setTarget(CAMERA_TARGET);
         orbit.setMinPolarAngle(0);
-        orbit.setMaxPolarAngle(Math.PI/2.5);
+        orbit.setMaxPolarAngle(Math.PI / 2.5);
         orbit.setMaxDistance(15);
     }
 
@@ -198,26 +221,31 @@ export default class Main extends Level {
     }
 
     startGame() {
+        console.log("dispatghing gameStarted");
         store.dispatch(gameStarted());
+        console.log("cleanup camera container");
         this.cleanupCameraContainer();
 
+        console.log("moving camera to observing position");
         Scene.getCamera().goTo(OBSERVING_POSITION, 5000);
 
+        console.log("set up orbit controls");
         this.setUpOrbitControls();
 
         this.storePlayers();
-        this.startPlayers(this.playerPositions);
+        console.log("starting players");
+        this.startPlayers();
     }
 
-    startPlayers({ humanStartingPosition, natureStartingPosition }) {
-        Humans.start(humanStartingPosition);
-        Nature.start(natureStartingPosition);
+    startPlayers() {
+        Humans.start(this.playerPositions.humanStartingPosition);
+        Nature.start(this.playerPositions.natureStartingPosition);
     }
 
     storePlayers() {
         this.players = {
             [TILES_TYPES.FOREST]: Nature,
-            [TILES_TYPES.HUMAN]: Humans
+            [TILES_TYPES.HUMAN]: Humans,
         };
     }
 
@@ -226,47 +254,55 @@ export default class Main extends Level {
     }
 
     getUnitsByType(type) {
-        return this
-            .getPlayerByType(type)
-            .getUnits();
+        return this.getPlayerByType(type).getUnits();
     }
 
     createDuck() {
-        this.dialogueDuck = Models.get('nature', { name: "dialogue_duck" });
+        this.dialogueDuck = Models.get("nature", { name: "dialogue_duck" });
         this.dialogueDuck.setScale(DEFAULT_UNIT_SCALE);
-        this.dialogueDuck.addScript('CharacterFollowingCamera');
+        this.dialogueDuck.addScript("CharacterFollowingCamera");
+
+        window.duck = this.dialogueDuck;
 
         return this.dialogueDuck;
     }
 
     createCameraContainer() {
         this.cameraContainer = new Element({ body: new THREE.Object3D() });
-        
-        this.cameraContainer.addScript('CameraContainer', { distance: 7, height: 6 });
+
+        this.cameraContainer.addScript("CameraContainer", { distance: 7, height: 6, project });
         this.cameraContainer.add(Scene.getCamera());
-        
     }
-    
+
     addDuckToCameraContainer() {
         this.cameraContainer.add(this.createDuck());
     }
 
-    onCreate() {
-        Scripts.register('TargetBehaviour', TargetBehaviour);
-        Scripts.register('HumanBehaviour', HumanBehaviour);
-        Scripts.register('BulletBehaviour', BulletBehaviour);
-        Scripts.register('DuckBehaviour', DuckBehaviour);
-        Scripts.register('Selector', Selector);
-        Scripts.register('Bobbing', Bobbing);
-        Scripts.register('CameraBehaviour', CameraBehaviour);
-        Scripts.register('CloudBehaviour', CloudBehaviour);
+    createMeteor() {
+        this.meteor = Models.get("meteor");
+        this.meteor.addScript("Meteor", { project, cameraContainer: this.cameraContainer });
+        window.meteor = this.meteor;
+    }
 
-        Scripts.register('CameraContainer', CameraContainer);
-        Scripts.register('CharacterFollowingCamera', CharacterFollowingCamera);
+    onCreate() {
+        Scripts.register("TargetBehaviour", TargetBehaviour);
+        Scripts.register("HumanBehaviour", HumanBehaviour);
+        Scripts.register("BulletBehaviour", BulletBehaviour);
+        Scripts.register("DuckBehaviour", DuckBehaviour);
+        Scripts.register("Selector", Selector);
+        Scripts.register("Bobbing", Bobbing);
+        Scripts.register("CameraBehaviour", CameraBehaviour);
+        Scripts.register("CloudBehaviour", CloudBehaviour);
+        Scripts.register("Meteor", Meteor);
+
+        Scripts.register("CameraContainer", CameraContainer);
+        Scripts.register("CharacterFollowingCamera", CharacterFollowingCamera);
 
         // TODO: get world level from props > /?level=2
         this.playerPositions = this.createWorld();
 
         this.createCameraContainer();
+
+        window.Level = this;
     }
 }

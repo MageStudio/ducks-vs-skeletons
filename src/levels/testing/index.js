@@ -24,6 +24,13 @@ import { TILE_MATERIAL_PROPERTIES } from '../Main/map/constants';
 import TileParticleSystem from '../Main/players/nature/TileParticleSystem';
 import CameraBehaviour from '../Main/worldScripts/CameraContainer';
 
+// import studio from '@theatre/studio';
+// import { getProject, types } from '@theatre/core';
+// studio.initialize(); 
+
+// const project = getProject('Ducks vs Skeletons');
+// const sheet = project.sheet('Intro');
+
 const { Vector3 } = THREE;
 window.ENTITY_EVENTS = ENTITY_EVENTS;
 
@@ -112,8 +119,8 @@ export default class Testing extends Level {
         this.prepareSceneEffects();
         this.addBox();
 
-        Scripts.register('Follow', Follow);
-        Scripts.register('CameraBehaviour', CameraBehaviour);
+        // Scripts.register('Follow', Follow);
+        // Scripts.register('CameraBehaviour', CameraBehaviour);
         // const warrior = Models.get('human');
         // window.warrior = warrior;
         // const SMOKE_PARTICLES_OPTIONS = {
@@ -137,44 +144,88 @@ export default class Testing extends Level {
         // smoke.setPosition({ y: 1 });
 
         
-        // Scene.getCamera().setPosition({ x: 2, y: 4, z: 0 });
-        // Scene.getCamera().lookAt({ x: 0, y: 0, z: 0 });
-        // Controls.setOrbitControl();
-        const duck = this.addDuckToCamera();
-        const container = new Element({ body: new THREE.Object3D() })
-        window.container = container;
-        const second = new Cube(2, 0x00ffff);
-        window.second = second;
+        Scene.getCamera().setPosition({ x: 2, y: 4, z: 0 });
+        Scene.getCamera().lookAt({ x: 0, y: 0, z: 0 });
+        Controls.setOrbitControl();
+        // const duck = this.addDuckToCamera();
+        // const container = new Element({ body: new THREE.Object3D() })
+        // window.container = container;
+        // const second = new Cube(2, 0x00ffff);
+        // window.second = second;
         
         // Scene.getCamera().add(container);
         // container.addScript('Follow');
         
         // container.setPosition({ x: 10 });
         
-        container.addScript('CameraBehaviour', { distance: 7, height: 6 });
-        container.add(Scene.getCamera());
-        container.add(duck);
-        duck.addScript('Follow');
+        // container.addScript('CameraBehaviour', { distance: 7, height: 6 });
+        // container.add(Scene.getCamera());
+        // container.add(duck);
+        // duck.addScript('Follow');
 
-        setTimeout(() => {
-            container.remove(Scene.getCamera());
-            duck.goTo({
-                y: 10
-            }, 1000).then(() => {
-                duck.dispose();
-                container.dispose();
-                Scene
-                    .getCamera()
-                    .goTo(OBSERVING_POSITION, 5000)
-                    .then(() => {
-                        const orbit = Controls.setOrbitControl();
-                        orbit.setTarget(CAMERA_TARGET);
-                        orbit.setMinPolarAngle(0);
-                        orbit.setMaxPolarAngle(Math.PI/2.5);
-                        orbit.setMaxDistance(15);
-                    });
-            })
-        }, 10000);
+        // setTimeout(() => {
+        //     container.remove(Scene.getCamera());
+        //     duck.goTo({
+        //         y: 10
+        //     }, 1000).then(() => {
+        //         duck.dispose();
+        //         container.dispose();
+        //         Scene
+        //             .getCamera()
+        //             .goTo(OBSERVING_POSITION, 5000)
+        //             .then(() => {
+        //                 const orbit = Controls.setOrbitControl();
+        //                 orbit.setTarget(CAMERA_TARGET);
+        //                 orbit.setMinPolarAngle(0);
+        //                 orbit.setMaxPolarAngle(Math.PI/2.5);
+        //                 orbit.setMaxDistance(15);
+        //             });
+        //     })
+        // }, 10000);
+
+        // const cameraTheatre = sheet.object('camera', {
+        //     rotation: types.compound({
+        //         x: types.number(Scene.getCamera().getRotation().x, { range: [-Math.PI, Math.PI] }),
+        //         y: types.number(Scene.getCamera().getRotation().y, { range: [-Math.PI, Math.PI] }),
+        //         z: types.number(Scene.getCamera().getRotation().z, { range: [-Math.PI, Math.PI] }),
+        //     }),
+        //     position: types.compound({
+        //         x: types.number(Scene.getCamera().getPosition().x, { range: [-10, 10] }),
+        //         y: types.number(Scene.getCamera().getPosition().y, { range: [-10, 10] }),
+        //         z: types.number(Scene.getCamera().getPosition().z, { range: [-10, 10] }),
+        //     }),
+        // });
+        
+        // cameraTheatre.onValuesChange(values => {
+        //     const { x, y, z } = values.rotation;
+            
+        //     Scene.getCamera().setPosition(values.position);
+        //     Scene.getCamera().setRotation({ x: x * Math.PI, y: y * Math.PI, z: z * Math.PI });
+        // })
+        const rock = Models.get(`rock_4`);
+
+        rock.setScale({ x: 0.01, y:  0.01, z: 0.01 });
+        rock.setPosition({ y: 10, x: 10 });
+
+        window.rock = rock;
+
+        sheet.object('rock', {
+            rotation: types.compound({
+                x: types.number(rock.getRotation().x, { range: [-Math.PI, Math.PI] }),
+                y: types.number(rock.getRotation().y, { range: [-Math.PI, Math.PI] }),
+                z: types.number(rock.getRotation().z, { range: [-Math.PI, Math.PI] }),
+            }),
+            position: types.compound({
+                x: types.number(rock.getPosition().x, { range: [-10, 10] }),
+                y: types.number(rock.getPosition().y, { range: [-10, 10] }),
+                z: types.number(rock.getPosition().z, { range: [-10, 10] }),
+            }),
+        }).onValuesChange(values => {
+            const { x, y, z } = values.rotation;
+            
+            rock.setPosition(values.position);
+            rock.setRotation({ x: x * Math.PI, y: y * Math.PI, z: z * Math.PI });
+        });
     }
 
     addBox() {
