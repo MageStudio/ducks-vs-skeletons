@@ -10,15 +10,12 @@ import {
     Scripts,
     SunLight,
     PALETTES,
-    Sky,
-    Stats,
     PostProcessing,
     Sprite,
     Element,
-    store,
 } from "mage-engine";
 
-import TileMap, { HUMAN_DETAILS } from "./map/TileMap";
+import TileMap from "./map/TileMap";
 import HumanBehaviour from "./players/humans/HumanBehaviour";
 import Humans from "./players/humans";
 import Nature from "./players/nature";
@@ -44,9 +41,6 @@ import { ACTIONS, initialDialogue } from "../../ui/dialogue/DialogueStateMachine
 // studio.initialize();
 
 const project = getProject("Ducks vs Skeletons", { state: intro });
-// const cameraSheet = project.sheet('Intro', 'camera');
-// const meteorSheet = project.sheet('Intro', 'meteor');
-// window.sheet = meteorSheet;
 
 export const WHITE = 0xffffff;
 export const SUNLIGHT = 0xffeaa7;
@@ -102,11 +96,6 @@ export default class Main extends Level {
         HemisphereLight.create(HEMISPHERELIGHT_OPTIONS);
 
         SunLight.create(SUNLIGHT_OPTIONS).setPosition(SUNLIGHT_POSITION);
-    }
-
-    addSky() {
-        this.sky = new Sky({});
-        this.sky.setSun(0.1, 0.1, 100);
     }
 
     addBox() {
@@ -167,18 +156,14 @@ export default class Main extends Level {
         PostProcessing.add(EFFECTS.DEPTH_OF_FIELD, DOF_OPTIONS);
     }
 
-    createWorld() {
+    createWorld(level) {
         this.addLights();
         this.addBox();
         this.addDice();
         this.addClouds();
         this.prepareSceneEffects();
 
-        const { humanStartingPosition, natureStartingPosition } = TileMap.generate(0);
-
-        window.n = Nature;
-        window.h = Humans;
-        window.tm = TileMap;
+        const { humanStartingPosition, natureStartingPosition } = TileMap.generate(level);
 
         return {
             humanStartingPosition,
@@ -200,7 +185,7 @@ export default class Main extends Level {
             });
     }
 
-    startDialogue() {
+    setupDialogue() {
         project.ready.then(() => this.playIntroAnimation());
         this.addDuckToCameraContainer();
         this.createMeteor();
@@ -221,19 +206,13 @@ export default class Main extends Level {
     }
 
     startGame() {
-        console.log("dispatghing gameStarted");
-        store.dispatch(gameStarted());
-        console.log("cleanup camera container");
         this.cleanupCameraContainer();
 
-        console.log("moving camera to observing position");
         Scene.getCamera().goTo(OBSERVING_POSITION, 5000);
 
-        console.log("set up orbit controls");
         this.setUpOrbitControls();
 
         this.storePlayers();
-        console.log("starting players");
         this.startPlayers();
     }
 
@@ -267,7 +246,7 @@ export default class Main extends Level {
         return this.dialogueDuck;
     }
 
-    createCameraContainer() {
+    setupCameraContainerForIntro() {
         this.cameraContainer = new Element({ body: new THREE.Object3D() });
 
         this.cameraContainer.addScript("CameraContainer", { distance: 7, height: 6, project });
@@ -299,10 +278,11 @@ export default class Main extends Level {
         Scripts.register("CharacterFollowingCamera", CharacterFollowingCamera);
 
         // TODO: get world level from props > /?level=2
-        this.playerPositions = this.createWorld();
+        this.playerPositions = this.createWorld(0);
+        console.log(this.props);
 
-        this.createCameraContainer();
+        // this.setupCameraContainerForIntro();
 
-        window.Level = this;
+        // window.Level = this;
     }
 }

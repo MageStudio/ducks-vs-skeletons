@@ -70,7 +70,6 @@
     border-left: 43px solid transparent;
     border-right: 43px solid transparent;
     /* border-bottom: 25.8px solid #badc58; */
-
 }
 .inner::after {
     content: "";
@@ -95,7 +94,7 @@
     /* top: 100px; */
 }
 .bottom:before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -105,7 +104,7 @@
     transform: skew(0deg, 23deg);
 }
 .bottom:after {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     right: 0;
@@ -128,7 +127,12 @@
 .map svg {
     position: absolute;
     z-index: 105;
-    top: 10vh;
+    margin: auto;
+    display: flex;
+    align-self: center;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    margin-top: -6vh;
 }
 
 .dashed {
@@ -166,24 +170,26 @@
 
 @keyframes fade {
     0% {
-        background-color: rgba(120,120,120,0.1);
+        background-color: rgba(120, 120, 120, 0.1);
         transform: translatey(0px);
     }
     50% {
-        background-color: rgba(120,120,120, 0.3);
+        background-color: rgba(120, 120, 120, 0.3);
         transform: translatey(0px);
     }
     100% {
-        background-color: rgba(120,120,120,0.1);
+        background-color: rgba(120, 120, 120, 0.1);
         transform: translatey(0px);
     }
 }
 
-.floating { animation: float 6s ease-in-out infinite; }
+.floating {
+    animation: float 6s ease-in-out infinite;
+}
 
 .tile:after {
-    background-color: rgba(120,120,120,0.1);
-    content: " ";   
+    background-color: rgba(120, 120, 120, 0.1);
+    content: " ";
     width: 97px;
     height: 70px;
     margin-top: -15px;
@@ -215,29 +221,65 @@
     animation-delay: 4s;
 }
 
-.tile.nature .inner { background: #badc58; }
-.tile.nature .inner::after { border-top: 25.8px solid #badc58; }
-.tile.nature .inner::before { border-bottom: 25.8px solid #badc58; }
+.tile.nature .inner {
+    background: #badc58;
+}
+.tile.nature .inner::after {
+    border-top: 25.8px solid #badc58;
+}
+.tile.nature .inner::before {
+    border-bottom: 25.8px solid #badc58;
+}
 
-.tile.nature .border { background: #6ab04c; }
-.tile.nature .border::after { border-top: 28.8675px solid #6ab04c; }
-.tile.nature .border::before { border-bottom: 28.8675px solid #6ab04c; }
+.tile.nature .border {
+    background: #6ab04c;
+}
+.tile.nature .border::after {
+    border-top: 28.8675px solid #6ab04c;
+}
+.tile.nature .border::before {
+    border-bottom: 28.8675px solid #6ab04c;
+}
 
-.tile.desert .inner { background: #ffda79; }
-.tile.desert .inner::after { border-top: 25.8px solid #ffda79; }
-.tile.desert .inner::before { border-bottom: 25.8px solid #ffda79; }
+.tile.desert .inner {
+    background: #ffda79;
+}
+.tile.desert .inner::after {
+    border-top: 25.8px solid #ffda79;
+}
+.tile.desert .inner::before {
+    border-bottom: 25.8px solid #ffda79;
+}
 
-.tile.desert .border { background: #ccae62; }
-.tile.desert .border::after { border-top: 28.8675px solid #ccae62; }
-.tile.desert .border::before { border-bottom: 28.8675px solid #ccae62; }
+.tile.desert .border {
+    background: #ccae62;
+}
+.tile.desert .border::after {
+    border-top: 28.8675px solid #ccae62;
+}
+.tile.desert .border::before {
+    border-bottom: 28.8675px solid #ccae62;
+}
 
-.tile.skeletons .inner { background: #ff793f; }
-.tile.skeletons .inner::after { border-top: 25.8px solid #ff793f; }
-.tile.skeletons .inner::before { border-bottom: 25.8px solid #ff793f; }
+.tile.skeletons .inner {
+    background: #ff793f;
+}
+.tile.skeletons .inner::after {
+    border-top: 25.8px solid #ff793f;
+}
+.tile.skeletons .inner::before {
+    border-bottom: 25.8px solid #ff793f;
+}
 
-.tile.skeletons .border { background: #cd6133; }
-.tile.skeletons .border::after { border-top: 28.8675px solid #cd6133; }
-.tile.skeletons .border::before { border-bottom: 28.8675px solid #cd6133; }
+.tile.skeletons .border {
+    background: #cd6133;
+}
+.tile.skeletons .border::after {
+    border-top: 28.8675px solid #cd6133;
+}
+.tile.skeletons .border::before {
+    border-bottom: 28.8675px solid #cd6133;
+}
 
 .building {
     height: 90px;
@@ -248,7 +290,7 @@
 }
 
 .floating.shadow::before {
-    background-color: rgba(0,0,0,.3);
+    background-color: rgba(0, 0, 0, 0.3);
     content: " ";
     width: 67px;
     height: 56px;
@@ -279,7 +321,7 @@
     font-size: 1.5rem;
     /* text-transform: uppercase; */
     font-weight: bold;
-    font-family: 'Palanquin Dark', sans-serif;
+    font-family: "Palanquin Dark", sans-serif;
     font-weight: 700;
     /* letter-spacing: 12px; */
     /* align-items: center; */
@@ -319,7 +361,7 @@
     text-align: center;
     font-size: 1.4rem;
     margin-top: 50vh;
-    font-family: 'Palanquin Dark', sans-serif;
+    font-family: "Palanquin Dark", sans-serif;
     font-weight: 700;
     color: #535c68;
     font-weight: 900;

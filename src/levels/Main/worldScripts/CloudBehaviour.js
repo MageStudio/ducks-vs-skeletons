@@ -2,7 +2,7 @@ import { BaseScript, Scene, Controls, easing, Color } from "mage-engine";
 import { distance } from "../utils";
 
 const CENTER = { x: 6.5, y: 0, z: 6.5 };
-const DEFAULT_OPACITY = .4;
+const DEFAULT_OPACITY = 0.4;
 const FADING_DISTANCE = 4;
 const FADING_TIME = 500;
 
@@ -32,31 +32,27 @@ export default class CloudBehaviour extends BaseScript {
 
     disappear() {
         this.fading = true;
-        this.cloud
-            .fadeTo(0, FADING_TIME)
-            .then(() => {
-                this.faded = true;
-                this.fading = false;
-            })
+        this.cloud.fadeTo(0, FADING_TIME).then(() => {
+            this.faded = true;
+            this.fading = false;
+        });
     }
 
     appear() {
         this.fading = true;
-        this.cloud
-            .fadeTo(DEFAULT_OPACITY, FADING_TIME)
-            .then(() => {
-                this.faded = false;
-                this.fading = false;
-            });
+        this.cloud.fadeTo(DEFAULT_OPACITY, FADING_TIME).then(() => {
+            this.faded = false;
+            this.fading = false;
+        });
     }
 
     update(dt) {
         this.angle += this.speed * dt;
 
         this.cloud.setPosition({
-            x: (Math.sin(this.angle) * this.distance) + this.origin.x,
+            x: Math.sin(this.angle) * this.distance + this.origin.x,
             y: this.height,
-            z: (Math.cos(this.angle) * this.distance) + this.origin.z
+            z: Math.cos(this.angle) * this.distance + this.origin.z,
         });
 
         const cameraDistance = this.cloud.getPosition().distanceTo(Scene.getCamera().getPosition());
@@ -69,5 +65,4 @@ export default class CloudBehaviour extends BaseScript {
             this.appear();
         }
     }
-
 }
