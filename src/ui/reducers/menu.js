@@ -1,21 +1,19 @@
-import { DIALOGUE_START, DIALOGUE_STOP } from "../actions/types";
+import { HIDE_MAIN_MENU, SHOW_MAIN_MENU } from "../actions/types";
 
 const DEFAULT_STATE = {
     visible: false,
-    id: undefined,
 };
 
 export default (state = DEFAULT_STATE, action) => {
     switch (action.type) {
-        case DIALOGUE_START:
+        case SHOW_MAIN_MENU:
             return {
-                ...state,
+                ...DEFAULT_STATE,
                 visible: true,
-                id: action.id,
             };
-        case DIALOGUE_STOP:
+        case HIDE_MAIN_MENU:
             return {
-                ...state,
+                ...DEFAULT_STATE,
                 visible: false,
             };
         default:

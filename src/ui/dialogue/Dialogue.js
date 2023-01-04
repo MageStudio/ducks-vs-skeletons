@@ -2,15 +2,16 @@ import { ACTIONS } from "./DialogueStateMachine";
 import { Component } from "inferno";
 import { DIALOGUE_ACTIONS_TYPES } from "./text";
 import { getClickSound, VOLUMES } from "../../sounds";
+import { GameState, GAME_ACTIONS } from "../../GameState";
 
 // TODO: dialog-box classname needs to change to either ducks or skleleton depending on who's talking
 class Dialogue extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            text: '',
-            actions: []
-        }
+            text: "",
+            actions: [],
+        };
     }
 
     componentDidMount() {
@@ -29,34 +30,37 @@ class Dialogue extends Component {
         const onConfirm = () => {
             getClickSound().play(VOLUMES.CLICK);
             dialogue.stateMachine.send(ACTIONS.NEXT);
-            this.props.onStopDialogue(id);
-        }
+            GameState.send(GAME_ACTIONS.DIALOGUE_COMPLETE);
+        };
 
         const onNext = () => {
             getClickSound().play(VOLUMES.CLICK);
             dialogue.stateMachine.send(ACTIONS.NEXT);
-        }
+        };
 
         const mapActionsToBtn = ({ type, text }) => {
-            const action = ({
-                [DIALOGUE_ACTIONS_TYPES.CONFIRM]: onConfirm,
-                [DIALOGUE_ACTIONS_TYPES.NEXT]: onNext
-            })[type] || onNext;
+            const action =
+                {
+                    [DIALOGUE_ACTIONS_TYPES.CONFIRM]: onConfirm,
+                    [DIALOGUE_ACTIONS_TYPES.NEXT]: onNext,
+                }[type] || onNext;
 
             return (
-                <div className={`btn ${type}`} onClick={action}>{text}</div>
-            )
-        }
+                <div className={`btn ${type}`} onClick={action}>
+                    {text}
+                </div>
+            );
+        };
 
         return (
-            <div key={text} class='dialog-container'>
-                <div class='dialog-box ducks'>
-                    <div className='dialog-text-row'>
-                        <span class='text ducks' style={`--n:${text.length}`}>{ text }</span>
+            <div key={text} class="dialog-container">
+                <div class="dialog-box ducks">
+                    <div className="dialog-text-row">
+                        <span class="text ducks" style={`--n:${text.length}`}>
+                            {text}
+                        </span>
                     </div>
-                    <div className='dialog-footer'>
-                        { actions.map(mapActionsToBtn) }
-                    </div>
+                    <div className="dialog-footer">{actions.map(mapActionsToBtn)}</div>
                 </div>
             </div>
         );

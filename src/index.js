@@ -1,20 +1,19 @@
-import { Router, store, constants } from 'mage-engine';
-import Main from './levels/Main';
-import Root from './ui/root';
-import reducers from './ui/reducers';
-import Testing from './levels/testing';
+import { Router, store, constants } from "mage-engine";
+import Main from "./levels/Main";
+import Root from "./ui/root";
+import reducers from "./ui/reducers";
+import Testing from "./levels/testing";
+import { GameState } from "./GameState";
 
 const { SHADOW_TYPES } = constants;
-const ASSETS_MODELS_BASE_PATH = 'assets/models';
-const ASSETS_TEXTURES_BASE_PATH = 'assets/textures';
-const ASSETS_IMAGES_BASE_PATH = 'assets/images';
-const ASSETS_AUDIO_BASE_PATH = 'assets/audio';
+const ASSETS_MODELS_BASE_PATH = "assets/models";
+const ASSETS_TEXTURES_BASE_PATH = "assets/textures";
+const ASSETS_IMAGES_BASE_PATH = "assets/images";
+const ASSETS_AUDIO_BASE_PATH = "assets/audio";
 
 const assets = {
-    '/': {
-        textures: {
-            
-        },
+    "/": {
+        textures: {},
         audio: {
             click: `${ASSETS_AUDIO_BASE_PATH}/button.mp3`,
             hammer: `${ASSETS_AUDIO_BASE_PATH}/hammer.wav`,
@@ -26,74 +25,73 @@ const assets = {
             unitAttack: `${ASSETS_AUDIO_BASE_PATH}/attack.wav`,
 
             fire: `${ASSETS_AUDIO_BASE_PATH}/fire.mp3`,
-            
+
             natureBackground: `${ASSETS_AUDIO_BASE_PATH}/nature_background.aac`,
             desertBackground: `${ASSETS_AUDIO_BASE_PATH}/desert_background.aac`,
             humansBackground: `${ASSETS_AUDIO_BASE_PATH}/dungeon_background.aac`,
         },
         models: {
-            'meteor': `${ASSETS_MODELS_BASE_PATH}/Rock_4.fbx`,
+            meteor: `${ASSETS_MODELS_BASE_PATH}/Rock_4.fbx`,
 
-            'box': `${ASSETS_MODELS_BASE_PATH}/box.glb`,
-            'die': `${ASSETS_MODELS_BASE_PATH}/die.glb`,
-            'selector': `${ASSETS_MODELS_BASE_PATH}/selector.glb`,
-            'flag': `${ASSETS_MODELS_BASE_PATH}/flag_teamRed.gltf.glb`,
-            
-            'human': `${ASSETS_MODELS_BASE_PATH}/skeleton_animation.fbx`,
-            'nature': `${ASSETS_MODELS_BASE_PATH}/duck_animation.fbx`,
-            'duck_animated': `${ASSETS_MODELS_BASE_PATH}/animated.fbx`,
+            box: `${ASSETS_MODELS_BASE_PATH}/box.glb`,
+            die: `${ASSETS_MODELS_BASE_PATH}/die.glb`,
+            selector: `${ASSETS_MODELS_BASE_PATH}/selector.glb`,
+            flag: `${ASSETS_MODELS_BASE_PATH}/flag_teamRed.gltf.glb`,
 
-            'scaffolding': `${ASSETS_MODELS_BASE_PATH}/scaffolding.obj`,
-            
-            'forestTile': `${ASSETS_MODELS_BASE_PATH}/hex_forest_detail.gltf.glb`, //${ASSETS_MODELS_BASE_PATH}/forestTile.glb,
-            'natureTower': `${ASSETS_MODELS_BASE_PATH}/nature_tower.obj`,
-            'lumbermill': `${ASSETS_MODELS_BASE_PATH}/lumbermill.gltf.glb`,
-            'farmplot': `${ASSETS_MODELS_BASE_PATH}/farm_plot.gltf.glb`,
-            'market': `${ASSETS_MODELS_BASE_PATH}/market.gltf.glb`,
-            'hill': `${ASSETS_MODELS_BASE_PATH}/detail_hill.gltf.glb`,
-            'forest': `${ASSETS_MODELS_BASE_PATH}/forest.gltf.glb`,
+            human: `${ASSETS_MODELS_BASE_PATH}/skeleton_animation.fbx`,
+            nature: `${ASSETS_MODELS_BASE_PATH}/duck_animation.fbx`,
+            duck_animated: `${ASSETS_MODELS_BASE_PATH}/animated.fbx`,
 
-            'desertTile': `${ASSETS_MODELS_BASE_PATH}/hex_sand_detail.gltf.glb`, //${ASSETS_MODELS_BASE_PATH}/desertTile.glb,
-            'details_rocks': `${ASSETS_MODELS_BASE_PATH}/detail_rocks.gltf.glb`,
+            scaffolding: `${ASSETS_MODELS_BASE_PATH}/scaffolding.obj`,
 
-            'humanTile': `${ASSETS_MODELS_BASE_PATH}/hex_rock_detail.gltf.glb`, //${ASSETS_MODELS_BASE_PATH}/humanTile.glb,
-            'watchtower': `${ASSETS_MODELS_BASE_PATH}/watchtower.gltf.glb`,
-            'house': `${ASSETS_MODELS_BASE_PATH}/house.gltf.glb`,
-            'barracks': `${ASSETS_MODELS_BASE_PATH}/barracks.gltf.glb`,
+            forestTile: `${ASSETS_MODELS_BASE_PATH}/hex_forest_detail.gltf.glb`, //${ASSETS_MODELS_BASE_PATH}/forestTile.glb,
+            natureTower: `${ASSETS_MODELS_BASE_PATH}/nature_tower.obj`,
+            lumbermill: `${ASSETS_MODELS_BASE_PATH}/lumbermill.gltf.glb`,
+            farmplot: `${ASSETS_MODELS_BASE_PATH}/farm_plot.gltf.glb`,
+            market: `${ASSETS_MODELS_BASE_PATH}/market.gltf.glb`,
+            hill: `${ASSETS_MODELS_BASE_PATH}/detail_hill.gltf.glb`,
+            forest: `${ASSETS_MODELS_BASE_PATH}/forest.gltf.glb`,
 
-            
-            'waterTile': `${ASSETS_MODELS_BASE_PATH}/hex_water.gltf.glb`, //${ASSETS_MODELS_BASE_PATH}/waterTile.glb,
+            desertTile: `${ASSETS_MODELS_BASE_PATH}/hex_sand_detail.gltf.glb`, //${ASSETS_MODELS_BASE_PATH}/desertTile.glb,
+            details_rocks: `${ASSETS_MODELS_BASE_PATH}/detail_rocks.gltf.glb`,
 
-            'humanStart': `${ASSETS_MODELS_BASE_PATH}/castle.gltf.glb`, //${ASSETS_MODELS_BASE_PATH}/skyscraperD.glb,
-            'forestStart': `${ASSETS_MODELS_BASE_PATH}/mill.gltf.glb`, //${ASSETS_MODELS_BASE_PATH}/tree.glb,
+            humanTile: `${ASSETS_MODELS_BASE_PATH}/hex_rock_detail.gltf.glb`, //${ASSETS_MODELS_BASE_PATH}/humanTile.glb,
+            watchtower: `${ASSETS_MODELS_BASE_PATH}/watchtower.gltf.glb`,
+            house: `${ASSETS_MODELS_BASE_PATH}/house.gltf.glb`,
+            barracks: `${ASSETS_MODELS_BASE_PATH}/barracks.gltf.glb`,
 
-            'shotgun': `${ASSETS_MODELS_BASE_PATH}/shotgun.glb`
+            waterTile: `${ASSETS_MODELS_BASE_PATH}/hex_water.gltf.glb`, //${ASSETS_MODELS_BASE_PATH}/waterTile.glb,
+
+            humanStart: `${ASSETS_MODELS_BASE_PATH}/castle.gltf.glb`, //${ASSETS_MODELS_BASE_PATH}/skyscraperD.glb,
+            forestStart: `${ASSETS_MODELS_BASE_PATH}/mill.gltf.glb`, //${ASSETS_MODELS_BASE_PATH}/tree.glb,
+
+            shotgun: `${ASSETS_MODELS_BASE_PATH}/shotgun.glb`,
         },
         textures: {
-            'fire': `${ASSETS_TEXTURES_BASE_PATH}/fire.png`,
-            'greenEnergy': `${ASSETS_TEXTURES_BASE_PATH}/green_energy.png`,
+            fire: `${ASSETS_TEXTURES_BASE_PATH}/fire.png`,
+            greenEnergy: `${ASSETS_TEXTURES_BASE_PATH}/green_energy.png`,
             cloud1: `${ASSETS_TEXTURES_BASE_PATH}/cloud_1.png`,
             cloud2: `${ASSETS_TEXTURES_BASE_PATH}/cloud_2.png`,
-            cloud3: `${ASSETS_TEXTURES_BASE_PATH}/cloud_3.png`
-        }
+            cloud3: `${ASSETS_TEXTURES_BASE_PATH}/cloud_3.png`,
+        },
     },
-    '/test': {
+    "/test": {
         models: {
-            'box': `${ASSETS_MODELS_BASE_PATH}/box.glb`,
-            'human': `${ASSETS_MODELS_BASE_PATH}/skeleton_animation.fbx`,
-            'nature': `${ASSETS_MODELS_BASE_PATH}/duck_animation.fbx`,
-            'duck_animated': `${ASSETS_MODELS_BASE_PATH}/animated.fbx`,
-            'rock_1': `${ASSETS_MODELS_BASE_PATH}/Rock_1.fbx`,
-            'rock_2': `${ASSETS_MODELS_BASE_PATH}/Rock_2.fbx`,
-            'rock_3': `${ASSETS_MODELS_BASE_PATH}/Rock_3.fbx`,
-            'rock_4': `${ASSETS_MODELS_BASE_PATH}/Rock_4.fbx`,
-            'rock_5': `${ASSETS_MODELS_BASE_PATH}/Rock_5.fbx`,
+            box: `${ASSETS_MODELS_BASE_PATH}/box.glb`,
+            human: `${ASSETS_MODELS_BASE_PATH}/skeleton_animation.fbx`,
+            nature: `${ASSETS_MODELS_BASE_PATH}/duck_animation.fbx`,
+            duck_animated: `${ASSETS_MODELS_BASE_PATH}/animated.fbx`,
+            rock_1: `${ASSETS_MODELS_BASE_PATH}/Rock_1.fbx`,
+            rock_2: `${ASSETS_MODELS_BASE_PATH}/Rock_2.fbx`,
+            rock_3: `${ASSETS_MODELS_BASE_PATH}/Rock_3.fbx`,
+            rock_4: `${ASSETS_MODELS_BASE_PATH}/Rock_4.fbx`,
+            rock_5: `${ASSETS_MODELS_BASE_PATH}/Rock_5.fbx`,
         },
         textures: {
-            'fire': `${ASSETS_TEXTURES_BASE_PATH}/fire.png`
-        }
-    }
-}
+            fire: `${ASSETS_TEXTURES_BASE_PATH}/fire.png`,
+        },
+    },
+};
 
 const config = {
     screen: {
@@ -105,20 +103,20 @@ const config = {
     },
 
     postprocessing: {
-        enabled: true
+        enabled: true,
     },
 
     lights: {
         shadows: true,
         shadowType: SHADOW_TYPES.SOFT,
-        textureAnisotropy: 1
+        textureAnisotropy: 1,
     },
 
     physics: {
         enabled: false,
-        path: 'ammo.js',
+        path: "ammo.js",
         gravity: { x: 0, y: -9.8, z: 0 },
-        fixedUpdate: 60
+        fixedUpdate: 60,
     },
 
     tween: {
@@ -133,16 +131,16 @@ const config = {
 
     ui: {
         // enabled: false,
-        root: Root
+        root: Root,
     },
 
-    selector: 'body'
+    selector: "body",
 };
 
-window.addEventListener('load', () => {
+window.addEventListener("load", () => {
     store.createStore(reducers, {}, true);
 
-    Router.on('/', Main);
-    Router.on('/test', Testing);
-    Router.start(config, assets);
+    Router.on("/", Main);
+    Router.on("/test", Testing);
+    Router.start(config, assets).then(() => GameState.start());
 });
