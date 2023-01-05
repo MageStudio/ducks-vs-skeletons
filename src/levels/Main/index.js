@@ -22,21 +22,21 @@ import Nature from "./players/nature";
 import Selector from "./players/nature/Selector";
 import BulletBehaviour from "./players/BulletBehaviour";
 import DuckBehaviour from "./players/nature/DuckBehaviour";
-import CameraBehaviour from "./worldScripts/CameraContainer";
+import CameraBehaviour from "./lib/CameraContainer";
 import Bobbing from "./map/Bobbing";
 import { TILES_TYPES, TILE_MATERIAL_PROPERTIES } from "./map/constants";
 import TargetBehaviour from "./players/TargetBehaviour";
-import CloudBehaviour from "./worldScripts/CloudBehaviour";
+import CloudBehaviour from "./lib/CloudBehaviour";
 
-import CameraContainer from "./worldScripts/CameraContainer";
+import CameraContainer from "./lib/CameraContainer";
 import { DEFAULT_UNIT_SCALE } from "./players/UnitBehaviour";
-import CharacterFollowingCamera from "./worldScripts/CharacterFollowingCamera";
+import CharacterFollowingCamera from "./lib/CharacterFollowingCamera";
 import { gameStarted } from "../../ui/actions/game";
 
 // import studio from '@theatre/studio';
 import intro from "../theatrejs/intro4.json";
 import { getProject, types } from "@theatre/core";
-import { Meteor } from "./worldScripts/Meteor";
+import { Meteor } from "./lib/Meteor";
 import { ACTIONS, initialDialogue } from "../../ui/dialogue/DialogueStateMachine";
 // studio.initialize();
 
@@ -180,9 +180,7 @@ export default class Main extends Level {
         this.meteor
             .getScript("Meteor")
             .playSequence(4000)
-            .then(() => {
-                initialDialogue.stateMachine.send(ACTIONS.NEXT);
-            });
+            .then(() => initialDialogue.stateMachine.send(ACTIONS.NEXT));
     }
 
     setupDialogue() {
@@ -259,7 +257,11 @@ export default class Main extends Level {
 
     createMeteor() {
         this.meteor = Models.get("meteor");
-        this.meteor.addScript("Meteor", { project, cameraContainer: this.cameraContainer });
+        this.meteor.addScript("Meteor", {
+            project,
+            cameraContainer: this.cameraContainer,
+            landing: this.playerPositions.humanStartingPosition,
+        });
         window.meteor = this.meteor;
     }
 
@@ -279,10 +281,5 @@ export default class Main extends Level {
 
         // TODO: get world level from props > /?level=2
         this.playerPositions = this.createWorld(0);
-        console.log(this.props);
-
-        // this.setupCameraContainerForIntro();
-
-        // window.Level = this;
     }
 }

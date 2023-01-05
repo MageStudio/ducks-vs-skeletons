@@ -1,14 +1,16 @@
 import { store } from "mage-engine";
 import { removeUnit } from "../../../../ui/actions/player";
-import { NATURE_REMOVE_UNIT_BUILDERS, NATURE_REMOVE_UNIT_WARRIORS } from "../../../../ui/actions/types";
+import {
+    NATURE_REMOVE_UNIT_BUILDERS,
+    NATURE_REMOVE_UNIT_WARRIORS,
+} from "../../../../ui/actions/types";
 import { SELECTABLE_TAG } from "../../constants";
 import { TILES_TYPES } from "../../map/constants";
 import UnitBehaviour from "../UnitBehaviour";
 
 export default class DuckBehaviour extends UnitBehaviour {
-
     constructor() {
-        super('DuckBehaviour');
+        super("DuckBehaviour");
     }
 
     start(unit, options) {
@@ -20,15 +22,18 @@ export default class DuckBehaviour extends UnitBehaviour {
 
         if (this.isWarrior()) {
             this.unit.addTag(SELECTABLE_TAG);
-            this.unit.setData('index', this.unit.uuid());
-            this.unit.setData('target', 'unit');
+            this.unit.setData("index", this.unit.uuid());
+            this.unit.setData("target", "unit");
         }
     }
 
     goBackHome() {
         super.goBackHome();
-        console.log('going back home, ', this.isBuilder());
-        store.dispatch(removeUnit(this.isBuilder() ? NATURE_REMOVE_UNIT_BUILDERS : NATURE_REMOVE_UNIT_WARRIORS));
+        store.dispatch(
+            removeUnit(
+                this.isBuilder() ? NATURE_REMOVE_UNIT_BUILDERS : NATURE_REMOVE_UNIT_WARRIORS,
+            ),
+        );
     }
 
     isFriendly() {
