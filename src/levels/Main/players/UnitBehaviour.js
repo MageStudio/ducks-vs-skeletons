@@ -9,7 +9,7 @@ import {
     PALETTES,
     Models,
     GameRunner,
-    rxjs
+    rxjs,
 } from "mage-engine";
 import { getUnitAttackSound, playBuildingSound, VOLUMES } from "../../../sounds";
 import WarriorLabel from "../../../ui/labels/WarriorLabel";
@@ -22,45 +22,43 @@ const { BehaviorSubject } = rxjs;
 const { MATERIALS } = constants;
 const { LoopOnce, Vector3 } = THREE;
 
-const UNIT_MATERIAL_PROPERTIES = {
+export const UNIT_MATERIAL_PROPERTIES = {
     metalness: 0.2,
-    roughness: 1.0
+    roughness: 1.0,
 };
 
 export const DEFAULT_UNIT_SCALE = {
     x: 0.005,
     y: 0.005,
-    z: 0.005
+    z: 0.005,
 };
 
 export const UNIT_ANIMATIONS = {
-    IDLE: 'Root|Idle',
-    RUN: 'Root|Run',
-    SHOOT: 'Root|Shoot',
-    THROW: 'Root|Throw',
-    DEATH: 'Root|LayingDown',//'Root|Defeat',
-    BUILD: 'Root|Interact',
-    JUMP: 'Root|Jump'
+    IDLE: "Root|Idle",
+    RUN: "Root|Run",
+    SHOOT: "Root|Shoot",
+    THROW: "Root|Throw",
+    DEATH: "Root|LayingDown", //'Root|Defeat',
+    BUILD: "Root|Interact",
+    JUMP: "Root|Jump",
 };
 
 export const UNIT_TYPES = {
-    WARRIOR: 'WARRIOR',
-    BUILDER: 'BUILDER'
+    WARRIOR: "WARRIOR",
+    BUILDER: "BUILDER",
 };
 
-const MINIMUM_HEIGHT = .2;
+const MINIMUM_HEIGHT = 0.2;
 const SPEEDS = {
     BUILDER: 2.5,
-    WARRIOR: 4
-}
+    WARRIOR: 4,
+};
 const MAXIMUM_SHOOTING_DISTANCE = 3;
 const BULLET_INTERVAL = 100;
 const BULLET_SIZE = 0.05;
 const TARGETS_SCAN_INTERVAL = 3000;
 
-
 export default class UnitBehaviour extends BaseScript {
-
     constructor(name) {
         super(name);
     }
@@ -69,7 +67,7 @@ export default class UnitBehaviour extends BaseScript {
         this.unit = unit;
         this.position = {
             ...position,
-            y: MINIMUM_HEIGHT
+            y: MINIMUM_HEIGHT,
         };
 
         this.unitType = unitType;
@@ -83,10 +81,20 @@ export default class UnitBehaviour extends BaseScript {
         this.targetsScanTimeoutId = null;
 
         if (this.isWarrior()) {
-            const warriorLabel = new Label({ Component: WarriorLabel, width: 1, height: 1.1, unit, script });
+            const warriorLabel = new Label({
+                Component: WarriorLabel,
+                width: 1,
+                height: 1.1,
+                unit,
+                script,
+            });
             window.warriorLabel = warriorLabel;
-            this.unit.add(warriorLabel, unit.getBodyByName('Head'), { waitForBody: 200, waitForBodyMaxRetries: 5 })
-                    .then(() => warriorLabel.setPosition({ x: -1, y: 1.5 }));
+            this.unit
+                .add(warriorLabel, unit.getBodyByName("Head"), {
+                    waitForBody: 200,
+                    waitForBodyMaxRetries: 5,
+                })
+                .then(() => warriorLabel.setPosition({ x: -1, y: 1.5 }));
         }
 
         this.unit.setMaterialFromName(MATERIALS.STANDARD, UNIT_MATERIAL_PROPERTIES);
@@ -108,15 +116,15 @@ export default class UnitBehaviour extends BaseScript {
 
     getUnitWeaponRelativePosition() {
         return {
-            x: -.3,
-            y: .3,
-            z: .3
+            x: -0.3,
+            y: 0.3,
+            z: 0.3,
         };
     }
 
     getUnitWeaponRelativeRotation() {
         return {
-            y: Math.PI
+            y: Math.PI,
         };
     }
 
@@ -124,10 +132,10 @@ export default class UnitBehaviour extends BaseScript {
         return {
             x: 15,
             y: 15,
-            z: 15
-        }
+            z: 15,
+        };
     }
-    
+
     // addWeapon() {
     //     if (this.isWarrior()) {
     //         const weapon = Models.get('shotgun');
@@ -139,23 +147,31 @@ export default class UnitBehaviour extends BaseScript {
     //     }
     // }
 
-    hasTarget() { return !!this.target }
+    hasTarget() {
+        return !!this.target;
+    }
 
-    isFriendly() { return false; }
+    isFriendly() {
+        return false;
+    }
 
-    isBuilder() { return this.unitType === UNIT_TYPES.BUILDER; }
-    isWarrior() { return this.unitType === UNIT_TYPES.WARRIOR; }
-    getSpeed() { return this.isBuilder() ? SPEEDS.BUILDER : SPEEDS.WARRIOR; }
+    isBuilder() {
+        return this.unitType === UNIT_TYPES.BUILDER;
+    }
+    isWarrior() {
+        return this.unitType === UNIT_TYPES.WARRIOR;
+    }
+    getSpeed() {
+        return this.isBuilder() ? SPEEDS.BUILDER : SPEEDS.WARRIOR;
+    }
 
     disappear() {
-        this.unit.fadeTo(0, 1000)
-            .then(() => this.unit.dispose());
+        this.unit.fadeTo(0, 1000).then(() => this.unit.dispose());
     }
 
     die() {
         this.unit.playAnimation(UNIT_ANIMATIONS.DEATH, { loop: LoopOnce });
         // setTimeout(() => this.unit.dispose(), 10000);
-        
     }
 
     lookAtTarget(target) {
@@ -163,7 +179,7 @@ export default class UnitBehaviour extends BaseScript {
         this.unit.lookAt({
             x,
             y: MINIMUM_HEIGHT,
-            z
+            z,
         });
     }
 
@@ -171,54 +187,48 @@ export default class UnitBehaviour extends BaseScript {
         return TILES_TYPES.FOREST;
     }
 
-    isTargetWithinShootingDistance = (target) => (
-        this.unit.getPosition().distanceTo(target.getPosition()) <= MAXIMUM_SHOOTING_DISTANCE
-    )
+    isTargetWithinShootingDistance = target =>
+        this.unit.getPosition().distanceTo(target.getPosition()) <= MAXIMUM_SHOOTING_DISTANCE;
 
-    getRandomEnemyUnit = () => (
+    getRandomEnemyUnit = () =>
         math.pickRandom(
-            GameRunner
-                .getCurrentLevel()
+            GameRunner.getCurrentLevel()
                 .getUnitsByType(this.getEnemyTileType())
-                .filter(this.isTargetWithinShootingDistance) || []
-        )
-    )
+                .filter(this.isTargetWithinShootingDistance) || [],
+        );
 
     getRandomEnemyTile = () => {
         const tile = math.pickRandom(
-            TileMap 
-                .getTilesByType(this.getEnemyTileType())
-                .filter(this.isTargetWithinShootingDistance) || []
+            TileMap.getTilesByType(this.getEnemyTileType()).filter(
+                this.isTargetWithinShootingDistance,
+            ) || [],
         );
 
         if (tile) {
             return tile.getTile();
         }
-    }
+    };
 
     scanForTargets = () => {
         if (this.hasTarget()) return;
 
-        const target = math.pickRandom([
-            this.getRandomEnemyTile(),
-            this.getRandomEnemyUnit()
-        ]);
+        const target = math.pickRandom([this.getRandomEnemyTile(), this.getRandomEnemyUnit()]);
 
         if (target) {
             this.target = target;
-            GameRunner
-                .getCurrentLevel()
+            GameRunner.getCurrentLevel()
                 .getPlayerByType(this.getEnemyTileType())
                 .setUnderAttack(true);
             this.startShootingAt(target);
         } else {
             this.targetsScanTimeoutId = setTimeout(this.scanForTargets, TARGETS_SCAN_INTERVAL);
         }
-    }
+    };
 
     goBackHome() {
-        this.goTo(this.destinationTile.getIndex(), TileMap.getTileAt(this.initialPosition))
-            .then(() => this.unit.dispose())
+        this.goTo(this.destinationTile.getIndex(), TileMap.getTileAt(this.initialPosition)).then(
+            () => this.unit.dispose(),
+        );
     }
 
     handleNoAmmo() {
@@ -234,10 +244,13 @@ export default class UnitBehaviour extends BaseScript {
             this.attackSound.play(VOLUMES.UNIT.ATTACK);
             this.ammo.next(this._ammo);
             return new Sphere(BULLET_SIZE, PALETTES.BASE.BLACK)
-                .addScript('BulletBehaviour', { position: this.unit.getPosition(), target: this.target })
-                .shoot()
+                .addScript("BulletBehaviour", {
+                    position: this.unit.getPosition(),
+                    target: this.target,
+                })
+                .shoot();
         }
-    }
+    };
 
     startShootingAt(target) {
         if (!this.isWarrior()) return;
@@ -245,7 +258,7 @@ export default class UnitBehaviour extends BaseScript {
         this.lookAtTarget(target);
 
         this.target.addEventListener(TARGET_DEAD_EVENT_TYPE, () => this.stopShooting());
-        
+
         if (this.unit.getPosition().distanceTo(target.getPosition()) <= MAXIMUM_SHOOTING_DISTANCE) {
             this.unit.playAnimation(UNIT_ANIMATIONS.THROW);
             this.unit.addEventListener(ENTITY_EVENTS.ANIMATION.LOOP, this.spawnBullet);
@@ -287,7 +300,9 @@ export default class UnitBehaviour extends BaseScript {
         }
 
         const buildingTime = 3000; // needs calculation for right amount of time.
-        const newTile = TileMap.changeTile(tile.getIndex(), this.getFriendlyTileType(), { variation });
+        const newTile = TileMap.changeTile(tile.getIndex(), this.getFriendlyTileType(), {
+            variation,
+        });
 
         newTile.startBuilding(buildingTime, this.isFriendly());
 
@@ -307,34 +322,38 @@ export default class UnitBehaviour extends BaseScript {
     jumpTo({ x, z }, time) {
         const { x: _x, z: _z } = this.unit.getPosition();
 
-        easing.tweenTo(0, .5, {
-            onUpdate: (v) => this.unit.getBody().position.setY(v),
-            time: time/2,
+        easing.tweenTo(0, 0.5, {
+            onUpdate: v => this.unit.getBody().position.setY(v),
+            time: time / 2,
             loop: easing.LOOPING.BOUNCE,
             easing: easing.FUNCTIONS.Quadratic.InOut,
             repeat: 2,
         });
 
-        return easing.tweenTo({ x: _x, z: _z }, { x, z }, {
-            onUpdate: ({ x, z }) => {
-                this.unit.getBody().position.setX(x);
-                this.unit.getBody().position.setZ(z);
+        return easing.tweenTo(
+            { x: _x, z: _z },
+            { x, z },
+            {
+                onUpdate: ({ x, z }) => {
+                    this.unit.getBody().position.setX(x);
+                    this.unit.getBody().position.setZ(z);
+                },
+                time,
+                easing: easing.FUNCTIONS.Quadratic.InOut,
             },
-            time,
-            easing: easing.FUNCTIONS.Quadratic.InOut
-        })
+        );
     }
 
     goTo(startingPosition, destinationTile) {
         this.destinationTile = destinationTile;
         // storing this for future movements
-        this.unit.setData('tile:start:index', destinationTile.getIndex());
+        this.unit.setData("tile:start:index", destinationTile.getIndex());
 
         return new Promise(resolve => {
             const startingTile = TileMap.getTileAt(startingPosition);
             const path = TileMap.getPathToTile(startingTile, destinationTile);
 
-            const moveTowardsTarget = (currentPath) => {
+            const moveTowardsTarget = currentPath => {
                 if (!currentPath.length) {
                     return resolve();
                 }
@@ -343,13 +362,13 @@ export default class UnitBehaviour extends BaseScript {
 
                 const { x, z } = tile.getPosition();
                 const targetPosition = new Vector3(x, MINIMUM_HEIGHT, z);
-                const time = this.unit.getPosition().distanceTo(targetPosition) / this.getSpeed() * 1000;
+                const time =
+                    (this.unit.getPosition().distanceTo(targetPosition) / this.getSpeed()) * 1000;
 
                 this.unit.lookAt(targetPosition);
 
-                this.jumpTo(targetPosition, time)
-                    .then(() => moveTowardsTarget(currentPath));
-            }
+                this.jumpTo(targetPosition, time).then(() => moveTowardsTarget(currentPath));
+            };
 
             moveTowardsTarget(path);
         });

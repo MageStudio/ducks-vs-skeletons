@@ -1,7 +1,8 @@
-import { BaseScript, PARTICLES, Particles, THREE } from "mage-engine";
+import { BaseScript, GameRunner, PARTICLES, Particles, THREE } from "mage-engine";
 import { types } from "@theatre/core";
 import { getFireSound, getMeteorImpactSound, getMeteorSound, VOLUMES } from "../../../sounds";
 import CustomExplosion from "./CustomExplosion";
+import { playSkeletonAwakeSequence } from "./initialDialogueSequences";
 
 const FIRE_OPTIONS = {
     texture: "fire",
@@ -93,6 +94,11 @@ export class Meteor extends BaseScript {
         return fireSound;
     }
 
+    startSkeletonAWakeSequence() {
+        playSkeletonAwakeSequence();
+        // GameRunner.getCurrentLevel().playSkeletonAwakeSequence();
+    }
+
     playSequence(after = 1000) {
         return new Promise(resolve => {
             setTimeout(() => {
@@ -100,6 +106,7 @@ export class Meteor extends BaseScript {
                 resolve();
                 const fireSound = this.addFire();
                 this.playAudioSequence().then(() => {
+                    this.startSkeletonAWakeSequence();
                     fireSound.stop();
                     this.meteor.fadeTo(0, 250);
                     setTimeout(() => this.meteor.dispose(), 3000);

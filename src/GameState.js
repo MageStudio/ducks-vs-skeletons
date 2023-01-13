@@ -1,4 +1,8 @@
 import { GameRunner, store, xstate } from "mage-engine";
+import {
+    cleanupCameraContainer,
+    setupCameraContainerForIntro,
+} from "./levels/Main/lib/initialDialogueSequences";
 import { startDialogue, stopDialogue } from "./ui/actions/dialogue";
 import { gameStarted } from "./ui/actions/game";
 import { hideMainMenu, showMainMenu } from "./ui/actions/menu";
@@ -158,13 +162,14 @@ export const GAME_DESCRIPTION = [
 
 export const displayMainMenuScreen = () => {
     store.dispatch(showMainMenu());
-    GameRunner.getCurrentLevel().setupCameraContainerForIntro();
+    setupCameraContainerForIntro();
+    // GameRunner.getCurrentLevel().setupCameraContainerForIntro();
 };
 
 export const displayStartingDialogue = () => {
     store.dispatch(hideMainMenu());
     store.dispatch(startDialogue("initial"));
-    GameRunner.getCurrentLevel().setupDialogue();
+    // GameRunner.getCurrentLevel().setupDialogue();
 };
 
 export const displayFailureScreen = () => {
@@ -186,6 +191,7 @@ export const displaySuccessScreen = () => {
 export const startFirstLevel = () => {
     store.dispatch(stopDialogue("initial"));
     store.dispatch(gameStarted());
+    cleanupCameraContainer();
     GameRunner.getCurrentLevel().startGame();
 };
 
