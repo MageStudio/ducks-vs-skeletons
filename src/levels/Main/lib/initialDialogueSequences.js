@@ -128,7 +128,7 @@ export const playSkeletonSpawningSequence = () => {
         UNIT_ANIMATIONS.ATTACK_COMBO,
     ];
 
-    let angle = Math.PI / 1.5;
+    let angle = Math.PI / 1.6;
     for (let i = 0; i < MINIONS_AMOUNT; i++) {
         const minion = Models.get("human", { name: `dialogue_minion_${i}` });
         minion.setScale({
@@ -147,4 +147,12 @@ export const playSkeletonSpawningSequence = () => {
         });
         minions.push(minion);
     }
+};
+
+export const removeAllIntroSequenceElements = () => {
+    skeleton.dispose();
+    dialogueDuck.dispose();
+    meteor.dispose();
+    castle.dispose();
+    minions.forEach(m => m.dispose());
 };

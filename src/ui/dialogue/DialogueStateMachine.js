@@ -5,6 +5,7 @@ import {
     playSkeletonBuildingSequence,
     playSkeletonSpawningSequence,
     playStandingSkeletonSequence,
+    removeAllIntroSequenceElements,
 } from "../../levels/Main/lib/initialDialogueSequences";
 import { DIALOGUE_CONFIG, INITIAL_DIALOGUE_STEPS } from "./text";
 
@@ -66,7 +67,10 @@ const INITIAL_DIALOGUE_DESCRIPTION = [
                 ],
                 on: { [ACTIONS.NEXT]: INITIAL_DIALOGUE_STEPS.DONE },
             },
-            [INITIAL_DIALOGUE_STEPS.DONE]: { type: "final" },
+            [INITIAL_DIALOGUE_STEPS.DONE]: {
+                entry: ["onStep", assignStep(INITIAL_DIALOGUE_STEPS.DONE)],
+                type: "final",
+            },
         },
     },
     {
@@ -85,6 +89,8 @@ const INITIAL_DIALOGUE_DESCRIPTION = [
                     case INITIAL_DIALOGUE_STEPS.FINAL:
                         onFinalStep(context);
                         break;
+                    case INITIAL_DIALOGUE_STEPS.DONE:
+                        onInitialDialogueDone();
                     default:
                         break;
                 }
@@ -97,19 +103,24 @@ export const onStartStep = context => {
     playFirstDialogueSequence(context);
     playAnimationForMood(context.mood);
 };
+
 export const onFirstStep = context => {
     playStandingSkeletonSequence(context);
     playAnimationForMood(context.mood);
 };
+
 export const onIntermediateStep = context => {
     playSkeletonBuildingSequence(context);
     playAnimationForMood(context.mood);
 };
 
 export const onFinalStep = context => {
-    // playSequenceShowingSkeletons out of the castle?
     playSkeletonSpawningSequence();
     playAnimationForMood(context.mood);
+};
+
+export const onInitialDialogueDone = context => {
+    removeAllIntroSequenceElements();
 };
 
 const initialDialogueSubject = new rxjs.Subject();
