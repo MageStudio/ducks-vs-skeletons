@@ -41,6 +41,11 @@ export const UNIT_ANIMATIONS = {
     DEATH: "Root|LayingDown", //'Root|Defeat',
     BUILD: "Root|Interact",
     JUMP: "Root|Jump",
+    WAVE: "Root|Wave",
+    SPIN: "Root|AttackSpin",
+    ATTACK_COMBO: "Root|AttackCombo",
+    ATTACK: "Root|Attack",
+    SUMMONING: "Root|Climbing",
 };
 
 export const UNIT_TYPES = {

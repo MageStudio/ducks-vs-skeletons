@@ -163,13 +163,11 @@ export const GAME_DESCRIPTION = [
 export const displayMainMenuScreen = () => {
     store.dispatch(showMainMenu());
     setupCameraContainerForIntro();
-    // GameRunner.getCurrentLevel().setupCameraContainerForIntro();
 };
 
 export const displayStartingDialogue = () => {
     store.dispatch(hideMainMenu());
     store.dispatch(startDialogue("initial"));
-    // GameRunner.getCurrentLevel().setupDialogue();
 };
 
 export const displayFailureScreen = () => {
@@ -192,6 +190,7 @@ export const startFirstLevel = () => {
     store.dispatch(stopDialogue("initial"));
     store.dispatch(gameStarted());
     cleanupCameraContainer();
+    // remove all the initial sequence stuff
     GameRunner.getCurrentLevel().startGame();
 };
 

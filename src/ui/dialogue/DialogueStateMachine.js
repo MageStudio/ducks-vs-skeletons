@@ -1,7 +1,9 @@
 import { GameRunner, rxjs, xstate } from "mage-engine";
 import {
+    playAnimationForMood,
     playFirstDialogueSequence,
     playSkeletonBuildingSequence,
+    playSkeletonSpawningSequence,
     playStandingSkeletonSequence,
 } from "../../levels/Main/lib/initialDialogueSequences";
 import { DIALOGUE_CONFIG, INITIAL_DIALOGUE_STEPS } from "./text";
@@ -13,7 +15,15 @@ export const ACTIONS = {
     PREVIOUS: "PREVIOUS",
 };
 
+export const MOODS = {
+    WELCOME: "WELCOME",
+    EXCITED: "EXCITED",
+    SURPRISED: "SURPRISED",
+    NORMAL: "NORMAL",
+};
+
 export const assignStep = step => assign({ step });
+export const assignMood = mood => assign({ mood });
 
 const INITIAL_DIALOGUE_DESCRIPTION = [
     {
@@ -21,6 +31,7 @@ const INITIAL_DIALOGUE_DESCRIPTION = [
         initial: INITIAL_DIALOGUE_STEPS.START,
         context: {
             step: INITIAL_DIALOGUE_STEPS.START,
+            mood: MOODS.WELCOME,
         },
         states: {
             [INITIAL_DIALOGUE_STEPS.START]: {
@@ -32,15 +43,27 @@ const INITIAL_DIALOGUE_DESCRIPTION = [
                 },
             },
             [INITIAL_DIALOGUE_STEPS.FIRST]: {
-                entry: ["onStep", assignStep(INITIAL_DIALOGUE_STEPS.FIRST)],
+                entry: [
+                    "onStep",
+                    assignStep(INITIAL_DIALOGUE_STEPS.FIRST),
+                    assignMood(MOODS.SURPRISED),
+                ],
                 on: { [ACTIONS.NEXT]: INITIAL_DIALOGUE_STEPS.INTERMEDIATE },
             },
             [INITIAL_DIALOGUE_STEPS.INTERMEDIATE]: {
-                entry: ["onStep", assignStep(INITIAL_DIALOGUE_STEPS.INTERMEDIATE)],
+                entry: [
+                    "onStep",
+                    assignStep(INITIAL_DIALOGUE_STEPS.INTERMEDIATE),
+                    assignMood(MOODS.NORMAL),
+                ],
                 on: { [ACTIONS.NEXT]: INITIAL_DIALOGUE_STEPS.FINAL },
             },
             [INITIAL_DIALOGUE_STEPS.FINAL]: {
-                entry: ["onStep", assignStep(INITIAL_DIALOGUE_STEPS.FINAL)],
+                entry: [
+                    "onStep",
+                    assignStep(INITIAL_DIALOGUE_STEPS.FINAL),
+                    assignMood(MOODS.EXCITED),
+                ],
                 on: { [ACTIONS.NEXT]: INITIAL_DIALOGUE_STEPS.DONE },
             },
             [INITIAL_DIALOGUE_STEPS.DONE]: { type: "final" },
@@ -51,16 +74,16 @@ const INITIAL_DIALOGUE_DESCRIPTION = [
             onStep: context => {
                 switch (context.step) {
                     case INITIAL_DIALOGUE_STEPS.START:
-                        onStartStep();
+                        onStartStep(context);
                         break;
                     case INITIAL_DIALOGUE_STEPS.FIRST:
-                        onFirstStep();
+                        onFirstStep(context);
                         break;
                     case INITIAL_DIALOGUE_STEPS.INTERMEDIATE:
-                        onIntermediateStep();
+                        onIntermediateStep(context);
                         break;
                     case INITIAL_DIALOGUE_STEPS.FINAL:
-                        onFinalStep();
+                        onFinalStep(context);
                         break;
                     default:
                         break;
@@ -70,20 +93,24 @@ const INITIAL_DIALOGUE_DESCRIPTION = [
     },
 ];
 
-export const onStartStep = () => {
-    playFirstDialogueSequence();
-    // GameRunner.getCurrentLevel().playFirstDialogueSequence();
+export const onStartStep = context => {
+    playFirstDialogueSequence(context);
+    playAnimationForMood(context.mood);
 };
-export const onFirstStep = () => {
-    playStandingSkeletonSequence();
-    // GameRunner.getCurrentLevel().playStandingSkeletonSequence();
+export const onFirstStep = context => {
+    playStandingSkeletonSequence(context);
+    playAnimationForMood(context.mood);
 };
-export const onIntermediateStep = () => {
-    playSkeletonBuildingSequence();
-    // GameRunner.getCurrentLevel().playSkeletonBuildingSequence();
+export const onIntermediateStep = context => {
+    playSkeletonBuildingSequence(context);
+    playAnimationForMood(context.mood);
 };
 
-export const onFinalStep = () => {};
+export const onFinalStep = context => {
+    // playSequenceShowingSkeletons out of the castle?
+    playSkeletonSpawningSequence();
+    playAnimationForMood(context.mood);
+};
 
 const initialDialogueSubject = new rxjs.Subject();
 const initialDialogueStateMachine = interpret(
