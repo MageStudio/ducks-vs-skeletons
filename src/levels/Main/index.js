@@ -12,6 +12,7 @@ import {
     PALETTES,
     PostProcessing,
     Sprite,
+    easing,
 } from "mage-engine";
 
 import TileMap from "./map/TileMap";
@@ -164,8 +165,15 @@ export default class Main extends Level {
     }
 
     startGame() {
-        Scene.getCamera()
-            .goTo(OBSERVING_POSITION, 5000)
+        const { x, y, z } = Scene.getCamera().getPosition();
+        easing
+            .tweenTo({ x, y, z }, OBSERVING_POSITION, {
+                time: 5000,
+                onUpdate: position => {
+                    Scene.getCamera().lookAt(CAMERA_TARGET);
+                    Scene.getCamera().setPosition(position);
+                },
+            })
             .then(() => {
                 this.setUpOrbitControls();
             });

@@ -19,6 +19,8 @@ export const setupCameraContainerForIntro = () => {
 
     cameraContainer.addScript("CameraContainer", { distance: 7, height: 6, project });
     cameraContainer.add(Scene.getCamera());
+
+    window.camContainer = cameraContainer;
 };
 
 export const cleanupCameraContainer = () => {
