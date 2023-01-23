@@ -13,6 +13,7 @@ import {
     PostProcessing,
     Sprite,
     easing,
+    Element,
 } from "mage-engine";
 
 import TileMap from "./map/TileMap";
@@ -31,6 +32,8 @@ import CloudBehaviour from "./lib/CloudBehaviour";
 import CameraContainer from "./lib/CameraContainer";
 import CharacterFollowingCamera from "./lib/CharacterFollowingCamera";
 import { Meteor } from "./lib/Meteor";
+
+import { fragmentShader, vertexShader } from "./lib/SkyShader";
 
 export const WHITE = 0xffffff;
 export const SUNLIGHT = 0xffeaa7;
@@ -77,7 +80,7 @@ const CLOUDS = [
     { name: "cloud3", height: 1.215, width: 2.495, ratio: 2.05 },
 ];
 
-const CAMERA_TARGET = { x: 6.5, y: 0, z: 6.5 };
+const MAP_CENTER = { x: 6.5, y: 0, z: 6.5 };
 const OBSERVING_POSITION = { x: 2, y: 4, z: 0 };
 
 export default class Main extends Level {
@@ -110,18 +113,18 @@ export default class Main extends Level {
     pickRandomCloud = () => CLOUDS[Math.floor(Math.random() * CLOUDS.length)];
 
     addClouds() {
-        this.clouds = Array(30)
+        this.clouds = Array(50)
             .fill(0)
             .map(() => {
                 const { height, width, name, ratio } = this.pickRandomCloud();
                 const cloud = new Sprite(width, height, name, {
                     depthWrite: false,
                 });
-                const randomScale = Math.random() * 2 + 0.5;
+                const randomScale = Math.random() * 3 + 0.5;
 
                 cloud.addScript("CloudBehaviour", {
                     height: Math.random() * 2 + 2,
-                    distance: Math.random() * 5 + 4,
+                    distance: Math.random() * 8 + 4,
                     angle: Math.random() * Math.PI * 2,
                     speed: Math.random() * 0.01,
                     scale: { x: randomScale, y: randomScale / ratio },
@@ -138,9 +141,32 @@ export default class Main extends Level {
         this.clouds.forEach(c => c.getScript("CloudBehaviour").turnWhite());
     }
 
+    addSky() {
+        const uniforms = {
+            topColor: { value: new THREE.Color(PALETTES.FRENCH.SPRAY) },
+            bottomColor: { value: new THREE.Color(PALETTES.FRENCH.PARADISE_GREEN) },
+            offset: { value: 200 },
+            exponent: { value: 0.6 },
+        };
+
+        const geometry = new THREE.SphereGeometry(250, 32, 15);
+        const material = new THREE.ShaderMaterial({
+            uniforms: uniforms,
+            vertexShader,
+            fragmentShader,
+            side: THREE.BackSide,
+        });
+
+        const body = new THREE.Mesh(geometry, material);
+        const sky = new Element({ body });
+        sky.setPosition(MAP_CENTER);
+
+        return sky;
+    }
+
     prepareSceneEffects() {
-        Scene.setClearColor(PALETTES.FRENCH_PALETTE.MELON_MELODY);
-        Scene.setBackground(PALETTES.FRENCH_PALETTE.MELON_MELODY);
+        // Scene.setClearColor(PALETTES.FRENCH_PALETTE.MELON_MELODY);
+        // Scene.setBackground(PALETTES.FRENCH_PALETTE.MELON_MELODY);
         Scene.setRendererOutputEncoding(THREE.sRGBEncoding);
         PostProcessing.add(EFFECTS.HUE_SATURATION, SATURATION_OPTIONS);
         PostProcessing.add(EFFECTS.DEPTH_OF_FIELD, DOF_OPTIONS);
@@ -150,6 +176,7 @@ export default class Main extends Level {
         this.addLights();
         this.addBox();
         this.addDice();
+        this.addSky();
         this.addClouds();
         this.prepareSceneEffects();
 
@@ -158,7 +185,7 @@ export default class Main extends Level {
 
     setUpOrbitControls() {
         const orbit = Controls.setOrbitControl();
-        orbit.setTarget(CAMERA_TARGET);
+        orbit.setTarget(MAP_CENTER);
         orbit.setMinPolarAngle(0);
         orbit.setMaxPolarAngle(Math.PI / 2.5);
         orbit.setMaxDistance(15);
@@ -170,7 +197,7 @@ export default class Main extends Level {
             .tweenTo({ x, y, z }, OBSERVING_POSITION, {
                 time: 5000,
                 onUpdate: position => {
-                    Scene.getCamera().lookAt(CAMERA_TARGET);
+                    Scene.getCamera().lookAt(MAP_CENTER);
                     Scene.getCamera().setPosition(position);
                 },
             })
