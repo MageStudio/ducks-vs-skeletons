@@ -15,6 +15,7 @@ class TileMap {
     constructor() {
         this.size = 10;
         this.tiles = [];
+        this.initialTileTypes = [];
     }
 
     generate(level) {
@@ -28,13 +29,39 @@ class TileMap {
         for (let x = 0; x < MAP.length; x++) {
             const row = MAP[x];
             this.tiles.push([]);
+            this.initialTileTypes.push([]);
 
             for (let z = 0; z < row.length; z++) {
                 const tileType = convertIntegerToTileType(MAP[x][z]);
                 const tile = new Tile(tileType, { position: { x, z } });
+
+                this.initialTileTypes[x].push(tileType);
                 this.tiles[x].push(tile);
             }
         }
+
+        if (level === 0) {
+            this.convertMapToNature();
+        }
+    }
+
+    convertMapToNature() {
+        this.tiles.flat().forEach(tile => {
+            const tileType = tile.getType();
+            if ([TILES_TYPES.DESERT, TILES_TYPES.FOREST, TILES_TYPES.HUMAN].includes(tileType)) {
+                this.changeTile(tile.getIndex(), TILES_TYPES.FOREST, { isStatic: true });
+            }
+        });
+    }
+
+    convertMapToInitialTileTypes() {
+        this.tiles.flat().forEach(tile => {
+            const tileType = tile.getType();
+            if ([TILES_TYPES.DESERT, TILES_TYPES.FOREST, TILES_TYPES.HUMAN].includes(tileType)) {
+                const { x, z } = tile.getIndex();
+                this.changeTile({ x, z }, this.initialTileTypes[x][z]);
+            }
+        });
     }
 
     getStartingPositions() {
@@ -97,7 +124,7 @@ class TileMap {
         this.tiles[x][z].setState(state);
     }
 
-    changeTile({ x, z }, tileType, { variation, startingTile = false } = {}) {
+    changeTile({ x, z }, tileType, { variation, startingTile = false, isStatic = false } = {}) {
         const _x = Math.floor(math.clamp(x, 0, this.size - 1));
         const _z = Math.floor(math.clamp(z, 0, this.size - 1));
 
@@ -106,6 +133,7 @@ class TileMap {
             variation,
             position: { x: _x, z: _z },
             startingTile,
+            isStatic,
         });
 
         store.dispatch(updateTileMapStats());

@@ -69,6 +69,15 @@ export const playMeteorSequence = () => {
     meteor.getScript("Meteor").playSequence(4000);
 };
 
+export const transformMapIntoDesert = () => {
+    TileMap.convertMapToInitialTileTypes();
+};
+
+export const playPostCollisionSequence = () => {
+    playSkeletonAwakeSequence();
+    transformMapIntoDesert();
+};
+
 let skeleton;
 export const playSkeletonAwakeSequence = () => {
     skeleton = Models.get("human", { name: "intro_skeleton" });

@@ -206,7 +206,8 @@ export default class Main extends Level {
             });
 
         this.storePlayers();
-        this.startPlayers();
+        window.tm = TileMap;
+        // this.startPlayers();
     }
 
     startPlayers() {

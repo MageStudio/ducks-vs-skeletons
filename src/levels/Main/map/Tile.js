@@ -1,9 +1,19 @@
-import { Models, constants, math, Particles, PARTICLES, THREE, Element, PALETTES, easing } from 'mage-engine';
-import { getFireSound, playBuildingSound, VOLUMES } from '../../../sounds';
-import { SELECTABLE_TAG } from '../constants';
-import TileParticleSystem from '../players/nature/TileParticleSystem';
-import { TARGET_DEAD_EVENT_TYPE, TARGET_HIT_EVENT_TYPE } from '../players/TargetBehaviour';
-import { distance } from '../utils';
+import {
+    Models,
+    constants,
+    math,
+    Particles,
+    PARTICLES,
+    THREE,
+    Element,
+    PALETTES,
+    easing,
+} from "mage-engine";
+import { getFireSound, playBuildingSound, VOLUMES } from "../../../sounds";
+import { SELECTABLE_TAG } from "../constants";
+import TileParticleSystem from "../players/nature/TileParticleSystem";
+import { TARGET_DEAD_EVENT_TYPE, TARGET_HIT_EVENT_TYPE } from "../players/TargetBehaviour";
+import { distance } from "../utils";
 import {
     TILES_DETAILS_MAP,
     TILES_TYPES,
@@ -24,33 +34,33 @@ import {
     HEXAGONAL_SHAPE,
     TILE_OVERLAY_MATERIAL_PROPERTIES,
     TILE_OVERLAY_ROTATION,
-    TILE_OVERLAY_OPACITY
-} from './constants';
-import TileMap from './TileMap';
+    TILE_OVERLAY_OPACITY,
+} from "./constants";
+import TileMap from "./TileMap";
 
 const { Vector3 } = THREE;
 const { MATERIALS } = constants;
 
 const FIRE_OPTIONS = {
-    texture: 'fire',
-    size: .1,
+    texture: "fire",
+    size: 0.1,
     strength: 1.5,
-    direction: new Vector3( 0, 1, 0)
+    direction: new Vector3(0, 1, 0),
 };
-const FIRE_DAMAGE = .2;
+const FIRE_DAMAGE = 0.2;
 const FIRE_DAMAGE_TICK = 500;
 
 const ENERGY_PARTICLES_OPTIONS = {
-    texture: 'greenEnergy',
+    texture: "greenEnergy",
     strength: 1,
-    size: .2,
-    radius: .5,
-    direction: new Vector3( 0, 1, 0)
+    size: 0.2,
+    radius: 0.5,
+    direction: new Vector3(0, 1, 0),
 };
 
 const SMOKE_PARTICLES_OPTIONS = {
     direction: new Vector3(0, 1, 0),
-    texture: 'fire',
+    texture: "fire",
     size: 0.4,
     radius: 0.5,
     life: 4,
@@ -65,47 +75,45 @@ const SMOKE_PARTICLES_OPTIONS = {
 const TILE_LIFE = 20;
 const STARTING_TILE_LIFE_FACTOR = 4;
 const TILE_LIFE_FACTOR = 1;
-const TILE_CRITICAL_DAMAGE_PERCENTAGE = .4;
-const TILE_DETAILS_OPACITY = .3;
+const TILE_CRITICAL_DAMAGE_PERCENTAGE = 0.4;
+const TILE_DETAILS_OPACITY = 0.3;
 
 const OVERLAY_ANIMATION_TIME = 300;
 
-const getDetailsListFromTileType = (tileType) =>  (TILES_DETAILS_MAP[tileType]) || DESERT_DETAILS;
-const getRandomDetailForTile = (tileType) => math.pickRandom(getDetailsListFromTileType(tileType));
-const shouldRenderDetailsForTiletype = (tileType) => Math.random() > TILES_RANDOMNESS_MAP[tileType];
+const getDetailsListFromTileType = tileType => TILES_DETAILS_MAP[tileType] || DESERT_DETAILS;
+const getRandomDetailForTile = tileType => math.pickRandom(getDetailsListFromTileType(tileType));
+const shouldRenderDetailsForTiletype = tileType => Math.random() > TILES_RANDOMNESS_MAP[tileType];
 const getVariationsForTyleTipe = tileType => TILE_BASE_VARIATIONS_MAP[tileType] || [tileType];
 const getRandomVariationForTile = tileType => math.pickRandom(getVariationsForTyleTipe(tileType));
 
-const convertTileTypeToHeight = (tileType) => ({
-    [TILES_TYPES.WATER]: -.5, 
-    [TILES_TYPES.DESERT]: -.4,
-    [TILES_TYPES.HUMAN]: -.4,
-    [TILES_TYPES.FOREST]: -.4
-})[tileType] || -.4;
+const convertTileTypeToHeight = tileType =>
+    ({
+        [TILES_TYPES.WATER]: -0.5,
+        [TILES_TYPES.DESERT]: -0.4,
+        [TILES_TYPES.HUMAN]: -0.4,
+        [TILES_TYPES.FOREST]: -0.4,
+    }[tileType] || -0.4);
 
 const calculatePosition = ({ x, z }) => ({
-    x: z % 2 === 0 ? x + .5 : x,
-    z
+    x: z % 2 === 0 ? x + 0.5 : x,
+    z,
 });
 
-export default class Tile { 
-
+export default class Tile {
     constructor(tileType, options = {}) {
-        const {
-            variation = TILES_VARIATIONS_TYPES.BASE,
-            startingTile = false,
-            position
-        } = options;
-        
+        const { variation = TILES_VARIATIONS_TYPES.BASE, startingTile = false, position } = options;
+
+        this.options = options;
+
         this.tileType = tileType;
         this.variation = variation;
 
         this.index = position;
         this.position = {
             ...calculatePosition(position),
-            y: convertTileTypeToHeight(this.tileType)
+            y: convertTileTypeToHeight(this.tileType),
         };
-        
+
         this.id = `${position.x}${position.z}`;
 
         this.startingTile = startingTile;
@@ -133,7 +141,9 @@ export default class Tile {
         this.getTile().add(this.overlay);
 
         this.overlay.setRotation(TILE_OVERLAY_ROTATION);
-        this.overlay.goTo({ y: 1.1 }, OVERLAY_ANIMATION_TIME, { easing: easing.FUNCTIONS.Cubic.InOut })
+        this.overlay.goTo({ y: 1.1 }, OVERLAY_ANIMATION_TIME, {
+            easing: easing.FUNCTIONS.Cubic.InOut,
+        });
         this.overlay.fadeTo(TILE_OVERLAY_OPACITY, OVERLAY_ANIMATION_TIME);
 
         this.showingOverlay = true;
@@ -143,8 +153,8 @@ export default class Tile {
         if (!this.showingOverlay) return;
         this.overlay
             .goTo({ y: 0 }, OVERLAY_ANIMATION_TIME, { easing: easing.FUNCTIONS.Cubic.InOut })
-            .then(() => this.getTile().remove(this.overlay))
-        
+            .then(() => this.getTile().remove(this.overlay));
+
         this.showingOverlay = false;
     }
 
@@ -165,28 +175,31 @@ export default class Tile {
     getType = () => this.tileType;
     getVariation = () => this.variation;
 
-    setState = state => this.state = state;
+    setState = state => (this.state = state);
     getState = () => this.state;
 
     isBuilding = () => this.state === TILES_STATES.BUILDING;
 
-    getModelNameFromVariationAndTileType = (variation = this.variation, tileType = this.tileType) => {
+    getModelNameFromVariationAndTileType = (
+        variation = this.variation,
+        tileType = this.tileType,
+    ) => {
         const { tile, detail } = TILES_TYPES_VARIATIONS_MAP[tileType][variation];
 
         return {
             tile,
-            detail: Array.isArray(detail) ? math.pickRandom(detail) : detail
+            detail: Array.isArray(detail) ? math.pickRandom(detail) : detail,
         };
-    }
+    };
 
     create() {
         if (this.isEmpty()) return;
 
         const { tile, detail } = this.getModelNameFromVariationAndTileType();
 
-        this.tile = Models.get(tile, { name: `tile_${this.index.x}_${this.index.z}`});
-        this.tile.setData('index', this.index);
-        this.tile.setData('target', 'tile');
+        this.tile = Models.get(tile, { name: `tile_${this.index.x}_${this.index.z}` });
+        this.tile.setData("index", this.index);
+        this.tile.setData("target", "tile");
         this.tile.setPosition(this.position);
         this.tile.setScale(TILE_SCALE);
         this.tile.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
@@ -210,31 +223,35 @@ export default class Tile {
     postDestruction = () => {
         this.stopBurning();
         TileMap.changeTile(this.getIndex(), TILES_TYPES.DESERT);
-    }
+    };
 
     setUpTargetBehaviour() {
-        this.tile.addScript('TargetBehaviour', { health: this.getHealth() });
+        this.tile.addScript("TargetBehaviour", { health: this.getHealth() });
         this.tile.addEventListener(TARGET_DEAD_EVENT_TYPE, this.postDestruction);
         this.tile.addEventListener(TARGET_HIT_EVENT_TYPE, this.startBurning);
     }
 
-    getTile() { return this.tile; }
+    getTile() {
+        return this.tile;
+    }
 
     applyWaterTileStyle() {
         this.tile.setOpacity(WATER_TILE_OPACITY);
         this.tile.setColor(WATER_TILE_COLOR);
         this.tile.toggleShadows(false);
-        this.tile.addScript('Bobbing', { angleOffset: this.position.x, offset: this.position.y  });
+        this.tile.addScript("Bobbing", { angleOffset: this.position.x, offset: this.position.y });
     }
 
     isDetailATreeOrLargeBuilding(detailName) {
-        return detailName.includes('Tree') //|| detailName.includes('largeBuilding');
+        return detailName.includes("Tree"); //|| detailName.includes('largeBuilding');
     }
 
     addStartingDetail() {
-        const startingDetail = Models.get(STARTING_TILE_DETAILS_MAP[this.tileType], { name: `tile_detail_${Math.random()}` });
+        const startingDetail = Models.get(STARTING_TILE_DETAILS_MAP[this.tileType], {
+            name: `tile_detail_${Math.random()}`,
+        });
         startingDetail.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
-        
+
         this.tile.add(startingDetail);
         startingDetail.setScale(TILE_LARGE_DETAILS_SCALE);
 
@@ -244,13 +261,14 @@ export default class Tile {
 
     addDetail(detail) {
         const details = Models.get(detail, { name: `tile_detail_${Math.random()}` });
+        const isStatic = this.options.isStatic;
 
         details.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
         this.tile.add(details);
 
         details.setScale(TILE_DETAILS_SCALE);
         details.setPosition(TILE_DETAILS_RELATIVE_POSITION);
-        if (!this.isDesert()) details.setOpacity(TILE_DETAILS_OPACITY);
+        if (!this.isDesert() && !isStatic) details.setOpacity(TILE_DETAILS_OPACITY);
 
         this.details = details;
     }
@@ -273,12 +291,12 @@ export default class Tile {
             this.fireSound.setPosition(this.getPosition());
             this.fireSound.play(VOLUMES.FIRE);
 
-            this.burningDamageInterval = setInterval(() => this.tile
-                .getScript('TargetBehaviour')
-                .processHit(FIRE_DAMAGE)
-            , FIRE_DAMAGE_TICK);
+            this.burningDamageInterval = setInterval(
+                () => this.tile.getScript("TargetBehaviour").processHit(FIRE_DAMAGE),
+                FIRE_DAMAGE_TICK,
+            );
         }
-    }
+    };
 
     stopBurning() {
         if (this.burning) {
@@ -306,15 +324,17 @@ export default class Tile {
     showBuildingPreview(variation, futureTileType) {
         const { detail } = this.getModelNameFromVariationAndTileType(variation, futureTileType);
         if (detail) {
-            const buildingPreview = Models.get(detail, { name: `tile_building_preview_${Math.random()}` });
-    
+            const buildingPreview = Models.get(detail, {
+                name: `tile_building_preview_${Math.random()}`,
+            });
+
             buildingPreview.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
             this.tile.add(buildingPreview);
-    
+
             buildingPreview.setScale(TILE_DETAILS_SCALE);
             buildingPreview.setPosition(TILE_DETAILS_RELATIVE_POSITION);
             buildingPreview.setOpacity(TILE_DETAILS_OPACITY);
-    
+
             this.buildingPreview = buildingPreview;
         }
     }
@@ -340,7 +360,7 @@ export default class Tile {
     }
 
     showScaffolding() {
-        this.scaffolding = Models.get('scaffolding');
+        this.scaffolding = Models.get("scaffolding");
 
         this.scaffolding.setMaterialFromName(MATERIALS.STANDARD, TILE_MATERIAL_PROPERTIES);
         this.tile.add(this.scaffolding);
@@ -361,11 +381,17 @@ export default class Tile {
         this.tile.setOpacity(value);
     }
 
-    getPosition() { return new Vector3(this.position.x, this.position.y, this.position.z); }
+    getPosition() {
+        return new Vector3(this.position.x, this.position.y, this.position.z);
+    }
 
-    getIndex() { return this.index; }
+    getIndex() {
+        return this.index;
+    }
 
-    uuid() { return this.getTile().uuid(); }
+    uuid() {
+        return this.getTile().uuid();
+    }
 
     dispose() {
         this.tile.removeEventListener(TARGET_DEAD_EVENT_TYPE, this.postDestruction);
