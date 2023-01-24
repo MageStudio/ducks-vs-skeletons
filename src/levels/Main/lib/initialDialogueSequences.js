@@ -74,6 +74,7 @@ export const transformMapIntoDesert = () => {
 };
 
 export const playPostCollisionSequence = () => {
+    Scene.getCamera().getScript("CameraShake").startShaking({ duration: 2.5 });
     playSkeletonAwakeSequence();
     transformMapIntoDesert();
 };

@@ -23,7 +23,6 @@ import Nature from "./players/nature";
 import Selector from "./players/nature/Selector";
 import BulletBehaviour from "./players/BulletBehaviour";
 import DuckBehaviour from "./players/nature/DuckBehaviour";
-import CameraBehaviour from "./lib/CameraContainer";
 import Bobbing from "./map/Bobbing";
 import { TILES_TYPES, TILE_MATERIAL_PROPERTIES } from "./map/constants";
 import TargetBehaviour from "./players/TargetBehaviour";
@@ -34,6 +33,7 @@ import CharacterFollowingCamera from "./lib/CharacterFollowingCamera";
 import { Meteor } from "./lib/Meteor";
 
 import { fragmentShader, vertexShader } from "./lib/SkyShader";
+import CameraShake from "./lib/CameraShake";
 
 export const WHITE = 0xffffff;
 export const SUNLIGHT = 0xffeaa7;
@@ -237,12 +237,15 @@ export default class Main extends Level {
         Scripts.register("DuckBehaviour", DuckBehaviour);
         Scripts.register("Selector", Selector);
         Scripts.register("Bobbing", Bobbing);
-        Scripts.register("CameraBehaviour", CameraBehaviour);
         Scripts.register("CloudBehaviour", CloudBehaviour);
         Scripts.register("Meteor", Meteor);
 
+        Scripts.register("CameraShake", CameraShake);
         Scripts.register("CameraContainer", CameraContainer);
         Scripts.register("CharacterFollowingCamera", CharacterFollowingCamera);
+
+        Scene.getCamera().addScript("CameraShake", { duration: 1, shakeAmount: 0.2 });
+        window.cam = Scene.getCamera();
 
         // TODO: get world level from props > /?level=2
         this.createWorld(0);
