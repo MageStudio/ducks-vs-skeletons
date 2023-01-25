@@ -34,7 +34,6 @@ import { TILE_MATERIAL_PROPERTIES } from "../Main/map/constants";
 // const sheet = project.sheet('Intro');
 
 const { Vector3 } = THREE;
-window.ENTITY_EVENTS = ENTITY_EVENTS;
 
 const { EFFECTS, MATERIALS } = constants;
 

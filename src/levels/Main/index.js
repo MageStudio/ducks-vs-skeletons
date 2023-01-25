@@ -206,8 +206,7 @@ export default class Main extends Level {
             });
 
         this.storePlayers();
-        window.tm = TileMap;
-        // this.startPlayers();
+        this.startPlayers();
     }
 
     startPlayers() {
@@ -245,7 +244,6 @@ export default class Main extends Level {
         Scripts.register("CharacterFollowingCamera", CharacterFollowingCamera);
 
         Scene.getCamera().addScript("CameraShake", { duration: 1, shakeAmount: 0.2 });
-        window.cam = Scene.getCamera();
 
         // TODO: get world level from props > /?level=2
         this.createWorld(0);

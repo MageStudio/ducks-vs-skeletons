@@ -93,7 +93,6 @@ export default class UnitBehaviour extends BaseScript {
                 unit,
                 script,
             });
-            window.warriorLabel = warriorLabel;
             this.unit
                 .add(warriorLabel, unit.getBodyByName("Head"), {
                     waitForBody: 200,

@@ -19,8 +19,6 @@ export const setupCameraContainerForIntro = () => {
 
     cameraContainer.addScript("CameraContainer", { distance: 7, height: 6, project });
     cameraContainer.add(Scene.getCamera());
-
-    window.camContainer = cameraContainer;
 };
 
 export const cleanupCameraContainer = () => {
@@ -39,8 +37,6 @@ export const createDialogDuck = () => {
     dialogueDuck.setScale(DEFAULT_UNIT_SCALE);
     dialogueDuck.addScript("CharacterFollowingCamera");
     dialogueDuck.toggleShadows(false);
-
-    window.duck = dialogueDuck;
 
     return dialogueDuck;
 };
@@ -91,8 +87,6 @@ export const playSkeletonAwakeSequence = () => {
         y: 0.2,
     });
     skeleton.setRotation({ y: Math.PI });
-
-    window.skeleton = skeleton;
 };
 
 export const playFirstDialogueSequence = ({ mood }) => {
@@ -118,7 +112,6 @@ export const playSkeletonBuildingSequence = () => {
             castle.setScale({ x: 0.6, y: 0.6, z: 0.6 });
             castle.setRotation({ y: Math.PI });
             castle.setPosition(TileMap.getStartingPositions().humanStartingPosition);
-            window.castle = castle;
             return castle.fadeTo(1, 5000);
         });
 };
