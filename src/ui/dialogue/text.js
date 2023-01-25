@@ -21,11 +21,11 @@ export const DIALOGUE_CONFIG = {
         actions: [{ type: DIALOGUE_ACTIONS_TYPES.NEXT, text: "next" }],
     },
     [INITIAL_DIALOGUE_STEPS.INTERMEDIATE]: {
-        text: "They don't seem particularly friendly, do they?",
+        text: "What is it doing? i think it's building something.. let's have a look!",
         actions: [{ type: DIALOGUE_ACTIONS_TYPES.NEXT, text: "next" }],
     },
     [INITIAL_DIALOGUE_STEPS.FINAL]: {
-        text: "Would you like to help us?",
+        text: "Oh no, I don't think it has good intentions! Can you please help us?",
         actions: [{ type: DIALOGUE_ACTIONS_TYPES.CONFIRM, text: "Yes!" }],
     },
 };

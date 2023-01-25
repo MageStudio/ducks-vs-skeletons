@@ -29,6 +29,9 @@ const assets = {
             natureBackground: `${ASSETS_AUDIO_BASE_PATH}/nature_background.aac`,
             desertBackground: `${ASSETS_AUDIO_BASE_PATH}/desert_background.aac`,
             humansBackground: `${ASSETS_AUDIO_BASE_PATH}/dungeon_background.aac`,
+
+            meteorTravel: `${ASSETS_AUDIO_BASE_PATH}/meteorTravel3.wav`,
+            meteorImpact: `${ASSETS_AUDIO_BASE_PATH}/meteorImpact.wav`,
         },
         models: {
             meteor: `${ASSETS_MODELS_BASE_PATH}/Rock_4.fbx`,

@@ -1,19 +1,18 @@
 import { Models, ENTITY_EVENTS, math, Scripts, GameRunner, store } from "mage-engine";
 import { TILES_STATES, TILES_TYPES, TILES_VARIATIONS_TYPES } from "../map/constants";
 import TileMap from "../map/TileMap";
-import { DEATH_REASONS } from '../constants';
+import { DEATH_REASONS } from "../constants";
 import { ENERGY_UNIT_REQUIREMENTS, getEnergyRequirementForTileVariation } from "./energy";
 import { UNIT_ANIMATIONS, UNIT_TYPES } from "./UnitBehaviour";
 import { TARGET_DEAD_EVENT_TYPE, TARGET_HEALTH_MAP } from "./TargetBehaviour";
 import { playBuildingPlacedSound, VOLUMES } from "../../../sounds";
 
-export const BASE_TILE_ENERGY_INCREASE = .2;
+export const BASE_TILE_ENERGY_INCREASE = 0.2;
 const MIN_ENERGY = 0;
 const MAX_ENERGY = 100;
 const INITIAL_ENERGY = MIN_ENERGY;
 
 export default class Player {
-
     constructor(type) {
         this.builders = {};
         this.warriors = {};
@@ -22,7 +21,7 @@ export default class Player {
             [TILES_VARIATIONS_TYPES.BASE]: [],
             [TILES_VARIATIONS_TYPES.TOWER]: [],
             [TILES_VARIATIONS_TYPES.BUILDERS]: [],
-            [TILES_VARIATIONS_TYPES.WARRIORS]: []
+            [TILES_VARIATIONS_TYPES.WARRIORS]: [],
         };
 
         this.energy = INITIAL_ENERGY;
@@ -31,7 +30,9 @@ export default class Player {
         this.type = type;
     }
 
-    isFriendly() { return false; } // by default, skeletons are not friendly.
+    isFriendly() {
+        return false;
+    } // by default, skeletons are not friendly.
 
     isUnderAttack() {
         return this.underAttack;
@@ -48,24 +49,20 @@ export default class Player {
     }
 
     removeTile(targetTile, variation) {
-        const index = (this.buildings[variation] || []).findIndex(tile => tile.getIndex() === targetTile.getIndex());
+        const index = (this.buildings[variation] || []).findIndex(
+            tile => tile.getIndex() === targetTile.getIndex(),
+        );
 
         if (index) {
             this.buildings[variation].splice(index, 1);
         }
     }
 
-    isGameOver = () => TileMap
-        .getTileAt(this.initialPosition)
-        .getTile()
-        .getScript('TargetBehaviour')
-        .isDead();
+    isGameOver = () =>
+        TileMap.getTileAt(this.initialPosition).getTile().getScript("TargetBehaviour").isDead();
 
     getUnits() {
-        return [
-            ...Object.values(this.builders),
-            ...Object.values(this.warriors)
-        ]
+        return [...Object.values(this.builders), ...Object.values(this.warriors)];
     }
 
     getUnit(uuid) {
@@ -75,16 +72,13 @@ export default class Player {
     }
 
     getEnemyPlayer() {
-        return GameRunner
-            .getCurrentLevel()
-            .getPlayerByType(this.getEnemyType())
+        return GameRunner.getCurrentLevel().getPlayerByType(this.getEnemyType());
     }
 
     updateEnergy() {
-        const increase =  (TileMap
-            .getTilesByType(this.getBaseTileType())
-            .filter(t => t.isBaseTile())
-            .length || 0) * BASE_TILE_ENERGY_INCREASE;
+        const increase =
+            (TileMap.getTilesByType(this.getBaseTileType()).filter(t => t.isBaseTile()).length ||
+                0) * BASE_TILE_ENERGY_INCREASE;
 
         this.energy = math.clamp(this.energy + increase, MIN_ENERGY, MAX_ENERGY);
     }
@@ -98,17 +92,19 @@ export default class Player {
         this.energyUpdateTimer = setInterval(this.updateEnergy.bind(this), 2000);
     }
 
-    handleUnitDeath = (reason) => ({ target }) => {
-        if (reason === DEATH_REASONS.BUILDING) {
-            delete this.builders[target.uuid()];
-        }
+    handleUnitDeath =
+        reason =>
+        ({ target }) => {
+            if (reason === DEATH_REASONS.BUILDING) {
+                delete this.builders[target.uuid()];
+            }
 
-        if (reason === DEATH_REASONS.KILLED) {
-            delete this.warriors[target.uuid()]
-        }
-    }
+            if (reason === DEATH_REASONS.KILLED) {
+                delete this.warriors[target.uuid()];
+            }
+        };
 
-    handleTileDeath = (tile) => () => {
+    handleTileDeath = tile => () => {
         this.removeTile(tile, tile.getVariation());
     };
 
@@ -119,7 +115,7 @@ export default class Player {
 
     getEnemyType = () => TILES_TYPES.FOREST;
 
-    getUnitScriptName = () => 'UnitBehaviour';
+    getUnitScriptName = () => "UnitBehaviour";
 
     getTowersTiles = () => this.buildings[this.getTowerVariation()];
     getBuildersTiles = () => this.buildings[this.getBuildersHutVariation()];
@@ -130,42 +126,47 @@ export default class Player {
         return this.energy >= getEnergyRequirementForTileVariation(variation);
     }
 
-    canSendWarrior = () => (
+    canSendWarrior = () =>
         this.energy >= ENERGY_UNIT_REQUIREMENTS[UNIT_TYPES.WARRIOR] &&
-        this.buildings[TILES_VARIATIONS_TYPES.WARRIORS].length > 0
-    )
+        this.buildings[TILES_VARIATIONS_TYPES.WARRIORS].length > 0;
 
     buildBaseTile(tile, startingPosition) {
         this.updateEnergy();
         this.isFriendly() && playBuildingPlacedSound(tile.getPosition());
         return this.sendBuilderToTile(tile, TILES_VARIATIONS_TYPES.BASE, startingPosition);
-    };
+    }
 
     buildWarriorsHut = (tile, startingPosition) => {
         this.isFriendly() && playBuildingPlacedSound(tile.getPosition());
-        return this.canBuildVariation(TILES_VARIATIONS_TYPES.WARRIORS) ?
-            this.sendBuilderToTile(tile, TILES_VARIATIONS_TYPES.WARRIORS, startingPosition) :
-            Promise.resolve(false);
-    }
+        return this.canBuildVariation(TILES_VARIATIONS_TYPES.WARRIORS)
+            ? this.sendBuilderToTile(tile, TILES_VARIATIONS_TYPES.WARRIORS, startingPosition)
+            : Promise.resolve(false);
+    };
 
     buildBuildersHut = (tile, startingPosition) => {
         this.isFriendly() && playBuildingPlacedSound(tile.getPosition());
-        return this.canBuildVariation(TILES_VARIATIONS_TYPES.BUILDERS) ?
-            this.sendBuilderToTile(tile, TILES_VARIATIONS_TYPES.BUILDERS, startingPosition) :
-            Promise.resolve(false);
-    }
+        return this.canBuildVariation(TILES_VARIATIONS_TYPES.BUILDERS)
+            ? this.sendBuilderToTile(tile, TILES_VARIATIONS_TYPES.BUILDERS, startingPosition)
+            : Promise.resolve(false);
+    };
 
     buildTower = (tile, startingPosition) => {
-        this.isFriendly() &&  playBuildingPlacedSound(tile.getPosition());
-        return this.canBuildVariation(TILES_VARIATIONS_TYPES.TOWER) ?
-            this.sendBuilderToTile(tile, TILES_VARIATIONS_TYPES.TOWER, startingPosition) :
-            Promise.resolve(false)
+        this.isFriendly() && playBuildingPlacedSound(tile.getPosition());
+        return this.canBuildVariation(TILES_VARIATIONS_TYPES.TOWER)
+            ? this.sendBuilderToTile(tile, TILES_VARIATIONS_TYPES.TOWER, startingPosition)
+            : Promise.resolve(false);
     };
 
     sendBuilderToTile(tile, variation, position = this.initialTilePosition) {
-        const unit = Models.get(this.type, { name: `${this.type}_builder_${Math.random()}`});
-        const behaviour = unit.addScript(this.getUnitScriptName(), { position, unitType: UNIT_TYPES.BUILDER });
-        const targetBehaviour = this.setUpUnitTargetBehaviour(unit, TARGET_HEALTH_MAP.UNITS.BUILDERS);
+        const unit = Models.get(this.type, { name: `${this.type}_builder_${Math.random()}` });
+        const behaviour = unit.addScript(this.getUnitScriptName(), {
+            position,
+            unitType: UNIT_TYPES.BUILDER,
+        });
+        const targetBehaviour = this.setUpUnitTargetBehaviour(
+            unit,
+            TARGET_HEALTH_MAP.UNITS.BUILDERS,
+        );
 
         tile.showBuildingPreview(variation, this.getBaseTileType());
 
@@ -183,9 +184,10 @@ export default class Player {
                 .then(tile => {
                     if (tile) {
                         this.saveTile(tile);
-                        tile
-                            .getTile()
-                            .addEventListener(TARGET_DEAD_EVENT_TYPE, this.handleTileDeath);
+                        tile.getTile().addEventListener(
+                            TARGET_DEAD_EVENT_TYPE,
+                            this.handleTileDeath,
+                        );
                     }
                 })
                 .then(resolve);
@@ -193,7 +195,7 @@ export default class Player {
     }
 
     setUpUnitTargetBehaviour(unit, health) {
-        const targetBehaviour = unit.addScript('TargetBehaviour', { health });
+        const targetBehaviour = unit.addScript("TargetBehaviour", { health });
         unit.addEventListener(TARGET_DEAD_EVENT_TYPE, () => {
             unit.playAnimation(UNIT_ANIMATIONS.DEATH);
             setTimeout(() => unit.dispose(), 250);
@@ -203,20 +205,23 @@ export default class Player {
     }
 
     sendWarriorToTile(destination, position = this.initialTilePosition) {
-        console.log('inside player sendwarrior');
         const script = this.getUnitScriptName();
-        const unit = Models.get(this.type, { name: `${this.type}_warrior_${Math.random()}`});
-        const behaviour = unit.addScript(script, { position, unitType: UNIT_TYPES.WARRIOR, script });
+        const unit = Models.get(this.type, { name: `${this.type}_warrior_${Math.random()}` });
+        const behaviour = unit.addScript(script, {
+            position,
+            unitType: UNIT_TYPES.WARRIOR,
+            script,
+        });
         const tile = TileMap.getTileAt(destination);
-        const targetBehaviour = this.setUpUnitTargetBehaviour(unit, TARGET_HEALTH_MAP.UNITS.WARRIORS);
+        const targetBehaviour = this.setUpUnitTargetBehaviour(
+            unit,
+            TARGET_HEALTH_MAP.UNITS.WARRIORS,
+        );
 
-        // window.unit = unit;
-        // window.label = warriorLabel;
-        
         unit.addEventListener(ENTITY_EVENTS.DISPOSE, this.handleUnitDeath(DEATH_REASONS.KILLED));
-        
+
         this.warriors[unit.uuid()] = unit;
-        
+
         return new Promise(resolve => {
             behaviour
                 .goTo(position, tile)
@@ -227,13 +232,13 @@ export default class Player {
 
     sendUnitToTile = (destination, unit) => {
         const behaviour = unit.getScript(this.getUnitScriptName());
-        const targetBehaviour = unit.getScript('TargetBehaviour');
+        const targetBehaviour = unit.getScript("TargetBehaviour");
         // this is on the assumption we can only select a unit after it initially moved to a tile.
-        const position = unit.getData('tile:start:index');
+        const position = unit.getData("tile:start:index");
         const tile = TileMap.getTileAt(destination);
 
         return behaviour
             .goTo(position, tile)
-            .then(() => !targetBehaviour.isDead() && behaviour.scanForTargets(tile))
-    }
+            .then(() => !targetBehaviour.isDead() && behaviour.scanForTargets(tile));
+    };
 }

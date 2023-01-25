@@ -6,12 +6,9 @@ import {
     updateEnergyLevel,
     changeSelection,
     changeSelectionOption,
-    addNewUnit
-} from '../../../../ui/actions/player';
-import {
-    NATURE_NEW_UNIT_WARRIORS,
-    NATURE_NEW_UNIT_BUILDERS
-} from '../../../../ui/actions/types';
+    addNewUnit,
+} from "../../../../ui/actions/player";
+import { NATURE_NEW_UNIT_WARRIORS, NATURE_NEW_UNIT_BUILDERS } from "../../../../ui/actions/types";
 import { SELECTABLE_TAG } from "../../constants";
 import { UNIT_TYPES } from "../UnitBehaviour";
 import { distance } from "../../utils";
@@ -20,9 +17,8 @@ const MAX_ATTACK_TARGET_DISTANCE = 3;
 const MAX_UNIT_MOVEMENT_DISTANCE = MAX_ATTACK_TARGET_DISTANCE / 2;
 
 class Nature extends Player {
-
     constructor() {
-        super('nature');
+        super("nature");
         this.selector = null;
     }
 
@@ -33,7 +29,9 @@ class Nature extends Player {
         Input.addEventListener(INPUT_EVENTS.MOUSE_DOWN, this.handleMouseClick);
         Input.addEventListener(INPUT_EVENTS.MOUSE_MOVE, this.handleMouseMove);
 
-        const initialTile = TileMap.changeTile(this.initialPosition, TILES_TYPES.FOREST, { startingTile: true });
+        const initialTile = TileMap.changeTile(this.initialPosition, TILES_TYPES.FOREST, {
+            startingTile: true,
+        });
         this.saveTile(initialTile);
 
         this.initialTilePosition = initialTile.getPosition();
@@ -42,58 +40,61 @@ class Nature extends Player {
         this.outline.setSelectedObjects([TileMap.getTileAt(position).getTile()]);
 
         this.selector = new Element({ body: new THREE.Object3D() });
-        this.selector.addScript('Selector', { position });
-        this.selector.getScript('Selector').disappear();
+        this.selector.addScript("Selector", { position });
+        this.selector.getScript("Selector").disappear();
 
         this.energy = 100;
     }
 
     getBuildableTiles() {
-        return TileMap
-            .getTilesByType(TILES_TYPES.DESERT)
-            .filter(this.canBuildOnTile)
+        return TileMap.getTilesByType(TILES_TYPES.DESERT).filter(this.canBuildOnTile);
     }
 
     showAllowedTilesForOption(option) {
-        const { selection: { type, index, uuid } } = this.getSelectionType();
+        const {
+            selection: { type, index, uuid },
+        } = this.getSelectionType();
         let tile;
         if (type !== UNIT_TYPES.WARRIOR) {
-            tile = TileMap.getTileAt(index)
+            tile = TileMap.getTileAt(index);
         }
 
-        switch(type) {
+        switch (type) {
             case TILES_VARIATIONS_TYPES.BASE:
             case TILES_VARIATIONS_TYPES.BUILDERS:
-                this.getBuildableTiles()
-                    .forEach(t => t.showOverlay());
+                this.getBuildableTiles().forEach(t => t.showOverlay());
                 break;
             case TILES_VARIATIONS_TYPES.TOWER:
                 break;
             case TILES_VARIATIONS_TYPES.WARRIORS:
-                TileMap
-                    .getTilesWithinRadius(tile, MAX_ATTACK_TARGET_DISTANCE)
+                TileMap.getTilesWithinRadius(tile, MAX_ATTACK_TARGET_DISTANCE)
                     .filter(t => !t.isForest())
                     .forEach(t => t.showOverlay());
                 break;
             case UNIT_TYPES.WARRIOR:
-                TileMap
-                    .getTilesWithinRadiusFromPosition(this.getUnit(uuid).getPosition(), MAX_UNIT_MOVEMENT_DISTANCE)
+                TileMap.getTilesWithinRadiusFromPosition(
+                    this.getUnit(uuid).getPosition(),
+                    MAX_UNIT_MOVEMENT_DISTANCE,
+                )
                     .filter(t => !t.isForest())
                     .forEach(t => t.showOverlay());
                 break;
         }
     }
 
-    isFriendly() { return true; } // we are friendly
+    isFriendly() {
+        return true;
+    } // we are friendly
 
-    getUnitScriptName = () => 'DuckBehaviour';
+    getUnitScriptName = () => "DuckBehaviour";
     getBaseTileType = () => TILES_TYPES.FOREST;
     getEnemyType = () => TILES_TYPES.HUMAN;
-    
+
     buildBaseTile(tile, startingPosition) {
-        super.buildBaseTile(tile, startingPosition)
+        super
+            .buildBaseTile(tile, startingPosition)
             .then(this.dispatchCurrentEnergyLevel)
-            .then(() => TileMap.addEnergyParticlesToTile(tile))
+            .then(() => TileMap.addEnergyParticlesToTile(tile));
     }
 
     updateEnergy() {
@@ -103,36 +104,32 @@ class Nature extends Player {
 
     dispatchCurrentEnergyLevel = () => {
         store.dispatch(updateEnergyLevel(this.energy));
-    }
+    };
 
     build(option, startingPosition, destination) {
         const tile = TileMap.getTileAt(destination);
-        switch(option) {
+        switch (option) {
             case FOREST_OPTIONS.BASE_TILE:
                 this.buildBaseTile(tile, startingPosition);
                 break;
             case FOREST_OPTIONS.BUILDERS_HUT_TILE:
-                this.buildBuildersHut(tile, startingPosition)
-                    .then(this.dispatchCurrentEnergyLevel)
+                this.buildBuildersHut(tile, startingPosition).then(this.dispatchCurrentEnergyLevel);
                 break;
             case FOREST_OPTIONS.WARRIORS_HUT_TILE:
-                this.buildWarriorsHut(tile, startingPosition)
-                    .then(this.dispatchCurrentEnergyLevel)
+                this.buildWarriorsHut(tile, startingPosition).then(this.dispatchCurrentEnergyLevel);
                 break;
             case FOREST_OPTIONS.TOWER_TILE:
-                this.buildTower(tile, startingPosition)
-                    .then(this.dispatchCurrentEnergyLevel)
+                this.buildTower(tile, startingPosition).then(this.dispatchCurrentEnergyLevel);
                 break;
         }
     }
 
     sendBuilderToTile(tile, variation, position = this.initialTilePosition) {
-        store.dispatch(addNewUnit(NATURE_NEW_UNIT_BUILDERS))
+        store.dispatch(addNewUnit(NATURE_NEW_UNIT_BUILDERS));
         return super.sendBuilderToTile(tile, variation, position);
     }
 
     sendWarriorToTile(destination, position = this.initialTilePosition) {
-        console.log('sending warrior');
         store.dispatch(addNewUnit(NATURE_NEW_UNIT_WARRIORS));
         return super.sendWarriorToTile(destination, position);
     }
@@ -140,11 +137,8 @@ class Nature extends Player {
     handleMouseMove = () => {
         const intersection = this.getIntersectingData();
         const { option } = this.getSelectionType();
-        const selectorScript = this.selector.getScript('Selector');
-        const {
-            index: destination,
-            position
-        } = intersection;
+        const selectorScript = this.selector.getScript("Selector");
+        const { index: destination, position } = intersection;
 
         if (destination && position) {
             selectorScript.appearAt(position, destination);
@@ -155,32 +149,33 @@ class Nature extends Player {
                 selectorScript.removePreview();
             }
         }
-    }
+    };
 
     handleMouseClick = () => {
         const intersection = this.getIntersectingData();
-        const { selection: { type, index, uuid: selectionUuid }, option } = this.getSelectionType();
-        const selectorScript = this.selector.getScript('Selector');
+        const {
+            selection: { type, index, uuid: selectionUuid },
+            option,
+        } = this.getSelectionType();
+        const selectorScript = this.selector.getScript("Selector");
         const { index: destination, target, uuid } = intersection;
 
         if (this.canMouseInteract(intersection)) {
             if (!option) {
-                const selection = target === 'unit' ?
-                    this.getUnit(uuid) :
-                    TileMap.getTileAt(destination);
+                const selection =
+                    target === "unit" ? this.getUnit(uuid) : TileMap.getTileAt(destination);
 
                 this.select(selection, target);
             } else if (option) {
-                switch(type) {
+                switch (type) {
                     case TILES_VARIATIONS_TYPES.BASE:
                     case TILES_VARIATIONS_TYPES.BUILDERS:
                         this.build(option, index, destination);
                         break;
                     case TILES_VARIATIONS_TYPES.TOWER:
-                        // select target? 
+                        // select target?
                         break;
                     case TILES_VARIATIONS_TYPES.WARRIORS:
-                        console.log('sending warriors');
                         this.sendWarriorToTile(destination, index);
                         break;
                     case UNIT_TYPES.WARRIOR:
@@ -194,50 +189,55 @@ class Nature extends Player {
         selectorScript.removePreview();
         selectorScript.disappear();
         this.clearSelection();
-    }
+    };
 
     clearSelection = () => {
         TileMap.removeOverlays();
         store.dispatch(changeSelectionOption(false));
-    }
+    };
 
     select(selection, target) {
-        const isTile = target === 'tile';
+        const isTile = target === "tile";
         this.outline.setSelectedObjects([isTile ? selection.getTile() : selection]);
 
-        store.dispatch(changeSelection({
-            type: isTile ? selection.getVariation() : UNIT_TYPES.WARRIOR,
-            index: isTile && selection.getIndex(),
-            uuid: selection.uuid()
-        }));
+        store.dispatch(
+            changeSelection({
+                type: isTile ? selection.getVariation() : UNIT_TYPES.WARRIOR,
+                index: isTile && selection.getIndex(),
+                uuid: selection.uuid(),
+            }),
+        );
     }
 
     getSelectionType() {
-        const { player: { selection, option } } = store.getState();
+        const {
+            player: { selection, option },
+        } = store.getState();
         return { selection, option };
     }
 
     canBuildOnTile(tile) {
-        return TileMap.isTileAdjacentToType(tile.getIndex(), TILES_TYPES.FOREST) &&
+        return (
+            TileMap.isTileAdjacentToType(tile.getIndex(), TILES_TYPES.FOREST) &&
             !tile.isForest() &&
-            !tile.isObstacle();
+            !tile.isObstacle()
+        );
     }
 
-    canSelectTile = (tile) => (
-        tile.isForest() &&
-        !tile.isObstacle()
-    ) ;
+    canSelectTile = tile => tile.isForest() && !tile.isObstacle();
 
     canAttackTile = tile => {
-        const { selection: { index } } = this.getSelectionType();
+        const {
+            selection: { index },
+        } = this.getSelectionType();
         const currentTile = TileMap.getTileAt(index);
 
         return (
             !tile.isForest() &&
             !tile.isObstacle() &&
             !(currentTile.distanceToTile(tile) > MAX_ATTACK_TARGET_DISTANCE)
-        )
-    }
+        );
+    };
 
     canMoveUnitToTile(tile, unit) {
         return distance(tile.getIndex(), unit.getPosition()) < MAX_UNIT_MOVEMENT_DISTANCE;
@@ -254,12 +254,12 @@ class Nature extends Player {
             return this.canSelectTile(destinationTile);
         }
 
-        switch(type) {
+        switch (type) {
             case TILES_VARIATIONS_TYPES.BASE:
             case TILES_VARIATIONS_TYPES.BUILDERS:
                 return this.canBuildOnTile(destinationTile);
             case TILES_VARIATIONS_TYPES.TOWER:
-                // select target? 
+                // select target?
                 break;
             case TILES_VARIATIONS_TYPES.WARRIORS:
                 return this.canAttackTile(destinationTile);
@@ -273,24 +273,25 @@ class Nature extends Player {
         return true;
     }
 
-    canMouseInteract = (intersection) => intersection.target === 'unit' ? 
-        this.checkUnitInteraction() :
-        this.checkTileInteraction(intersection);
+    canMouseInteract = intersection =>
+        intersection.target === "unit"
+            ? this.checkUnitInteraction()
+            : this.checkTileInteraction(intersection);
 
     getIntersectingData() {
         const intersections = Input.mouse.getIntersections(true, SELECTABLE_TAG);
 
         if (intersections.length) {
             const { element } = intersections[0];
-            const index = element.getData('index');
-            const target = element.getData('target');
+            const index = element.getData("index");
+            const target = element.getData("target");
             const position = element.getPosition();
             const uuid = element.uuid();
 
             return { index, position, target, uuid };
         }
 
-        return { };
+        return {};
     }
 }
 
